@@ -8,6 +8,24 @@ import (
 	"github.com/pkg/errors"
 )
 
+// UsersIndex default implementation.
+func UsersIndex(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	users := &models.Users{}
+	// Paginate results. Params "page" and "per_page" control pagination.
+	// Default values are "page=1" and "per_page=20".
+	q := tx.PaginateFromParams(c.Params())
+	// Retrieve all Posts from the DB
+	if err := q.All(users); err != nil {
+		return errors.WithStack(err)
+	}
+	// Make posts available inside the html template
+	c.Set("users", users)
+	// Add the paginator to the context so it can be used in the template.
+	c.Set("pagination", q.Paginator)
+	return c.Render(200, r.HTML("users/index.html"))
+}
+
 // UserRegisterGet displays a register form
 func UsersRegisterGet(c buffalo.Context) error {
 	// Make user available inside the html template
@@ -96,5 +114,29 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 			}
 		}
 		return next(c)
+	}
+}
+
+// AdminRequired requires a user to be logged in and to be an admin before accessing a route.
+func AdminRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		user, ok := c.Value("current_user").(*models.User)
+		if ok && user.Admin {
+			return next(c)
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
+	}
+}
+
+// LoginRequired requires a user to be logged in and to be an admin before accessing a route.
+func LoginRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		_, ok := c.Value("current_user").(*models.User)
+		if ok {
+			return next(c)
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
 	}
 }

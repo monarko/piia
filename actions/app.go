@@ -58,6 +58,8 @@ func App() *buffalo.App {
 		auth.POST("/login", UsersLoginPost)
 		auth.GET("/logout", UsersLogout)
 
+		auth.GET("/index", AdminRequired(UsersIndex))
+
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 
