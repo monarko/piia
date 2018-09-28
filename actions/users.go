@@ -91,6 +91,9 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 				return errors.WithStack(err)
 			}
 			c.Set("current_user", u)
+			if u.Admin {
+				c.Set("admin_user", u.Admin)
+			}
 		}
 		return next(c)
 	}

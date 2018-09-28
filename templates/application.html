@@ -28,10 +28,16 @@ body {
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                    <%= if (current_user) { %>
+                <%= if (current_user) { %>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Participants</a>
                 </li>
+                <% } %>
+
+                <%= if (admin_user) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Users</a>
+                    </li>
                 <% } %>
             </ul>
             <ul class="navbar-nav">
