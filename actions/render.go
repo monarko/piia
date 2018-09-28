@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"html/template"
+
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/packr"
 )
@@ -22,6 +24,9 @@ func init() {
 			// uncomment for non-Bootstrap form helpers:
 			// "form":     plush.FormHelper,
 			// "form_for": plush.FormForHelper,
+			"csrf": func() template.HTML {
+				return template.HTML("<input name=\"authenticity_token\" value=\"<%= authenticity_token %>\" type=\"hidden\">")
+			},
 		},
 	})
 }

@@ -1,21 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title>Buffalo - Piia</title>
+    <title>PIIA</title>
     <%= stylesheetTag("application.css") %>
     <meta name="csrf-param" content="authenticity_token" />
     <meta name="csrf-token" content="<%= authenticity_token %>" />
-    <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
-  </head>
-  <body>
+    <link rel="icon" href="<%= assetPath(" images/favicon.ico") %>">
+    <style>
+        /* Move down content because we have a fixed navbar that is 3.5rem tall */
+body {
+  padding-top: 3.5rem;
+}
+    </style>
+</head>
 
-    <div class="container">
-      <%= partial("flash.html") %>
-      <%= yield %>
-    </div>
+<body>
 
+    <!-- NavBar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="<%= rootPath() %>">PIIA</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                    <%= if (current_user) { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Participants</a>
+                </li>
+                <% } %>
+            </ul>
+            <ul class="navbar-nav">
+                    <%= if (current_user) { %>
+                        <li class="nav-item">
+                        <a href="<%= usersLogoutPath() %>" class="nav-link">Logout</a>
+                        </li>
+                        <% } else { %>
+                        <li class="nav-item">
+                            <a href="<%= usersLoginPath() %>" class="nav-link">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<%= usersRegisterPath() %>" class="nav-link">Register</a>
+                        </li>
+                    <% } %>
+            </ul>
+        </div>
+    </nav>
+    <!-- End NavBar -->
+    <main role="main">
+        <%= partial("flash.html") %>
+        <%= yield %>
+        <hr>
+    </main>
+
+    <footer class="container">
+        <div class="text-center">
+            <p>&copy; PIIA 2018</p>
+        </div>
+    </footer>
     <%= javascriptTag("application.js") %>
-  </body>
+</body>
+
 </html>
