@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <%= if (errors) { %>
+            <%= for (key, val) in errors { %>
+            <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+                <%= val %>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <% } %>
+            <% } %>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-md-8 col-sm-10">
+            <h2>Create a new participant</h2>
+            <form action="<%= participantsCreatePath() %>" method="POST">
+                <%= csrf() %>
+                <div class="form-group">
+                    <label for="Name">Name</label>
+                    <input type="text" name="Name" class="form-control" id="name" value="<%= participant.Name %>">
+                </div>
+                <div class="form-group">
+                    <label for="Gender">Gender</label>
+                    <select name="Gender" id="gender">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="DOB">Date of birth</label>
+                    <input type="date" name="DOB" class="form-control" id="dob" value="<%= participant.DOB %>">
+                </div>
+                <div class="form-group">
+                    <label for="IsEligible">Is eligible?</label>
+                    <label><input type="radio" name="IsEligible" class="form-control" id="is_eligible" value="true"> YES </label>
+                    <label><input type="radio" name="IsEligible" class="form-control" id="is_eligible" value="false"> NO </label>  
+                </div>
+                <div class="form-group">
+                    <label for="Consented">Consented?</label>
+                    <label><input type="radio" name="Consented" class="form-control" id="consented" value="true"> YES </label>
+                    <label><input type="radio" name="Consented" class="form-control" id="consented" value="false"> NO </label> 
+                </div>
+                <div class="form-group">
+                    <label for="ContactNumber">Contact Number</label>
+                    <input type="text" name="ContactNumber" class="form-control" id="contact_number" value="<%= participant.ContactNumber %>">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -12,7 +12,13 @@
     <style>
         /* Move down content because we have a fixed navbar that is 3.5rem tall */
 body {
-  padding-top: 3.5rem;
+  padding-top: 5rem;
+}
+main.container {
+    padding-top: 60px;
+}
+.jumbotron {
+    margin-top: -1.5rem;
 }
     </style>
 </head>
@@ -30,29 +36,29 @@ body {
             <ul class="navbar-nav mr-auto">
                 <%= if (current_user) { %>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Participants</a>
+                    <a class="nav-link" href="<%= participantsIndexPath() %>">Participants</a>
                 </li>
                 <% } %>
 
                 <%= if (admin_user) { %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<%= usersIndexPath() %>">Users</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<%= usersIndexPath() %>">Users</a>
+                </li>
                 <% } %>
             </ul>
             <ul class="navbar-nav">
-                    <%= if (current_user) { %>
-                        <li class="nav-item">
-                        <a href="<%= usersLogoutPath() %>" class="nav-link">Logout</a>
-                        </li>
-                        <% } else { %>
-                        <li class="nav-item">
-                            <a href="<%= usersLoginPath() %>" class="nav-link">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<%= usersRegisterPath() %>" class="nav-link">Register</a>
-                        </li>
-                    <% } %>
+                <%= if (current_user) { %>
+                <li class="nav-item">
+                    <a href="<%= usersLogoutPath() %>" class="nav-link">Logout</a>
+                </li>
+                <% } else { %>
+                <li class="nav-item">
+                    <a href="<%= usersLoginPath() %>" class="nav-link">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a href="<%= usersRegisterPath() %>" class="nav-link">Register</a>
+                </li>
+                <% } %>
             </ul>
         </div>
     </nav>

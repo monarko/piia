@@ -26,7 +26,7 @@ func UsersIndex(c buffalo.Context) error {
 	return c.Render(200, r.HTML("users/index.html"))
 }
 
-// UserRegisterGet displays a register form
+// UsersRegisterGet displays a register form
 func UsersRegisterGet(c buffalo.Context) error {
 	// Make user available inside the html template
 	c.Set("user", &models.User{})

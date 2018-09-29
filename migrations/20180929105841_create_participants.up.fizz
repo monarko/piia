@@ -1,0 +1,11 @@
+create_table("participants") {
+	t.Column("id", "uuid", {"primary": true})
+    t.Column("participant_id", "string", {"unique": true})
+	t.Column("name", "string", {})
+	t.Column("gender", "string", {})
+	t.Column("dob", "timestamp", {})
+	t.Column("contact_number", "string", {"null": true})
+	t.Column("is_eligible", "boolean", {})
+	t.Column("consented", "boolean", {})
+	t.Column("author_id", "uuid", {})
+}
