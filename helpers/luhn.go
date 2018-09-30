@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"fmt"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -74,7 +75,10 @@ func generateControlDigit(luhnString string) int {
 }
 
 func calculateChecksum(luhnString string, double bool) int {
-	source := strings.Split(luhnString, "")
+	prefixInt := fmt.Sprintf("%d", luhnString[0])
+	suffix := luhnString[1:]
+	theString := string(prefixInt) + suffix
+	source := strings.Split(theString, "")
 	checksum := 0
 
 	for i := len(source) - 1; i > -1; i-- {
