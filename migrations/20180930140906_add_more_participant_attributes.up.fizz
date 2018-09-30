@@ -1,0 +1,2 @@
+add_column("participants", "id_type", "string", {"default": ""})
+add_column("participants", "id_number", "string", {"default": ""})

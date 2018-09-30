@@ -19,6 +19,8 @@ main.container {
 }
 .jumbotron {
     margin-top: -1.5rem;
+    margin-left: -15px;
+    margin-right: -15px;
 }
     </style>
 </head>
@@ -64,8 +66,10 @@ main.container {
     </nav>
     <!-- End NavBar -->
     <main role="main">
-        <%= partial("flash.html") %>
-        <%= yield %>
+        <div class="container-fluid">
+            <%= partial("flash.html") %>
+            <%= yield %>
+        </div>
         <hr>
     </main>
 

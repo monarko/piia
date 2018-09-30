@@ -1,0 +1,2 @@
+drop_column("users", "id_type")
+drop_column("users", "id_number")

@@ -29,6 +29,8 @@ func ParticipantsIndex(c buffalo.Context) error {
 // ParticipantsCreateGet for the insert form
 func ParticipantsCreateGet(c buffalo.Context) error {
 	c.Set("participant", &models.Participant{})
+	luhnID := helpers.GenerateLuhnID()
+	c.Set("luhnID", luhnID.ID)
 	return c.Render(200, r.HTML("participants/create.html"))
 }
 
@@ -45,8 +47,6 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	// Validate the data from the html form
 	participant.AuthorID = user.ID
-	luhnID := helpers.GenerateLuhnID()
-	participant.ParticipantID = luhnID.ID
 	verrs, err := tx.ValidateAndCreate(participant)
 	if err != nil {
 		return errors.WithStack(err)

@@ -21,6 +21,8 @@ type Participant struct {
 	ContactNumber string    `json:"contact_number" db:"contact_number"`
 	IsEligible    bool      `json:"is_eligible" db:"is_eligible"`
 	Consented     bool      `json:"consented" db:"consented"`
+	IDType        string    `json:"id_type" db:"id_type"`
+	IDNumber      string    `json:"id_number" db:"id_number"`
 	AuthorID      uuid.UUID `json:"author_id" db:"author_id"`
 }
 

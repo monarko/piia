@@ -1,61 +1,65 @@
-<div class="container">
-    <div class="page-header">
-        <div class="row">
-            <div class="col-md-9">
-                <h1>Participants</h1>
-            </div>
-            <div class="col-md-3">
-                <%= if (current_user) { %>
-                <a href="<%= participantsCreatePath() %>" class="btn btn-primary">Add Participant</a>
-                <% } %>
-            </div>
+<div class="page-header">
+    <div class="row">
+        <div class="col-md-9">
+            <h1>Participants</h1>
+        </div>
+        <div class="col-md-3">
+            <%= if (current_user) { %>
+            <a href="<%= participantsCreatePath() %>" class="btn btn-primary">Add Participant</a>
+            <% } %>
         </div>
     </div>
-    <table class="table table-striped">
-        <thead>
-            <th>Participant ID</th>
-            <th>Name</th>
-            <th>Gender</th>
-            <th>DOB</th>
-            <th>Contact</th>
-            <th>Eligibility</th>
-            <th>Actions</th>
-        </thead>
-        <tbody>
-            <%= for (p) in participants { %>
-            <tr>
-                <td>
-                    <%= p.ParticipantID %>
-                </td>
-                <td>
-                    <%= p.Name %>
-                </td>
-                <td>
-                    <%= p.Gender %>
-                </td>
-                <td>
-                    <%= p.DOB %>
-                </td>
-                <td>
-                    <%= p.ContactNumber %>
-                </td>
-                <td>
-                    <%= if (p.IsEligible) { %>
-                    <span class="badge badge-success">Eligible</span>
-                    <% } %>
-                    <%= if (p.Consented) { %>
-                    <span class="badge badge-primary">Consented</span>
-                    <% } %>
-                </td>
-                <td>
-                    <a href="<%= participantsEditPath({pid: p.ID}) %>" class="btn"><i class="fa fa-edit"></i></button>
-                </td>
-            </tr>
-            <% } %>
-        </tbody>
-    </table>
+</div>
+<table class="table table-striped">
+    <thead>
+        <th>Participant ID</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>DOB</th>
+        <th>Contact</th>
+        <th>ID</th>
+        <th>Eligibility</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <%= for (p) in participants { %>
+        <tr>
+            <td>
+                <%= p.ParticipantID %>
+            </td>
+            <td>
+                <%= p.Name %>
+            </td>
+            <td>
+                <%= p.Gender %>
+            </td>
+            <td>
+                <%= p.DOB %>
+            </td>
+            <td>
+                <%= p.ContactNumber %>
+            </td>
+            <td>
+                <span class="badge badge-info">
+                    <%= p.IDType %></span><br>
+                <%= p.IDNumber %>
+            </td>
+            <td>
+                <%= if (p.IsEligible) { %>
+                <span class="badge badge-success">Eligible</span>
+                <% } %>
+                <%= if (p.Consented) { %>
+                <span class="badge badge-primary">Consented</span>
+                <% } %>
+            </td>
+            <td>
+                <a href="<%= participantsEditPath({pid: p.ID}) %>" class="btn"><i class="fa fa-edit"></i></button>
+            </td>
+        </tr>
+        <% } %>
+    </tbody>
+</table>
 
-    <div class="text-center">
-        <%= paginator(pagination) %>
-    </div>
+<div class="text-center">
+    <%= paginator(pagination) %>
 </div>

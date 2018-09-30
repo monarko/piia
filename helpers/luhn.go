@@ -20,7 +20,8 @@ type Luhn struct {
 // GenerateLuhnID generates a new luhn id
 func GenerateLuhnID() Luhn {
 	rand.Seed(time.Now().UnixNano())
-	sitePrefix := chars[rand.Intn(len(chars))]
+	// sitePrefix := chars[rand.Intn(len(chars))]
+	sitePrefix := chars[1]
 	luhnID := GenerateWithPrefix(6, string(sitePrefix))
 	return Luhn{ID: luhnID}
 }
