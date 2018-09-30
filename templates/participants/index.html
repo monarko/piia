@@ -40,8 +40,10 @@
                 <%= p.ContactNumber %>
             </td>
             <td>
+                <%= if (p.IDType) { %>
                 <span class="badge badge-info">
                     <%= p.IDType %></span><br>
+                <% } %>
                 <%= p.IDNumber %>
             </td>
             <td>
