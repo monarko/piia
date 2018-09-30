@@ -34,14 +34,14 @@
                 <%= p.Gender %>
             </td>
             <td>
-                <%= p.DOB %>
+                <%= p.DOB.Format("02-Jan-2006") %>
             </td>
             <td>
                 <%= p.ContactNumber %>
             </td>
             <td>
                 <%= if (p.IDType) { %>
-                <span class="badge badge-info">
+                <span class="badge badge-info text-uppercase">
                     <%= p.IDType %></span><br>
                 <% } %>
                 <%= p.IDNumber %>
