@@ -23,6 +23,9 @@ func UsersIndex(c buffalo.Context) error {
 	c.Set("users", users)
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Users"] = "/users/index"
+	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("users/index.html"))
 }
 

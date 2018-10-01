@@ -106,6 +106,7 @@
             -------------------->
 
             <div class="content-w">
+                <%= if (breadcrumbMap) { %>
                 <!--------------------
               START - Breadcrumbs
               -------------------->
@@ -114,11 +115,10 @@
                         <a href="<%= rootPath() %>">Piia</a>
                     </li>
 
-                    <%= if (breadcrumbMap) { %>
                     <%= for (k, v) in breadcrumbMap { %>
                     <li class="breadcrumb-item">
-                        <%= if (v) { %>
-                        <a href="<%= v() %>">
+                        <%= if (len(v) > 0) { %>
+                        <a href="<%= v %>">
                             <%= k %></a>
                         <% } else { %>
                         <span>
@@ -126,22 +126,16 @@
                         <% } %>
                     </li>
                     <% } %>
-                    <% } %>
-
                 </ul>
                 <!--------------------
               END - Breadcrumbs
               -------------------->
+                <% } %>
+
                 <div class="content-i">
                     <div class="content-box">
-                        <div class="row justify-content-lg-center">
-                            <div class="col-lg-auto">
-                                <%= partial("flash.html") %>
-                                <div class="element-wrapper">
-                                    <%= yield %>
-                                </div>
-                            </div>
-                        </div>
+                        <%= partial("flash.html") %>
+                        <%= yield %>
                     </div>
                 </div>
             </div>

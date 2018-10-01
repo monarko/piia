@@ -1,41 +1,106 @@
-<div class="container">
-  <div class="page-header">
-    <h1>Users</h1>
-  </div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="element-wrapper">
+			<div class="element-actions">
+				<a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button">Download
+					CSV</a>
+			</div>
+			<h6 class="element-header">
+				Users
+			</h6>
+			<div class="element-box">
+				<!-- controls above table -->
+				<div class="controls-above-table">
+					<div class="row">
+						<div class="col-sm-6">
+						</div>
+						<div class="col-sm-6">
+							<form class="form-inline justify-content-sm-end">
+								<input class="form-control form-control-sm rounded bright" placeholder="Search" type="text"><select class="form-control form-control-sm rounded bright">
+									<option selected="selected" value="">
+										Select Role
+									</option>
+									<option value="Pending">
+										Admin
+									</option>
+									<option value="Active">
+										Non Admin
+									</option>
+								</select>
+							</form>
+						</div>
+					</div>
+				</div>
 
-  <table class="table table-striped">
-    <thead>
-      <th>Username</th>
-      <th>Email</th>
-      <th>Name</th>
-      <th>Admin</th>
-      <th>&nbsp;</th>
-    </thead>
-    <tbody>
-      <%= for (user) in users { %>
-      <tr>
-        <td>
-          <%= user.Username %>
-        </td>
-        <td>
-          <%= user.Email %>
-        </td>
-        <td>
-          <%= user.Name %>
-        </td>
-        <td>
-          <%= user.Admin %>
-        </td>
-        <td>
+				<div class="table-responsive">
+					<table class="table table-bordered table-lg table-v2 table-striped">
+						<thead>
+							<tr>
+								<th class="text-center">
+									<input class="form-control" type="checkbox">
+								</th>
+								<th>
+									Username
+								</th>
+								<th>
+									Email
+								</th>
+								<th>
+									Name
+								</th>
+								<th>
+									Admin
+								</th>
+								<th>
+									Registration Date
+								</th>
+								<th>
+									Actions
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%= for (user) in users { %>
+							<tr>
+								<td class="text-center">
+									<input class="form-control" type="checkbox">
+								</td>
+								<td>
+									<%= user.Username %>
+								</td>
+								<td>
+									<%= user.Email %>
+								</td>
+								<td>
+									<%= user.Name %>
+								</td>
+								<td class="text-center">
+									<%= if (user.Admin) { %>
+									<div class="badge badge-primary">
+										Admin
+									</div>
+									<% } %>
+								</td>
+								<td class="text-center">
+									<%= user.CreatedAt.Format("02-Jan-2006") %>
+								</td>
+								<td class="row-actions">
+									<!-- <a href="#"><i class="os-icon os-icon-ui-49"></i></a> -->
+									<!-- <a href="#"><i class="os-icon os-icon-grid-10"></i></a> -->
+									<!--<a class="danger" href="#"><i class="os-icon os-icon-ui-15"></i></a>-->
+								</td>
+							</tr>
+							<% } %>
+						</tbody>
+					</table>
+				</div>
 
-        </td>
-      </tr>
-      <% } %>
-    </tbody>
-  </table>
-
-  <div class="text-center">
-    <%= paginator(pagination) %>
-  </div>
-
+				<div class="controls-below-table">
+					<div class="table-records-pages">
+						<%= paginator(pagination) %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
