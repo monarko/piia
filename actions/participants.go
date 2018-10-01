@@ -14,7 +14,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 	participants := &models.Participants{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
-	q := tx.Eager("User").PaginateFromParams(c.Params())
+	q := tx.Eager("User").PaginateFromParams(c.Params()).Order("created_at ASC")
 	// Retrieve all Posts from the DB
 	if err := q.All(participants); err != nil {
 		return errors.WithStack(err)
