@@ -23,6 +23,9 @@ func UsersIndex(c buffalo.Context) error {
 	c.Set("users", users)
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Users"] = "/users/index"
+	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("users/index.html"))
 }
 
@@ -30,7 +33,7 @@ func UsersIndex(c buffalo.Context) error {
 func UsersRegisterGet(c buffalo.Context) error {
 	// Make user available inside the html template
 	c.Set("user", &models.User{})
-	return c.Render(200, r.HTML("users/register.html"))
+	return c.Render(200, r.HTML("users/register.html", "application-non-logged-in.html"))
 }
 
 // UsersRegisterPost adds a User to the DB. This function is mapped to the
@@ -56,17 +59,17 @@ func UsersRegisterPost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		// Render again the register.html template that the user can
 		// correct the input.
-		return c.Render(422, r.HTML("users/register.html"))
+		return c.Render(422, r.HTML("users/register.html", "application-non-logged-in.html"))
 	}
 	// If there are no errors set a success message
-	c.Flash().Add("success", "Account created successfully.")
+	c.Flash().Add("success", "Account registered successfully. You can login now.")
 	// and redirect to the home page
 	return c.Redirect(302, "/")
 }
 
 // UsersLoginGet displays a login form
 func UsersLoginGet(c buffalo.Context) error {
-	return c.Render(200, r.HTML("users/login"))
+	return c.Render(200, r.HTML("users/login.html", "application-non-logged-in.html"))
 }
 
 // UsersLoginPost logs in a user.
@@ -83,7 +86,7 @@ func UsersLoginPost(c buffalo.Context) error {
 		verrs := validate.NewErrors()
 		verrs.Add("Login", "Invalid email or password.")
 		c.Set("errors", verrs.Errors)
-		return c.Render(422, r.HTML("users/login"))
+		return c.Render(422, r.HTML("users/login.html", "application-non-logged-in.html"))
 	}
 	c.Session().Set("current_user_id", user.ID)
 	c.Flash().Add("success", "Welcome back!")

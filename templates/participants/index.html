@@ -1,67 +1,149 @@
-<div class="page-header">
-    <div class="row">
-        <div class="col-md-9">
-            <h1>Participants</h1>
-        </div>
-        <div class="col-md-3">
-            <%= if (current_user) { %>
-            <a href="<%= participantsCreatePath() %>" class="btn btn-primary">Add Participant</a>
-            <% } %>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-actions">
+                <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button">Download
+                    CSV</a>
+            </div>
+            <h6 class="element-header">
+                Enrolled Participants
+            </h6>
+            <div class="element-box">
+                <!-- controls above table -->
+                <div class="controls-above-table">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a class="btn btn-primary btn" href="<%= participantsCreatePath() %>" role="button">Enrol New</a>
+                        </div>
+                        <div class="col-sm-6">
+                            <form class="form-inline justify-content-sm-end">
+                                <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text"><select
+                                    class="form-control form-control-sm rounded bright">
+                                    <option selected="selected" value="">
+                                        Select Status
+                                    </option>
+                                    <option value="Pending">
+                                        Registerd
+                                    </option>
+                                    <option value="Active">
+                                        Screened
+                                    </option>
+                                    <option value="Active">
+                                        Over-Read
+                                    </option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-lg table-v2 table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <input class="form-control" type="checkbox">
+                                </th>
+                                <th>
+                                    Participant ID
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Gender
+                                </th>
+                                <th>
+                                    Birth Date
+                                </th>
+                                <th>
+                                    Contact
+                                </th>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Consent
+                                </th>
+                                <th>
+                                    Register By
+                                </th>
+                                <th>
+                                    Registration Date
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= for (p) in participants { %>
+                            <tr>
+                                <td class="text-center">
+                                    <input class="form-control" type="checkbox">
+                                </td>
+                                <td class="text-center">
+                                        <%= p.ParticipantID %>
+                                    </td>
+                                    <td>
+                                        <%= p.Name %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= p.Gender %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= p.DOB.Format("02-Jan-2006") %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= p.ContactNumber %>
+                                    </td>
+                                    <td>
+                                        <%= if (p.IDType) { %>
+                                        <span class="badge badge-info text-uppercase">
+                                            <%= p.IDType %></span><br>
+                                        <% } %>
+                                        <%= p.IDNumber %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= if (p.Consented) { %>
+                                        <span class="badge badge-primary">Consented</span>
+                                        <% } %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= p.User.Name %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= p.CreatedAt.Format("02-Jan-2006") %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= if (len(p.Status) == 1 && p.Status == "1") { %>
+                                            <div class="status-pill green" data-title="Registered" data-toggle="tooltip"></div>
+                                        <% } else if (len(p.Status) == 1 && p.Status == "11") { %>
+                                            <div class="status-pill orange" data-title="Screening" data-toggle="tooltip"></div>
+                                        <% } else if (len(p.Status) == 3 && p.Status == "111") { %>
+                                            <div class="status-pill red" data-title="Over-read" data-toggle="tooltip"></div>
+                                        <% } %>
+                                    </td>
+                                <td class="row-actions">
+                                    <a href="<%= participantsEditPath({pid: p.ID}) %>"><i class="os-icon os-icon-ui-49"></i></a>
+                                    <a href="#"><i class="os-icon os-icon-grid-10"></i></a>
+                                    <!--<a class="danger" href="#"><i class="os-icon os-icon-ui-15"></i></a>-->
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="controls-below-table">
+                    <div class="table-records-pages">
+                        <%= paginator(pagination) %>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<table class="table table-striped">
-    <thead>
-        <th>Participant ID</th>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>DOB</th>
-        <th>Contact</th>
-        <th>ID</th>
-        <th>Eligibility</th>
-        <th>Actions</th>
-    </thead>
-    <tbody>
-        <%= for (p) in participants { %>
-        <tr>
-            <td>
-                <%= p.ParticipantID %>
-            </td>
-            <td>
-                <%= p.Name %>
-            </td>
-            <td>
-                <%= p.Gender %>
-            </td>
-            <td>
-                <%= p.DOB.Format("02-Jan-2006") %>
-            </td>
-            <td>
-                <%= p.ContactNumber %>
-            </td>
-            <td>
-                <%= if (p.IDType) { %>
-                <span class="badge badge-info text-uppercase">
-                    <%= p.IDType %></span><br>
-                <% } %>
-                <%= p.IDNumber %>
-            </td>
-            <td>
-                <%= if (p.IsEligible) { %>
-                <span class="badge badge-success">Eligible</span>
-                <% } %>
-                <%= if (p.Consented) { %>
-                <span class="badge badge-primary">Consented</span>
-                <% } %>
-            </td>
-            <td>
-                <a href="<%= participantsEditPath({pid: p.ID}) %>" class="btn"><i class="fa fa-edit"></i></button>
-            </td>
-        </tr>
-        <% } %>
-    </tbody>
-</table>
-
-<div class="text-center">
-    <%= paginator(pagination) %>
 </div>

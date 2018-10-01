@@ -4,80 +4,144 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
     <title>PIIA</title>
     <%= stylesheetTag("application.css") %>
     <meta name="csrf-param" content="authenticity_token" />
     <meta name="csrf-token" content="<%= authenticity_token %>" />
-    <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
-    <style>
-        /* Move down content because we have a fixed navbar that is 3.5rem tall */
-body {
-  padding-top: 5rem;
-}
-main.container {
-    padding-top: 60px;
-}
-.jumbotron {
-    margin-top: -1.5rem;
-    margin-left: -15px;
-    margin-right: -15px;
-}
-    </style>
+    <link rel="icon" href="<%= assetPath("images/favicon.png") %>">
+    <link rel="apple-touch-icon" href="<%= assetPath("images/apple-touch-icon.png") %>">
 </head>
 
-<body>
+<body class="menu-position-top">
 
-    <!-- NavBar -->
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="<%= rootPath() %>">PIIA</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <%= if (current_user) { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="<%= participantsIndexPath() %>">Participants</a>
-                </li>
+    <div class="all-wrapper solid-bg-all">
+        <div class="layout-w">
+            <!--------------------
+            START - Main Menu
+            -------------------->
+            <div class="menu-w selected-menu-color-light menu-activated-on-hover menu-has-selected-link color-scheme-light color-style-transparent sub-menu-color-bright menu-position-top menu-layout-compact sub-menu-style-over">
+                <div class="logo-w">
+                    <a class="logo" href="<%= rootPath() %>">
+                        <div class="logo-element"></div>
+                        <div class="logo-label">
+                            piia admin
+                        </div>
+                    </a>
+                </div>
+                <div class="logged-user-w avatar-inline">
+                    <div class="logged-user-i">
+                        <div class="avatar-w">
+                            <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                        </div>
+                        <div class="logged-user-info-w">
+                            <div class="logged-user-name">
+                                <%= current_user.Name %>
+                            </div>
+                            <div class="logged-user-role">
+                                <%= if (current_user.Admin) { %>
+                                Administrator
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="logged-user-toggler-arrow">
+                            <div class="os-icon os-icon-chevron-down"></div>
+                        </div>
+                        <div class="logged-user-menu color-style-bright">
+                            <div class="logged-user-avatar-info">
+                                <div class="avatar-w">
+                                    <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                                </div>
+                                <div class="logged-user-info-w">
+                                    <div class="logged-user-name">
+                                        <%= current_user.Name %>
+                                    </div>
+                                    <div class="logged-user-role">
+                                        <%= if (current_user.Admin) { %>
+                                        Administrator
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-icon">
+                                <i class="os-icon os-icon-wallet-loaded"></i>
+                            </div>
+                            <ul>
+                                <li>
+                                    <a href="<%= usersLogoutPath() %>"><i class="os-icon os-icon-signs-11"></i><span>Logout</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="menu-page-header">
+                    Page Header
+                </h1>
+                <ul class="main-menu">
+                    <%= if (current_user) { %>
+                    <li class="">
+                        <a href="<%= participantsIndexPath() %>">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-layers"></div>
+                            </div>
+                            <span>Participants</span>
+                        </a>
+                    </li>
+                    <% } %>
+
+                    <%= if (admin_user) { %>
+                    <li class="">
+                        <a href="<%= usersIndexPath() %>">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-layers"></div>
+                            </div>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+            <!--------------------
+            END - Main Menu
+            -------------------->
+
+            <div class="content-w">
+                <%= if (breadcrumbMap) { %>
+                <!--------------------
+              START - Breadcrumbs
+              -------------------->
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="<%= rootPath() %>">Piia</a>
+                    </li>
+
+                    <%= for (k, v) in breadcrumbMap { %>
+                    <li class="breadcrumb-item">
+                        <%= if (len(v) > 0) { %>
+                        <a href="<%= v %>">
+                            <%= k %></a>
+                        <% } else { %>
+                        <span>
+                            <%= k %></span>
+                        <% } %>
+                    </li>
+                    <% } %>
+                </ul>
+                <!--------------------
+              END - Breadcrumbs
+              -------------------->
                 <% } %>
 
-                <%= if (admin_user) { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="<%= usersIndexPath() %>">Users</a>
-                </li>
-                <% } %>
-            </ul>
-            <ul class="navbar-nav">
-                <%= if (current_user) { %>
-                <li class="nav-item">
-                    <a href="<%= usersLogoutPath() %>" class="nav-link">Logout</a>
-                </li>
-                <% } else { %>
-                <li class="nav-item">
-                    <a href="<%= usersLoginPath() %>" class="nav-link">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a href="<%= usersRegisterPath() %>" class="nav-link">Register</a>
-                </li>
-                <% } %>
-            </ul>
+                <div class="content-i">
+                    <div class="content-box">
+                        <%= partial("flash.html") %>
+                        <%= yield %>
+                    </div>
+                </div>
+            </div>
         </div>
-    </nav>
-    <!-- End NavBar -->
-    <main role="main">
-        <div class="container-fluid">
-            <%= partial("flash.html") %>
-            <%= yield %>
-        </div>
-        <hr>
-    </main>
+    </div>
 
-    <footer class="container">
-        <div class="text-center">
-            <p>&copy; PIIA 2018</p>
-        </div>
-    </footer>
     <%= javascriptTag("application.js") %>
 </body>
 

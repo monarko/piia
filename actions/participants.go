@@ -14,7 +14,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 	participants := &models.Participants{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
-	q := tx.PaginateFromParams(c.Params())
+	q := tx.Eager("User").PaginateFromParams(c.Params())
 	// Retrieve all Posts from the DB
 	if err := q.All(participants); err != nil {
 		return errors.WithStack(err)
@@ -23,6 +23,9 @@ func ParticipantsIndex(c buffalo.Context) error {
 	c.Set("participants", participants)
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Participants"] = "/participants/index"
+	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/index.html"))
 }
 
@@ -31,6 +34,10 @@ func ParticipantsCreateGet(c buffalo.Context) error {
 	c.Set("participant", &models.Participant{})
 	luhnID := helpers.GenerateLuhnID()
 	c.Set("luhnID", luhnID.ID)
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Participants"] = "/participants/index"
+	breadcrumbMap["Enrol Participants"] = "/participants/create"
+	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/create.html"))
 }
 
@@ -46,7 +53,8 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
 	// Validate the data from the html form
-	participant.AuthorID = user.ID
+	participant.UserID = user.ID
+	participant.Status = "1"
 	verrs, err := tx.ValidateAndCreate(participant)
 	if err != nil {
 		return errors.WithStack(err)
@@ -70,6 +78,10 @@ func ParticipantsEditGet(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	c.Set("participant", participant)
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Participants"] = "/participants/index"
+	breadcrumbMap["Update Participants"] = "/participants/edit"
+	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/edit.html"))
 }
 
@@ -80,6 +92,7 @@ func ParticipantsEditPost(c buffalo.Context) error {
 	if err := tx.Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
+	participant.Consented = false
 	if err := c.Bind(participant); err != nil {
 		return errors.WithStack(err)
 	}

@@ -23,7 +23,9 @@ type Participant struct {
 	Consented     bool      `json:"consented" db:"consented"`
 	IDType        string    `json:"id_type" db:"id_type"`
 	IDNumber      string    `json:"id_number" db:"id_number"`
-	AuthorID      uuid.UUID `json:"author_id" db:"author_id"`
+	User          User      `belongs_to:"user"`
+	UserID        uuid.UUID `json:"author_id" db:"author_id"`
+	Status        string    `json:"status" db:"status"`
 }
 
 // Participants holds the list of Participant

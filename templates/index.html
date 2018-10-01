@@ -1,7 +1,216 @@
-<div class="jumbotron">
-  <div class="container">
-    <h1 class="display-1">PIIA</h1>
-    <p class="lead">This is a research project.</p>
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
-  </div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-actions">
+                <form class="form-inline justify-content-sm-end">
+                    <select class="form-control form-control-sm rounded">
+                        <option value="Pending">
+                            Today
+                        </option>
+                        <option value="Active">
+                            Last Week
+                        </option>
+                        <option value="Cancelled">
+                            Last 30 Days
+                        </option>
+                    </select>
+                </form>
+            </div>
+            <h6 class="element-header">
+                Dashboard
+            </h6>
+            <div class="element-content">
+                <div class="row">
+                    <div class="col-sm-4 col-xxxl-3">
+                        <a class="element-box el-tablo" href="#">
+                            <div class="label">
+                                Participants Registered
+                            </div>
+                            <div class="value">
+                                57
+                            </div>
+                            <div class="trending trending-up-basic">
+                                <span>12%</span><i class="os-icon os-icon-arrow-up2"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-xxxl-3">
+                        <a class="element-box el-tablo" href="#">
+                            <div class="label">
+                                Total Users
+                            </div>
+                            <div class="value">
+                                $457
+                            </div>
+                            <div class="trending trending-down-basic">
+                                <span>12%</span><i class="os-icon os-icon-arrow-down"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-xxxl-3">
+                        <a class="element-box el-tablo" href="#">
+                            <div class="label">
+                                Top Reviewer
+                            </div>
+                            <div class="value">
+                                125
+                            </div>
+                            <div class="trending trending-down-basic">
+                                <span>9%</span><i class="os-icon os-icon-arrow-down"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="d-none d-xxxl-block col-xxxl-3">
+                        <a class="element-box el-tablo" href="#">
+                            <div class="label">
+                                Remaining Over-read
+                            </div>
+                            <div class="value">
+                                $294
+                            </div>
+                            <div class="trending trending-up-basic">
+                                <span>12%</span><i class="os-icon os-icon-arrow-up2"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-xxxl-9">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Participant Graph
+            </h6>
+            <div class="element-box">
+                <div class="os-tabs-w">
+                    <div class="os-tabs-controls">
+                        <ul class="nav nav-tabs smaller">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tab_registerd">Registered</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab_screened">Screened</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tab_overread">Over-read</a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-pills smaller d-none d-md-flex">
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#">Today</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#">7 Days</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#">14 Days</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#">Last Month</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_registered">
+                            <div class="el-tablo bigger">
+                                <div class="label">
+                                    Participants Registered
+                                </div>
+                                <div class="value">
+                                    12,537
+                                </div>
+                            </div>
+                            <div class="el-chart-w">
+                                <canvas data-chart-data="13,28,19,24,43,49,40,35,42,46,38,32,45" height="150px" id="lineChart"
+                                    width="600px"></canvas>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab_screened">
+                            <div class="el-tablo bigger">
+                                <div class="label">
+                                    Participants Screened
+                                </div>
+                                <div class="value">
+                                    12,537
+                                </div>
+                            </div>
+                            <div class="el-chart-w">
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab_overread">
+                            <div class="el-tablo bigger">
+                                <div class="label">
+                                    Participants Over-Read
+                                </div>
+                                <div class="value">
+                                    12,537
+                                </div>
+                            </div>
+                            <div class="el-chart-w">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-none d-xxxl-block col-xxxl-3">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Participants Stats
+            </h6>
+            <div class="element-box less-padding">
+                <div class="el-chart-w">
+                    <canvas height="120" id="donutChart1" width="120"></canvas>
+                </div>
+                <div class="el-legend condensed">
+                    <div class="row">
+                        <div class="col-auto col-xxxxl-6 ml-sm-auto mr-sm-auto">
+                            <div class="legend-value-w">
+                                <div class="legend-pin legend-pin-squared" style="background-color: #6896f9;"></div>
+                                <div class="legend-value">
+                                    <span>Safari</span>
+                                    <div class="legend-sub-value">
+                                        17%, 12 Visits
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="legend-value-w">
+                                <div class="legend-pin legend-pin-squared" style="background-color: #85c751;"></div>
+                                <div class="legend-value">
+                                    <span>Chrome</span>
+                                    <div class="legend-sub-value">
+                                        22%, 763 Visits
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 d-none d-xxxxl-block">
+                            <div class="legend-value-w">
+                                <div class="legend-pin legend-pin-squared" style="background-color: #806ef9;"></div>
+                                <div class="legend-value">
+                                    <span>Firefox</span>
+                                    <div class="legend-sub-value">
+                                        3%, 7 Visits
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="legend-value-w">
+                                <div class="legend-pin legend-pin-squared" style="background-color: #d97b70;"></div>
+                                <div class="legend-value">
+                                    <span>Explorer</span>
+                                    <div class="legend-sub-value">
+                                        15%, 45 Visits
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,104 +1,133 @@
-<div class="row">
-    <div class="col">
-        <%= if (errors) { %>
-        <%= for (key, val) in errors { %>
-        <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
-            <%= val %>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+<div class="row justify-content-lg-center">
+    <div class="col-lg-auto">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Enrol into study
+            </h6>
+            <div class="row">
+                <div class="col">
+                    <%= if (errors) { %>
+                    <%= for (key, val) in errors { %>
+                    <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+                        <%= val %>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <% } %>
+                    <% } %>
+                </div>
+            </div>
+            <form action="<%= participantsEditPath({pid: participant.ID}) %>" method="POST">
+                <%= csrf() %>
+                <div class="element-box">
+                    <h5 class="form-header">
+                        Update Participant
+                    </h5>
+                    <div class="form-desc">
+                        Complete the form to update a participant in the study
+                    </div>
+                    <fieldset class="form-group">
+                        <legend><span>Patient Information</span></legend>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="">ID Type</label>
+                                    <select class="form-control" name="IDType">
+                                        <%= if (participant.IDType == "hospital_id") { %>
+                                        <option value="hospital_id" selected>
+                                            Hospital Id
+                                        </option>
+                                        <option value="national_id">
+                                            National Id
+                                        </option>
+                                        <% } else { %>
+                                        <option value="hospital_id">
+                                            Hospital Id
+                                        </option>
+                                        <option value="national_id" selected>
+                                            National Id
+                                        </option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label for="">Patient ID</label><input class="form-control" placeholder="Id number"
+                                        type="text" name="IDNumber" value="<%= participant.IDNumber %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Name</label><input class="form-control" placeholder="Name" type="text"
+                                        name="Name" value="<%= participant.Name %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for=""> Date of Birth</label>
+                                    <div class="date-input">
+                                        <input class="single-daterange form-control" placeholder="Date of birth" type="date"
+                                            name="DOB" value='<%= participant.DOB.Format("2006-01-02") %>'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for=""> Gender</label>
+                                    <select class="form-control" name="Gender">
+                                        <%= if (participant.Gender == "M") { %>
+                                        <option value="M" selected>Male</option>
+                                        <option value="F">Female</option>
+                                        <option value="O">Other</option>
+                                        <% } else if(participant.Gender == "F") { %>
+                                        <option value="M">Male</option>
+                                        <option value="F" selected>Female </option>
+                                        <option value="O">Other</option>
+                                        <% } else { %>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                        <option value="O" selected>Other</option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Contact Number</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">+66</span>
+                                        </div>
+                                        <input class="form-control" placeholder="Contact number" type="text" name="ContactNumber"
+                                            value="<%= participant.ContactNumber %>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend><span>Study Consent</span></legend>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <%= if (participant.Consented) { %>
+                                <input class="btn form-check-input" type="checkbox" name="Consented" checked>
+                                <% } else { %>
+                                <input class="btn form-check-input" type="checkbox" name="Consented">
+                                <% } %>
+                                Confirm that the patient has provided informed consent</label>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="form-buttons-w">
+                    <button class="btn btn-primary" type="submit"> Submit</button>
+                </div>
+            </form>
         </div>
-        <% } %>
-        <% } %>
-    </div>
-</div>
-<div class="row mt-3 justify-content-center">
-    <div class="col-md-8 col-sm-10">
-        <h2>Edit participant</h2>
-        <form action="<%= participantsEditPath({pid: participant.ID}) %>" method="POST">
-            <%= csrf() %>
-            <div class="form-group">
-                <label for="Name">Name</label>
-                <input type="text" name="Name" class="form-control" id="name" value="<%= participant.Name %>">
-            </div>
-            <div class="form-group">
-                <label for="Gender">Gender</label>
-                <select name="Gender" id="gender" class="form-control">
-                    <%= if (participant.Gender == "M") { %>
-                    <option value="M" selected>Male</option>
-                    <% } else { %>
-                    <option value="M">Male</option>
-                    <% } %>
-
-                    <%= if (participant.Gender == "F") { %>
-                    <option value="F" selected>Female</option>
-                    <% } else { %>
-                    <option value="F">Female</option>
-                    <% } %>
-
-                    <%= if (participant.Gender == "O") { %>
-                    <option value="O" selected>Other</option>
-                    <% } else { %>
-                    <option value="O">Other</option>
-                    <% } %>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="DOB">Date of birth</label>
-                <input type="date" name="DOB" class="form-control" id="dob" value='<%= participant.DOB.Format("2006-01-02") %>'>
-            </div>
-            <div class="form-group">
-                <label for="IsEligible">Is eligible?</label>
-                <%= if (participant.IsEligible) { %>
-                <label><input type="radio" name="IsEligible" class="form-control" id="is_eligible" value="true" checked>
-                    YES </label>
-                <label><input type="radio" name="IsEligible" class="form-control" id="is_eligible" value="false">
-                    NO </label>
-                <% } else { %>
-                <label><input type="radio" name="IsEligible" class="form-control" id="is_eligible" value="true">
-                    YES </label>
-                <label><input type="radio" name="IsEligible" class="form-control" id="is_eligible" value="false"
-                        checked> NO </label>
-                <% } %>
-            </div>
-            <div class="form-group">
-                <label for="Consented">Consented?</label>
-                <%= if (participant.Consented) { %>
-                <label><input type="radio" name="Consented" class="form-control" id="consented" value="true" checked>
-                    YES </label>
-                <label><input type="radio" name="Consented" class="form-control" id="consented" value="false"> NO
-                </label>
-                <% } else { %>
-                <label><input type="radio" name="Consented" class="form-control" id="consented" value="true"> YES
-                </label>
-                <label><input type="radio" name="Consented" class="form-control" id="consented" value="false" checked>
-                    NO </label>
-                <% } %>
-            </div>
-            <div class="form-group">
-                <label for="ContactNumber">Contact Number</label>
-                <input type="text" name="ContactNumber" class="form-control" id="contact_number" value="<%= participant.ContactNumber %>">
-            </div>
-            <div class="form-group">
-                <label for="IDType">ID Type</label>
-                <select name="IDType" id="IDType" class="form-control">
-                    <%= if (participant.IDType == "hospital_id") { %>
-                    <option value="hospital_id" selected>Hospital ID</option>
-                    <% } else { %>
-                    <option value="hospital_id">Hospital ID</option>
-                    <% } %>
-                    <%= if (participant.IDType == "national_id") { %>
-                    <option value="national_id" selected>National ID</option>
-                    <% } else { %>
-                    <option value="national_id">National ID</option>
-                    <% } %>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="IDNumber">ID Number</label>
-                <input type="text" name="IDNumber" class="form-control" id="IDNumber" value="<%= participant.IDNumber %>">
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
     </div>
 </div>

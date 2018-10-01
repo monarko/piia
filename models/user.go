@@ -17,16 +17,17 @@ import (
 
 // User object
 type User struct {
-	ID              uuid.UUID `json:"id" db:"id"`
-	CreatedAt       time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt       time.Time `json:"updated_at" db:"updated_at"`
-	Username        string    `json:"username" db:"username"`
-	Email           string    `json:"email" db:"email"`
-	Name            string    `json:"name" db:"name"`
-	Admin           bool      `json:"admin" db:"admin"`
-	PasswordHash    string    `json:"-" db:"password_hash"`
-	Password        string    `json:"-" db:"-"`
-	PasswordConfirm string    `json:"-" db:"-"`
+	ID              uuid.UUID    `json:"id" db:"id"`
+	CreatedAt       time.Time    `json:"created_at" db:"created_at"`
+	UpdatedAt       time.Time    `json:"updated_at" db:"updated_at"`
+	Username        string       `json:"username" db:"username"`
+	Email           string       `json:"email" db:"email"`
+	Name            string       `json:"name" db:"name"`
+	Admin           bool         `json:"admin" db:"admin"`
+	PasswordHash    string       `json:"-" db:"password_hash"`
+	Password        string       `json:"-" db:"-"`
+	PasswordConfirm string       `json:"-" db:"-"`
+	Participants    Participants `has_many:"participants"`
 }
 
 // String is not required by pop and may be deleted
