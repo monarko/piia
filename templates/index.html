@@ -1,7 +1,107 @@
-<div class="jumbotron">
-  <div class="container">
-    <h1 class="display-1">PIIA</h1>
-    <p class="lead">This is a research project.</p>
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
-  </div>
+<div class="element-actions">
+    <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button">Download
+        CSV</a>
+</div>
+<h6 class="element-header">
+    Enrolled Participants
+</h6>
+<div class="element-box">
+    <!-- controls above table -->
+    <div class="controls-above-table">
+        <div class="row">
+            <div class="col-sm-6">
+                <a class="btn btn-primary btn" href="enrol.html" role="button">Enrol
+                    New</a>
+            </div>
+            <div class="col-sm-6">
+                <form class="form-inline justify-content-sm-end">
+                    <input class="form-control form-control-sm rounded bright"
+                        placeholder="Search" type="text"><select class="form-control form-control-sm rounded bright">
+                        <option selected="selected" value="">
+                            Select Status
+                        </option>
+                        <option value="Pending">
+                            Registered
+                        </option>
+                        <option value="Active">
+                            Assessment
+                        </option>
+                        <option value="Cancelled">
+                            Over-read
+                        </option>
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-lg table-v2 table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <input class="form-control" type="checkbox">
+                    </th>
+                    <th>
+                        Participant ID
+                    </th>
+                    <th>
+                        Participant Name
+                    </th>
+                    <th>
+                        Hospital ID
+                    </th>
+                    <th>
+                        Registered By
+                    </th>
+                    <th>
+                        Registration Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center">
+                        <input class="form-control" type="checkbox">
+                    </td>
+                    <td>
+                        K-231-9
+                    </td>
+                    <td>
+                        B. Taekupeka
+                    </td>
+                    <td>
+                        HID:3920935720
+                    </td>
+                    <td class="text-right">
+                        s.paid
+                    </td>
+                    <td>
+                        28/10/2554
+                    </td>
+                    <td class="text-center">
+                        <div class="status-pill green" data-title="Registered"
+                            data-toggle="tooltip"></div>
+                        <div class="status-pill orange" data-title="Screening"
+                            data-toggle="tooltip"></div>
+                        <div class="status-pill red" data-title="Over-read"
+                            data-toggle="tooltip"></div>
+                        <!--<span class="badge badge-pill badge-primary">Registered</span>
+<span class="badge badge-pill badge-info">Screening</span>-->
+                    </td>
+                    <td class="row-actions">
+                        <a href="#"><i class="os-icon os-icon-ui-49"></i></a>
+                        <a href="#"><i class="os-icon os-icon-grid-10"></i></a>
+                        <!--<a class="danger" href="#"><i class="os-icon os-icon-ui-15"></i></a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

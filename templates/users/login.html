@@ -1,34 +1,30 @@
-<div class="row mt-3 justify-content-center">
-    <div class="col-lg-6 col-md-8 col-sm-10">
-        <div class="card">
-            <div class="card-header">
-                <h3>Login</h3>
-            </div>
-            <div class="card-body">
-                <%= if (errors) { %>
-                <%= errors %>
-                <%= for (key, val) in errors { %>
-                <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
-                    <%= val %>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <% } %>
-                <% } %>
-                <form action="<%= usersLoginPath() %>" method="POST" novalidate>
-                    <%= csrf() %>
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" name="Email" class="form-control" id="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd">Password</label>
-                        <input name="Password" type="password" class="form-control" id="pwd">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
-                </form>
-            </div>
-        </div>
-    </div>
+<h4 class="auth-header">
+    Piia Login Form
+</h4>
+
+<%= if (errors) { %>
+<%= errors %>
+<%= for (key, val) in errors { %>
+<div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+    <%= val %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
+<% } %>
+<% } %>
+
+<form action="<%= usersLoginPath() %>" method="POST" novalidate>
+    <%= csrf() %>
+    <div class="form-group">
+        <label for="">Email</label><input class="form-control" name="Email" placeholder="Enter your email" type="email">
+        <div class="pre-icon os-icon os-icon-email-2-at2"></div>
+    </div>
+    <div class="form-group">
+        <label for="">Password</label><input class="form-control" name="Password" placeholder="Enter your password" type="password">
+        <div class="pre-icon os-icon os-icon-fingerprint"></div>
+    </div>
+    <div class="buttons-w">
+        <button type="submit" class="btn btn-primary">Log me in</button>
+    </div>
+</form>

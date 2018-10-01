@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <title>PIIA</title>
+    <%= stylesheetTag("application.css") %>
+    <meta name="csrf-param" content="authenticity_token" />
+    <meta name="csrf-token" content="<%= authenticity_token %>" />
+    <link rel="icon" href="<%= assetPath("images/favicon.png") %>">
+    <link rel="apple-touch-icon" href="<%= assetPath("images/apple-touch-icon.png") %>">
+</head>
+
+<body class="auth-wrapper">
+
+    <div class="all-wrapper menu-side with-pattern">
+        <div class="auth-box-w">
+            <div class="logo-w">
+                <a href="<%= rootPath() %>"><img alt="" src="<%= assetPath("img/logo-big.png") %>"></a>
+                <h1>PIIA</h1>
+            </div>
+            <%= yield %>
+        </div>
+    </div>
+
+    <%= javascriptTag("application.js") %>
+</body>
+
+</html>
