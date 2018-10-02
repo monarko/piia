@@ -10,11 +10,18 @@ import (
 
 // ParticipantsIndex default implementation.
 func ParticipantsIndex(c buffalo.Context) error {
+	// return c.Render(200, r.JSON(c.Params().Get("status")))
 	tx := c.Value("tx").(*pop.Connection)
 	participants := &models.Participants{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
-	q := tx.Eager("User").PaginateFromParams(c.Params()).Order("created_at ASC")
+	var q *pop.Query
+	if len(c.Params().Get("status")) > 0 {
+		q = tx.Eager("User").Where("status = ?", c.Params().Get("status")).PaginateFromParams(c.Params()).Order("created_at ASC")
+	} else {
+		q = tx.Eager("User").PaginateFromParams(c.Params()).Order("created_at ASC")
+	}
+
 	// Retrieve all Posts from the DB
 	if err := q.All(participants); err != nil {
 		return errors.WithStack(err)
@@ -26,6 +33,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
+	c.Set("filterStatus", c.Params().Get("status"))
 	return c.Render(200, r.HTML("participants/index.html"))
 }
 

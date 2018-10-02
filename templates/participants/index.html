@@ -18,21 +18,63 @@
                         </div>
                         <div class="col-sm-6">
                             <form class="form-inline justify-content-sm-end">
-                                <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text"><select
-                                    class="form-control form-control-sm rounded bright">
-                                    <option selected="selected" value="">
+                                <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
+                                <select class="form-control form-control-sm rounded bright" name="status">
+                                    <%= if (filterStatus == "1") { %>
+                                    <option value="">
                                         Select Status
                                     </option>
-                                    <option value="Pending">
+                                    <option value="1" selected>
                                         Registerd
                                     </option>
-                                    <option value="Active">
+                                    <option value="11">
                                         Screened
                                     </option>
-                                    <option value="Active">
+                                    <option value="111">
                                         Over-Read
                                     </option>
+                                    <% } else if (filterStatus == "11") { %>
+                                    <option value="">
+                                        Select Status
+                                    </option>
+                                    <option value="1">
+                                        Registerd
+                                    </option>
+                                    <option value="11" selected>
+                                        Screened
+                                    </option>
+                                    <option value="111">
+                                        Over-Read
+                                    </option>
+                                    <% } else if (filterStatus == "111") { %>
+                                    <option value="">
+                                        Select Status
+                                    </option>
+                                    <option value="1">
+                                        Registerd
+                                    </option>
+                                    <option value="11">
+                                        Screened
+                                    </option>
+                                    <option value="111" selected>
+                                        Over-Read
+                                    </option>
+                                    <% } else { %>
+                                    <option value="" selected>
+                                        Select Status
+                                    </option>
+                                    <option value="1">
+                                        Registerd
+                                    </option>
+                                    <option value="11">
+                                        Screened
+                                    </option>
+                                    <option value="111">
+                                        Over-Read
+                                    </option>
+                                    <% } %>
                                 </select>
+                                <button type="submit" class="btn btn-info btn-rounded">Go</button>
                             </form>
                         </div>
                     </div>
@@ -103,9 +145,9 @@
                                 </td>
                                 <td>
                                     <%= if (p.IDType == "hospital_id") { %>
-                                        HID:
+                                    HID:
                                     <% } else if (p.IDType == "national_id") { %>
-                                        NID:
+                                    NID:
                                     <% } %>
                                     <%= p.IDNumber %>
                                 </td>
