@@ -1,0 +1,6 @@
+- id: "screening.created.success"
+  translation: "Screening was successfully created."
+- id: "screening.updated.success"
+  translation: "Screening was successfully updated."
+- id: "screening.destroyed.success"
+  translation: "Screening was successfully destroyed."

@@ -1,0 +1,12 @@
+create_table("screenings") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("left_visual_activity", "string", {})
+	t.Column("left_grading_dr", "string", {})
+	t.Column("left_grading_dme", "string", {})
+	t.Column("right_visual_activity", "string", {})
+	t.Column("right_grading_dr", "string", {})
+	t.Column("right_grading_dme", "string", {})
+	t.Column("referred", "boolean", {})
+	t.Column("screener_id", "uuid", {})
+	t.Column("participant_id", "uuid", {})
+}

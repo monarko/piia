@@ -1,0 +1,150 @@
+<div class="row justify-content-lg-center">
+    <div class="col-lg-8">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Add New Screening
+            </h6>
+            <div class="element-box">
+                <div class="row">
+                    <div class="col">
+                        <%= if (errors) { %>
+                        <%= for (key, val) in errors { %>
+                        <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+                            <%= val %>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <% } %>
+                        <% } %>
+                    </div>
+                </div>
+                <form action="<%= participantScreeningsCreatePath({pid: participant.ID}) %>" method="POST">
+                    <%= csrf() %>
+                    <div class="element-actions">
+                        <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button">
+                            <%= participant.ParticipantID %></a>
+                    </div>
+                    <div class="form-desc">
+                        <h6>Record results</h6>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>
+                                <%= participant.Name %> |
+                                <%= participant.Gender %> |
+                                <%= participant.DOB.Format("02-01-2006") %>
+                            </p>
+                        </div>
+                    </div>
+                    <fieldset class="form-group">
+                        <legend><span>Results</span></legend>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <h5>Left Eye</h5>
+                                    <label for="">Visual Acuity</label>
+                                    <input class="form-control" placeholder="V/A" type="text" name="LeftVisualAcuity" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="">DR Grading</label>
+                                    <select class="form-control" name="LeftGradingDr">
+                                        <option value="Ungradeable">
+                                            Ungradeable
+                                        </option>
+                                        <option value="Normal">
+                                            Normal
+                                        </option>
+                                        <option value="Mild DR">
+                                            Mild DR
+                                        </option>
+                                        <option value="Moderate DR">
+                                            Moderate DR
+                                        </option>
+                                        <option value="Severe DR">
+                                            Severe DR
+                                        </option>
+                                        <option value="Proliferative DR">
+                                            Proliferative DR
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">DME Assessment</label>
+                                    <select class="form-control" name="LeftGradingDme">
+                                        <option value="Present">
+                                            Present
+                                        </option>
+                                        <option value="Not Present">
+                                            Not Present
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 ml-auto">
+                                <h5>Right Eye</h5>
+                                <div class="form-group">
+                                    <label for="">Visual Acuity</label>
+                                    <input class="form-control" placeholder="V/A" type="text" name="RightVisualAcuity" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="">DR Grading</label>
+                                    <select class="form-control" name="RightGradingDr">
+                                        <option value="Ungradeable">
+                                            Ungradeable
+                                        </option>
+                                        <option value="Normal">
+                                            Normal
+                                        </option>
+                                        <option value="Mild DR">
+                                            Mild DR
+                                        </option>
+                                        <option value="Moderate DR">
+                                            Moderate DR
+                                        </option>
+                                        <option value="Severe DR">
+                                            Severe DR
+                                        </option>
+                                        <option value="Proliferative DR">
+                                            Proliferative DR
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">DME Assessment</label>
+                                    <select class="form-control" name="RightGradingDme">
+                                        <option value="Present">
+                                            Present
+                                        </option>
+                                        <option value="Not Present">
+                                            Not Present
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend><span>Referred?</span></legend>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label for="">Referred</label>
+                                <select class="form-control" name="referral">
+                                    <option value="yes">
+                                        Yes
+                                    </option>
+                                    <option value="no">
+                                        No
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-buttons-w">
+                        <button class="btn btn-primary" type="submit"> Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

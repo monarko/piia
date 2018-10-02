@@ -71,6 +71,12 @@ func App() *buffalo.App {
 		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
 		// participants.GET("/delete", ParticipantsDelete)
 		// participants.GET("/detail", ParticipantsDetail)
+
+		screenings := participants.Group("/{pid}/screenings")
+		screenings.GET("/index", ScreeningsIndex)
+		screenings.GET("/create", ScreeningsCreateGet)
+		screenings.POST("/create", ScreeningsCreatePost)
+
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

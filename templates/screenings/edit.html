@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Edit Screening</h1>
+</div>
+
+<%= form_for(screening, {action: screeningPath({ screening_id: screening.ID }), method: "PUT"}) { %>
+  <%= partial("screenings/form.html") %>
+  <a href="<%= screeningPath({ screening_id: screening.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>
