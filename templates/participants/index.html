@@ -177,7 +177,7 @@
                                 <td class="row-actions">
                                     <a href="<%= participantScreeningsIndexPath({pid: p.ID}) %>"><i class="os-icon os-icon-cv-2"></i></a>
                                     <%= if (len(p.Status) > 1) { %>
-                                    <a href="#"><i class="os-icon os-icon-tasks-checked"></i></a>
+                                    <a href="<%= participantOverreadingsIndexPath({pid: p.ID}) %>"><i class="os-icon os-icon-tasks-checked"></i></a>
                                     <% } %>
                                     <!--<a class="danger" href="#"><i class="os-icon os-icon-ui-15"></i></a>-->
                                 </td>

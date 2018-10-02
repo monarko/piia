@@ -77,7 +77,11 @@ func App() *buffalo.App {
 		screenings.GET("/create", ScreeningsCreateGet)
 		screenings.POST("/create", ScreeningsCreatePost)
 
-		app.Resource("/over_readings", OverReadingsResource{})
+		overReadings := participants.Group("/{pid}/overreadings")
+		overReadings.GET("/index", OverReadingsIndex)
+		overReadings.GET("/create", OverReadingsCreateGet)
+		overReadings.POST("/create", OverReadingsCreatePost)
+
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 
