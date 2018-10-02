@@ -111,6 +111,10 @@ func ParticipantsEditPost(c buffalo.Context) error {
 	if verrs.HasAny() {
 		c.Set("participant", participant)
 		c.Set("errors", verrs.Errors)
+		breadcrumbMap := make(map[string]interface{})
+		breadcrumbMap["Participants"] = "/participants/index"
+		breadcrumbMap["Update Participants"] = "/participants/edit"
+		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("participants/edit.html"))
 	}
 	c.Flash().Add("success", "Participant was updated successfully.")

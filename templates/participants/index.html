@@ -165,15 +165,20 @@
                                 <td class="text-center">
                                     <%= if (len(p.Status) == 1 && p.Status == "1") { %>
                                     <div class="status-pill green" data-title="Registered" data-toggle="tooltip"></div>
-                                    <% } else if (len(p.Status) == 1 && p.Status == "11") { %>
-                                    <div class="status-pill orange" data-title="Screening" data-toggle="tooltip"></div>
+                                    <% } else if (len(p.Status) == 2 && p.Status == "11") { %>
+                                    <div class="status-pill green" data-title="Registered" data-toggle="tooltip"></div>
+                                    <div class="status-pill yellow" data-title="Screening" data-toggle="tooltip"></div>
                                     <% } else if (len(p.Status) == 3 && p.Status == "111") { %>
+                                    <div class="status-pill green" data-title="Registered" data-toggle="tooltip"></div>
+                                    <div class="status-pill yellow" data-title="Screening" data-toggle="tooltip"></div>
                                     <div class="status-pill red" data-title="Over-read" data-toggle="tooltip"></div>
                                     <% } %>
                                 </td>
                                 <td class="row-actions">
-                                    <a href="<%= participantsEditPath({pid: p.ID}) %>"><i class="os-icon os-icon-ui-49"></i></a>
-                                    <a href="#"><i class="os-icon os-icon-grid-10"></i></a>
+                                    <a href="<%= participantScreeningsIndexPath({pid: p.ID}) %>"><i class="os-icon os-icon-cv-2"></i></a>
+                                    <%= if (len(p.Status) > 1) { %>
+                                    <a href="#"><i class="os-icon os-icon-tasks-checked"></i></a>
+                                    <% } %>
                                     <!--<a class="danger" href="#"><i class="os-icon os-icon-ui-15"></i></a>-->
                                 </td>
                             </tr>
