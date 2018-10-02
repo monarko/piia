@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1>OverReadings</h1>
+</div>
+<ul class="list-unstyled list-inline">
+  <li><a href="<%= newOverReadingsPath() %>" class="btn btn-primary">Create New OverReading</a></li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+  <th>LeftVisualAcuity</th>
+    <th>LeftGradingDr</th>
+    <th>LeftGradingDme</th>
+    <th>RightVisualAcuity</th>
+    <th>RightGradingDr</th>
+    <th>RightGradingDme</th>
+    <th>Referred</th>
+    <th>&nbsp;</th>
+  </thead>
+  <tbody>
+    <%= for (overReading) in overReadings { %>
+      <tr>
+      <td><%= overReading.LeftVisualAcuity %></td>
+        <td><%= overReading.LeftGradingDr %></td>
+        <td><%= overReading.LeftGradingDme %></td>
+        <td><%= overReading.RightVisualAcuity %></td>
+        <td><%= overReading.RightGradingDr %></td>
+        <td><%= overReading.RightGradingDme %></td>
+        <td><%= overReading.Referred %></td>
+        <td>
+          <div class="pull-right">
+            <a href="<%= overReadingPath({ over_reading_id: overReading.ID }) %>" class="btn btn-info">View</a>
+            <a href="<%= editOverReadingPath({ over_reading_id: overReading.ID }) %>" class="btn btn-warning">Edit</a>
+            <a href="<%= overReadingPath({ over_reading_id: overReading.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+          </div>
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <%= paginator(pagination) %>
+</div>

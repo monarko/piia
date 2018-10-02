@@ -1,0 +1,6 @@
+- id: "over_reading.created.success"
+  translation: "OverReading was successfully created."
+- id: "over_reading.updated.success"
+  translation: "OverReading was successfully updated."
+- id: "over_reading.destroyed.success"
+  translation: "OverReading was successfully destroyed."

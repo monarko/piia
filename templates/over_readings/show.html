@@ -1,0 +1,31 @@
+<div class="page-header">
+  <h1>OverReading#Show</h1>
+</div>
+
+<ul class="list-unstyled list-inline">
+  <li class="list-inline-item"><a href="<%= overReadingsPath() %>" class="btn btn-info">Back to all OverReadings</a></li>
+  <li class="list-inline-item"><a href="<%= editOverReadingPath({ over_reading_id: overReading.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li class="list-inline-item"><a href="<%= overReadingPath({ over_reading_id: overReading.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+
+<p>
+  <strong>LeftVisualAcuity</strong>: <%= overReading.LeftVisualAcuity %>
+</p>
+<p>
+  <strong>LeftGradingDr</strong>: <%= overReading.LeftGradingDr %>
+</p>
+<p>
+  <strong>LeftGradingDme</strong>: <%= overReading.LeftGradingDme %>
+</p>
+<p>
+  <strong>RightVisualAcuity</strong>: <%= overReading.RightVisualAcuity %>
+</p>
+<p>
+  <strong>RightGradingDr</strong>: <%= overReading.RightGradingDr %>
+</p>
+<p>
+  <strong>RightGradingDme</strong>: <%= overReading.RightGradingDme %>
+</p>
+<p>
+  <strong>Referred</strong>: <%= overReading.Referred %>
+</p>

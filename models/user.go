@@ -29,6 +29,7 @@ type User struct {
 	PasswordConfirm string       `json:"-" db:"-"`
 	Participants    Participants `has_many:"participants"`
 	Screenings      Screenings   `has_many:"screenings"`
+	OverReadings    OverReadings `has_many:"over_readings"`
 }
 
 // String is not required by pop and may be deleted

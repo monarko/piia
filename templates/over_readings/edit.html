@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Edit OverReading</h1>
+</div>
+
+<%= form_for(overReading, {action: overReadingPath({ over_reading_id: overReading.ID }), method: "PUT"}) { %>
+  <%= partial("over_readings/form.html") %>
+  <a href="<%= overReadingPath({ over_reading_id: overReading.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

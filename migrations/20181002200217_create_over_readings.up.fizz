@@ -1,0 +1,12 @@
+create_table("over_readings") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("left_visual_acuity", "string", {})
+	t.Column("left_grading_dr", "string", {})
+	t.Column("left_grading_dme", "string", {})
+	t.Column("right_visual_acuity", "string", {})
+	t.Column("right_grading_dr", "string", {})
+	t.Column("right_grading_dme", "string", {})
+	t.Column("referred", "boolean", {})
+	t.Column("over_reader_id", "uuid", {})
+	t.Column("participant_id", "uuid", {})
+}
