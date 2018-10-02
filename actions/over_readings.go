@@ -44,6 +44,14 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 	c.Set("participant", participant)
 	c.Set("screening", screening)
 	c.Set("overReading", &models.OverReading{})
+
+	// images
+	leftEye := "https://upload.wikimedia.org/wikipedia/commons/7/7f/Brain_MRI_112010_rgbca.png"
+	rightEye := "https://upload.wikimedia.org/wikipedia/commons/0/0e/Acute_leukemia-ALL.jpg"
+
+	c.Set("leftEyeLink", leftEye)
+	c.Set("rightEyeLink", rightEye)
+
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
 	breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
@@ -69,6 +77,13 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 
 	overReading.OverReaderID = user.ID
 	overReading.ParticipantID = participant.ID
+
+	// images
+	leftEye := c.Param("leftEyeLink")
+	rightEye := c.Param("rightEyeLink")
+
+	c.Set("leftEyeLink", leftEye)
+	c.Set("rightEyeLink", rightEye)
 
 	verrs, err := tx.ValidateAndCreate(overReading)
 	if err != nil {
