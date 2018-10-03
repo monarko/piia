@@ -10,16 +10,30 @@ import (
 
 // ParticipantsIndex default implementation.
 func ParticipantsIndex(c buffalo.Context) error {
-	// return c.Render(200, r.JSON(c.Params().Get("status")))
 	tx := c.Value("tx").(*pop.Connection)
 	participants := &models.Participants{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	var q *pop.Query
-	if len(c.Params().Get("status")) > 0 {
-		q = tx.Eager("User").Where("status = ?", c.Params().Get("status")).PaginateFromParams(c.Params()).Order("created_at ASC")
+
+	user := c.Value("current_user").(*models.User)
+	if user.Admin {
+		if len(c.Param("status")) > 0 {
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at ASC")
+		} else {
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at ASC")
+		}
+	} else if user.PermissionScreening && user.PermissionOverRead {
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").PaginateFromParams(c.Params()).Order("created_at ASC")
+	} else if user.PermissionScreening {
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "1").PaginateFromParams(c.Params()).Order("created_at ASC")
+	} else if user.PermissionOverRead {
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "11").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else {
-		q = tx.Eager("User").PaginateFromParams(c.Params()).Order("created_at ASC")
+		// If there are no errors set a success message
+		c.Flash().Add("danger", "You don't have sufficient permission.")
+		// and redirect to the index page
+		return c.Redirect(302, "/")
 	}
 
 	// Retrieve all Posts from the DB

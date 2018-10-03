@@ -28,7 +28,7 @@ func ScreeningsIndex(c buffalo.Context) error {
 	c.Set("pagination", q.Paginator)
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
-	breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
+	// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("screenings/index.html"))
 }
@@ -44,7 +44,7 @@ func ScreeningsCreateGet(c buffalo.Context) error {
 	c.Set("screening", &models.Screening{})
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
-	breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
+	// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
 	breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("screenings/create.html"))
@@ -66,7 +66,8 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 
 	screening.ScreenerID = user.ID
 	screening.ParticipantID = participant.ID
-	if c.Param("referral") == "yes" {
+	referral := c.Request().FormValue("referral")
+	if referral == "yes" {
 		screening.Referred = true
 	}
 
@@ -80,7 +81,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Participants"] = "/participants/index"
-		breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
+		// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
 		breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("screenings/create.html"))
@@ -97,7 +98,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Participants"] = "/participants/index"
-		breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
+		// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
 		breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("screenings/create.html"))
@@ -106,5 +107,5 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New screening added successfully.")
 
-	return c.Redirect(302, "/participants/"+c.Param("pid")+"/screenings/index")
+	return c.Redirect(302, "/participants/index")
 }

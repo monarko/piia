@@ -1,0 +1,2 @@
+add_column("over_readings", "left_visual_acuity", "string", {"default": "30/60"})
+add_column("over_readings", "right_visual_acuity", "string", {"default": "30/60"})

@@ -12,20 +12,18 @@ import (
 
 // OverReading model
 type OverReading struct {
-	ID                uuid.UUID   `json:"id" db:"id"`
-	CreatedAt         time.Time   `json:"created_at" db:"created_at"`
-	UpdatedAt         time.Time   `json:"updated_at" db:"updated_at"`
-	LeftVisualAcuity  string      `json:"left_visual_acuity" db:"left_visual_acuity"`
-	LeftGradingDr     string      `json:"left_grading_dr" db:"left_grading_dr"`
-	LeftGradingDme    string      `json:"left_grading_dme" db:"left_grading_dme"`
-	RightVisualAcuity string      `json:"right_visual_acuity" db:"right_visual_acuity"`
-	RightGradingDr    string      `json:"right_grading_dr" db:"right_grading_dr"`
-	RightGradingDme   string      `json:"right_grading_dme" db:"right_grading_dme"`
-	Referred          bool        `json:"referred" db:"referred"`
-	OverReader        User        `belongs_to:"user"`
-	OverReaderID      uuid.UUID   `json:"over_reader_id" db:"over_reader_id"`
-	Participant       Participant `belongs_to:"participant"`
-	ParticipantID     uuid.UUID   `json:"participant_id" db:"participant_id"`
+	ID              uuid.UUID   `json:"id" db:"id"`
+	CreatedAt       time.Time   `json:"created_at" db:"created_at"`
+	UpdatedAt       time.Time   `json:"updated_at" db:"updated_at"`
+	LeftGradingDr   string      `json:"left_grading_dr" db:"left_grading_dr"`
+	LeftGradingDme  string      `json:"left_grading_dme" db:"left_grading_dme"`
+	RightGradingDr  string      `json:"right_grading_dr" db:"right_grading_dr"`
+	RightGradingDme string      `json:"right_grading_dme" db:"right_grading_dme"`
+	Referred        bool        `json:"referred" db:"referred"`
+	OverReader      User        `belongs_to:"user"`
+	OverReaderID    uuid.UUID   `json:"over_reader_id" db:"over_reader_id"`
+	Participant     Participant `belongs_to:"participant"`
+	ParticipantID   uuid.UUID   `json:"participant_id" db:"participant_id"`
 }
 
 // String is not required by pop and may be deleted
@@ -47,10 +45,8 @@ func (o OverReadings) String() string {
 // This method is not required and may be deleted.
 func (o *OverReading) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
-		&validators.StringIsPresent{Field: o.LeftVisualAcuity, Name: "LeftVisualAcuity"},
 		&validators.StringIsPresent{Field: o.LeftGradingDr, Name: "LeftGradingDr"},
 		&validators.StringIsPresent{Field: o.LeftGradingDme, Name: "LeftGradingDme"},
-		&validators.StringIsPresent{Field: o.RightVisualAcuity, Name: "RightVisualAcuity"},
 		&validators.StringIsPresent{Field: o.RightGradingDr, Name: "RightGradingDr"},
 		&validators.StringIsPresent{Field: o.RightGradingDme, Name: "RightGradingDme"},
 	), nil

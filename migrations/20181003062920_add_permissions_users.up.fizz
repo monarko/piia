@@ -1,0 +1,2 @@
+add_column("users", "permission_screening", "boolean", {"default": false})
+add_column("users", "permission_overread", "boolean", {"default": false})

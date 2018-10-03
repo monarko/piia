@@ -73,12 +73,14 @@ func App() *buffalo.App {
 		// participants.GET("/detail", ParticipantsDetail)
 
 		screenings := participants.Group("/{pid}/screenings")
-		screenings.GET("/index", ScreeningsIndex)
+		screenings.Use(ScreeningPermissionRequired)
+		// screenings.GET("/index", ScreeningsIndex)
 		screenings.GET("/create", ScreeningsCreateGet)
 		screenings.POST("/create", ScreeningsCreatePost)
 
 		overReadings := participants.Group("/{pid}/overreadings")
-		overReadings.GET("/index", OverReadingsIndex)
+		overReadings.Use(OverReadingPermissionRequired)
+		// overReadings.GET("/index", OverReadingsIndex)
 		overReadings.GET("/create", OverReadingsCreateGet)
 		overReadings.POST("/create", OverReadingsCreatePost)
 

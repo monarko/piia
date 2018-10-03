@@ -28,7 +28,7 @@ func OverReadingsIndex(c buffalo.Context) error {
 	c.Set("pagination", q.Paginator)
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
-	breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
+	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("over_readings/index.html"))
 }
@@ -54,7 +54,7 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
-	breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
+	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
 	breadcrumbMap["New Over Reading"] = "/participants/" + c.Param("pid") + "/overreadings/create"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("over_readings/create.html"))
@@ -96,7 +96,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Participants"] = "/participants/index"
-		breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
+		// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
 		breadcrumbMap["New Over Reading"] = "/participants/" + c.Param("pid") + "/overreadings/create"
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("over_readings/create.html"))
@@ -114,7 +114,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Participants"] = "/participants/index"
-		breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
+		// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
 		breadcrumbMap["New Over Reading"] = "/participants/" + c.Param("pid") + "/overreadings/create"
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("over_readings/create.html"))
@@ -123,5 +123,5 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New over reading added successfully.")
 
-	return c.Redirect(302, "/participants/"+c.Param("pid")+"/overreadings/index")
+	return c.Redirect(302, "/participants/index")
 }

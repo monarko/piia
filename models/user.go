@@ -17,19 +17,21 @@ import (
 
 // User object
 type User struct {
-	ID              uuid.UUID    `json:"id" db:"id"`
-	CreatedAt       time.Time    `json:"created_at" db:"created_at"`
-	UpdatedAt       time.Time    `json:"updated_at" db:"updated_at"`
-	Username        string       `json:"username" db:"username"`
-	Email           string       `json:"email" db:"email"`
-	Name            string       `json:"name" db:"name"`
-	Admin           bool         `json:"admin" db:"admin"`
-	PasswordHash    string       `json:"-" db:"password_hash"`
-	Password        string       `json:"-" db:"-"`
-	PasswordConfirm string       `json:"-" db:"-"`
-	Participants    Participants `has_many:"participants"`
-	Screenings      Screenings   `has_many:"screenings"`
-	OverReadings    OverReadings `has_many:"over_readings"`
+	ID                  uuid.UUID    `json:"id" db:"id"`
+	CreatedAt           time.Time    `json:"created_at" db:"created_at"`
+	UpdatedAt           time.Time    `json:"updated_at" db:"updated_at"`
+	Username            string       `json:"username" db:"username"`
+	Email               string       `json:"email" db:"email"`
+	Name                string       `json:"name" db:"name"`
+	Admin               bool         `json:"admin" db:"admin"`
+	PasswordHash        string       `json:"-" db:"password_hash"`
+	Password            string       `json:"-" db:"-"`
+	PasswordConfirm     string       `json:"-" db:"-"`
+	Participants        Participants `has_many:"participants"`
+	Screenings          Screenings   `has_many:"screenings" fk_id:"screener_id"`
+	OverReadings        OverReadings `has_many:"over_readings" fk_id:"over_reader_id"`
+	PermissionScreening bool         `json:"permission.screening" db:"permission_screening"`
+	PermissionOverRead  bool         `json:"permission.overread" db:"permission_overread"`
 }
 
 // String is not required by pop and may be deleted
@@ -62,10 +64,6 @@ func (u *User) Create(tx *pop.Connection) (*validate.Errors, error) {
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
-	// return validate.Validate(
-	// 	&validators.StringIsPresent{Field: u.Username, Name: "Username"},
-	// 	&validators.StringIsPresent{Field: u.Email, Name: "Email"},
-	// ), nil
 	return validate.Validate(
 		&validators.StringIsPresent{Field: u.Username, Name: "Username"},
 		&validators.StringIsPresent{Field: u.Email, Name: "Email"},

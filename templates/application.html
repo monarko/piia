@@ -79,7 +79,7 @@
                     Page Header
                 </h1>
                 <ul class="main-menu">
-                    <%= if (current_user) { %>
+                    <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionOverRead) { %>
                     <li class="">
                         <a href="<%= participantsIndexPath() %>">
                             <div class="icon-w">
@@ -90,7 +90,7 @@
                     </li>
                     <% } %>
 
-                    <%= if (admin_user) { %>
+                    <%= if (current_user.Admin) { %>
                     <li class="">
                         <a href="<%= usersIndexPath() %>">
                             <div class="icon-w">
