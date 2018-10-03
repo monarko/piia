@@ -1,6 +1,10 @@
 package actions
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/models"
@@ -46,11 +50,26 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 	c.Set("overReading", &models.OverReading{})
 
 	// images
-	leftEye := "https://ivmartel.github.io/dwv-jqmobile/demo/stable/index.html?input=https://upload.wikimedia.org/wikipedia/commons/7/7f/Brain_MRI_112010_rgbca.png"
-	rightEye := "https://ivmartel.github.io/dwv-jqmobile/demo/stable/index.html?input=https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm"
+	response, err := http.Get("http://localhost:8080/" + participant.ParticipantID)
+	if err != nil {
+		// If there are no errors set a success message
+		c.Flash().Add("danger", "Error from the image server")
 
-	c.Set("leftEyeLink", leftEye)
-	c.Set("rightEyeLink", rightEye)
+		return c.Redirect(302, "/participants/index")
+	}
+	defer response.Body.Close()
+	data, _ := ioutil.ReadAll(response.Body)
+	respData := map[string]string{}
+	uerr := json.Unmarshal(data, &respData)
+	if uerr != nil {
+		// If there are no errors set a success message
+		c.Flash().Add("danger", "Error from the image server")
+
+		return c.Redirect(302, "/participants/index")
+	}
+
+	c.Set("leftEyeLink", respData["left_eye"])
+	c.Set("rightEyeLink", respData["right_eye"])
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"

@@ -42,32 +42,8 @@
                         <div class="row">
                             <div class="col-sm-5">
                                 <div class="profile-tile" style="border: none;">
-                                    <button class="profile-tile-box" style="width: 100%;
-                                            background-color: #e1f1e1; border: none;" data-target="#leftEyeModal" data-toggle="modal" type="button">
-                                        <div class="pt-avatar-w" style="width: 84px;">
-                                            <img alt="" src="<%= assetPath("images/left-eye.png") %>">
-                                        </div>
-                                        <div class="pt-user-name">
-                                            View Left Eye
-                                        </div>
-                                    </button>
-                                    <div aria-hidden="true" aria-labelledby="leftEyeModalLabel" class="modal fade" id="leftEyeModal" role="dialog" tabindex="-1">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="leftEyeModalLabel">
-                                                        Left Eye
-                                                    </h5>
-                                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">
-                                                            &times;</span></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <iframe src="<%= leftEyeLink %>"
-                                                        frameborder="0" style="width: 100%; height: 600px;"></iframe>
-                                                    <input type="hidden" name="leftEyeLink" value="<%= leftEyeLink %>">
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div id="image-left-eye">
+                                        <img src="<%= leftEyeLink %>" data-high-res-src="<%= leftEyeLink %>" alt="" class="pannable-image" style="width: 100%; height: auto; max-height: 250px;">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -124,32 +100,8 @@
                             </div>
                             <div class="col-sm-5 ml-auto">
                                 <div class="profile-tile" style="border: none;">
-                                    <button class="profile-tile-box" style="width: 100%;
-                                                    background-color: #e1f1e1; border: none;" data-target="#rightEyeModal" data-toggle="modal" type="button">
-                                        <div class="pt-avatar-w" style="width: 84px;">
-                                            <img alt="" src="<%= assetPath("images/right-eye.png") %>">
-                                        </div>
-                                        <div class="pt-user-name">
-                                            View Right Eye
-                                        </div>
-                                    </button>
-                                    <div aria-hidden="true" aria-labelledby="rightEyeModalLabel" class="modal fade" id="rightEyeModal" role="dialog" tabindex="-1">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="rightEyeModalLabel">
-                                                        Right Eye
-                                                    </h5>
-                                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">
-                                                            &times;</span></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <iframe src="<%= rightEyeLink %>"
-                                                        frameborder="0" style="width: 100%; height: 600px;"></iframe>
-                                                    <input type="hidden" name="rightEyeLink" value="<%= rightEyeLink %>">
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div id="image-right-eye">
+                                        <img src="<%= rightEyeLink %>" data-high-res-src="<%= rightEyeLink %>" id="right-eye-image" class="pannable-image" style="width: 100%; height: auto; max-height: 250px;">
                                     </div>
                                 </div>
                                 <h5>Right Eye</h5>

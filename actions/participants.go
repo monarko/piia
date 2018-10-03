@@ -135,11 +135,6 @@ func ParticipantsEditPost(c buffalo.Context) error {
 	return c.Redirect(302, "/participants/index")
 }
 
-// ParticipantsDelete default implementation.
-func ParticipantsDelete(c buffalo.Context) error {
-	return c.Render(200, r.HTML("participants/delete.html"))
-}
-
 // ParticipantsDetail default implementation.
 func ParticipantsDetail(c buffalo.Context) error {
 	return c.Render(200, r.HTML("participants/detail.html"))

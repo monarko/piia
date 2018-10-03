@@ -206,7 +206,7 @@
                                     <a href="<%= participantOverreadingsCreatePath({pid: p.ID}) %>" title="Over Read"><i class="os-icon os-icon-documents-07"></i></a>
                                     <% } %>
                                     <%= if (current_user.Admin) { %>
-                                    <a href="<%= participantOverreadingsIndexPath({pid: p.ID}) %>" title="View"><i class="os-icon os-icon-agenda-1"></i></a>
+                                    <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="os-icon os-icon-agenda-1"></i></a>
                                     <% } %>
                                 </td>
                             </tr>

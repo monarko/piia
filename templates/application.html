@@ -144,6 +144,12 @@
     </div>
 
     <%= javascriptTag("application.js") %>
+    <%= javascriptTag("imageviewer.js") %>
+    <script>
+        $(function () {
+            $('.pannable-image').ImageViewer();
+        });
+    </script>
 </body>
 
 </html>
