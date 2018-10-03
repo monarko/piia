@@ -46,8 +46,8 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 	c.Set("overReading", &models.OverReading{})
 
 	// images
-	leftEye := "https://upload.wikimedia.org/wikipedia/commons/7/7f/Brain_MRI_112010_rgbca.png"
-	rightEye := "https://upload.wikimedia.org/wikipedia/commons/0/0e/Acute_leukemia-ALL.jpg"
+	leftEye := "https://ivmartel.github.io/dwv-jqmobile/demo/stable/index.html?input=https://upload.wikimedia.org/wikipedia/commons/7/7f/Brain_MRI_112010_rgbca.png"
+	rightEye := "https://ivmartel.github.io/dwv-jqmobile/demo/stable/index.html?input=https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm"
 
 	c.Set("leftEyeLink", leftEye)
 	c.Set("rightEyeLink", rightEye)
