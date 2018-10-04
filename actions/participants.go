@@ -10,16 +10,30 @@ import (
 
 // ParticipantsIndex default implementation.
 func ParticipantsIndex(c buffalo.Context) error {
-	// return c.Render(200, r.JSON(c.Params().Get("status")))
 	tx := c.Value("tx").(*pop.Connection)
 	participants := &models.Participants{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	var q *pop.Query
-	if len(c.Params().Get("status")) > 0 {
-		q = tx.Eager("User").Where("status = ?", c.Params().Get("status")).PaginateFromParams(c.Params()).Order("created_at ASC")
+
+	user := c.Value("current_user").(*models.User)
+	if user.Admin {
+		if len(c.Param("status")) > 0 {
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at ASC")
+		} else {
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at ASC")
+		}
+	} else if user.PermissionScreening && user.PermissionOverRead {
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").PaginateFromParams(c.Params()).Order("created_at ASC")
+	} else if user.PermissionScreening {
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "1").PaginateFromParams(c.Params()).Order("created_at ASC")
+	} else if user.PermissionOverRead {
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "11").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else {
-		q = tx.Eager("User").PaginateFromParams(c.Params()).Order("created_at ASC")
+		// If there are no errors set a success message
+		c.Flash().Add("danger", "You don't have sufficient permission.")
+		// and redirect to the index page
+		return c.Redirect(302, "/")
 	}
 
 	// Retrieve all Posts from the DB
@@ -34,6 +48,10 @@ func ParticipantsIndex(c buffalo.Context) error {
 	breadcrumbMap["Participants"] = "/participants/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	c.Set("filterStatus", c.Params().Get("status"))
+	logErr := InsertLog("view", "User viewed participants", "", "", "", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
 	return c.Render(200, r.HTML("participants/index.html"))
 }
 
@@ -71,6 +89,10 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		c.Set("participant", participant)
 		c.Set("errors", verrs.Errors)
 		return c.Render(422, r.HTML("participants/create.html"))
+	}
+	logErr := InsertLog("create", "User created participant", "", participant.ID.String(), "participant", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
 	}
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New participant added successfully.")
@@ -117,13 +139,13 @@ func ParticipantsEditPost(c buffalo.Context) error {
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("participants/edit.html"))
 	}
+	user := c.Value("current_user").(*models.User)
+	logErr := InsertLog("update", "User updated participant", "", participant.ID.String(), "participant", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
 	c.Flash().Add("success", "Participant was updated successfully.")
 	return c.Redirect(302, "/participants/index")
-}
-
-// ParticipantsDelete default implementation.
-func ParticipantsDelete(c buffalo.Context) error {
-	return c.Render(200, r.HTML("participants/delete.html"))
 }
 
 // ParticipantsDetail default implementation.

@@ -62,7 +62,7 @@ func UsersRegisterPost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("users/register.html", "application-non-logged-in.html"))
 	}
 	// If there are no errors set a success message
-	c.Flash().Add("success", "Account registered successfully. You can login now.")
+	c.Flash().Add("success", "Registered successfully. You can login now.")
 	// and redirect to the home page
 	return c.Redirect(302, "/")
 }
@@ -88,6 +88,10 @@ func UsersLoginPost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		return c.Render(422, r.HTML("users/login.html", "application-non-logged-in.html"))
 	}
+	logErr := InsertLog("login", "User logged in", "", "", "", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
 	c.Session().Set("current_user_id", user.ID)
 	c.Flash().Add("success", "Welcome back!")
 	return c.Redirect(302, "/")
@@ -95,6 +99,11 @@ func UsersLoginPost(c buffalo.Context) error {
 
 // UsersLogout clears the session and logs out the user.
 func UsersLogout(c buffalo.Context) error {
+	user := c.Value("current_user").(*models.User)
+	logErr := InsertLog("logout", "User logged out", "", "", "", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
 	c.Session().Clear()
 	c.Flash().Add("success", "Goodbye!")
 	return c.Redirect(302, "/")
@@ -138,6 +147,34 @@ func LoginRequired(next buffalo.Handler) buffalo.Handler {
 		_, ok := c.Value("current_user").(*models.User)
 		if ok {
 			return next(c)
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
+	}
+}
+
+// ScreeningPermissionRequired requires a user to be logged in and to be an admin before accessing a route.
+func ScreeningPermissionRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		user, ok := c.Value("current_user").(*models.User)
+		if ok {
+			if user.Admin || user.PermissionScreening {
+				return next(c)
+			}
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
+	}
+}
+
+// OverReadingPermissionRequired requires a user to be logged in and to be an admin before accessing a route.
+func OverReadingPermissionRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		user, ok := c.Value("current_user").(*models.User)
+		if ok {
+			if user.Admin || user.PermissionOverRead {
+				return next(c)
+			}
 		}
 		c.Flash().Add("danger", "You are not authorized to view that page.")
 		return c.Redirect(302, "/")

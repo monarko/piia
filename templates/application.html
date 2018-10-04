@@ -79,24 +79,32 @@
                     Page Header
                 </h1>
                 <ul class="main-menu">
-                    <%= if (current_user) { %>
+                    <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionOverRead) { %>
                     <li class="">
                         <a href="<%= participantsIndexPath() %>">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-layers"></div>
+                                <div class="fa fa-address-book-o"></div>
                             </div>
                             <span>Participants</span>
                         </a>
                     </li>
                     <% } %>
 
-                    <%= if (admin_user) { %>
+                    <%= if (current_user.Admin) { %>
                     <li class="">
                         <a href="<%= usersIndexPath() %>">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-layers"></div>
+                                <div class="os-icon os-icon-robot-2"></div>
                             </div>
                             <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="<%= logsIndexPath() %>">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-coins-4"></div>
+                            </div>
+                            <span>Logs</span>
                         </a>
                     </li>
                     <% } %>
@@ -144,6 +152,20 @@
     </div>
 
     <%= javascriptTag("application.js") %>
+    <%= javascriptTag("imageviewer.js") %>
+    <script>
+        $(function () {
+            openImageViewer();
+        });
+
+        function openImageViewer() {
+            $('.pannable-image').ImageViewer();
+        }
+
+        $( ".eye-image-model" ).on('shown.bs.modal', function(){
+            openImageViewer();
+        });
+    </script>
 </body>
 
 </html>

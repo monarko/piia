@@ -1,0 +1,11 @@
+create_table("system_logs") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("action", "string", {})
+	t.Column("activity", "string", {"default": ""})
+	t.Column("error", "boolean", {})
+	t.Column("error_message", "string", {"default": ""})
+	t.Column("client_ip", "string", {})
+	t.Column("user_id", "uuid", {})
+	t.Column("resource_id", "string", {"default": ""})
+	t.Column("resource_type", "string", {"default": ""})
+}

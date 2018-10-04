@@ -69,14 +69,26 @@ func App() *buffalo.App {
 		participants.POST("/create", ParticipantsCreatePost)
 		participants.GET("/edit/{pid}", ParticipantsEditGet).Name("participantsEditPath")
 		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
+		participants.GET("/{pid}", ParticipantsDetail)
 		// participants.GET("/delete", ParticipantsDelete)
 		// participants.GET("/detail", ParticipantsDetail)
 
 		screenings := participants.Group("/{pid}/screenings")
-		screenings.GET("/index", ScreeningsIndex)
+		screenings.Use(ScreeningPermissionRequired)
+		// screenings.GET("/index", ScreeningsIndex)
 		screenings.GET("/create", ScreeningsCreateGet)
 		screenings.POST("/create", ScreeningsCreatePost)
 
+		overReadings := participants.Group("/{pid}/overreadings")
+		overReadings.Use(OverReadingPermissionRequired)
+		// overReadings.GET("/index", OverReadingsIndex)
+		overReadings.GET("/create", OverReadingsCreateGet)
+		overReadings.POST("/create", OverReadingsCreatePost)
+
+		// app.Resource("/system_logs", SystemLogsResource{})
+		logs := app.Group("/logs")
+		logs.Use(AdminRequired)
+		logs.GET("/index", SystemLogsIndex)
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

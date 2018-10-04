@@ -15,10 +15,10 @@ type Screening struct {
 	ID                uuid.UUID   `json:"id" db:"id"`
 	CreatedAt         time.Time   `json:"created_at" db:"created_at"`
 	UpdatedAt         time.Time   `json:"updated_at" db:"updated_at"`
-	LeftVisualAcuity  string      `json:"left_visual_acuity" db:"left_visual_activity"`
+	LeftVisualAcuity  string      `json:"left_visual_acuity" db:"left_visual_acuity"`
 	LeftGradingDr     string      `json:"left_grading_dr" db:"left_grading_dr"`
 	LeftGradingDme    string      `json:"left_grading_dme" db:"left_grading_dme"`
-	RightVisualAcuity string      `json:"right_visual_acuity" db:"right_visual_activity"`
+	RightVisualAcuity string      `json:"right_visual_acuity" db:"right_visual_acuity"`
 	RightGradingDr    string      `json:"right_grading_dr" db:"right_grading_dr"`
 	RightGradingDme   string      `json:"right_grading_dme" db:"right_grading_dme"`
 	Referred          bool        `json:"referred" db:"referred"`

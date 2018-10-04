@@ -1,0 +1,2 @@
+drop_column("over_readings", "left_visual_acuity")
+drop_column("over_readings", "right_visual_acuity")

@@ -1,0 +1,2 @@
+drop_column("users", "permission_screening")
+drop_column("users", "permission_overread")

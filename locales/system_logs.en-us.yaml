@@ -1,0 +1,6 @@
+- id: "system_log.created.success"
+  translation: "SystemLog was successfully created."
+- id: "system_log.updated.success"
+  translation: "SystemLog was successfully updated."
+- id: "system_log.destroyed.success"
+  translation: "SystemLog was successfully destroyed."

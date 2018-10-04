@@ -1,0 +1,2 @@
+rename_column("screenings", "left_visual_acuity", "left_visual_activity")
+rename_column("screenings", "right_visual_acuity", "right_visual_activity")
