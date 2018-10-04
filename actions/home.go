@@ -11,7 +11,8 @@ import (
 func HomeHandler(c buffalo.Context) error {
 	_, ok := c.Value("current_user").(*models.User)
 	if !ok {
-		return c.Render(200, r.HTML("index-non-logged-in.html", "application-non-logged-in.html"))
+		return c.Redirect(302, "/users/login")
+		// return c.Render(200, r.HTML("index-non-logged-in.html", "application-non-logged-in.html"))
 	}
 	tx := c.Value("tx").(*pop.Connection)
 	var err error

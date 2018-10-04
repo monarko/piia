@@ -61,6 +61,8 @@ func App() *buffalo.App {
 		auth.GET("/logout", UsersLogout)
 
 		auth.GET("/index", AdminRequired(UsersIndex))
+		auth.GET("/create", AdminRequired(UsersCreateGet))
+		auth.POST("/create", AdminRequired(UsersCreatePost))
 
 		participants := app.Group("/participants")
 		participants.Use(LoginRequired)

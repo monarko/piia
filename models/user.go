@@ -33,6 +33,8 @@ type User struct {
 	PermissionScreening bool         `json:"permission.screening" db:"permission_screening"`
 	PermissionOverRead  bool         `json:"permission.overread" db:"permission_overread"`
 	SystemLogs          SystemLogs   `has_many:"system_logs"`
+	Mobile              string       `json:"mobile" db:"mobile"`
+	Site                string       `json:"site" db:"site"`
 }
 
 // String is not required by pop and may be deleted

@@ -26,6 +26,16 @@ func GenerateLuhnID() Luhn {
 	return Luhn{ID: luhnID}
 }
 
+// GenerateLuhnIDWithGivenPrefix generates a new luhn id
+func GenerateLuhnIDWithGivenPrefix(prefix string) Luhn {
+	sitePrefix := chars[1]
+	if len(prefix) > 0 {
+		sitePrefix = prefix[0]
+	}
+	luhnID := GenerateWithPrefix(6, string(sitePrefix))
+	return Luhn{ID: luhnID}
+}
+
 // Valid returns a boolean indicating if the argument was valid according to the Luhn algorithm.
 func Valid(luhnString string) bool {
 	checksumMod := calculateChecksum(luhnString, false) % 10

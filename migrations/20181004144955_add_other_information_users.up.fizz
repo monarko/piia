@@ -1,0 +1,2 @@
+add_column("users", "mobile", "string", {"default": ""})
+add_column("users", "site", "string", {"default": "B"})

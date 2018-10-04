@@ -109,6 +109,54 @@ func UsersLogout(c buffalo.Context) error {
 	return c.Redirect(302, "/")
 }
 
+// UsersCreateGet returns the form
+func UsersCreateGet(c buffalo.Context) error {
+	c.Set("user", &models.User{})
+
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Users"] = "/users/index"
+	breadcrumbMap["New User"] = "/users/create"
+	c.Set("breadcrumbMap", breadcrumbMap)
+	return c.Render(200, r.HTML("users/create.html"))
+}
+
+// UsersCreatePost returns the form
+func UsersCreatePost(c buffalo.Context) error {
+	// Allocate an empty User
+	user := &models.User{}
+	// Bind user to the html form elements
+	if err := c.Bind(user); err != nil {
+		return errors.WithStack(err)
+	}
+	// Get the DB connection from the context
+	tx := c.Value("tx").(*pop.Connection)
+	// Validate the data from the html form
+	verrs, err := user.Create(tx)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	if verrs.HasAny() {
+		// Make user available inside the html template
+		c.Set("user", user)
+		// Make the errors available inside the html template
+		c.Set("errors", verrs.Errors)
+		// Render again the register.html template that the user can
+		// correct the input.
+		return c.Render(422, r.HTML("users/create.html"))
+	}
+
+	currentUser := c.Value("current_user").(*models.User)
+	logErr := InsertLog("create", "User created the user: "+user.Name, "", user.ID.String(), "user", currentUser.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
+
+	// If there are no errors set a success message
+	c.Flash().Add("success", "User is created.")
+	// and redirect to the home page
+	return c.Redirect(302, "/users/index")
+}
+
 // SetCurrentUser attempts to find a user based on the current_user_id
 // in the session. If one is found it is set on the context.
 func SetCurrentUser(next buffalo.Handler) buffalo.Handler {

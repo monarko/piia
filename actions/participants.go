@@ -24,11 +24,11 @@ func ParticipantsIndex(c buffalo.Context) error {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at ASC")
 		}
 	} else if user.PermissionScreening && user.PermissionOverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else if user.PermissionScreening {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "1").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "1").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else if user.PermissionOverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "11").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "11").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else {
 		// If there are no errors set a success message
 		c.Flash().Add("danger", "You don't have sufficient permission.")
@@ -58,7 +58,8 @@ func ParticipantsIndex(c buffalo.Context) error {
 // ParticipantsCreateGet for the insert form
 func ParticipantsCreateGet(c buffalo.Context) error {
 	c.Set("participant", &models.Participant{})
-	luhnID := helpers.GenerateLuhnID()
+	user := c.Value("current_user").(*models.User)
+	luhnID := helpers.GenerateLuhnIDWithGivenPrefix(user.Site)
 	c.Set("luhnID", luhnID.ID)
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
@@ -90,7 +91,7 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		return c.Render(422, r.HTML("participants/create.html"))
 	}
-	logErr := InsertLog("create", "User created participant", "", participant.ID.String(), "participant", user.ID, c)
+	logErr := InsertLog("create", "User created a participant", "", participant.ID.String(), "participant", user.ID, c)
 	if logErr != nil {
 		return errors.WithStack(logErr)
 	}
@@ -140,7 +141,7 @@ func ParticipantsEditPost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("participants/edit.html"))
 	}
 	user := c.Value("current_user").(*models.User)
-	logErr := InsertLog("update", "User updated participant", "", participant.ID.String(), "participant", user.ID, c)
+	logErr := InsertLog("update", "User updated a participant", "", participant.ID.String(), "participant", user.ID, c)
 	if logErr != nil {
 		return errors.WithStack(logErr)
 	}
