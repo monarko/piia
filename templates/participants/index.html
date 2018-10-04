@@ -150,13 +150,7 @@
                                 </td>
                                 <% } %>
                                 <td>
-                                    <%= if (p.Gender == "M") { %>
-                                        Male
-                                    <% } else if (p.Gender == "F") { %>
-                                        Female
-                                    <% } else { %>
-                                        Other
-                                    <% } %>
+                                    <%= genderHelper(p.Gender) %>
                                 </td>
                                 <td>
                                     <%= ageHelper(p.DOB) %>

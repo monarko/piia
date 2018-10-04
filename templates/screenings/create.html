@@ -32,8 +32,8 @@
                         <div class="col-md-12">
                             <p>
                                 <%= participant.Name %> |
-                                <%= participant.Gender %> |
-                                <%= participant.DOB.Format("02-01-2006") %>
+                                <%= genderHelper(participant.Gender) %> |
+                                <%= ageHelper(participant.DOB) %>
                             </p>
                         </div>
                     </div>
@@ -41,8 +41,8 @@
                         <legend><span>Results</span></legend>
                         <div class="row">
                             <div class="col-sm-5">
+                                <h5>Left Eye</h5>
                                 <div class="form-group">
-                                    <h5>Left Eye</h5>
                                     <label for="">Visual Acuity</label>
                                     <input class="form-control" placeholder="V/A" type="text" name="LeftVisualAcuity" />
                                 </div>

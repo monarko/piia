@@ -33,6 +33,15 @@ func init() {
 			"ageHelper": func(d time.Time) string {
 				return Age(d)
 			},
+			"genderHelper": func(s string) string {
+				if s == "M" {
+					return "Male"
+				} else if s == "F" {
+					return "Female"
+				} else {
+					return "Other"
+				}
+			},
 		},
 	})
 }

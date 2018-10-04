@@ -147,7 +147,15 @@
     <%= javascriptTag("imageviewer.js") %>
     <script>
         $(function () {
+            openImageViewer();
+        });
+
+        function openImageViewer() {
             $('.pannable-image').ImageViewer();
+        }
+
+        $( ".eye-image-model" ).on('shown.bs.modal', function(){
+            openImageViewer();
         });
     </script>
 </body>
