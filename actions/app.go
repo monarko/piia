@@ -64,6 +64,7 @@ func App() *buffalo.App {
 
 		participants := app.Group("/participants")
 		participants.Use(LoginRequired)
+		participants.Use(ScreeningPermissionRequired)
 		participants.GET("/index", ParticipantsIndex)
 		participants.GET("/create", ParticipantsCreateGet)
 		participants.POST("/create", ParticipantsCreatePost)
@@ -73,13 +74,18 @@ func App() *buffalo.App {
 		// participants.GET("/delete", ParticipantsDelete)
 		// participants.GET("/detail", ParticipantsDetail)
 
+		cases := app.Group("/cases")
+		cases.Use(LoginRequired)
+		cases.Use(OverReadingPermissionRequired)
+		cases.GET("/index", CasesIndex)
+
 		screenings := participants.Group("/{pid}/screenings")
 		screenings.Use(ScreeningPermissionRequired)
 		// screenings.GET("/index", ScreeningsIndex)
 		screenings.GET("/create", ScreeningsCreateGet)
 		screenings.POST("/create", ScreeningsCreatePost)
 
-		overReadings := participants.Group("/{pid}/overreadings")
+		overReadings := cases.Group("/{pid}/overreadings")
 		overReadings.Use(OverReadingPermissionRequired)
 		// overReadings.GET("/index", OverReadingsIndex)
 		overReadings.GET("/create", OverReadingsCreateGet)
@@ -89,6 +95,7 @@ func App() *buffalo.App {
 		logs := app.Group("/logs")
 		logs.Use(AdminRequired)
 		logs.GET("/index", SystemLogsIndex)
+
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

@@ -79,7 +79,7 @@
                     Page Header
                 </h1>
                 <ul class="main-menu">
-                    <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionOverRead) { %>
+                    <%= if (current_user.Admin || current_user.PermissionScreening) { %>
                     <li class="">
                         <a href="<%= participantsIndexPath() %>">
                             <div class="icon-w">
@@ -90,19 +90,31 @@
                     </li>
                     <% } %>
 
+                    <%= if (current_user.Admin || current_user.PermissionOverRead) { %>
+                    <li class="">
+                        <a href="<%= casesIndexPath() %>">
+                            <div class="icon-w">
+                                <div class="fa fa-address-book-o"></div>
+                            </div>
+                            <span>Cases</span>
+                        </a>
+                    </li>
+                    <% } %>
+
                     <%= if (current_user.Admin) { %>
                     <li class="">
                         <a href="<%= usersIndexPath() %>">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-robot-2"></div>
+                                <div class="fa fa-users"></div>
                             </div>
                             <span>Users</span>
                         </a>
                     </li>
+
                     <li class="">
                         <a href="<%= logsIndexPath() %>">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-coins-4"></div>
+                                <div class="fa fa-database"></div>
                             </div>
                             <span>Logs</span>
                         </a>
