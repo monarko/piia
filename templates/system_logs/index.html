@@ -1,0 +1,226 @@
+<div class="element-wrapper">
+    <h6 class="element-header">
+        System Logs
+    </h6>
+    <div class="element-box-tp">
+        <div class="controls-above-table">
+            <div class="row">
+                <div class="col-sm-6">
+                    <%= if (pagination.TotalEntriesSize < 1) { %>
+                    <a class="btn btn-primary btn" href="<%= participantScreeningsCreatePath({pid: participant.ID}) %>"
+                        role="button">New Screening</a>
+                    <% } %>
+                </div>
+                <div class="col-sm-6">
+                    <form class="form-inline justify-content-sm-end">
+                        <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
+                        <select class="form-control form-control-sm rounded bright" name="status">
+                            <%= if (filterStatus == "view") { %>
+                            <option value="">
+                                Select Action
+                            </option>
+                            <option value="view" selected>
+                                View
+                            </option>
+                            <option value="create">
+                                Create
+                            </option>
+                            <option value="update">
+                                Update
+                            </option>
+                            <option value="login">
+                                Login
+                            </option>
+                            <option value="logout">
+                                Logout
+                            </option>
+                            <% } else if (filterStatus == "create") { %>
+                            <option value="">
+                                Select Action
+                            </option>
+                            <option value="view">
+                                View
+                            </option>
+                            <option value="create" selected>
+                                Create
+                            </option>
+                            <option value="update">
+                                Update
+                            </option>
+                            <option value="login">
+                                Login
+                            </option>
+                            <option value="logout">
+                                Logout
+                            </option>
+                            <% } else if (filterStatus == "update") { %>
+                            <option value="">
+                                Select Action
+                            </option>
+                            <option value="view">
+                                View
+                            </option>
+                            <option value="create">
+                                Create
+                            </option>
+                            <option value="update" update>
+                                Update
+                            </option>
+                            <option value="login">
+                                Login
+                            </option>
+                            <option value="logout">
+                                Logout
+                            </option>
+                            <% } else if (filterStatus == "login") { %>
+                            <option value="">
+                                Select Action
+                            </option>
+                            <option value="view">
+                                View
+                            </option>
+                            <option value="create">
+                                Create
+                            </option>
+                            <option value="update">
+                                Update
+                            </option>
+                            <option value="login" selected>
+                                Login
+                            </option>
+                            <option value="logout">
+                                Logout
+                            </option>
+                            <% } else if (filterStatus == "logout") { %>
+                            <option value="">
+                                Select Action
+                            </option>
+                            <option value="view">
+                                View
+                            </option>
+                            <option value="create">
+                                Create
+                            </option>
+                            <option value="update">
+                                Update
+                            </option>
+                            <option value="login">
+                                Login
+                            </option>
+                            <option value="logout" selected>
+                                Logout
+                            </option>
+                            <% } else { %>
+                            <option value="" selected>
+                                Select Action
+                            </option>
+                            <option value="view">
+                                View
+                            </option>
+                            <option value="create">
+                                Create
+                            </option>
+                            <option value="update">
+                                Update
+                            </option>
+                            <option value="login">
+                                Login
+                            </option>
+                            <option value="logout">
+                                Logout
+                            </option>
+                            <% } %>
+                        </select>
+                        <button type="submit" class="btn btn-info btn-rounded">Go</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-padded">
+                <thead>
+                    <tr>
+                        <th>
+                            User
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                        <th>
+                            Activity
+                        </th>
+                        <th>
+                            Error
+                        </th>
+                        <th class="text-center">
+                            IP
+                        </th>
+                        <th class="text-center">
+                            Resource Type
+                        </th>
+                        <th class="text-right">
+                            Time
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%= if (len(logs) > 0) { %>
+                    <%= for (log) in logs { %>
+                    <tr>
+                        <td class="cell-with-media">
+                            <img alt="" src="<%= assetPath("images/avatar1.jpg") %>" style="height: 25px;"><span>
+                                <%= log.User.Name %></span>
+                        </td>
+                        <td class="nowrap">
+                            <%= upcase(log.Action) %>
+                        </td>
+                        <td>
+                            <%= log.Activity %>
+                        </td>
+                        <td class="cell-with-media">
+                            <%= if (log.Error) { %>
+                            <%= log.ErrorMessage %>
+                            <% } %>
+                        </td>
+                        <td class="text-center">
+                            <%= log.ClientIP %>
+                        </td>
+                        <td class="text-center">
+                            <%= upcase(log.ResourceType) %>
+                        </td>
+                        <td class="text-right bolder nowrap">
+                            <%= log.CreatedAt.Format("2006-01-02 03:04:05") %>
+                        </td>
+                    </tr>
+                    <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="controls-below-table">
+            <div class="table-records-info">
+                Showing
+                <%= pagination.Offset + 1 %> -
+                <%= pagination.Offset + pagination.CurrentEntriesSize %> of
+                <%= pagination.TotalEntriesSize %>
+                |
+                View
+                <a href="?per_page=10">10</a> /
+                <a href="?per_page=20">20</a> /
+                <a href="?per_page=50">50</a>
+                per page
+            </div>
+            <div class="table-records-pages">
+                <style>
+                    .page-link {
+                        border: none;
+                        padding: 0 2px;
+                    }
+                </style>
+                <%= paginator(pagination, {"class":"", "previousContent": "Previous", "nextContent": "Next"}) %>
+            </div>
+        </div>
+    </div>
+</div>

@@ -48,6 +48,10 @@ func ParticipantsIndex(c buffalo.Context) error {
 	breadcrumbMap["Participants"] = "/participants/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	c.Set("filterStatus", c.Params().Get("status"))
+	logErr := InsertLog("view", "User viewed participants", "", "", "", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
 	return c.Render(200, r.HTML("participants/index.html"))
 }
 
@@ -85,6 +89,10 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		c.Set("participant", participant)
 		c.Set("errors", verrs.Errors)
 		return c.Render(422, r.HTML("participants/create.html"))
+	}
+	logErr := InsertLog("create", "User created participant", "", participant.ID.String(), "participant", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
 	}
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New participant added successfully.")
@@ -130,6 +138,11 @@ func ParticipantsEditPost(c buffalo.Context) error {
 		breadcrumbMap["Update Participants"] = "/participants/edit"
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("participants/edit.html"))
+	}
+	user := c.Value("current_user").(*models.User)
+	logErr := InsertLog("update", "User updated participant", "", participant.ID.String(), "participant", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
 	}
 	c.Flash().Add("success", "Participant was updated successfully.")
 	return c.Redirect(302, "/participants/index")

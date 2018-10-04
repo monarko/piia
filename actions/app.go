@@ -85,6 +85,10 @@ func App() *buffalo.App {
 		overReadings.GET("/create", OverReadingsCreateGet)
 		overReadings.POST("/create", OverReadingsCreatePost)
 
+		// app.Resource("/system_logs", SystemLogsResource{})
+		logs := app.Group("/logs")
+		logs.Use(AdminRequired)
+		logs.GET("/index", SystemLogsIndex)
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 

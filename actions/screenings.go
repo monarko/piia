@@ -104,6 +104,11 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("screenings/create.html"))
 	}
 
+	logErr := InsertLog("create", "User did a screening", "", screening.ID.String(), "screening", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
+
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New screening added successfully.")
 

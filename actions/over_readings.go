@@ -139,6 +139,11 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("over_readings/create.html"))
 	}
 
+	logErr := InsertLog("create", "User did an over read", "", overReading.ID.String(), "overReading", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
+
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New over reading added successfully.")
 

@@ -32,6 +32,7 @@ type User struct {
 	OverReadings        OverReadings `has_many:"over_readings" fk_id:"over_reader_id"`
 	PermissionScreening bool         `json:"permission.screening" db:"permission_screening"`
 	PermissionOverRead  bool         `json:"permission.overread" db:"permission_overread"`
+	SystemLogs          SystemLogs   `has_many:"system_logs"`
 }
 
 // String is not required by pop and may be deleted
@@ -129,14 +130,14 @@ func (u *User) Authorize(tx *pop.Connection) error {
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
 			// couldn't find an user with that email address
-			return errors.New("User not found.")
+			return errors.New("user not found")
 		}
 		return errors.WithStack(err)
 	}
 	// confirm that the given password matches the hashed password from the db
 	err = bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(u.Password))
 	if err != nil {
-		return errors.New("Invalid password.")
+		return errors.New("invalid password")
 	}
 	return nil
 }
