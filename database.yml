@@ -1,10 +1,10 @@
 development:
   dialect: postgres
-  database: piia
-  user: homestead
-  password: secret
-  host: 127.0.0.1
-  port: 54320
+  database: postgres
+  user: postgres
+  password: postgres
+  host: localhost
+  port: 32768
   pool: 5
 
 test:

@@ -2,7 +2,7 @@
     <div class="col-lg-auto">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Enrol into study
+                <%= t("page_enroll_title") %>
             </h6>
             <div class="row">
                 <div class="col">
@@ -22,10 +22,10 @@
                 <%= csrf() %>
                 <div class="element-box">
                     <h5 class="form-header">
-                        Enrol
+                        <%= t("form_enroll_header") %>
                     </h5>
                     <div class="form-desc">
-                        Complete the form to enrol a new participant in the study
+                        <%= t("form_enroll_desc") %>
                     </div>
                     <fieldset class="form-group">
                         <legend><span>Patient Information</span></legend>
@@ -107,14 +107,14 @@
                     <fieldset class="form-group">
                         <legend><span>Participant ID</span></legend>
                         <p>Record the Participant ID in the patient record</p>
-                        <h4>
+                        <span class="button btn-lg btn-primary">
                             <%= luhnID %>
-                        </h4>
+                        </span>
                         <input type="hidden" name="ParticipantID" value="<%= luhnID %>">
                     </fieldset>
                 </div>
                 <div class="form-buttons-w">
-                    <button class="btn btn-primary" type="submit"> Submit</button>
+                    <button class="btn btn-primary" type="submit">Submit</button>
                 </div>
             </form>
         </div>

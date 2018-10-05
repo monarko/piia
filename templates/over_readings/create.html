@@ -40,92 +40,24 @@
                         <legend><span>Results</span></legend>
                         <div class="row">
                             <div class="col-sm-5">
-                                <button class="element-box el-tablo centered trend-in-corner smaller" data-target=".left-eye-modal-lg" data-toggle="modal" style="background-color: #e1dffb; width: 100%;" type="button">
-                                    <div class="label">
-                                        Left Eye Image 
-                                    </div>
-                                    <div class="value">
-                                        View
-                                    </div>
-                                </button>
-                                <div aria-hidden="true" aria-labelledby="myLargeModalLabel" class="modal fade left-eye-modal-lg eye-image-model" role="dialog"
-                                    tabindex="-1">
-                                    <div class="modal-dialog" style="width: 100%;max-width: 1224px;max-height: 612px;height: 100%;">
-                                        <div class="modal-content">
-                                            <div class="modal-body text-center">
-                                                <div id="image-left-eye">
-                                                    <img src="<%= leftEyeLink %>" data-high-res-src="<%= leftEyeLink %>" alt="" class="pannable-image" height="580px;">                                                
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <h5>Right Eye</h5>
+                                <div class="img-thumbnail text-center">
+                                    <a href="#" data-target=".right-eye-modal-lg" data-toggle="modal"><img src="<%= rightEyeLink %>" width="320">
+                                    </a>
                                 </div>
-                                <h5>Left Eye</h5>
-                                <div class="form-group">
-                                    <label for="">DR Grading</label>
-                                    <select class="form-control" name="LeftGradingDr">
-                                        <option value="Ungradeable">
-                                            Ungradeable
-                                        </option>
-                                        <option value="Normal">
-                                            Normal
-                                        </option>
-                                        <option value="Mild DR">
-                                            Mild DR
-                                        </option>
-                                        <option value="Moderate DR">
-                                            Moderate DR
-                                        </option>
-                                        <option value="Severe DR">
-                                            Severe DR
-                                        </option>
-                                        <option value="Proliferative DR">
-                                            Proliferative DR
-                                        </option>
-                                    </select>
-                                    <div class="help-block form-text text-muted form-control-feedback">
-                                        Screener:
-                                        <%= screening.LeftGradingDr %>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">DME Assessment</label>
-                                    <select class="form-control" name="LeftGradingDme">
-                                        <option value="Present">
-                                            Present
-                                        </option>
-                                        <option value="Not Present">
-                                            Not Present
-                                        </option>
-                                    </select>
-                                    <div class="help-block form-text text-muted form-control-feedback">
-                                        Screener:
-                                        <%= screening.LeftGradingDme %>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-5 ml-auto">
-                                <button class="element-box el-tablo centered trend-in-corner smaller" data-target=".right-eye-modal-lg" data-toggle="modal" style="background-color: #e1dffb; width: 100%;" type="button">
-                                    <div class="label">
-                                        Right Eye Image 
-                                    </div>
-                                    <div class="value">
-                                        View
-                                    </div>
-                                </button>
                                 <div aria-hidden="true" aria-labelledby="myLargeModalLabel" class="modal fade right-eye-modal-lg eye-image-model" role="dialog"
                                     tabindex="-1">
                                     <div class="modal-dialog" style="width: 100%;max-width: 1224px;max-height: 612px;height: 100%;">
                                         <div class="modal-content">
                                             <div class="modal-body text-center">
                                                 <div id="image-left-eye">
-                                                    <img src="<%= rightEyeLink %>" data-high-res-src="<%= rightEyeLink %>" alt="" class="pannable-image" height="580px;">                                                
+                                                    <img src="<%= rightEyeLink %>" data-high-res-src="<%= rightEyeLink %>" alt="" class="pannable-image" height="580px;">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <h5>Right Eye</h5>
+                                <div class="none" style="margin-top: 20px"></div>
                                 <div class="form-group">
                                     <label for="">DR Grading</label>
                                     <select class="form-control" name="RightGradingDr">
@@ -149,7 +81,7 @@
                                         </option>
                                     </select>
                                     <div class="help-block form-text text-muted form-control-feedback">
-                                        Screener:
+                                        ARDA:
                                         <%= screening.RightGradingDr %>
                                     </div>
                                 </div>
@@ -164,8 +96,70 @@
                                         </option>
                                     </select>
                                     <div class="help-block form-text text-muted form-control-feedback">
-                                        Screener:
+                                        ARDA:
                                         <%= screening.RightGradingDme %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 ml-auto">
+                                <h5>Left Eye</h5>
+                                  <div class="img-thumbnail text-center">
+                                    <a href="#" data-target=".left-eye-modal-lg" data-toggle="modal"><img src="<%= leftEyeLink %>" width="320">
+                                    </a>
+                                </div>
+                                <div aria-hidden="true" aria-labelledby="myLargeModalLabel" class="modal fade left-eye-modal-lg eye-image-model" role="dialog"
+                                    tabindex="-1">
+                                    <div class="modal-dialog" style="width: 100%;max-width: 1224px;max-height: 612px;height: 100%;">
+                                        <div class="modal-content">
+                                            <div class="modal-body text-center">
+                                                <div id="image-left-eye">
+                                                    <img src="<%= leftEyeLink %>" data-high-res-src="<%= leftEyeLink %>" alt="" class="pannable-image" height="580px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="none" style="margin-top: 20px"></div>
+                                <div class="form-group">
+                                    <label for="">DR Grading</label>
+                                    <select class="form-control" name="LeftGradingDr">
+                                        <option value="Ungradeable">
+                                            Ungradeable
+                                        </option>
+                                        <option value="Normal">
+                                            Normal
+                                        </option>
+                                        <option value="Mild DR">
+                                            Mild DR
+                                        </option>
+                                        <option value="Moderate DR">
+                                            Moderate DR
+                                        </option>
+                                        <option value="Severe DR">
+                                            Severe DR
+                                        </option>
+                                        <option value="Proliferative DR">
+                                            Proliferative DR
+                                        </option>
+                                    </select>
+                                    <div class="help-block form-text text-muted form-control-feedback">
+                                        ARDA:
+                                        <%= screening.LeftGradingDr %>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">DME Assessment</label>
+                                    <select class="form-control" name="LeftGradingDme">
+                                        <option value="Present">
+                                            Present
+                                        </option>
+                                        <option value="Not Present">
+                                            Not Present
+                                        </option>
+                                    </select>
+                                    <div class="help-block form-text text-muted form-control-feedback">
+                                        ARDA:
+                                        <%= screening.LeftGradingDme %>
                                     </div>
                                 </div>
                             </div>

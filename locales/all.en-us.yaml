@@ -1,3 +1,38 @@
 # For more information on using i18n see: https://github.com/nicksnyder/go-i18n
-- id: welcome_greeting
-  translation: "Welcome to Buffalo (EN)"
+- id: meta_title
+  translation: "PIIA (peer)"
+# login specific
+- id: login_greeting
+  translation: "Piia <peer> Login"
+- id: label_username
+  translation: "Username"
+- id: placeholder_username
+  translation: "Enter your email or username"
+- id: label_password
+  translation: "Password"
+- id: placeholder_password
+  translation: "Enter your password"
+- id: button_login
+  translation: "Log me in"
+# admin dashboard
+- id: header_title
+  translation: "Piia Admin"
+- id: role_admin
+  translation: "Administrator"
+# nav items & breadcrumbs
+- id: nav_home
+  translation: "Dashboard"
+- id: nav_logout
+  translation: "Logout"
+- id: nav_participants
+  translation: "Participants"
+- id: nav_overreading
+  translation: "Cases for Review"
+- id: nav_users
+  translation: "User Management"
+- id: nav_logs
+  translation: "Access Logs"
+
+
+
+
