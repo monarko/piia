@@ -58,6 +58,7 @@ func App() *buffalo.App {
 		// Setup and use translations:
 		app.Use(translations())
 		app.Use(SetCurrentUser)
+		app.Use(SetCurrentLang)
 
 		app.GET("/", HomeHandler)
 
@@ -108,6 +109,8 @@ func App() *buffalo.App {
 		logs.GET("/index", SystemLogsIndex)
 
 		app.GET("/errors/{status}", ErrorsDefault)
+
+		app.GET("/switch", ChangeLanguage)
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

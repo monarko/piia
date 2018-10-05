@@ -45,7 +45,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Participants"] = "/participants/index"
+	breadcrumbMap["page_participants_title"] = "/participants/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	c.Set("filterStatus", c.Params().Get("status"))
 	logErr := InsertLog("view", "User viewed participants", "", "", "", user.ID, c)
@@ -62,8 +62,8 @@ func ParticipantsCreateGet(c buffalo.Context) error {
 	luhnID := helpers.GenerateLuhnIDWithGivenPrefix(user.Site)
 	c.Set("luhnID", luhnID.ID)
 	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Participants"] = "/participants/index"
-	breadcrumbMap["Enrol Participants"] = "/participants/create"
+	breadcrumbMap["page_participants_title"] = "/participants/index"
+	breadcrumbMap["breadcrumb_enrol_participant"] = "/participants/create"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/create.html"))
 }
@@ -111,8 +111,8 @@ func ParticipantsEditGet(c buffalo.Context) error {
 	}
 	c.Set("participant", participant)
 	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Participants"] = "/participants/index"
-	breadcrumbMap["Update Participants"] = "/participants/edit"
+	breadcrumbMap["page_participants_title"] = "/participants/index"
+	breadcrumbMap["breadcrumb_enrol_participant"] = "/participants/edit"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/edit.html"))
 }
@@ -136,8 +136,8 @@ func ParticipantsEditPost(c buffalo.Context) error {
 		c.Set("participant", participant)
 		c.Set("errors", verrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Participants"] = "/participants/index"
-		breadcrumbMap["Update Participants"] = "/participants/edit"
+		breadcrumbMap["page_participants_title"] = "/participants/index"
+		breadcrumbMap["breadcrumb_enrol_participant"] = "/participants/edit"
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("participants/edit.html"))
 	}

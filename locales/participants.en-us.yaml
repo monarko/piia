@@ -58,9 +58,5 @@
   translation: "Enroll new participant"
 - id: form_enroll_desc
   translation: "Complete the form to enroll a new participant in the study"
-
-
-
-
-
-
+- id: breadcrumb_enrol_participant
+  translation: "Enrol Participant"

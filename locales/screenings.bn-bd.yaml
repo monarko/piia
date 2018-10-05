@@ -1,0 +1,6 @@
+- id: "screening.created.success"
+  translation: "সফলভাবে স্ক্রিনিং তৈরি করা হয়েছে"
+- id: "screening.updated.success"
+  translation: "সফলভাবে স্ক্রিনিং আপডেট করা হয়েছে"
+- id: "screening.destroyed.success"
+  translation: "সফলভাবে স্ক্রিনিং মুছে ফেলা হয়েছে"

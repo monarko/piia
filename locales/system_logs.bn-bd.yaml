@@ -1,0 +1,6 @@
+- id: "system_log.created.success"
+  translation: "সফলভাবে লগ তৈরি করা হয়েছে"
+- id: "system_log.updated.success"
+  translation: "সফলভাবে লগ আপডেট করা হয়েছে"
+- id: "system_log.destroyed.success"
+  translation: "সফলভাবে লগ মুছে ফেলা হয়েছে"

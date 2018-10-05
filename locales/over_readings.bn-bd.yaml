@@ -1,0 +1,6 @@
+- id: "over_reading.created.success"
+  translation: "সফলভাবে ওভাররীড তৈরি করা হয়েছে"
+- id: "over_reading.updated.success"
+  translation: "সফলভাবে ওভাররীড আপডেট করা হয়েছে"
+- id: "over_reading.destroyed.success"
+  translation: "সফলভাবে ওভাররীড মুছে ফেলা হয়েছে"

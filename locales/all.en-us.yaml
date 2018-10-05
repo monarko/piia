@@ -7,7 +7,7 @@
 - id: label_username
   translation: "Username"
 - id: placeholder_username
-  translation: "Enter your email or username"
+  translation: "Enter your email"
 - id: label_password
   translation: "Password"
 - id: placeholder_password
@@ -19,6 +19,12 @@
   translation: "Piia Admin"
 - id: role_admin
   translation: "Administrator"
+- id: role_general
+  translation: "General"
+- id: role_screener
+  translation: "Screener"
+- id: role_reader
+  translation: "Over Reader"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "Dashboard"

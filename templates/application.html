@@ -42,6 +42,12 @@
                             <div class="logged-user-role">
                                 <%= if (current_user.Admin) { %>
                                 <%= t("role_admin") %>
+                                <% } else if (current_user.PermissionScreening) { %>
+                                <%= t("role_screener") %>
+                                <% } else if (current_user.PermissionOverRead) { %>
+                                <%= t("role_reader") %>
+                                <% } else { %>
+                                <%= t("role_general") %>
                                 <% } %>
                             </div>
                         </div>
@@ -73,6 +79,24 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+                <div class="menu-actions">
+                    <div class="messages-notifications os-dropdown-trigger os-dropdown-position-right">
+                        <a href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"></a>
+                        <%= if (!(current_lang && current_lang != "en")) { %>
+                        <div class="new-messages-count">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <% } %>
+                    </div>
+                    <div class="messages-notifications os-dropdown-trigger os-dropdown-position-right">
+                        <a href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"></a>
+                        <%= if (current_lang && current_lang == "bn") { %>
+                        <div class="new-messages-count">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <% } %>
                     </div>
                 </div>
                 <h1 class="menu-page-header">
@@ -139,10 +163,10 @@
                     <li class="breadcrumb-item">
                         <%= if (len(v) > 0) { %>
                         <a href="<%= v %>">
-                            <%= k %></a>
+                            <%= t(k) %></a>
                         <% } else { %>
                         <span>
-                            <%= k %></span>
+                            <%= t(k) %></span>
                         <% } %>
                     </li>
                     <% } %>
