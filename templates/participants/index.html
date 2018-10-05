@@ -201,9 +201,6 @@
                                     <%= if (p.Status == "1" && (current_user.PermissionScreening || current_user.Admin)) { %>
                                     <a href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="os-icon os-icon-pencil-1"></i></a>
                                     <% } %>
-                                    <%= if (current_user.Admin) { %>
-                                    <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="os-icon os-icon-agenda-1"></i></a>
-                                    <% } %>
                                 </td>
                             </tr>
                             <% } %>

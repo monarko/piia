@@ -4,6 +4,7 @@ import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -30,7 +31,7 @@ func SystemLogsIndex(c buffalo.Context) error {
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Logs"] = "/logs/index"
+	breadcrumbMap["Access Logs"] = "/logs/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("system_logs/index.html"))
 }
@@ -44,7 +45,7 @@ func InsertLog(action, activity, errorMessage, resourceID, resourceType string, 
 		log.Error = true
 		log.ErrorMessage = errorMessage
 	}
-	ip := c.Request().RemoteAddr
+	ip := helpers.FromRequest(c.Request())
 	log.ClientIP = "not found"
 	if len(ip) > 0 {
 		log.ClientIP = ip

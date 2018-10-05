@@ -1,6 +1,10 @@
 package actions
 
 import (
+	"encoding/json"
+	"fmt"
+	"strings"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/middleware"
 	"github.com/gobuffalo/buffalo/middleware/ssl"
@@ -30,6 +34,11 @@ func App() *buffalo.App {
 			Env:         ENV,
 			SessionName: "_piia_session",
 		})
+
+		if ENV == "production" {
+			setErrorHandler(app)
+		}
+
 		// Automatically redirect to SSL
 		app.Use(forceSSL())
 
@@ -98,6 +107,8 @@ func App() *buffalo.App {
 		logs.Use(AdminRequired)
 		logs.GET("/index", SystemLogsIndex)
 
+		app.GET("/errors/{status}", ErrorsDefault)
+
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 
@@ -126,4 +137,50 @@ func forceSSL() buffalo.MiddlewareFunc {
 		SSLRedirect:     ENV == "production",
 		SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https"},
 	})
+}
+
+func setErrorHandler(app *buffalo.App) {
+	app.ErrorHandlers[400] = customErrorHandler()
+	app.ErrorHandlers[401] = customErrorHandler()
+	app.ErrorHandlers[403] = customErrorHandler()
+	app.ErrorHandlers[404] = customErrorHandler()
+	app.ErrorHandlers[405] = customErrorHandler()
+	app.ErrorHandlers[408] = customErrorHandler()
+	app.ErrorHandlers[422] = customErrorHandler()
+
+	app.ErrorHandlers[500] = customErrorHandler()
+	app.ErrorHandlers[501] = customErrorHandler()
+	app.ErrorHandlers[502] = customErrorHandler()
+	app.ErrorHandlers[503] = customErrorHandler()
+	app.ErrorHandlers[504] = customErrorHandler()
+	app.ErrorHandlers[505] = customErrorHandler()
+}
+
+func customErrorHandler() buffalo.ErrorHandler {
+	return func(status int, err error, c buffalo.Context) error {
+		ct := c.Request().Header.Get("Content-Type")
+
+		switch strings.ToLower(ct) {
+		case "application/json", "text/json", "json":
+			c.Logger().Error(err)
+			c.Response().WriteHeader(status)
+
+			msg := fmt.Sprintf("%+v", err)
+			return json.NewEncoder(c.Response()).Encode(map[string]interface{}{
+				"error": msg,
+				"code":  status,
+			})
+		default:
+			tmpl := "default"
+			switch status {
+			case 401:
+				tmpl = "401"
+			case 403:
+				tmpl = "403"
+			case 404:
+				tmpl = "404"
+			}
+			return c.Redirect(302, "/errors/"+tmpl)
+		}
+	}
 }

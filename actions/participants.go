@@ -82,6 +82,7 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	// Validate the data from the html form
 	participant.UserID = user.ID
 	participant.Status = "1"
+	c.Set("luhnID", c.Request().FormValue("ParticipantID"))
 	verrs, err := tx.ValidateAndCreate(participant)
 	if err != nil {
 		return errors.WithStack(err)
