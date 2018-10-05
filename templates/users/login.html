@@ -1,5 +1,5 @@
 <h4 class="auth-header">
-    Piia Login Form
+    <%= t("login_greeting") %>
 </h4>
 
 <%= if (errors) { %>
@@ -17,14 +17,14 @@
 <form action="<%= usersLoginPath() %>" method="POST" novalidate>
     <%= csrf() %>
     <div class="form-group">
-        <label for="">Email</label><input class="form-control" name="Email" placeholder="Enter your email" type="email">
+        <label for="email address"><%= t("label_username") %></label><input class="form-control" name="Email" placeholder="<%= t("placeholder_username") %>" type="email">
         <div class="pre-icon os-icon os-icon-email-2-at2"></div>
     </div>
     <div class="form-group">
-        <label for="">Password</label><input class="form-control" name="Password" placeholder="Enter your password" type="password">
+        <label for="password"><%= t("label_password") %></label><input class="form-control" name="Password" placeholder='<%= t("placeholder_password") %>' type="password">
         <div class="pre-icon os-icon os-icon-fingerprint"></div>
     </div>
     <div class="buttons-w">
-        <button type="submit" class="btn btn-primary">Log me in</button>
+        <button type="submit" class="btn btn-primary" aria-label="submit button"><%= t("button_login") %></button>
     </div>
 </form>

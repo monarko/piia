@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <meta content="ie=edge" http-equiv="x-ua-compatible">
-    <title>PIIA</title>
+    <title><%= t("meta_title") %></title>
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet" type="text/css">
     <%= stylesheetTag("application.css") %>
     <meta name="csrf-param" content="authenticity_token" />
@@ -26,7 +26,7 @@
                     <a class="logo" href="<%= rootPath() %>">
                         <div class="logo-element"></div>
                         <div class="logo-label">
-                            piia admin
+                            <%= t("header_title") %>
                         </div>
                     </a>
                 </div>
@@ -41,7 +41,7 @@
                             </div>
                             <div class="logged-user-role">
                                 <%= if (current_user.Admin) { %>
-                                Administrator
+                                <%= t("role_admin") %>
                                 <% } %>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="logged-user-role">
                                         <%= if (current_user.Admin) { %>
-                                        Administrator
+                                        <%= t("role_admin") %>
                                         <% } %>
                                     </div>
                                 </div>
@@ -69,14 +69,13 @@
                             </div>
                             <ul>
                                 <li>
-                                    <a href="<%= usersLogoutPath() %>"><i class="os-icon os-icon-signs-11"></i><span>Logout</span></a>
+                                    <a href="<%= usersLogoutPath() %>"><i class="os-icon os-icon-signs-11"></i><span><%= t("nav_logout") %></span></a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <h1 class="menu-page-header">
-                    Page Header
                 </h1>
                 <ul class="main-menu">
                     <%= if (current_user.Admin || current_user.PermissionScreening) { %>
@@ -85,7 +84,7 @@
                             <div class="icon-w">
                                 <div class="fa fa-address-book-o"></div>
                             </div>
-                            <span>Participants</span>
+                            <span><%= t("nav_participants") %></span>
                         </a>
                     </li>
                     <% } %>
@@ -96,7 +95,7 @@
                             <div class="icon-w">
                                 <div class="fa fa-address-book-o"></div>
                             </div>
-                            <span>Cases</span>
+                            <span><%= t("nav_overreading") %></span>
                         </a>
                     </li>
                     <% } %>
@@ -107,7 +106,7 @@
                             <div class="icon-w">
                                 <div class="fa fa-users"></div>
                             </div>
-                            <span>Users</span>
+                            <span><%= t("nav_users") %></span>
                         </a>
                     </li>
 
@@ -116,7 +115,7 @@
                             <div class="icon-w">
                                 <div class="fa fa-database"></div>
                             </div>
-                            <span>Logs</span>
+                            <span><%= t("nav_logs") %></span>
                         </a>
                     </li>
                     <% } %>
@@ -133,7 +132,7 @@
               -------------------->
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="<%= rootPath() %>">Piia</a>
+                        <a href="<%= rootPath() %>"><%= t("nav_home") %></a>
                     </li>
 
                     <%= for (k, v) in breadcrumbMap { %>
