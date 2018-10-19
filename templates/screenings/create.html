@@ -52,41 +52,34 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Diabetes Type</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
-                                                                <label class="form-check-label"><input class="form-check-input"
-                                                                        name="DiabetesType" type="radio" value="Type 1">Type
-                                                                    1</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
-                                                                <label class="form-check-label"><input class="form-check-input"
-                                                                        name="DiabetesType" type="radio" value="Type 2">Type
-                                                                    2</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <div class="form-check">
-                                                                <label class="form-check-label"><input class="form-check-input"
-                                                                        name="DiabetesType" type="radio" value="GDM">GDM</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <div class="form-check">
-                                                                <label class="form-check-label"><input class="form-check-input"
-                                                                        name="DiabetesType" type="radio" value="Pre-Diabetes">Pre-Diabetes</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <select class="form-control" name="DiabetesType">
+                                                        <option value="Type 1">
+                                                            Type 1
+                                                        </option>
+                                                        <option value="Type 2">
+                                                            Type 2
+                                                        </option>
+                                                        <option value="Pre-Diabetes">
+                                                            Pre-Diabetes
+                                                        </option>
+                                                        <option value="Gestational Diabetes">
+                                                            Gestational Diabetes
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
                                                     <label for="">Duration</label>
-                                                    <input class="form-control" placeholder="Duration in Years" type="number"
-                                                        name="DiabetesDuration" />
+                                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                        <input class="form-control" placeholder="Duration in Years"
+                                                            type="number" name="DiabetesDuration" />
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                years
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -204,14 +197,15 @@
                                         </h5>
                                     </div>
                                     <div class="tasks-list-w">
-                                        <fieldset class="form-group">
+                                        <fieldset class="form-group" style="margin-top: 0.5rem;">
                                             <legend><span>HbA1C</span></legend>
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label for="">HbA1C (in %)</label>
                                                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                            <input class="form-control" placeholder="" type="text" name="HbA1C" />
+                                                            <input class="form-control" placeholder="" type="number"
+                                                                name="HbA1C" />
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text">
                                                                     %
@@ -229,7 +223,7 @@
                                                 </div>
                                             </div>
                                         </fieldset>
-                                        <fieldset class="form-group">
+                                        <fieldset class="form-group" style="margin-top: 0.5rem;">
                                             <legend><span>Lipids</span></legend>
                                             <div class="row">
                                                 <div class="col-sm-9">
@@ -238,7 +232,7 @@
                                                             <div class="form-group">
                                                                 <label for="">Total Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="text"
+                                                                    <input class="form-control" placeholder="" type="number"
                                                                         name="TotalCholesterol" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
@@ -252,7 +246,7 @@
                                                             <div class="form-group">
                                                                 <label for="">HDL Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="text"
+                                                                    <input class="form-control" placeholder="" type="number"
                                                                         name="HDLCholesterol" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
@@ -266,7 +260,7 @@
                                                             <div class="form-group">
                                                                 <label for="">LDL Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="text"
+                                                                    <input class="form-control" placeholder="" type="number"
                                                                         name="LDLCholesterol" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
@@ -280,7 +274,7 @@
                                                             <div class="form-group">
                                                                 <label for="">Triglyceride</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="text"
+                                                                    <input class="form-control" placeholder="" type="number"
                                                                         name="Triglyceride" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
@@ -405,19 +399,19 @@
                                         </h5>
                                     </div>
                                     <div class="tasks-list-w">
-                                            <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <label for="">Referred</label>
-                                                        <select class="form-control" name="referral">
-                                                            <option value="yes">
-                                                                Yes
-                                                            </option>
-                                                            <option value="no" selected>
-                                                                No
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label for="">Referred</label>
+                                                <select class="form-control" name="referral">
+                                                    <option value="yes">
+                                                        Yes
+                                                    </option>
+                                                    <option value="no" selected>
+                                                        No
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

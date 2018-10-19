@@ -28956,3 +28956,8 @@ Contents:
   
   box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
 }
+
+.tasks-header-w {
+  border-bottom: none !important;
+  margin-bottom: 5px !important;
+}
