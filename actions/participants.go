@@ -152,5 +152,52 @@ func ParticipantsEditPost(c buffalo.Context) error {
 
 // ParticipantsDetail default implementation.
 func ParticipantsDetail(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("participant", participant)
+
+	userActivities := make(map[string][]map[string]string)
+	participantCreatedDate := participant.CreatedAt.Format("2006 Jan 02")
+	participantCreatedTime := participant.CreatedAt.Format("3:04")
+	participantCreatedPm := participant.CreatedAt.Format("pm")
+	participantCreatedMsg := participant.User.Name + " registered the participant"
+
+	screeningCreatedDate := participant.Screenings[0].CreatedAt.Format("2006 Jan 02")
+	screeningCreatedTime := participant.Screenings[0].CreatedAt.Format("3:04")
+	screeningCreatedPm := participant.Screenings[0].CreatedAt.Format("pm")
+	screeningCreatedMsg := participant.Screenings[0].Screener.Name + " screened the participant"
+
+	overReadCreatedDate := participant.OverReadings[0].CreatedAt.Format("2006 Jan 02")
+	overReadCreatedTime := participant.OverReadings[0].CreatedAt.Format("3:04")
+	overReadCreatedPm := participant.OverReadings[0].CreatedAt.Format("pm")
+	overReadCreatedMsg := participant.OverReadings[0].OverReader.Name + " over read the participant"
+
+	userActivities[participantCreatedDate] = append(userActivities[participantCreatedDate], map[string]string{
+		"time": participantCreatedTime,
+		"ampm": participantCreatedPm,
+		"msg":  participantCreatedMsg,
+	})
+
+	userActivities[screeningCreatedDate] = append(userActivities[screeningCreatedDate], map[string]string{
+		"time": screeningCreatedTime,
+		"ampm": screeningCreatedPm,
+		"msg":  screeningCreatedMsg,
+	})
+
+	userActivities[overReadCreatedDate] = append(userActivities[overReadCreatedDate], map[string]string{
+		"time": overReadCreatedTime,
+		"ampm": overReadCreatedPm,
+		"msg":  overReadCreatedMsg,
+	})
+
+	c.Set("user_activities", userActivities)
+
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["page_participants_title"] = "/participants/index"
+	breadcrumbMap["breadcrumb_enrol_participant"] = ""
+	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/detail.html"))
 }

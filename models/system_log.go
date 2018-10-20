@@ -20,8 +20,8 @@ type SystemLog struct {
 	Error        bool      `json:"error" db:"error"`
 	ErrorMessage string    `json:"error_message" db:"error_message"`
 	ClientIP     string    `json:"client_ip" db:"client_ip"`
-	User         User      `belongs_to:"user"`
-	UserID       uuid.UUID `json:"user_id" db:"user_id"`
+	User         User      `belongs_to:"user" json:"user"`
+	UserID       uuid.UUID `json:"-" db:"user_id"`
 	ResourceID   string    `json:"resource_id" db:"resource_id"`
 	ResourceType string    `json:"resource_type" db:"resource_type"`
 }

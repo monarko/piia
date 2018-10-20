@@ -18,21 +18,21 @@ import (
 // User object
 type User struct {
 	ID                  uuid.UUID    `json:"id" db:"id"`
-	CreatedAt           time.Time    `json:"created_at" db:"created_at"`
-	UpdatedAt           time.Time    `json:"updated_at" db:"updated_at"`
+	CreatedAt           time.Time    `json:"-" db:"created_at"`
+	UpdatedAt           time.Time    `json:"-" db:"updated_at"`
 	Username            string       `json:"username" db:"username"`
 	Email               string       `json:"email" db:"email"`
 	Name                string       `json:"name" db:"name"`
-	Admin               bool         `json:"admin" db:"admin"`
+	Admin               bool         `json:"-" db:"admin"`
 	PasswordHash        string       `json:"-" db:"password_hash"`
 	Password            string       `json:"-" db:"-"`
 	PasswordConfirm     string       `json:"-" db:"-"`
-	Participants        Participants `has_many:"participants"`
-	Screenings          Screenings   `has_many:"screenings" fk_id:"screener_id"`
-	OverReadings        OverReadings `has_many:"over_readings" fk_id:"over_reader_id"`
-	PermissionScreening bool         `json:"permission.screening" db:"permission_screening"`
-	PermissionOverRead  bool         `json:"permission.overread" db:"permission_overread"`
-	SystemLogs          SystemLogs   `has_many:"system_logs"`
+	Participants        Participants `has_many:"participants" json:"-"`
+	Screenings          Screenings   `has_many:"screenings" fk_id:"screener_id" json:"-"`
+	OverReadings        OverReadings `has_many:"over_readings" fk_id:"over_reader_id" json:"-"`
+	PermissionScreening bool         `json:"-" db:"permission_screening"`
+	PermissionOverRead  bool         `json:"-" db:"permission_overread"`
+	SystemLogs          SystemLogs   `has_many:"system_logs" json:"-"`
 	Mobile              string       `json:"mobile" db:"mobile"`
 	Site                string       `json:"site" db:"site"`
 }

@@ -52,7 +52,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Diabetes Type</label>
-                                                    <select class="form-control" name="DiabetesType">
+                                                    <select class="form-control" name="Diabetes.DiabetesType">
                                                         <option value="Type 1">
                                                             Type 1
                                                         </option>
@@ -73,12 +73,13 @@
                                                     <label for="">Duration</label>
                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                         <input class="form-control" placeholder="Duration in Years"
-                                                            type="number" name="DiabetesDuration" />
+                                                            type="number" name="Diabetes.Duration" />
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 years
                                                             </div>
                                                         </div>
+                                                        <input type="hidden" name="Diabetes.DurationType" value="year">
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,7 +98,7 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="">Select Co-Morbidities</label>
-                                                    <select class="form-control select2" multiple="true" name="MedicalHistory">
+                                                    <select class="form-control select2" multiple="true" name="MedicalHistory.Morbidities">
                                                         <option value="Hypertension">
                                                             Hypertension
                                                         </option>
@@ -129,13 +130,13 @@
                                                         <div class="col-sm-3">
                                                             <div class="form-check">
                                                                 <label class="form-check-label"><input class="form-check-input"
-                                                                        name="TakingMedications" type="radio" value="Yes">Yes</label>
+                                                                        name="Medications.TakingMedications" type="radio" value="true">Yes</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <div class="form-check">
                                                                 <label class="form-check-label"><input class="form-check-input"
-                                                                        name="TakingMedications" type="radio" value="No">No</label>
+                                                                        name="Medications.TakingMedications" type="radio" value="false">No</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -148,13 +149,13 @@
                                                         <div class="col-sm-3">
                                                             <div class="form-check">
                                                                 <label class="form-check-label"><input class="form-check-input"
-                                                                        name="OnInsulin" type="radio" value="Yes">Yes</label>
+                                                                        name="Medications.OnInsulin" type="radio" value="true">Yes</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <div class="form-check">
                                                                 <label class="form-check-label"><input class="form-check-input"
-                                                                        name="OnInsulin" type="radio" value="No">No</label>
+                                                                        name="Medications.OnInsulin" type="radio" value="false">No</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -175,15 +176,29 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="">Blood Pressure</label>
-                                                    <input class="form-control" placeholder="SBP / DBP" type="text"
-                                                        name="BP" />
+                                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                        <input class="form-control" placeholder="SBP" type="number"
+                                                        name="Measurements.BloodPressure.SBP" />
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                /
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" placeholder="DBP" type="number"
+                                                        name="Measurements.BloodPressure.DBP" />
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                mmHg
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
                                                     <label for="">Date of Last Assessment</label>
                                                     <input class="form-control" placeholder="Select date" type="date"
-                                                        name="BPLastAssessment" />
+                                                        name="Measurements.BloodPressure.AssessmentDate" />
                                                 </div>
                                             </div>
                                         </div>
@@ -204,13 +219,14 @@
                                                     <div class="form-group">
                                                         <label for="">HbA1C (in %)</label>
                                                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                            <input class="form-control" placeholder="" type="number"
-                                                                name="HbA1C" />
+                                                            <input class="form-control" placeholder="" type="text"
+                                                                name="Pathology.HbA1C.HbA1C" />
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text">
                                                                     %
                                                                 </div>
                                                             </div>
+                                                            <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -218,7 +234,7 @@
                                                     <div class="form-group">
                                                         <label for="">Date of Last Assessment</label>
                                                         <input class="form-control" placeholder="Select date" type="date"
-                                                            name="HbA1CLastAssessment" />
+                                                            name="Pathology.HbA1C.AssessmentDate" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -232,8 +248,8 @@
                                                             <div class="form-group">
                                                                 <label for="">Total Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="number"
-                                                                        name="TotalCholesterol" />
+                                                                    <input class="form-control" placeholder="" type="text"
+                                                                        name="Pathology.Lipids.TotalCholesterol" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
                                                                             mmol/L
@@ -246,8 +262,8 @@
                                                             <div class="form-group">
                                                                 <label for="">HDL Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="number"
-                                                                        name="HDLCholesterol" />
+                                                                    <input class="form-control" placeholder="" type="text"
+                                                                        name="Pathology.Lipids.HDL" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
                                                                             mmol/L
@@ -260,8 +276,8 @@
                                                             <div class="form-group">
                                                                 <label for="">LDL Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="number"
-                                                                        name="LDLCholesterol" />
+                                                                    <input class="form-control" placeholder="" type="text"
+                                                                        name="Pathology.Lipids.LDL" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
                                                                             mmol/L
@@ -274,8 +290,8 @@
                                                             <div class="form-group">
                                                                 <label for="">Triglyceride</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="number"
-                                                                        name="Triglyceride" />
+                                                                    <input class="form-control" placeholder="" type="text"
+                                                                        name="Pathology.Lipids.TG" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
                                                                             mmol/L
@@ -286,11 +302,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <input type="hidden" name="Pathology.Lipids.Unit" value="mmol/L">
                                                 <div class="col-sm-3 ml-auto">
                                                     <div class="form-group">
                                                         <label for="">Date of Last Assessment</label>
                                                         <input class="form-control" placeholder="Select date" type="date"
-                                                            name="HbA1CLastAssessment" />
+                                                            name="Pathology.Lipids.AssessmentDate" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -310,11 +327,11 @@
                                                 <h6>Right Eye</h6>
                                                 <div class="form-group">
                                                     <label for="">Visual Acuity</label>
-                                                    <input class="form-control" placeholder="V/A" type="text" name="RightVisualAcuity" />
+                                                    <input class="form-control" placeholder="V/A" type="text" name="Eyes.RightEye.VisualAcuity" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">DR Grading</label>
-                                                    <select class="form-control" name="RightGradingDr">
+                                                    <select class="form-control" name="Eyes.RightEye.DRGrading">
                                                         <option value="Ungradeable">
                                                             Ungradeable
                                                         </option>
@@ -337,7 +354,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">DME Assessment</label>
-                                                    <select class="form-control" name="RightGradingDme">
+                                                    <select class="form-control" name="Eyes.RightEye.DMEAssessment">
                                                         <option value="Present">
                                                             Present
                                                         </option>
@@ -351,11 +368,11 @@
                                                 <h6>Left Eye</h6>
                                                 <div class="form-group">
                                                     <label for="">Visual Acuity</label>
-                                                    <input class="form-control" placeholder="V/A" type="text" name="LeftVisualAcuity" />
+                                                    <input class="form-control" placeholder="V/A" type="text" name="Eyes.LeftEye.VisualAcuity" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">DR Grading</label>
-                                                    <select class="form-control" name="LeftGradingDr">
+                                                    <select class="form-control" name="Eyes.LeftEye.DRGrading">
                                                         <option value="Ungradeable">
                                                             Ungradeable
                                                         </option>
@@ -378,7 +395,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="">DME Assessment</label>
-                                                    <select class="form-control" name="LeftGradingDme">
+                                                    <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
                                                         <option value="Present">
                                                             Present
                                                         </option>
@@ -402,7 +419,7 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <label for="">Referred</label>
-                                                <select class="form-control" name="referral">
+                                                <select class="form-control" name="Referral.Referred">
                                                     <option value="yes">
                                                         Yes
                                                     </option>

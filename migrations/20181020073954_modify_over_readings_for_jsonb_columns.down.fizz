@@ -1,0 +1,8 @@
+drop_column("over_readings", "eye_assessment")
+drop_column("over_readings", "referral")
+
+add_column("over_readings", "left_grading_dr", "string", {})
+add_column("over_readings", "left_grading_dme", "string", {})
+add_column("over_readings", "right_grading_dr", "string", {})
+add_column("over_readings", "right_grading_dme", "string", {})
+add_column("over_readings", "referred", "boolean", {})

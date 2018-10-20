@@ -206,6 +206,11 @@
                 $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
                 return false;
             });
+            var screeningJson = JSON.stringify(JSON.parse($("#screening-json-data").val()), undefined, 4);
+            $("#screening-json-data").text(screeningJson);
+
+            var overReadJson = JSON.stringify(JSON.parse($("#overread-json-data").val()), undefined, 4);
+            $("#overread-json-data").text(overReadJson);
         });
 
         function openImageViewer() {
