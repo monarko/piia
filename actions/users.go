@@ -151,6 +151,18 @@ func UsersCreatePost(c buffalo.Context) error {
 		return errors.WithStack(logErr)
 	}
 
+	// newUserEmail := mailers.EmailDetails{
+	// 	To:      []string{user.Email},
+	// 	Subject: "Welcome to PIIA (peer)",
+	// 	Data:    map[string]interface{}{"name": user.Name},
+	// }
+
+	// // mailers.SendWelcomeEmail(newUserEmail)
+	// err = newUserEmail.Send(c)
+	// if err != nil {
+	// 	c.Flash().Add("danger", err.Error())
+	// }
+
 	// If there are no errors set a success message
 	c.Flash().Add("success", "User is created.")
 	// and redirect to the home page

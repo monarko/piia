@@ -17,24 +17,25 @@ import (
 
 // User object
 type User struct {
-	ID                  uuid.UUID    `json:"id" db:"id"`
-	CreatedAt           time.Time    `json:"-" db:"created_at"`
-	UpdatedAt           time.Time    `json:"-" db:"updated_at"`
-	Username            string       `json:"username" db:"username"`
-	Email               string       `json:"email" db:"email"`
-	Name                string       `json:"name" db:"name"`
-	Admin               bool         `json:"-" db:"admin"`
-	PasswordHash        string       `json:"-" db:"password_hash"`
-	Password            string       `json:"-" db:"-"`
-	PasswordConfirm     string       `json:"-" db:"-"`
-	Participants        Participants `has_many:"participants" json:"-"`
-	Screenings          Screenings   `has_many:"screenings" fk_id:"screener_id" json:"-"`
-	OverReadings        OverReadings `has_many:"over_readings" fk_id:"over_reader_id" json:"-"`
-	PermissionScreening bool         `json:"-" db:"permission_screening"`
-	PermissionOverRead  bool         `json:"-" db:"permission_overread"`
-	SystemLogs          SystemLogs   `has_many:"system_logs" json:"-"`
-	Mobile              string       `json:"mobile" db:"mobile"`
-	Site                string       `json:"site" db:"site"`
+	ID                         uuid.UUID    `json:"id" db:"id"`
+	CreatedAt                  time.Time    `json:"-" db:"created_at"`
+	UpdatedAt                  time.Time    `json:"-" db:"updated_at"`
+	Username                   string       `json:"username" db:"username"`
+	Email                      string       `json:"email" db:"email"`
+	Name                       string       `json:"name" db:"name"`
+	Admin                      bool         `json:"-" db:"admin"`
+	PasswordHash               string       `json:"-" db:"password_hash"`
+	Password                   string       `json:"-" db:"-"`
+	PasswordConfirm            string       `json:"-" db:"-"`
+	Participants               Participants `has_many:"participants" json:"-"`
+	Screenings                 Screenings   `has_many:"screenings" fk_id:"screener_id" json:"-"`
+	OverReadings               OverReadings `has_many:"over_readings" fk_id:"over_reader_id" json:"-"`
+	PermissionScreening        bool         `json:"-" db:"permission_screening"`
+	PermissionOverRead         bool         `json:"-" db:"permission_overread"`
+	PermissionStudyCoordinator bool         `json:"-" db:"permission_study_coordinator"`
+	SystemLogs                 SystemLogs   `has_many:"system_logs" json:"-"`
+	Mobile                     string       `json:"mobile" db:"mobile"`
+	Site                       string       `json:"site" db:"site"`
 }
 
 // String is not required by pop and may be deleted
@@ -67,15 +68,20 @@ func (u *User) Create(tx *pop.Connection) (*validate.Errors, error) {
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.Validate(
-		&validators.StringIsPresent{Field: u.Username, Name: "Username"},
-		&validators.StringIsPresent{Field: u.Email, Name: "Email"},
-		&validators.StringIsPresent{Field: u.Name, Name: "Name"},
-		&validators.EmailIsPresent{Name: "Email", Field: u.Email},
-		&validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirm, Message: "Passwords do not match."},
-		&UsernameNotTaken{Name: "Username", Field: u.Username, tx: tx},
-		&EmailNotTaken{Name: "Email", Field: u.Email, tx: tx},
-	), nil
+	valids := make([]validate.Validator, 0)
+	valids = append(valids, &validators.StringIsPresent{Field: u.Username, Name: "Username"})
+	valids = append(valids, &validators.StringIsPresent{Field: u.Email, Name: "Email"})
+	valids = append(valids, &validators.StringIsPresent{Field: u.Name, Name: "Name"})
+	valids = append(valids, &validators.EmailIsPresent{Name: "Email", Field: u.Email})
+	valids = append(valids, &validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirm, Message: "Passwords do not match."})
+	valids = append(valids, &UsernameNotTaken{Name: "Username", Field: u.Username, tx: tx})
+	valids = append(valids, &EmailNotTaken{Name: "Email", Field: u.Email, tx: tx})
+
+	if u.PermissionScreening {
+		valids = append(valids, &validators.StringIsPresent{Field: u.Site, Name: "Site"})
+	}
+
+	return validate.Validate(valids...), nil
 }
 
 // ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.

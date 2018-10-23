@@ -24,6 +24,9 @@
 									<option value="admin">
 										Admin
 									</option>
+									<option value="study_coordinator">
+										Study Co-ordinator
+									</option>
 									<option value="screener">
 										Screener
 									</option>
@@ -95,6 +98,12 @@
 									<%= if (user.Admin) { %>
 									<div class="badge badge-primary">
 										Admin
+									</div>
+									<% } %>
+
+									<%= if (user.PermissionScreening) { %>
+									<div class="badge badge-primary">
+										Study Co-ordinator
 									</div>
 									<% } %>
 
