@@ -120,19 +120,22 @@
         <div class="element-wrapper">
             <div class="element-box">
                 <h6 class="element-header">
-                    User Activities
+                    Timeline
                 </h6>
                 <div class="timed-activities compact">
                     <%= for (key, val) in user_activities { %>
                     <div class="timed-activity">
                         <div class="ta-date">
-                            <span><%= key %></span>
+                            <span>
+                                <%= key %></span>
                         </div>
                         <div class="ta-record-w">
                             <%= for (v) in val { %>
                             <div class="ta-record">
                                 <div class="ta-timestamp">
-                                    <strong><%= v["time"] %></strong> <%= v["ampm"] %>
+                                    <strong>
+                                        <%= v["time"] %></strong>
+                                    <%= v["ampm"] %>
                                 </div>
                                 <div class="ta-activity">
                                     <%= v["msg"] %>
@@ -148,6 +151,43 @@
     </div>
 
     <div class="col-sm-7">
+        <div class="element-wrapper" style="padding-bottom: 1rem;">
+            <div class="element-box" style="background-color: #f9f0cf;">
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-others-43"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header">
+                                Notifications
+                            </h5>
+                            <div class="element-inner-desc">
+                                Check the notifications for this participant
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo-list">
+                    <%= for (notification) in participant.Notifications { %>
+                    <a class="todo-item" href="#">
+                        <div class="ti-info">
+                            <div class="ti-header">
+                                <%= notification.Type %> (<%= notification.UpdatedAt.Format("02 Jan 2006 03:04:05pm") %>)
+                            </div>
+                            <div class="ti-sub-header">
+                                From Over Reader: <%= notification.Message %>
+                            </div>
+                        </div>
+                        <div class="ti-icon">
+                            <i class="os-icon os-icon-arrow-right7"></i>
+                        </div>
+                    </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
         <div class="element-wrapper" style="padding-bottom: 1rem;">
             <div class="element-box">
                 <div class="element-info">

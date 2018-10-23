@@ -17,25 +17,26 @@ import (
 
 // User object
 type User struct {
-	ID                         uuid.UUID    `json:"id" db:"id"`
-	CreatedAt                  time.Time    `json:"-" db:"created_at"`
-	UpdatedAt                  time.Time    `json:"-" db:"updated_at"`
-	Username                   string       `json:"username" db:"username"`
-	Email                      string       `json:"email" db:"email"`
-	Name                       string       `json:"name" db:"name"`
-	Admin                      bool         `json:"-" db:"admin"`
-	PasswordHash               string       `json:"-" db:"password_hash"`
-	Password                   string       `json:"-" db:"-"`
-	PasswordConfirm            string       `json:"-" db:"-"`
-	Participants               Participants `has_many:"participants" json:"-"`
-	Screenings                 Screenings   `has_many:"screenings" fk_id:"screener_id" json:"-"`
-	OverReadings               OverReadings `has_many:"over_readings" fk_id:"over_reader_id" json:"-"`
-	PermissionScreening        bool         `json:"-" db:"permission_screening"`
-	PermissionOverRead         bool         `json:"-" db:"permission_overread"`
-	PermissionStudyCoordinator bool         `json:"-" db:"permission_study_coordinator"`
-	SystemLogs                 SystemLogs   `has_many:"system_logs" json:"-"`
-	Mobile                     string       `json:"mobile" db:"mobile"`
-	Site                       string       `json:"site" db:"site"`
+	ID                         uuid.UUID     `json:"id" db:"id"`
+	CreatedAt                  time.Time     `json:"-" db:"created_at"`
+	UpdatedAt                  time.Time     `json:"-" db:"updated_at"`
+	Username                   string        `json:"username" db:"username"`
+	Email                      string        `json:"email" db:"email"`
+	Name                       string        `json:"name" db:"name"`
+	Admin                      bool          `json:"-" db:"admin"`
+	PasswordHash               string        `json:"-" db:"password_hash"`
+	Password                   string        `json:"-" db:"-"`
+	PasswordConfirm            string        `json:"-" db:"-"`
+	Participants               Participants  `has_many:"participants" json:"-"`
+	Screenings                 Screenings    `has_many:"screenings" fk_id:"screener_id" json:"-"`
+	OverReadings               OverReadings  `has_many:"over_readings" fk_id:"over_reader_id" json:"-"`
+	PermissionScreening        bool          `json:"-" db:"permission_screening"`
+	PermissionOverRead         bool          `json:"-" db:"permission_overread"`
+	PermissionStudyCoordinator bool          `json:"-" db:"permission_study_coordinator"`
+	SystemLogs                 SystemLogs    `has_many:"system_logs" json:"-"`
+	Mobile                     string        `json:"mobile" db:"mobile"`
+	Site                       string        `json:"site" db:"site"`
+	Notifications              Notifications `has_many:"notifications" json:"-"`
 }
 
 // String is not required by pop and may be deleted

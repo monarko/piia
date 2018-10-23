@@ -26,6 +26,7 @@ type Screening struct {
 	ScreenerID     uuid.UUID                     `json:"-" db:"screener_id"`
 	Participant    Participant                   `belongs_to:"participant" json:"participant"`
 	ParticipantID  uuid.UUID                     `json:"-" db:"participant_id"`
+	Notifications  Notifications                 `has_many:"notifications" json:"-"`
 }
 
 // String is not required by pop and may be deleted

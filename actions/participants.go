@@ -17,7 +17,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 	var q *pop.Query
 
 	user := c.Value("current_user").(*models.User)
-	if user.Admin {
+	if user.Admin || user.PermissionStudyCoordinator {
 		if len(c.Param("status")) > 0 {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at ASC")
 		} else {
@@ -154,7 +154,7 @@ func ParticipantsEditPost(c buffalo.Context) error {
 func ParticipantsDetail(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	participant := &models.Participant{}
-	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Find(participant, c.Param("pid")); err != nil {
+	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader", "Notifications").Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
 	c.Set("participant", participant)

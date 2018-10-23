@@ -94,7 +94,7 @@
                                 <th>
                                     <%= t("th_participant_id") %>
                                 </th>
-                                <%= if (current_user.Admin || current_user.PermissionScreening) { %>
+                                <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
                                 <th>
                                     <%= t("th_patient_id") %>
                                 </th>
@@ -108,7 +108,7 @@
                                 <th>
                                     <%= t("th_age") %>
                                 </th>
-                                <%= if (current_user.Admin) { %>
+                                <%= if (current_user.Admin || current_user.PermissionStudyCoordinator) { %>
                                 <th>
                                     <%= t("th_consented") %>
                                 </th>
@@ -146,7 +146,7 @@
                                     <strong>N</strong>:&nbsp;<%= p.IDNumber %>
                                     <% } %>
                                 </td>
-                                <%= if (current_user.Admin || current_user.PermissionScreening) { %>
+                                <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
                                 <td>
                                     <%= p.Name %>
                                     <%= if (len(p.ContactNumber) > 0) { %>
@@ -160,7 +160,7 @@
                                 <td>
                                     <%= ageHelper(p.DOB) %>
                                 </td>
-                                <%= if (current_user.Admin) { %>
+                                <%= if (current_user.Admin || current_user.PermissionStudyCoordinator) { %>
                                 <td class="text-center">
                                     <%= if (p.Consented) { %>
                                     <span class="badge badge-primary">Yes</span>
@@ -201,7 +201,7 @@
                                     <%= if (p.Status == "1" && (current_user.PermissionScreening || current_user.Admin)) { %>
                                     <a href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="os-icon os-icon-pencil-1"></i></a>
                                     <% } %>
-                                    <%= if (p.Status == "111" && current_user.Admin) { %>
+                                    <%= if (p.Status == "111" && current_user.Admin || current_user.PermissionStudyCoordinator) { %>
                                     <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="os-icon os-icon-newspaper"></i></a>
                                     <% } %>
                                 </td>

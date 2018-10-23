@@ -218,7 +218,7 @@ func ScreeningPermissionRequired(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
-			if user.Admin || user.PermissionScreening {
+			if user.Admin || user.PermissionScreening || user.PermissionStudyCoordinator {
 				return next(c)
 			}
 		}
@@ -232,7 +232,7 @@ func OverReadingPermissionRequired(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
-			if user.Admin || user.PermissionOverRead {
+			if user.Admin || user.PermissionOverRead || user.PermissionStudyCoordinator {
 				return next(c)
 			}
 		}

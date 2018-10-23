@@ -48,6 +48,8 @@
                                 <%= t("role_screener") %>
                                 <% } else if (current_user.PermissionOverRead) { %>
                                 <%= t("role_reader") %>
+                                <% } else if (current_user.PermissionStudyCoordinator) { %>
+                                <%= t("role_study_coordinator") %>
                                 <% } else { %>
                                 <%= t("role_general") %>
                                 <% } %>
@@ -107,7 +109,7 @@
                 <h1 class="menu-page-header">
                 </h1>
                 <ul class="main-menu">
-                    <%= if (current_user.Admin || current_user.PermissionScreening) { %>
+                    <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
                     <li class="">
                         <a href="<%= participantsIndexPath() %>">
                             <div class="icon-w">
@@ -119,7 +121,7 @@
                     </li>
                     <% } %>
 
-                    <%= if (current_user.Admin || current_user.PermissionOverRead) { %>
+                    <%= if (current_user.Admin || current_user.PermissionOverRead || current_user.PermissionStudyCoordinator) { %>
                     <li class="">
                         <a href="<%= casesIndexPath() %>">
                             <div class="icon-w">
@@ -206,11 +208,16 @@
                 $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
                 return false;
             });
-            var screeningJson = JSON.stringify(JSON.parse($("#screening-json-data").val()), undefined, 4);
-            $("#screening-json-data").text(screeningJson);
 
-            var overReadJson = JSON.stringify(JSON.parse($("#overread-json-data").val()), undefined, 4);
-            $("#overread-json-data").text(overReadJson);
+            if ($("#screening-json-data").length) {
+                var screeningJson = JSON.stringify(JSON.parse($("#screening-json-data").val()), undefined, 4);
+                $("#screening-json-data").text(screeningJson);
+            }
+
+            if ($("#overread-json-data").length) {
+                var overReadJson = JSON.stringify(JSON.parse($("#overread-json-data").val()), undefined, 4);
+                $("#overread-json-data").text(overReadJson);
+            }
         });
 
         function openImageViewer() {

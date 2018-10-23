@@ -27,6 +27,8 @@
   translation: "স্ক্রিনার"
 - id: role_reader
   translation: "ওভাররীডার"
+- id: role_study_coordinator
+  translation: "স্টাডি কো-অর্ডিনেটর"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "ড্যাশবোর্ড"

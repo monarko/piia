@@ -27,6 +27,8 @@
   translation: "Screener"
 - id: role_reader
   translation: "Over Reader"
+- id: role_study_coordinator
+  translation: "Study Co-ordinator"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "Dashboard"
