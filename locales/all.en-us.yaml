@@ -6,6 +6,8 @@
   translation: "Piia <peer> Login"
 - id: label_username
   translation: "Username"
+- id: label_email
+  translation: "Email"
 - id: placeholder_username
   translation: "Enter your email"
 - id: label_password

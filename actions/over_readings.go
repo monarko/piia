@@ -93,6 +93,11 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	overReading.OverReaderID = user.ID
 	overReading.ParticipantID = participant.ID
 
+	referral := c.Request().FormValue("referral")
+	if referral == "yes" {
+		overReading.Referral.Referred = true
+	}
+
 	// images
 	leftEye := c.Param("leftEyeLink")
 	rightEye := c.Param("rightEyeLink")
