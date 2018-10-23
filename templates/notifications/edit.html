@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Edit Notification</h1>
+</div>
+
+<%= form_for(notification, {action: notificationPath({ notification_id: notification.ID }), method: "PUT"}) { %>
+  <%= partial("notifications/form.html") %>
+  <a href="<%= notificationPath({ notification_id: notification.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

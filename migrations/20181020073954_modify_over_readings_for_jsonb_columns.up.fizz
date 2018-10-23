@@ -1,0 +1,8 @@
+drop_column("over_readings", "left_grading_dr")
+drop_column("over_readings", "left_grading_dme")
+drop_column("over_readings", "right_grading_dr")
+drop_column("over_readings", "right_grading_dme")
+drop_column("over_readings", "referred")
+
+add_column("over_readings", "eye_assessment", "jsonb", {"null": true})
+add_column("over_readings", "referral", "jsonb", {"null": true})

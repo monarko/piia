@@ -11,23 +11,24 @@ import (
 
 // Participant object
 type Participant struct {
-	ID            uuid.UUID    `json:"id" db:"id"`
-	CreatedAt     time.Time    `json:"created_at" db:"created_at"`
-	UpdatedAt     time.Time    `json:"updated_at" db:"updated_at"`
-	ParticipantID string       `json:"participant_id" db:"participant_id"`
-	Name          string       `json:"name" db:"name"`
-	Gender        string       `json:"gender" db:"gender"`
-	DOB           time.Time    `json:"dob" db:"dob"`
-	ContactNumber string       `json:"contact_number" db:"contact_number"`
-	IsEligible    bool         `json:"is_eligible" db:"is_eligible"`
-	Consented     bool         `json:"consented" db:"consented"`
-	IDType        string       `json:"id_type" db:"id_type"`
-	IDNumber      string       `json:"id_number" db:"id_number"`
-	User          User         `belongs_to:"user"`
-	UserID        uuid.UUID    `json:"author_id" db:"author_id"`
-	Status        string       `json:"status" db:"status"`
-	Screenings    Screenings   `has_many:"screenings"`
-	OverReadings  OverReadings `has_many:"over_readings"`
+	ID            uuid.UUID     `json:"id" db:"id"`
+	CreatedAt     time.Time     `json:"created_at" db:"created_at"`
+	UpdatedAt     time.Time     `json:"updated_at" db:"updated_at"`
+	ParticipantID string        `json:"participant_id" db:"participant_id"`
+	Name          string        `json:"name" db:"name"`
+	Gender        string        `json:"gender" db:"gender"`
+	DOB           time.Time     `json:"dob" db:"dob"`
+	ContactNumber string        `json:"contact_number" db:"contact_number"`
+	IsEligible    bool          `json:"is_eligible" db:"is_eligible"`
+	Consented     bool          `json:"consented" db:"consented"`
+	IDType        string        `json:"id_type" db:"id_type"`
+	IDNumber      string        `json:"id_number" db:"id_number"`
+	User          User          `belongs_to:"user" json:"registrar"`
+	UserID        uuid.UUID     `json:"-" db:"author_id"`
+	Status        string        `json:"status" db:"status"`
+	Screenings    Screenings    `has_many:"screenings" json:"-"`
+	OverReadings  OverReadings  `has_many:"over_readings" json:"-"`
+	Notifications Notifications `has_many:"notifications" json:"-"`
 }
 
 // Participants holds the list of Participant

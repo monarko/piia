@@ -1,12 +1,12 @@
 <div class="row justify-content-lg-center">
-    <div class="col-lg-8">
+    <div class="col-lg-10">
         <div class="element-wrapper">
             <h6 class="element-header">
                 Add New Screening
             </h6>
             <div class="element-box">
-                <div class="row">
-                    <div class="col">
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-md-12">
                         <%= if (errors) { %>
                         <%= for (key, val) in errors { %>
                         <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
@@ -37,109 +37,403 @@
                             </p>
                         </div>
                     </div>
-                    <fieldset class="form-group">
-                        <legend><span>Results</span></legend>
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <h5>Right Eye</h5>
-                                <div class="form-group">
-                                    <label for="">Visual Acuity</label>
-                                    <input class="form-control" placeholder="V/A" type="text" name="RightVisualAcuity" />
+                    <div class="todo-app-w">
+                        <div class="todo-content" style="padding: 0;">
+                            <div class="all-tasks-w" style="padding-top: 0;">
+                                <div class="tasks-section">
+                                    <div class="tasks-header-w" style="margin-top: 0;">
+                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
+                                        <h5 class="tasks-header">
+                                            Diabetes
+                                        </h5>
+                                    </div>
+                                    <div class="tasks-list-w">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="">Diabetes Type</label>
+                                                    <select class="form-control" name="Diabetes.DiabetesType">
+                                                        <option value="Type 1">
+                                                            Type 1
+                                                        </option>
+                                                        <option value="Type 2">
+                                                            Type 2
+                                                        </option>
+                                                        <option value="Pre-Diabetes">
+                                                            Pre-Diabetes
+                                                        </option>
+                                                        <option value="Gestational Diabetes">
+                                                            Gestational Diabetes
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 ml-auto">
+                                                <div class="form-group">
+                                                    <label for="">Duration</label>
+                                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                        <input class="form-control" placeholder="Duration in Years"
+                                                            type="number" name="Diabetes.Duration" />
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                years
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="Diabetes.DurationType" value="year">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">DR Grading</label>
-                                    <select class="form-control" name="RightGradingDr">
-                                        <option value="Ungradeable">
-                                            Ungradeable
-                                        </option>
-                                        <option value="Normal">
-                                            Normal
-                                        </option>
-                                        <option value="Mild DR">
-                                            Mild DR
-                                        </option>
-                                        <option value="Moderate DR">
-                                            Moderate DR
-                                        </option>
-                                        <option value="Severe DR">
-                                            Severe DR
-                                        </option>
-                                        <option value="Proliferative DR">
-                                            Proliferative DR
-                                        </option>
-                                    </select>
+                                <div class="tasks-section">
+                                    <div class="tasks-header-w">
+                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
+                                        <h5 class="tasks-header">
+                                            Medical History
+                                        </h5>
+                                    </div>
+                                    <div class="tasks-list-w">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="">Select Co-Morbidities</label>
+                                                    <select class="form-control select2" multiple="true" name="MedicalHistory.Morbidities">
+                                                        <option value="Hypertension">
+                                                            Hypertension
+                                                        </option>
+                                                        <option value="KidneyDisease">
+                                                            Kidney Disease
+                                                        </option>
+                                                        <option value="CardiovascularDisease">
+                                                            Cardiovascular Disease
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">DME Assessment</label>
-                                    <select class="form-control" name="RightGradingDme">
-                                        <option value="Present">
-                                            Present
-                                        </option>
-                                        <option value="Not Present">
-                                            Not Present
-                                        </option>
-                                    </select>
+                                <div class="tasks-section">
+                                    <div class="tasks-header-w">
+                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
+                                        <h5 class="tasks-header">
+                                            Medications
+                                        </h5>
+                                    </div>
+                                    <div class="tasks-list-w">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="">Taking Medications?</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <div class="form-check">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="Medications.TakingMedications" type="radio" value="true">Yes</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-check">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="Medications.TakingMedications" type="radio" value="false">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 ml-auto">
+                                                <div class="form-group">
+                                                    <label for="">On Insulin?</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <div class="form-check">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="Medications.OnInsulin" type="radio" value="true">Yes</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-check">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="Medications.OnInsulin" type="radio" value="false">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-5 ml-auto">
-                                <h5>Left Eye</h5>
-                                <div class="form-group">
-                                    <label for="">Visual Acuity</label>
-                                    <input class="form-control" placeholder="V/A" type="text" name="LeftVisualAcuity" />
+                                <div class="tasks-section">
+                                    <div class="tasks-header-w">
+                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
+                                        <h5 class="tasks-header">
+                                            Measurements
+                                        </h5>
+                                    </div>
+                                    <div class="tasks-list-w">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="">Blood Pressure</label>
+                                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                        <input class="form-control" placeholder="SBP" type="number"
+                                                        name="Measurements.BloodPressure.SBP" />
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                /
+                                                            </div>
+                                                        </div>
+                                                        <input class="form-control" placeholder="DBP" type="number"
+                                                        name="Measurements.BloodPressure.DBP" />
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                mmHg
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 ml-auto">
+                                                <div class="form-group">
+                                                    <label for="">Date of Last Assessment</label>
+                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                        name="Measurements.BloodPressure.AssessmentDate" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">DR Grading</label>
-                                    <select class="form-control" name="LeftGradingDr">
-                                        <option value="Ungradeable">
-                                            Ungradeable
-                                        </option>
-                                        <option value="Normal">
-                                            Normal
-                                        </option>
-                                        <option value="Mild DR">
-                                            Mild DR
-                                        </option>
-                                        <option value="Moderate DR">
-                                            Moderate DR
-                                        </option>
-                                        <option value="Severe DR">
-                                            Severe DR
-                                        </option>
-                                        <option value="Proliferative DR">
-                                            Proliferative DR
-                                        </option>
-                                    </select>
+                                <div class="tasks-section">
+                                    <div class="tasks-header-w">
+                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
+                                        <h5 class="tasks-header">
+                                            Pathology
+                                        </h5>
+                                    </div>
+                                    <div class="tasks-list-w">
+                                        <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                            <legend><span>HbA1C</span></legend>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="">HbA1C (in %)</label>
+                                                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                            <input class="form-control" placeholder="" type="text"
+                                                                name="Pathology.HbA1C.HbA1C" />
+                                                            <div class="input-group-append">
+                                                                <div class="input-group-text">
+                                                                    %
+                                                                </div>
+                                                            </div>
+                                                            <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 ml-auto">
+                                                    <div class="form-group">
+                                                        <label for="">Date of Last Assessment</label>
+                                                        <input class="form-control" placeholder="Select date" type="date"
+                                                            name="Pathology.HbA1C.AssessmentDate" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                            <legend><span>Lipids</span></legend>
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label for="">Total Cholesterol</label>
+                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                    <input class="form-control" placeholder="" type="text"
+                                                                        name="Pathology.Lipids.TotalCholesterol" />
+                                                                    <div class="input-group-append">
+                                                                        <div class="input-group-text">
+                                                                            mmol/L
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label for="">HDL Cholesterol</label>
+                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                    <input class="form-control" placeholder="" type="text"
+                                                                        name="Pathology.Lipids.HDL" />
+                                                                    <div class="input-group-append">
+                                                                        <div class="input-group-text">
+                                                                            mmol/L
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label for="">LDL Cholesterol</label>
+                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                    <input class="form-control" placeholder="" type="text"
+                                                                        name="Pathology.Lipids.LDL" />
+                                                                    <div class="input-group-append">
+                                                                        <div class="input-group-text">
+                                                                            mmol/L
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label for="">Triglyceride</label>
+                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                    <input class="form-control" placeholder="" type="text"
+                                                                        name="Pathology.Lipids.TG" />
+                                                                    <div class="input-group-append">
+                                                                        <div class="input-group-text">
+                                                                            mmol/L
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="Pathology.Lipids.Unit" value="mmol/L">
+                                                <div class="col-sm-3 ml-auto">
+                                                    <div class="form-group">
+                                                        <label for="">Date of Last Assessment</label>
+                                                        <input class="form-control" placeholder="Select date" type="date"
+                                                            name="Pathology.Lipids.AssessmentDate" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">DME Assessment</label>
-                                    <select class="form-control" name="LeftGradingDme">
-                                        <option value="Present">
-                                            Present
-                                        </option>
-                                        <option value="Not Present">
-                                            Not Present
-                                        </option>
-                                    </select>
+                                <div class="tasks-section">
+                                    <div class="tasks-header-w">
+                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
+                                        <h5 class="tasks-header">
+                                            Eye Assessment
+                                        </h5>
+                                    </div>
+                                    <div class="tasks-list-w">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h6>Right Eye</h6>
+                                                <div class="form-group">
+                                                    <label for="">Visual Acuity</label>
+                                                    <input class="form-control" placeholder="V/A" type="text" name="Eyes.RightEye.VisualAcuity" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">DR Grading</label>
+                                                    <select class="form-control" name="Eyes.RightEye.DRGrading">
+                                                        <option value="Ungradeable">
+                                                            Ungradeable
+                                                        </option>
+                                                        <option value="Normal">
+                                                            Normal
+                                                        </option>
+                                                        <option value="Mild DR">
+                                                            Mild DR
+                                                        </option>
+                                                        <option value="Moderate DR">
+                                                            Moderate DR
+                                                        </option>
+                                                        <option value="Severe DR">
+                                                            Severe DR
+                                                        </option>
+                                                        <option value="Proliferative DR">
+                                                            Proliferative DR
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">DME Assessment</label>
+                                                    <select class="form-control" name="Eyes.RightEye.DMEAssessment">
+                                                        <option value="Present">
+                                                            Present
+                                                        </option>
+                                                        <option value="Not Present">
+                                                            Not Present
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 ml-auto">
+                                                <h6>Left Eye</h6>
+                                                <div class="form-group">
+                                                    <label for="">Visual Acuity</label>
+                                                    <input class="form-control" placeholder="V/A" type="text" name="Eyes.LeftEye.VisualAcuity" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">DR Grading</label>
+                                                    <select class="form-control" name="Eyes.LeftEye.DRGrading">
+                                                        <option value="Ungradeable">
+                                                            Ungradeable
+                                                        </option>
+                                                        <option value="Normal">
+                                                            Normal
+                                                        </option>
+                                                        <option value="Mild DR">
+                                                            Mild DR
+                                                        </option>
+                                                        <option value="Moderate DR">
+                                                            Moderate DR
+                                                        </option>
+                                                        <option value="Severe DR">
+                                                            Severe DR
+                                                        </option>
+                                                        <option value="Proliferative DR">
+                                                            Proliferative DR
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="">DME Assessment</label>
+                                                    <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
+                                                        <option value="Present">
+                                                            Present
+                                                        </option>
+                                                        <option value="Not Present">
+                                                            Not Present
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tasks-section">
+                                    <div class="tasks-header-w">
+                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
+                                        <h5 class="tasks-header">
+                                            Referral
+                                        </h5>
+                                    </div>
+                                    <div class="tasks-list-w">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label for="">Referred</label>
+                                                <select class="form-control" name="referral">
+                                                    <option value="yes">
+                                                        Yes
+                                                    </option>
+                                                    <option value="no" selected>
+                                                        No
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </fieldset>
-                    <fieldset class="form-group">
-                        <legend><span>Referred?</span></legend>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label for="">Referred</label>
-                                <select class="form-control" name="referral">
-                                    <option value="yes">
-                                        Yes
-                                    </option>
-                                    <option value="no" selected>
-                                        No
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </fieldset>
+                    </div>
                     <div class="form-buttons-w">
                         <button class="btn btn-primary" type="submit"> Submit</button>
                     </div>

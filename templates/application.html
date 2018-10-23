@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <meta content="ie=edge" http-equiv="x-ua-compatible">
-    <title><%= t("meta_title") %></title>
+    <title>
+        <%= t("meta_title") %>
+    </title>
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet" type="text/css">
     <%= stylesheetTag("application.css") %>
     <meta name="csrf-param" content="authenticity_token" />
@@ -46,6 +48,8 @@
                                 <%= t("role_screener") %>
                                 <% } else if (current_user.PermissionOverRead) { %>
                                 <%= t("role_reader") %>
+                                <% } else if (current_user.PermissionStudyCoordinator) { %>
+                                <%= t("role_study_coordinator") %>
                                 <% } else { %>
                                 <%= t("role_general") %>
                                 <% } %>
@@ -75,7 +79,8 @@
                             </div>
                             <ul>
                                 <li>
-                                    <a href="<%= usersLogoutPath() %>"><i class="os-icon os-icon-signs-11"></i><span><%= t("nav_logout") %></span></a>
+                                    <a href="<%= usersLogoutPath() %>"><i class="os-icon os-icon-signs-11"></i><span>
+                                            <%= t("nav_logout") %></span></a>
                                 </li>
                             </ul>
                         </div>
@@ -83,7 +88,8 @@
                 </div>
                 <div class="menu-actions">
                     <div class="messages-notifications os-dropdown-trigger os-dropdown-position-right">
-                        <a href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"></a>
+                        <a href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>"
+                            height="25px"></a>
                         <%= if (!(current_lang && current_lang != "en")) { %>
                         <div class="new-messages-count">
                             <i class="fa fa-check"></i>
@@ -91,7 +97,8 @@
                         <% } %>
                     </div>
                     <div class="messages-notifications os-dropdown-trigger os-dropdown-position-right">
-                        <a href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"></a>
+                        <a href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>"
+                            height="25px"></a>
                         <%= if (current_lang && current_lang == "bn") { %>
                         <div class="new-messages-count">
                             <i class="fa fa-check"></i>
@@ -102,24 +109,26 @@
                 <h1 class="menu-page-header">
                 </h1>
                 <ul class="main-menu">
-                    <%= if (current_user.Admin || current_user.PermissionScreening) { %>
+                    <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
                     <li class="">
                         <a href="<%= participantsIndexPath() %>">
                             <div class="icon-w">
                                 <div class="fa fa-address-book-o"></div>
                             </div>
-                            <span><%= t("nav_participants") %></span>
+                            <span>
+                                <%= t("nav_participants") %></span>
                         </a>
                     </li>
                     <% } %>
 
-                    <%= if (current_user.Admin || current_user.PermissionOverRead) { %>
+                    <%= if (current_user.Admin || current_user.PermissionOverRead || current_user.PermissionStudyCoordinator) { %>
                     <li class="">
                         <a href="<%= casesIndexPath() %>">
                             <div class="icon-w">
                                 <div class="fa fa-address-book-o"></div>
                             </div>
-                            <span><%= t("nav_overreading") %></span>
+                            <span>
+                                <%= t("nav_overreading") %></span>
                         </a>
                     </li>
                     <% } %>
@@ -130,7 +139,8 @@
                             <div class="icon-w">
                                 <div class="fa fa-users"></div>
                             </div>
-                            <span><%= t("nav_users") %></span>
+                            <span>
+                                <%= t("nav_users") %></span>
                         </a>
                     </li>
 
@@ -139,7 +149,8 @@
                             <div class="icon-w">
                                 <div class="fa fa-database"></div>
                             </div>
-                            <span><%= t("nav_logs") %></span>
+                            <span>
+                                <%= t("nav_logs") %></span>
                         </a>
                     </li>
                     <% } %>
@@ -156,7 +167,8 @@
               -------------------->
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="<%= rootPath() %>"><%= t("nav_home") %></a>
+                        <a href="<%= rootPath() %>">
+                            <%= t("nav_home") %></a>
                     </li>
 
                     <%= for (k, v) in breadcrumbMap { %>
@@ -191,13 +203,28 @@
     <script>
         $(function () {
             openImageViewer();
+            $(".select2").select2();
+            $('.tasks-header-toggler').on('click', function () {
+                $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
+                return false;
+            });
+
+            if ($("#screening-json-data").length) {
+                var screeningJson = JSON.stringify(JSON.parse($("#screening-json-data").val()), undefined, 4);
+                $("#screening-json-data").text(screeningJson);
+            }
+
+            if ($("#overread-json-data").length) {
+                var overReadJson = JSON.stringify(JSON.parse($("#overread-json-data").val()), undefined, 4);
+                $("#overread-json-data").text(overReadJson);
+            }
         });
 
         function openImageViewer() {
             $('.pannable-image').ImageViewer();
         }
 
-        $( ".eye-image-model" ).on('shown.bs.modal', function(){
+        $(".eye-image-model").on('shown.bs.modal', function () {
             openImageViewer();
         });
     </script>

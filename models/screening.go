@@ -7,25 +7,26 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
-	"github.com/gobuffalo/validate/validators"
+	"github.com/monarko/piia/helpers/types"
 )
 
 // Screening model
 type Screening struct {
-	ID                uuid.UUID   `json:"id" db:"id"`
-	CreatedAt         time.Time   `json:"created_at" db:"created_at"`
-	UpdatedAt         time.Time   `json:"updated_at" db:"updated_at"`
-	LeftVisualAcuity  string      `json:"left_visual_acuity" db:"left_visual_acuity"`
-	LeftGradingDr     string      `json:"left_grading_dr" db:"left_grading_dr"`
-	LeftGradingDme    string      `json:"left_grading_dme" db:"left_grading_dme"`
-	RightVisualAcuity string      `json:"right_visual_acuity" db:"right_visual_acuity"`
-	RightGradingDr    string      `json:"right_grading_dr" db:"right_grading_dr"`
-	RightGradingDme   string      `json:"right_grading_dme" db:"right_grading_dme"`
-	Referred          bool        `json:"referred" db:"referred"`
-	Screener          User        `belongs_to:"user"`
-	ScreenerID        uuid.UUID   `json:"screener_id" db:"screener_id"`
-	Participant       Participant `belongs_to:"participant"`
-	ParticipantID     uuid.UUID   `json:"participant_id" db:"participant_id"`
+	ID             uuid.UUID                     `json:"id" db:"id"`
+	CreatedAt      time.Time                     `json:"created_at" db:"created_at"`
+	UpdatedAt      time.Time                     `json:"updated_at" db:"updated_at"`
+	Diabetes       types.DiabetesScreening       `json:"diabetes" db:"diabetes"`
+	MedicalHistory types.MedicalHistoryScreening `json:"medical_history" db:"medical_history"`
+	Medications    types.MedicationScreening     `json:"medications" db:"medications"`
+	Measurements   types.MeasurementScreening    `json:"measurements" db:"measurements"`
+	Pathology      types.PathologyScreening      `json:"pathology" db:"pathology"`
+	Eyes           types.EyeScreening            `json:"eyes" db:"eye"`
+	Referral       types.ReferralScreening       `json:"referral" db:"referral"`
+	Screener       User                          `belongs_to:"user" json:"screener"`
+	ScreenerID     uuid.UUID                     `json:"-" db:"screener_id"`
+	Participant    Participant                   `belongs_to:"participant" json:"participant"`
+	ParticipantID  uuid.UUID                     `json:"-" db:"participant_id"`
+	Notifications  Notifications                 `has_many:"notifications" json:"-"`
 }
 
 // String is not required by pop and may be deleted
@@ -47,12 +48,12 @@ func (s Screenings) String() string {
 // This method is not required and may be deleted.
 func (s *Screening) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
-		&validators.StringIsPresent{Field: s.LeftVisualAcuity, Name: "LeftVisualAcuity"},
-		&validators.StringIsPresent{Field: s.LeftGradingDr, Name: "LeftGradingDr"},
-		&validators.StringIsPresent{Field: s.LeftGradingDme, Name: "LeftGradingDme"},
-		&validators.StringIsPresent{Field: s.RightVisualAcuity, Name: "RightVisualAcuity"},
-		&validators.StringIsPresent{Field: s.RightGradingDr, Name: "RightGradingDr"},
-		&validators.StringIsPresent{Field: s.RightGradingDme, Name: "RightGradingDme"},
+	// &validators.StringIsPresent{Field: s.Eyes.LeftEye.VisualAcuity, Name: "LeftVisualAcuity"},
+	// &validators.StringIsPresent{Field: s.Eyes.LeftEye.DRGrading, Name: "LeftGradingDr"},
+	// &validators.StringIsPresent{Field: s.Eyes.LeftEye.DMEAssessment, Name: "LeftGradingDme"},
+	// &validators.StringIsPresent{Field: s.Eyes.RightEye.VisualAcuity, Name: "RightVisualAcuity"},
+	// &validators.StringIsPresent{Field: s.Eyes.RightEye.DRGrading, Name: "RightGradingDr"},
+	// &validators.StringIsPresent{Field: s.Eyes.RightEye.DMEAssessment, Name: "RightGradingDme"},
 	), nil
 }
 

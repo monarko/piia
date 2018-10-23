@@ -10,4 +10,3 @@ func ParticipantHandler(c buffalo.Context) error {
 	// POST /participant/1 - will save new participant
 	return c.Render(200, r.HTML("participants.html"))
 }
-

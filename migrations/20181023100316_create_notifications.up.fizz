@@ -1,0 +1,10 @@
+create_table("notifications") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("type", "string", {})
+	t.Column("message", "string", {"default": ""})
+	t.Column("status", "string", {"default": "open"})
+	t.Column("site", "string", {"default": ""})
+	t.Column("from_user_id", "uuid", {})
+	t.Column("participant_id", "uuid", {})
+	t.Column("screening_id", "uuid", {})
+}

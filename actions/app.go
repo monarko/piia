@@ -7,14 +7,13 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/middleware"
-	"github.com/gobuffalo/buffalo/middleware/ssl"
-	"github.com/gobuffalo/envy"
-	"github.com/unrolled/secure"
-
 	"github.com/gobuffalo/buffalo/middleware/csrf"
 	"github.com/gobuffalo/buffalo/middleware/i18n"
+	"github.com/gobuffalo/buffalo/middleware/ssl"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/packr"
 	"github.com/monarko/piia/models"
+	"github.com/unrolled/secure"
 )
 
 // ENV is used to help switch settings based on where the
@@ -111,6 +110,7 @@ func App() *buffalo.App {
 		app.GET("/errors/{status}", ErrorsDefault)
 
 		app.GET("/switch", ChangeLanguage)
+		app.POST("/notifications", ScreeningPermissionRequired(ChangeNotificationStatus))
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

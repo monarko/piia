@@ -40,6 +40,9 @@
                                 <div class="form-group">
                                     <label for=""> Site</label>
                                     <select class="form-control" name="Site">
+                                        <option value="">
+                                            All
+                                        </option>
                                         <option value="A">
                                             A
                                         </option>
@@ -170,21 +173,26 @@
                     <fieldset class="form-group">
                         <legend><span>Permissions</span></legend>
                         <div class="row">
-                            <div class="col-sm-12">
-                                    <div class="form-check form-group">
-                                        <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="Admin"><strong>Is Admin?</strong></label>
-                                    </div>
+                            <div class="col-sm-6">
+                                <div class="form-check form-group">
+                                    <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="Admin"><strong>Is Admin?</strong></label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-check form-group">
+                                    <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionStudyCoordinator" value="true"><strong>Is Study Co-ordinator?</strong></label>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                                 <div class="col-sm-6">   
                                         <div class="form-check form-group">
-                                                <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionScreening">Screening Permission</label>
+                                                <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionScreening" value="true">Screening Permission</label>
                                             </div>
                                 </div>
                                 <div class="col-sm-6">  
                                         <div class="form-check form-group">
-                                                <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionOverRead">Over Read Permission</label>
+                                                <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionOverRead" value="true">Over Read Permission</label>
                                             </div>
                                 </div>
                             </div>

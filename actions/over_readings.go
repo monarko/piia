@@ -93,12 +93,36 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	overReading.OverReaderID = user.ID
 	overReading.ParticipantID = participant.ID
 
+	referral := c.Request().FormValue("referral")
+	if referral == "yes" {
+		overReading.Referral.Referred = true
+	}
+
 	// images
 	leftEye := c.Param("leftEyeLink")
 	rightEye := c.Param("rightEyeLink")
 
 	c.Set("leftEyeLink", leftEye)
 	c.Set("rightEyeLink", rightEye)
+
+	shouldBeRefer := shouldBeReferred(overReading)
+	if shouldBeRefer && !overReading.Referral.Referred {
+		c.Set("participant", participant)
+		c.Set("screening", screening)
+		c.Set("overReading", overReading)
+
+		breadcrumbMap := make(map[string]interface{})
+		breadcrumbMap["Cases"] = "/cases/index"
+		// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
+		breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
+		c.Set("breadcrumbMap", breadcrumbMap)
+
+		str := "You should REFER the participant as he/she fall into the follwoing criteria: DR is Ungradable, moderate or severe, DME is present"
+
+		c.Flash().Add("danger", str)
+
+		return c.Render(422, r.HTML("over_readings/create.html"))
+	}
 
 	verrs, err := tx.ValidateAndCreate(overReading)
 	if err != nil {
@@ -140,8 +164,46 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		return errors.WithStack(logErr)
 	}
 
+	checkReferral := checkScreeningAndOverReading(&screening, overReading)
+	if checkReferral {
+		notifErr := InsertNotification(
+			"Referral",
+			"This participant needs to be referred",
+			"open",
+			string(participant.ParticipantID[0]),
+			user.ID,
+			participant.ID,
+			screening.ID,
+			c,
+		)
+		if notifErr != nil {
+			return errors.WithStack(notifErr)
+		}
+	}
+
 	// If there are no errors set a success message
 	c.Flash().Add("success", "New over reading added successfully.")
 
 	return c.Redirect(302, "/cases/index")
+}
+
+func checkScreeningAndOverReading(screening *models.Screening, overReading *models.OverReading) bool {
+	if !screening.Referral.Referred && overReading.Referral.Referred {
+		return true
+	}
+	return false
+}
+
+func shouldBeReferred(overReading *models.OverReading) bool {
+	refer := false
+
+	if overReading.Eyes.LeftEye.DRGrading == "Ungradeable" || overReading.Eyes.LeftEye.DRGrading == "Moderate DR" || overReading.Eyes.LeftEye.DRGrading == "Severe DR" || overReading.Eyes.RightEye.DRGrading == "Ungradeable" || overReading.Eyes.RightEye.DRGrading == "Moderate DR" || overReading.Eyes.RightEye.DRGrading == "Severe DR" {
+		refer = true
+	}
+
+	if overReading.Eyes.LeftEye.DMEAssessment == "Present" || overReading.Eyes.RightEye.DMEAssessment == "Present" {
+		refer = true
+	}
+
+	return refer
 }

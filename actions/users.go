@@ -151,6 +151,18 @@ func UsersCreatePost(c buffalo.Context) error {
 		return errors.WithStack(logErr)
 	}
 
+	// newUserEmail := mailers.EmailDetails{
+	// 	To:      []string{user.Email},
+	// 	Subject: "Welcome to PIIA (peer)",
+	// 	Data:    map[string]interface{}{"name": user.Name},
+	// }
+
+	// // mailers.SendWelcomeEmail(newUserEmail)
+	// err = newUserEmail.Send(c)
+	// if err != nil {
+	// 	c.Flash().Add("danger", err.Error())
+	// }
+
 	// If there are no errors set a success message
 	c.Flash().Add("success", "User is created.")
 	// and redirect to the home page
@@ -206,7 +218,7 @@ func ScreeningPermissionRequired(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
-			if user.Admin || user.PermissionScreening {
+			if user.Admin || user.PermissionScreening || user.PermissionStudyCoordinator {
 				return next(c)
 			}
 		}
@@ -220,7 +232,21 @@ func OverReadingPermissionRequired(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
-			if user.Admin || user.PermissionOverRead {
+			if user.Admin || user.PermissionOverRead || user.PermissionStudyCoordinator {
+				return next(c)
+			}
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
+	}
+}
+
+// StudyCoordinatorPermissionRequired requires a user to be logged in and to be an admin before accessing a route.
+func StudyCoordinatorPermissionRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		user, ok := c.Value("current_user").(*models.User)
+		if ok {
+			if user.Admin || user.PermissionStudyCoordinator {
 				return next(c)
 			}
 		}

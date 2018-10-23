@@ -6,6 +6,8 @@
   translation: "Piia <peer> Login"
 - id: label_username
   translation: "Username"
+- id: label_email
+  translation: "Email"
 - id: placeholder_username
   translation: "Enter your email"
 - id: label_password
@@ -25,6 +27,8 @@
   translation: "Screener"
 - id: role_reader
   translation: "Over Reader"
+- id: role_study_coordinator
+  translation: "Study Co-ordinator"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "Dashboard"

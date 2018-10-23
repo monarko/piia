@@ -39,7 +39,7 @@
                     <fieldset class="form-group">
                         <legend><span>Results</span></legend>
                         <div class="row">
-                            <div class="col-sm-5">
+                            <div class="col-sm-6">
                                 <h5>Right Eye</h5>
                                 <div class="img-thumbnail text-center">
                                     <a href="#" data-target=".right-eye-modal-lg" data-toggle="modal"><img src="<%= assetPath("images/right-thumb.jpg") %>" width="320">
@@ -60,7 +60,7 @@
                                 <div class="none" style="margin-top: 20px"></div>
                                 <div class="form-group">
                                     <label for="">DR Grading</label>
-                                    <select class="form-control" name="RightGradingDr">
+                                    <select class="form-control" name="Eyes.RightEye.DRGrading">
                                         <option value="Ungradeable">
                                             Ungradeable
                                         </option>
@@ -80,14 +80,10 @@
                                             Proliferative DR
                                         </option>
                                     </select>
-                                    <div class="help-block form-text text-muted form-control-feedback">
-                                        ARDA:
-                                        <%= screening.RightGradingDr %>
-                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">DME Assessment</label>
-                                    <select class="form-control" name="RightGradingDme">
+                                    <select class="form-control" name="Eyes.RightEye.DMEAssessment">
                                         <option value="Present">
                                             Present
                                         </option>
@@ -95,13 +91,9 @@
                                             Not Present
                                         </option>
                                     </select>
-                                    <div class="help-block form-text text-muted form-control-feedback">
-                                        ARDA:
-                                        <%= screening.RightGradingDme %>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-5 ml-auto">
+                            <div class="col-sm-6 ml-auto">
                                 <h5>Left Eye</h5>
                                   <div class="img-thumbnail text-center">
                                     <a href="#" data-target=".left-eye-modal-lg" data-toggle="modal"><img src="<%= assetPath("images/left-thumb.jpg") %>" width="320">
@@ -122,7 +114,7 @@
                                 <div class="none" style="margin-top: 20px"></div>
                                 <div class="form-group">
                                     <label for="">DR Grading</label>
-                                    <select class="form-control" name="LeftGradingDr">
+                                    <select class="form-control" name="Eyes.LeftEye.DRGrading">
                                         <option value="Ungradeable">
                                             Ungradeable
                                         </option>
@@ -142,14 +134,10 @@
                                             Proliferative DR
                                         </option>
                                     </select>
-                                    <div class="help-block form-text text-muted form-control-feedback">
-                                        ARDA:
-                                        <%= screening.LeftGradingDr %>
-                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="">DME Assessment</label>
-                                    <select class="form-control" name="LeftGradingDme">
+                                    <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
                                         <option value="Present">
                                             Present
                                         </option>
@@ -157,10 +145,24 @@
                                             Not Present
                                         </option>
                                     </select>
-                                    <div class="help-block form-text text-muted form-control-feedback">
-                                        ARDA:
-                                        <%= screening.LeftGradingDme %>
-                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend><span>Referral</span></legend>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Referred</label>
+                                    <select class="form-control" name="referral">
+                                        <option value="yes">
+                                            Yes
+                                        </option>
+                                        <option value="no" selected>
+                                            No
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

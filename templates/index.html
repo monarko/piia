@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-7">
         <div class="element-wrapper">
             <div class="element-actions">
             </div>
@@ -8,8 +8,8 @@
             </h6>
             <div class="element-content">
                 <div class="row">
-                    <div class="col-sm-3">
-                        <a class="element-box el-tablo" href="#">
+                    <div class="col-sm-6">
+                        <a class="element-box el-tablo" href="#" style="text-align: center;">
                             <div class="label">
                                 Participants Registered
                             </div>
@@ -21,8 +21,8 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-sm-3">
-                        <a class="element-box el-tablo" href="#">
+                    <div class="col-sm-6">
+                        <a class="element-box el-tablo" href="#" style="text-align: center;">
                             <div class="label">
                                 Total Screened
                             </div>
@@ -34,8 +34,10 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-sm-3">
-                        <a class="element-box el-tablo" href="#">
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a class="element-box el-tablo" href="#" style="text-align: center;">
                             <div class="label">
                                 Remaining Over-read
                             </div>
@@ -47,8 +49,8 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-sm-3">
-                        <a class="element-box el-tablo" href="#">
+                    <div class="col-sm-6">
+                        <a class="element-box el-tablo" href="#" style="text-align: center;">
                             <div class="label">
                                 Total Users
                             </div>
@@ -61,6 +63,56 @@
                         </a>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <div class="support-index" style="display:block;">
+            <div class="support-tickets" style="margin: 0 0 0 20px; padding: 0 0 0 20px; border-right: 0;">
+              <div class="support-tickets-header">
+                <div class="tickets-control">
+                  <h5>
+                    Notifications
+                  </h5>
+                </div>
+              </div>
+              
+              <%= if (len(notifications) > 0) { %>
+                <%= for (notification) in notifications { %>
+              <div class="support-ticket ">
+                <div class="st-meta">
+                    <div class="badge badge-success-inverted">
+                      Site: <%= notification.Site %>
+                    </div>
+                    <div class="badge badge-primary-inverted">
+                        <%= upcase(notification.Status) %>
+                    </div>
+                  </div>
+                  <div class="st-body">
+                  <div class="ticket-content">
+                    <h6 class="ticket-title">
+                        <%= notification.Type %>
+                    </h6>
+                    <div class="ticket-description">
+                        <%= notification.Message %>
+                    </div>
+                  </div>
+                </div>
+                <div class="st-foot">
+                  <span class="label">Participant</span>
+                  <a class="value with-avatar" href="<%= participantPath({pid: notification.Participant.ID}) %>">
+                      <span><%= notification.Participant.Name %></span>
+                  </a>
+                  <span class="label">Updated:</span>
+                  <span class="value"><%= notification.UpdatedAt.Format("02 Jan 2006 03:04:05pm") %></span>
+                </div>
+              </div>
+              <% } %>
+              <% } else { %>
+              <div class="load-more-tickets">
+                <a href="#"><span>No notifications found</span></a>
+              </div>
+              <% } %>
             </div>
         </div>
     </div>

@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"sort"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/helpers"
@@ -17,7 +19,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 	var q *pop.Query
 
 	user := c.Value("current_user").(*models.User)
-	if user.Admin {
+	if user.Admin || user.PermissionStudyCoordinator {
 		if len(c.Param("status")) > 0 {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at ASC")
 		} else {
@@ -152,5 +154,90 @@ func ParticipantsEditPost(c buffalo.Context) error {
 
 // ParticipantsDetail default implementation.
 func ParticipantsDetail(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("participant", participant)
+
+	userActivities := make(map[string][]map[string]string)
+	participantCreatedDate := participant.CreatedAt.Format("2006 Jan 02")
+	participantCreatedTime := participant.CreatedAt.Format("3:04")
+	participantCreatedPm := participant.CreatedAt.Format("pm")
+	participantCreatedMsg := participant.User.Name + " registered the participant"
+
+	screeningCreatedDate := participant.Screenings[0].CreatedAt.Format("2006 Jan 02")
+	screeningCreatedTime := participant.Screenings[0].CreatedAt.Format("3:04")
+	screeningCreatedPm := participant.Screenings[0].CreatedAt.Format("pm")
+	screeningCreatedMsg := participant.Screenings[0].Screener.Name + " screened the participant"
+
+	overReadCreatedDate := participant.OverReadings[0].CreatedAt.Format("2006 Jan 02")
+	overReadCreatedTime := participant.OverReadings[0].CreatedAt.Format("3:04")
+	overReadCreatedPm := participant.OverReadings[0].CreatedAt.Format("pm")
+	overReadCreatedMsg := participant.OverReadings[0].OverReader.Name + " over read the participant"
+
+	userActivities[participantCreatedDate] = append(userActivities[participantCreatedDate], map[string]string{
+		"time": participantCreatedTime,
+		"ampm": participantCreatedPm,
+		"msg":  participantCreatedMsg,
+	})
+
+	userActivities[screeningCreatedDate] = append(userActivities[screeningCreatedDate], map[string]string{
+		"time": screeningCreatedTime,
+		"ampm": screeningCreatedPm,
+		"msg":  screeningCreatedMsg,
+	})
+
+	userActivities[overReadCreatedDate] = append(userActivities[overReadCreatedDate], map[string]string{
+		"time": overReadCreatedTime,
+		"ampm": overReadCreatedPm,
+		"msg":  overReadCreatedMsg,
+	})
+
+	openNotifications := &models.Notifications{}
+	if err := tx.Eager().Where("participant_id = ?", participant.ID).Where("status != ?", "closed").All(openNotifications); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("open_notifications", openNotifications)
+
+	notifications := &models.Notifications{}
+	if err := tx.Eager().Where("participant_id = ?", participant.ID).All(notifications); err != nil {
+		return c.Error(404, err)
+	}
+
+	for _, n := range *notifications {
+		logs := &models.SystemLogs{}
+		if err := tx.Eager().Where("resource_id = ?", n.ID).Where("resource_type = ?", "notification").All(logs); err != nil {
+			return c.Error(404, err)
+		}
+
+		for _, l := range *logs {
+			logCreatedDate := l.CreatedAt.Format("2006 Jan 02")
+			logCreatedTime := l.CreatedAt.Format("3:04")
+			logCreatedPm := l.CreatedAt.Format("pm")
+			logCreatedMsg := l.User.Name + " performed activity on notification: " + l.Activity
+
+			userActivities[logCreatedDate] = append(userActivities[logCreatedDate], map[string]string{
+				"time": logCreatedTime,
+				"ampm": logCreatedPm,
+				"msg":  logCreatedMsg,
+			})
+		}
+	}
+
+	var keys []string
+	for k := range userActivities {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	c.Set("user_activities", userActivities)
+	c.Set("activities_keys", keys)
+
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["page_participants_title"] = "/participants/index"
+	breadcrumbMap["breadcrumb_enrol_participant"] = ""
+	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/detail.html"))
 }
