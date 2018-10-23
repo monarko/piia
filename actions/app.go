@@ -110,6 +110,7 @@ func App() *buffalo.App {
 		app.GET("/errors/{status}", ErrorsDefault)
 
 		app.GET("/switch", ChangeLanguage)
+		app.POST("/notifications", ScreeningPermissionRequired(ChangeNotificationStatus))
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

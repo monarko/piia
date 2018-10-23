@@ -49,9 +49,9 @@ func HomeHandler(c buffalo.Context) error {
 	var q *pop.Query
 
 	if len(strings.TrimSpace(loggedInUser.Site)) > 0 {
-		q = tx.Eager().Where("site = ?", loggedInUser.Site).PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("site = ?", loggedInUser.Site).Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
 	} else if loggedInUser.Admin || loggedInUser.PermissionStudyCoordinator {
-		q = tx.Eager().PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
 	}
 
 	// Retrieve all Notifications from the DB

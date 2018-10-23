@@ -58,3 +58,10 @@ func (n *Notification) ValidateCreate(tx *pop.Connection) (*validate.Errors, err
 func (n *Notification) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
+
+// NotClosedNotifications returns the notifications without "closed" status
+func NotClosedNotifications() pop.ScopeFunc {
+	return func(q *pop.Query) *pop.Query {
+		return q.Where("status != ?", "closed")
+	}
+}

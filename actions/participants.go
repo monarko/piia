@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"sort"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/helpers"
@@ -154,7 +156,7 @@ func ParticipantsEditPost(c buffalo.Context) error {
 func ParticipantsDetail(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	participant := &models.Participant{}
-	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader", "Notifications").Find(participant, c.Param("pid")); err != nil {
+	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
 	c.Set("participant", participant)
@@ -193,7 +195,45 @@ func ParticipantsDetail(c buffalo.Context) error {
 		"msg":  overReadCreatedMsg,
 	})
 
+	openNotifications := &models.Notifications{}
+	if err := tx.Eager().Where("participant_id = ?", participant.ID).Where("status != ?", "closed").All(openNotifications); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("open_notifications", openNotifications)
+
+	notifications := &models.Notifications{}
+	if err := tx.Eager().Where("participant_id = ?", participant.ID).All(notifications); err != nil {
+		return c.Error(404, err)
+	}
+
+	for _, n := range *notifications {
+		logs := &models.SystemLogs{}
+		if err := tx.Eager().Where("resource_id = ?", n.ID).Where("resource_type = ?", "notification").All(logs); err != nil {
+			return c.Error(404, err)
+		}
+
+		for _, l := range *logs {
+			logCreatedDate := l.CreatedAt.Format("2006 Jan 02")
+			logCreatedTime := l.CreatedAt.Format("3:04")
+			logCreatedPm := l.CreatedAt.Format("pm")
+			logCreatedMsg := l.User.Name + " performed activity on notification: " + l.Activity
+
+			userActivities[logCreatedDate] = append(userActivities[logCreatedDate], map[string]string{
+				"time": logCreatedTime,
+				"ampm": logCreatedPm,
+				"msg":  logCreatedMsg,
+			})
+		}
+	}
+
+	var keys []string
+	for k := range userActivities {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
 	c.Set("user_activities", userActivities)
+	c.Set("activities_keys", keys)
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["page_participants_title"] = "/participants/index"
