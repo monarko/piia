@@ -52,12 +52,15 @@ func HomeHandler(c buffalo.Context) error {
 		q = tx.Eager().Where("site = ?", loggedInUser.Site).Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
 	} else if loggedInUser.Admin || loggedInUser.PermissionStudyCoordinator {
 		q = tx.Eager().Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
+	} else {
+		q = tx.Eager().Where("status != ?", "unknown").PaginateFromParams(c.Params()).Order("created_at DESC")
 	}
 
 	// Retrieve all Notifications from the DB
 	if err := q.All(notifications); err != nil {
 		return errors.WithStack(err)
 	}
+
 	// Make posts available inside the html template
 	c.Set("notifications", notifications)
 	// Add the paginator to the context so it can be used in the template.
