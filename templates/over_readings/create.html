@@ -2,7 +2,7 @@
     <div class="col-lg-8">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Add New Over Reading
+                <%= t("page_overreadcase_title") %>
             </h6>
             <div class="element-box">
                 <div class="row">
@@ -21,26 +21,18 @@
                 </div>
                 <form action="<%= caseOverreadingsCreatePath({pid: participant.ID}) %>" method="POST">
                     <%= csrf() %>
-                    <div class="element-actions">
-                        <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button">
-                            <%= participant.ParticipantID %></a>
-                    </div>
                     <div class="form-desc">
-                        <h6>Over Read</h6>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p>
-                                <%= genderHelper(participant.Gender) %> |
-                                <%= ageHelper(participant.DOB) %>
-                            </p>
-                        </div>
+                        <h6><%= participant.ParticipantID %></h6>
+                        <p>
+                            <%= genderHelper(participant.Gender) %> |
+                            <%= ageHelper(participant.DOB) %>
+                        </p>
                     </div>
                     <fieldset class="form-group">
-                        <legend><span>Results</span></legend>
+                        <legend><span><%= t("section_dr_assessment_header") %></span></legend>
                         <div class="row">
                             <div class="col-sm-6">
-                                <h5>Right Eye</h5>
+                                <h5><%= t("header_right_eye") %></h5>
                                 <div class="img-thumbnail text-center">
                                     <a href="#" data-target=".right-eye-modal-lg" data-toggle="modal"><img src="<%= assetPath("images/right-thumb.jpg") %>" width="320">
                                     </a>
@@ -51,7 +43,7 @@
                                         <div class="modal-content">
                                             <div class="modal-body text-center">
                                                 <div id="image-left-eye">
-                                                    <img src="<%= assetPath("images/right.jpg") %>" data-high-res-src="<%= assetPath("images/right.jpg") %>" alt="" class="pannable-image" height="580px;">
+                                                    <img src='<%= assetPath("images/right.jpg") %>' data-high-res-src='<%= assetPath("images/right.jpg") %>' alt="" class="pannable-image" height="700px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -59,42 +51,42 @@
                                 </div>
                                 <div class="none" style="margin-top: 20px"></div>
                                 <div class="form-group">
-                                    <label for="">DR Grading</label>
+                                    <label for=""><%= t("label_drgrading") %></label>
                                     <select class="form-control" name="Eyes.RightEye.DRGrading">
                                         <option value="Ungradeable">
-                                            Ungradeable
+                                            <%= t("option_ungradeable") %>
                                         </option>
                                         <option value="Normal">
-                                            Normal
+                                            <%= t("option_normal") %>
                                         </option>
                                         <option value="Mild DR">
-                                            Mild DR
+                                            <%= t("option_mild_npdr") %>
                                         </option>
                                         <option value="Moderate DR">
-                                            Moderate DR
+                                            <%= t("option_mod_npdr") %>
                                         </option>
                                         <option value="Severe DR">
-                                            Severe DR
+                                            <%= t("option_severe_npdr") %>
                                         </option>
                                         <option value="Proliferative DR">
-                                            Proliferative DR
+                                            <%= t("option_proliferative_dr") %>
                                         </option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">DME Assessment</label>
+                                    <label for=""><%= t("label_dme") %></label>
                                     <select class="form-control" name="Eyes.RightEye.DMEAssessment">
                                         <option value="Present">
-                                            Present
+                                            <%= t("option_dme_present") %>
                                         </option>
                                         <option value="Not Present">
-                                            Not Present
+                                            <%= t("option_dme_notpresent") %>
                                         </option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-6 ml-auto">
-                                <h5>Left Eye</h5>
+                                <h5><%= t("header_left_eye") %></h5>
                                   <div class="img-thumbnail text-center">
                                     <a href="#" data-target=".left-eye-modal-lg" data-toggle="modal"><img src="<%= assetPath("images/left-thumb.jpg") %>" width="320">
                                     </a>
@@ -105,7 +97,7 @@
                                         <div class="modal-content">
                                             <div class="modal-body text-center">
                                                 <div id="image-left-eye">
-                                                    <img src="<%= assetPath("images/left.jpg") %>" data-high-res-src="<%= assetPath("images/left.jpg") %>" alt="" class="pannable-image" height="580px;">
+                                                    <img src='<%= assetPath("images/left.jpg") %>'data-high-res-src='<%= assetPath("images/left.jpg") %>' alt="" class="pannable-image" height="700px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -113,36 +105,36 @@
                                 </div>
                                 <div class="none" style="margin-top: 20px"></div>
                                 <div class="form-group">
-                                    <label for="">DR Grading</label>
+                                    <label for=""><%= t("label_drgrading") %></label>
                                     <select class="form-control" name="Eyes.LeftEye.DRGrading">
                                         <option value="Ungradeable">
-                                            Ungradeable
+                                            <%= t("option_ungradeable") %>
                                         </option>
                                         <option value="Normal">
-                                            Normal
+                                            <%= t("option_normal") %>
                                         </option>
                                         <option value="Mild DR">
-                                            Mild DR
+                                            <%= t("option_mild_npdr") %>
                                         </option>
                                         <option value="Moderate DR">
-                                            Moderate DR
+                                            <%= t("option_mod_npdr") %>
                                         </option>
                                         <option value="Severe DR">
-                                            Severe DR
+                                            <%= t("option_severe_npdr") %>
                                         </option>
                                         <option value="Proliferative DR">
-                                            Proliferative DR
+                                            <%= t("option_proliferative_dr") %>
                                         </option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">DME Assessment</label>
+                                    <label for=""><%= t("label_dme") %></label>
                                     <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
                                         <option value="Present">
-                                            Present
+                                            <%= t("option_dme_present") %>
                                         </option>
                                         <option value="Not Present">
-                                            Not Present
+                                            <%= t("option_dme_notpresent") %>
                                         </option>
                                     </select>
                                 </div>
@@ -150,17 +142,17 @@
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
-                        <legend><span>Referral</span></legend>
+                        <legend><span><%= t("section_referral_header") %></span></legend>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="">Referred</label>
+                                    <label for=""><%= t("label_refer") %></label>
                                     <select class="form-control" name="referral">
                                         <option value="yes">
-                                            Yes
+                                            <%= t("option_yes") %>
                                         </option>
                                         <option value="no" selected>
-                                            No
+                                            <%= t("option_no") %>
                                         </option>
                                     </select>
                                 </div>
@@ -168,7 +160,7 @@
                         </div>
                     </fieldset>
                     <div class="form-buttons-w">
-                        <button class="btn btn-primary" type="submit"> Submit</button>
+                        <button class="btn btn-primary" type="submit"> <%= t("button_submit") %></button>
                     </div>
                 </form>
             </div>
