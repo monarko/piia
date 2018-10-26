@@ -1,12 +1,8 @@
 <div class="row justify-content-lg-center">
     <div class="col-lg-10">
         <div class="element-wrapper">
-            <div class="element-actions">
-                <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button">Download
-                    CSV</a>
-            </div>
             <h6 class="element-header">
-                Cases to Review
+                <%= t("page_overreading_title") %>
             </h6>
             <div class="element-box">
                 <!-- controls above table -->
@@ -32,16 +28,16 @@
                                     <input class="form-control" type="checkbox">
                                 </th>
                                 <th>
-                                    Participant ID
+                                    <%= t("th_participant_id") %>
                                 </th>
                                 <th>
-                                    Gender
+                                    <%= t("th_gender") %>
                                 </th>
                                 <th>
-                                    Age
+                                    <%= t("th_age") %>
                                 </th>
                                 <th>
-                                    Action
+                                    <%= t("th_actions") %>
                                 </th>
                             </tr>
                         </thead>
@@ -74,16 +70,16 @@
 
                 <div class="controls-below-table">
                     <div class="table-records-info">
-                        Showing
+                        <%= t("pagination_title") %>
                         <%= pagination.Offset + 1 %> -
                         <%= pagination.Offset + pagination.CurrentEntriesSize %> of
                         <%= pagination.TotalEntriesSize %>
                         |
-                        View
-                        <a href="?per_page=10">10</a> /
-                        <a href="?per_page=20">20</a> /
-                        <a href="?per_page=50">50</a>
-                        per page
+                        <%= t("pagination_view_label") %>
+                        <a href="?per_page=10"><%= t("pagination_options_10") %></a> /
+                        <a href="?per_page=20"><%= t("pagination_options_20") %></a> /
+                        <a href="?per_page=50"><%= t("pagination_options_50") %></a>
+                        <%= t("pagination_perpage_label") %>
                     </div>
                     <div class="table-records-pages">
                         <style>
