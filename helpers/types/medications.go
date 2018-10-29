@@ -4,14 +4,16 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+
+	"github.com/gobuffalo/pop/nulls"
 )
 
 /* Medications */
 
 // MedicationScreening model
 type MedicationScreening struct {
-	TakingMedications bool `json:"taking_medications"`
-	OnInsulin         bool `json:"on_insulin"`
+	TakingMedications nulls.Bool `json:"taking_medications"`
+	OnInsulin         nulls.Bool `json:"on_insulin"`
 }
 
 // Value returns database driver compatible type

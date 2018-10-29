@@ -4,15 +4,17 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+
+	"github.com/gobuffalo/pop/nulls"
 )
 
 /* Diabetes */
 
 // DiabetesScreening model
 type DiabetesScreening struct {
-	DiabetesType string `json:"diabetes_type"`
-	Duration     int    `json:"duration"`
-	DurationType string `json:"duration_type"`
+	DiabetesType nulls.String `json:"diabetes_type"`
+	Duration     nulls.Int    `json:"duration"`
+	DurationType nulls.String `json:"duration_type"`
 }
 
 // Value returns database driver compatible type

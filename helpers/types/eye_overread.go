@@ -4,14 +4,16 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+
+	"github.com/gobuffalo/pop/nulls"
 )
 
 /* Eye Assessments */
 
 // EyeOverRead model
 type EyeOverRead struct {
-	DRGrading     string `json:"dr"`
-	DMEAssessment string `json:"dme"`
+	DRGrading     nulls.String `json:"dr"`
+	DMEAssessment nulls.String `json:"dme"`
 }
 
 // EyeOverReading model

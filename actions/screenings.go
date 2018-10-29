@@ -68,7 +68,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	screening.ParticipantID = participant.ID
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
-		screening.Referral.Referred = true
+		screening.Referral.Referred.Bool = true
 	}
 
 	verrs, err := tx.ValidateAndCreate(screening)

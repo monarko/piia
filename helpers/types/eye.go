@@ -4,15 +4,17 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+
+	"github.com/gobuffalo/pop/nulls"
 )
 
 /* Eye Assessments */
 
 // EyeAssessment model
 type EyeAssessment struct {
-	VisualAcuity  string `json:"visual_acuity"`
-	DRGrading     string `json:"dr"`
-	DMEAssessment string `json:"dme"`
+	VisualAcuity  nulls.String `json:"visual_acuity"`
+	DRGrading     nulls.String `json:"dr"`
+	DMEAssessment nulls.String `json:"dme"`
 }
 
 // EyeScreening model

@@ -105,7 +105,70 @@
   translation: "গবেষণায় একটি নতুন অংশগ্রহণকারী নথিভুক্ত করার জন্য ফর্ম পূরণ করুন"
 - id: breadcrumb_enrol_participant
   translation: "অংশগ্রহণকারী নথিভুক্ত করা"
+# over-reading index
+- id: page_overreading_title
+  translation: "ওভাররীডিং তালিকা"
+# over-readin case
+- id: page_overreadcase_title
+  translation: "ওভাররীড কেস"
+- id: section_dr_assessment_header
+  translation: "ডিআর মূল্যায়ন"
+- id: section_referral_header
+  translation: "রেফারেল প্রয়োজন"
+- id: header_right_eye
+  translation: "ডান চোখ (ওডি)"
+- id: header_left_eye
+  translation: "বাম চোখ (ওএস)"
+- id: label_drgrading
+  translation: "ডিআর গ্রেড"
+- id: label_dme
+  translation: "ডিএমই মূল্যায়ন"
+- id: label_other_pathology
+  translation: "অন্যান্য প্যাথোলজি আছে"
+- id: label_refer
+  translation: "মূল্যায়নের জন্য রেফারেল"
+# grading scales
+- id: option_ungradeable
+  translation: "গ্রেড করা যাচ্ছে না"
+- id: option_normal
+  translation: "সাধারণ"
+- id: option_mild_npdr
+  translation: "সামান্য এনপিডিআর"
+- id: option_mod_npdr
+  translation: "মাঝারি এনপিডিআর"
+- id: option_severe_npdr
+  translation: "গুরুতর এনপিডিআর"
+- id: option_proliferative_dr
+  translation: "Proliferative ডিআর"
+- id: option_dme_present
+  translation: "উপস্থিত"
+- id: option_dme_notpresent
+  translation: "অনুপস্থিত"
 
 
+#forms
+- id: form_select_any
+  translation: "নির্বাচন করুন"
+- id: field_dr_grading
+  translation: "ডিআর গ্রেডিং"
+- id: field_dme_assessment
+  translation: "ডিএমই মূল্যায়ন"
+- id: field_visual_acuity
+  translation: "ভিজ্যুয়াল একুইটি"
+- id: field_right_eye
+  translation: "ডান চোখ"
+- id: field_left_eye
+  translation: "বাম চোখ"  
+- id: field_eye_assessment
+  translation: "চোখের মূল্যায়ন" 
 
+#language
+- id: language_btn_txt
+  translation: "ভাষা"
+- id: language_en
+  translation: "ইংরেজি"
+- id: language_th
+  translation: "থাই"
+- id: language_bd
+  translation: "বাংলা"
 
