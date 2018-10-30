@@ -1,0 +1,184 @@
+# For more information on using i18n see: https://github.com/nicksnyder/go-i18n
+- id: meta_title
+  translation: "PIIA (peer)"
+# login specific
+- id: login_greeting
+  translation: "Piia <peer> Login"
+- id: label_username
+  translation: "ชื่อผู้ใช้"
+- id: label_email
+  translation: "อีเมล"
+- id: placeholder_username
+  translation: "กรอกอีเมล์ของคุณ"
+- id: label_password
+  translation: "รหัสผ่าน"
+- id: placeholder_password
+  translation: "ป้อนรหัสผ่านของคุณ"
+- id: button_login
+  translation: "เข้าสู่ระบบฉัน"
+- id: button_submit
+  translation: "เสนอ"
+- id: option_yes
+  translation: "ใช่่"
+- id: option_no
+  translation: "ไม่"
+# admin dashboard
+- id: header_title
+  translation: "Piia Admin"
+- id: role_admin
+  translation: "Administrator"
+- id: role_general
+  translation: "General"
+- id: role_screener
+  translation: "Screener"
+- id: role_reader
+  translation: "Over Reader"
+- id: role_study_coordinator
+  translation: "Study Co-ordinator"
+# nav items & breadcrumbs
+- id: nav_home
+  translation: "แผงควบคุม"
+- id: nav_logout
+  translation: "ออกจากระบบ"
+- id: nav_participants
+  translation: "ผู้เข้าร่วม"
+- id: nav_overreading
+  translation: "สำหรับรีวิว"
+- id: nav_users
+  translation: "การจัดการผู้ใช้"
+- id: nav_logs
+  translation: "ท่อน"
+- id: nav_cases
+  translation: "กรณีเพื่อตรวจสอบ"
+# participants
+- id: page_participants_title
+  translation: "Enrolled Participants"
+- id: button_download_csv
+  translation: "Download CSV"
+- id: button_enroll
+  translation: "Enroll New Participant"
+- id: filter_status_select
+  translation: "Filter by status"
+- id: option_enrolled
+  translation: "Enrolled"
+- id: option_screened
+  translation: "Screened"
+- id: option_overread
+  translation: "Over-read"
+- id: button_filter_status
+  translation: "Go"
+# participant table header labels
+- id: th_participant_id
+  translation: "Participant Id"
+- id: th_patient_id
+  translation: "Patient Id"
+- id: th_name
+  translation: "Name"
+- id: th_gender
+  translation: "Gender"
+- id: th_age
+  translation: "Age"
+- id: th_consented
+  translation: "Consented"
+- id: th_enrolled_date
+  translation: "Enrolled On"
+- id: th_screening_date
+  translation: "Screened On"
+- id: th_overread_date
+  translation: "Overead On"
+- id: th_workflow_status
+  translation: "Status"
+- id: th_actions
+  translation: "Actions"
+- id: pagination_title
+  translation: "Showing"
+- id: pagination_view_label
+  translation: "View"
+- id: pagination_perpage_label
+  translation: "per page"
+- id: pagination_options_10
+  translation: "10"
+- id: pagination_options_20
+  translation: "20"
+- id: pagination_options_50
+  translation: "50"
+# create new - enrollment
+- id: page_enroll_title
+  translation: "Enroll into Study"
+- id: form_enroll_header
+  translation: "Enroll new participant"
+- id: form_enroll_desc
+  translation: "Complete the form to enroll a new participant in the study"
+- id: breadcrumb_enrol_participant
+  translation: "Enroll Participant"
+# over-reading index
+- id: page_overreading_title
+  translation: "Overreading List"
+# over-readin case
+- id: page_overreadcase_title
+  translation: "Overread Case"
+- id: section_dr_assessment_header
+  translation: "DR Assessment"
+- id: section_referral_header
+  translation: "Referral Required"
+- id: header_right_eye
+  translation: "Right Eye (OD)"
+- id: header_left_eye
+  translation: "Left Eye (OS)"
+- id: label_drgrading
+  translation: "DR Grade"
+- id: label_dme
+  translation: "DME Assessment"
+- id: label_other_pathology
+  translation: "Other Pathology Present"
+- id: label_refer
+  translation: "Refer for assessment"
+# grading scales
+- id: option_ungradeable
+  translation: "Ungradeable"
+- id: option_normal
+  translation: "Normal"
+- id: option_mild_npdr
+  translation: "Mild NPDR"
+- id: option_mod_npdr
+  translation: "Moderate NPDR"
+- id: option_severe_npdr
+  translation: "Severe NPDR"
+- id: option_proliferative_dr
+  translation: "Proliferative DR"
+- id: option_dme_present
+  translation: "Present"
+- id: option_dme_notpresent
+  translation: "Not Present"
+- id: option_suspected_glaucoma
+  translation: "Glaucoma"
+- id: option_suspected_amd
+  translation: "AMD"
+- id: option_suspected_other
+  translation: "Other"
+
+#forms
+- id: form_select_any
+  translation: "Select any"
+- id: field_dr_grading
+  translation: "DR Grading"
+- id: field_dme_assessment
+  translation: "DME Assessment"
+- id: field_visual_acuity
+  translation: "Visual Acuity"
+- id: field_right_eye
+  translation: "Right Eye"
+- id: field_left_eye
+  translation: "Left Eye"  
+- id: field_eye_assessment
+  translation: "Eye Assessment" 
+
+#language
+- id: language_btn_txt
+  translation: "ภาษา"
+- id: language_en
+  translation: "อังกฤษ"
+- id: language_th
+  translation: "ไทย"
+- id: language_bd
+  translation: "ประเทศบังคลาเทศ"
