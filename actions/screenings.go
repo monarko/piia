@@ -68,7 +68,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	screening.ParticipantID = participant.ID
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
-		screening.Referral.Referred = true
+		screening.Referral.Referred.Bool = true
 	}
 
 	verrs, err := tx.ValidateAndCreate(screening)
@@ -87,21 +87,23 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("screenings/create.html"))
 	}
 
-	participant.Status = "11"
-	perrs, err := tx.ValidateAndUpdate(participant)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	if perrs.HasAny() {
-		c.Set("participant", participant)
-		c.Set("screening", screening)
-		c.Set("errors", verrs.Errors)
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Participants"] = "/participants/index"
-		// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
-		breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
-		c.Set("breadcrumbMap", breadcrumbMap)
-		return c.Render(422, r.HTML("screenings/create.html"))
+	if len(screening.Eyes.RightEye.VisualAcuity.String) > 0 && len(screening.Eyes.RightEye.DRGrading.String) > 0 && len(screening.Eyes.RightEye.DMEAssessment.String) > 0 && len(screening.Eyes.LeftEye.VisualAcuity.String) > 0 && len(screening.Eyes.LeftEye.DRGrading.String) > 0 && len(screening.Eyes.LeftEye.DMEAssessment.String) > 0 {
+		participant.Status = "11"
+		perrs, err := tx.ValidateAndUpdate(participant)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		if perrs.HasAny() {
+			c.Set("participant", participant)
+			c.Set("screening", screening)
+			c.Set("errors", verrs.Errors)
+			breadcrumbMap := make(map[string]interface{})
+			breadcrumbMap["Participants"] = "/participants/index"
+			// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
+			breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
+			c.Set("breadcrumbMap", breadcrumbMap)
+			return c.Render(422, r.HTML("screenings/create.html"))
+		}
 	}
 
 	logErr := InsertLog("create", "User did a screening", "", screening.ID.String(), "screening", user.ID, c)

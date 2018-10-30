@@ -28961,3 +28961,8 @@ Contents:
   border-bottom: none !important;
   margin-bottom: 5px !important;
 }
+
+.fullscreen-image {
+  cursor: pointer;
+  width: 320px;
+}

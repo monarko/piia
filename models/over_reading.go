@@ -7,7 +7,6 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
-	"github.com/gobuffalo/validate/validators"
 	"github.com/monarko/piia/helpers/types"
 )
 
@@ -43,10 +42,10 @@ func (o OverReadings) String() string {
 // This method is not required and may be deleted.
 func (o *OverReading) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
-		&validators.StringIsPresent{Field: o.Eyes.LeftEye.DRGrading, Name: "LeftGradingDr"},
-		&validators.StringIsPresent{Field: o.Eyes.LeftEye.DMEAssessment, Name: "LeftGradingDme"},
-		&validators.StringIsPresent{Field: o.Eyes.RightEye.DRGrading, Name: "RightGradingDr"},
-		&validators.StringIsPresent{Field: o.Eyes.RightEye.DMEAssessment, Name: "RightGradingDme"},
+	// &validators.StringIsPresent{Field: o.Eyes.LeftEye.DRGrading, Name: "LeftGradingDr"},
+	// &validators.StringIsPresent{Field: o.Eyes.LeftEye.DMEAssessment, Name: "LeftGradingDme"},
+	// &validators.StringIsPresent{Field: o.Eyes.RightEye.DRGrading, Name: "RightGradingDr"},
+	// &validators.StringIsPresent{Field: o.Eyes.RightEye.DMEAssessment, Name: "RightGradingDme"},
 	), nil
 }
 

@@ -72,6 +72,8 @@ func App() *buffalo.App {
 		auth.GET("/index", AdminRequired(UsersIndex))
 		auth.GET("/create", AdminRequired(UsersCreateGet))
 		auth.POST("/create", AdminRequired(UsersCreatePost))
+		auth.GET("/edit/{uid}", AdminRequired(UsersEditGet)).Name("usersEditPath")
+		auth.POST("/edit/{uid}", AdminRequired(UsersEditPost)).Name("usersEditPath")
 
 		participants := app.Group("/participants")
 		participants.Use(LoginRequired)

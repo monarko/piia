@@ -4,16 +4,17 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-	"time"
+
+	"github.com/gobuffalo/pop/nulls"
 )
 
 /* Measurements */
 
 // BPScreening model
 type BPScreening struct {
-	SBP            int       `json:"sbp"`
-	DBP            int       `json:"dbp"`
-	AssessmentDate time.Time `json:"assessment_date"`
+	SBP            nulls.Int  `json:"sbp"`
+	DBP            nulls.Int  `json:"dbp"`
+	AssessmentDate nulls.Time `json:"assessment_date"`
 }
 
 // Value returns database driver compatible type

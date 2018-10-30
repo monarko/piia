@@ -95,7 +95,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
-		overReading.Referral.Referred = true
+		overReading.Referral.Referred.Bool = true
 	}
 
 	// images
@@ -106,7 +106,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	c.Set("rightEyeLink", rightEye)
 
 	shouldBeRefer := shouldBeReferred(overReading)
-	if shouldBeRefer && !overReading.Referral.Referred {
+	if shouldBeRefer && !overReading.Referral.Referred.Bool {
 		c.Set("participant", participant)
 		c.Set("screening", screening)
 		c.Set("overReading", overReading)
@@ -188,7 +188,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 }
 
 func checkScreeningAndOverReading(screening *models.Screening, overReading *models.OverReading) bool {
-	if !screening.Referral.Referred && overReading.Referral.Referred {
+	if !screening.Referral.Referred.Bool && overReading.Referral.Referred.Bool {
 		return true
 	}
 	return false
@@ -197,11 +197,11 @@ func checkScreeningAndOverReading(screening *models.Screening, overReading *mode
 func shouldBeReferred(overReading *models.OverReading) bool {
 	refer := false
 
-	if overReading.Eyes.LeftEye.DRGrading == "Ungradeable" || overReading.Eyes.LeftEye.DRGrading == "Moderate DR" || overReading.Eyes.LeftEye.DRGrading == "Severe DR" || overReading.Eyes.RightEye.DRGrading == "Ungradeable" || overReading.Eyes.RightEye.DRGrading == "Moderate DR" || overReading.Eyes.RightEye.DRGrading == "Severe DR" {
+	if overReading.Eyes.LeftEye.DRGrading.String == "Ungradeable" || overReading.Eyes.LeftEye.DRGrading.String == "Moderate DR" || overReading.Eyes.LeftEye.DRGrading.String == "Severe DR" || overReading.Eyes.RightEye.DRGrading.String == "Ungradeable" || overReading.Eyes.RightEye.DRGrading.String == "Moderate DR" || overReading.Eyes.RightEye.DRGrading.String == "Severe DR" {
 		refer = true
 	}
 
-	if overReading.Eyes.LeftEye.DMEAssessment == "Present" || overReading.Eyes.RightEye.DMEAssessment == "Present" {
+	if overReading.Eyes.LeftEye.DMEAssessment.String == "Present" || overReading.Eyes.RightEye.DMEAssessment.String == "Present" {
 		refer = true
 	}
 

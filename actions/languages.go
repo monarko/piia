@@ -11,6 +11,8 @@ func ChangeLanguage(c buffalo.Context) error {
 
 	if selectedLanguage == "bn" {
 		lang = "bn"
+	} else if selectedLanguage == "th" {
+		lang = "th"
 	}
 
 	c.Session().Set("lang", lang)

@@ -1,0 +1,242 @@
+<div class="row justify-content-lg-center">
+    <div class="col-lg-auto">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Update User
+            </h6>
+            <div class="row">
+                <div class="col">
+                    <%= if (errors) { %>
+                    <%= for (key, val) in errors { %>
+                    <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+                        <%= val %>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <% } %>
+                    <% } %>
+                </div>
+            </div>
+            <form action="<%= usersEditPath({uid: user.ID}) %>" method="POST" novalidate>
+                <%= csrf() %>
+                <div class="element-box">
+                    <h5 class="form-header">
+                        User Information
+                    </h5>
+                    <div class="form-desc">
+                        Complete the form to edit an user
+                    </div>
+                    <fieldset class="form-group">
+                        <legend><span>Demographics</span></legend>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <label for="">Name</label><input class="form-control" placeholder="Name" type="text"
+                                        name="Name" value="<%= user.Name %>">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for=""> Site</label>
+                                    <select class="form-control" name="Site">
+                                        <option value="">
+                                            All
+                                        </option>
+                                        <option value="A" <%= if (user.Site == "A") { %> selected <% } %>>
+                                            A
+                                        </option>
+                                        <option value="B" <%= if (user.Site == "B") { %> selected <% } %>>
+                                            B
+                                        </option>
+                                        <option value="C" <%= if (user.Site == "C") { %> selected <% } %>>
+                                            C
+                                        </option>
+                                        <option value="D" <%= if (user.Site == "D") { %> selected <% } %>>
+                                            D
+                                        </option>
+                                        <option value="E" <%= if (user.Site == "E") { %> selected <% } %>>
+                                            E
+                                        </option>
+                                        <option value="F" <%= if (user.Site == "F") { %> selected <% } %>>
+                                            F
+                                        </option>
+                                        <option value="G" <%= if (user.Site == "G") { %> selected <% } %>>
+                                            G
+                                        </option>
+                                        <option value="H" <%= if (user.Site == "H") { %> selected <% } %>>
+                                            H
+                                        </option>
+                                        <option value="I" <%= if (user.Site == "I") { %> selected <% } %>>
+                                            I
+                                        </option>
+                                        <option value="J" <%= if (user.Site == "J") { %> selected <% } %>>
+                                            J
+                                        </option>
+                                        <option value="K" <%= if (user.Site == "K") { %> selected <% } %>>
+                                            K
+                                        </option>
+                                        <option value="L" <%= if (user.Site == "L") { %> selected <% } %>>
+                                            L
+                                        </option>
+                                        <option value="M" <%= if (user.Site == "M") { %> selected <% } %>>
+                                            M
+                                        </option>
+                                        <option value="N" <%= if (user.Site == "N") { %> selected <% } %>>
+                                            N
+                                        </option>
+                                        <option value="O" <%= if (user.Site == "O") { %> selected <% } %>>
+                                            O
+                                        </option>
+                                        <option value="P" <%= if (user.Site == "P") { %> selected <% } %>>
+                                            P
+                                        </option>
+                                        <option value="Q" <%= if (user.Site == "Q") { %> selected <% } %>>
+                                            Q
+                                        </option>
+                                        <option value="R" <%= if (user.Site == "R") { %> selected <% } %>>
+                                            R
+                                        </option>
+                                        <option value="S" <%= if (user.Site == "S") { %> selected <% } %>>
+                                            S
+                                        </option>
+                                        <option value="T" <%= if (user.Site == "T") { %> selected <% } %>>
+                                            T
+                                        </option>
+                                        <option value="U" <%= if (user.Site == "U") { %> selected <% } %>>
+                                            U
+                                        </option>
+                                        <option value="V" <%= if (user.Site == "V") { %> selected <% } %>>
+                                            V
+                                        </option>
+                                        <option value="W" <%= if (user.Site == "W") { %> selected <% } %>>
+                                            W
+                                        </option>
+                                        <option value="X" <%= if (user.Site == "X") { %> selected <% } %>>
+                                            X
+                                        </option>
+                                        <option value="Y" <%= if (user.Site == "Y") { %> selected <% } %>>
+                                            Y
+                                        </option>
+                                        <option value="Z" <%= if (user.Site == "Z") { %> selected <% } %>>
+                                            Z
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" name="Username" id="username" placeholder="Enter username" class="form-control"
+                                        value="<%= user.Username %>">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="mobile">Mobile</label>
+                                    <input type="text" name="Mobile" id="mobile" placeholder="Enter mobile" class="form-control" value="<%= user.Mobile %>">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="">Email</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="os-icon os-icon-email-2-at2"></i>
+                                            </span>
+                                        </div>
+                                        <input class="form-control" placeholder="Email address" type="email" name="Email" value="<%= user.Email %>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend><span>Password</span></legend>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" name="Password" id="password" placeholder="Password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="">Confirm Password</label><input class="form-control" name="PasswordConfirm"
+                                        placeholder="Password" type="password">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend><span>Permissions</span></legend>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-check form-group">
+                                    <label class="form-check-label">
+                                        <%= if (user.Admin) { %>
+                                        <input class="btn form-check-input" type="checkbox" name="Admin" checked>
+                                        <% } else { %>
+                                        <input class="btn form-check-input" type="checkbox" name="Admin">
+                                        <% } %>
+                                        <strong>Is Admin?</strong>
+                                        </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-check form-group">
+                                    <label class="form-check-label">
+                                        <%= if (user.PermissionStudyCoordinator) { %>
+                                            <input class="btn form-check-input" type="checkbox"
+                                            name="PermissionStudyCoordinator" value="true" checked>
+                                        <% } else { %>
+                                            <input class="btn form-check-input" type="checkbox"
+                                            name="PermissionStudyCoordinator" value="true">
+                                        <% } %>
+                                        <strong>Is Study Co-ordinator?</strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-check form-group">
+                                    <label class="form-check-label">
+                                            <%= if (user.PermissionScreening) { %>
+                                                <input class="btn form-check-input" type="checkbox"
+                                            name="PermissionScreening" value="true" checked>
+                                            <% } else { %>
+                                                <input class="btn form-check-input" type="checkbox"
+                                            name="PermissionScreening" value="true">
+                                            <% } %>
+                                        Screening Permission
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-check form-group">
+                                    <label class="form-check-label">
+                                            <%= if (user.PermissionOverRead) { %>
+                                                <input class="btn form-check-input" type="checkbox"
+                                            name="PermissionOverRead" value="true" checked>
+                                            <% } else { %>
+                                                <input class="btn form-check-input" type="checkbox"
+                                            name="PermissionOverRead" value="true">
+                                            <% } %>
+                                        Over Read Permission
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="form-buttons-w">
+                    <button class="btn btn-primary" type="submit"> Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

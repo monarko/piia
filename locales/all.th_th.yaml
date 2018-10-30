@@ -5,23 +5,23 @@
 - id: login_greeting
   translation: "Piia <peer> Login"
 - id: label_username
-  translation: "Username"
+  translation: "ชื่อผู้ใช้"
 - id: label_email
-  translation: "Email"
+  translation: "อีเมล"
 - id: placeholder_username
-  translation: "Enter your email"
+  translation: "กรอกอีเมล์ของคุณ"
 - id: label_password
-  translation: "Password"
+  translation: "รหัสผ่าน"
 - id: placeholder_password
-  translation: "Enter your password"
+  translation: "ป้อนรหัสผ่านของคุณ"
 - id: button_login
-  translation: "Log me in"
+  translation: "เข้าสู่ระบบฉัน"
 - id: button_submit
-  translation: "Submit"
+  translation: "เสนอ"
 - id: option_yes
-  translation: "Yes"
+  translation: "ใช่่"
 - id: option_no
-  translation: "No"
+  translation: "ไม่"
 # admin dashboard
 - id: header_title
   translation: "Piia Admin"
@@ -37,19 +37,19 @@
   translation: "Study Co-ordinator"
 # nav items & breadcrumbs
 - id: nav_home
-  translation: "Dashboard"
+  translation: "แผงควบคุม"
 - id: nav_logout
-  translation: "Logout"
+  translation: "ออกจากระบบ"
 - id: nav_participants
-  translation: "Participants"
+  translation: "ผู้เข้าร่วม"
 - id: nav_overreading
-  translation: "Cases for Review"
+  translation: "สำหรับรีวิว"
 - id: nav_users
-  translation: "User Management"
+  translation: "การจัดการผู้ใช้"
 - id: nav_logs
-  translation: "Access Logs"
+  translation: "ท่อน"
 - id: nav_cases
-  translation: "Cases for review"
+  translation: "กรณีเพื่อตรวจสอบ"
 # participants
 - id: page_participants_title
   translation: "Enrolled Participants"
@@ -133,8 +133,6 @@
   translation: "Other Pathology Present"
 - id: label_refer
   translation: "Refer for assessment"
-- id: label_suspected_pathology
-  translation: "Suspected Pathologies"
 # grading scales
 - id: option_ungradeable
   translation: "Ungradeable"
@@ -177,10 +175,10 @@
 
 #language
 - id: language_btn_txt
-  translation: "Language"
+  translation: "ภาษา"
 - id: language_en
-  translation: "English"
+  translation: "อังกฤษ"
 - id: language_th
-  translation: "Thai"
+  translation: "ไทย"
 - id: language_bd
-  translation: "Bengali"
+  translation: "ประเทศบังคลาเทศ"

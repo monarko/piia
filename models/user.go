@@ -66,9 +66,41 @@ func (u *User) Create(tx *pop.Connection) (*validate.Errors, error) {
 	return tx.ValidateAndCreate(u)
 }
 
+// Update validates and updates an User.
+func (u *User) Update(tx *pop.Connection) (*validate.Errors, error) {
+	u.Email = strings.ToLower(u.Email)
+	if len(u.Password) > 0 {
+		pwdHash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return validate.NewErrors(), errors.WithStack(err)
+		}
+		u.PasswordHash = string(pwdHash)
+	}
+	return tx.ValidateAndUpdate(u)
+}
+
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
-func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
+// func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
+// 	valids := make([]validate.Validator, 0)
+// 	valids = append(valids, &validators.StringIsPresent{Field: u.Username, Name: "Username"})
+// 	valids = append(valids, &validators.StringIsPresent{Field: u.Email, Name: "Email"})
+// 	valids = append(valids, &validators.StringIsPresent{Field: u.Name, Name: "Name"})
+// 	valids = append(valids, &validators.EmailIsPresent{Name: "Email", Field: u.Email})
+// 	valids = append(valids, &validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirm, Message: "Passwords do not match."})
+// 	valids = append(valids, &UsernameNotTaken{Name: "Username", Field: u.Username, tx: tx})
+// 	valids = append(valids, &EmailNotTaken{Name: "Email", Field: u.Email, tx: tx})
+
+// 	if u.PermissionScreening {
+// 		valids = append(valids, &validators.StringIsPresent{Field: u.Site, Name: "Site"})
+// 	}
+
+// 	return validate.Validate(valids...), nil
+// }
+
+// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
+// This method is not required and may be deleted.
+func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 	valids := make([]validate.Validator, 0)
 	valids = append(valids, &validators.StringIsPresent{Field: u.Username, Name: "Username"})
 	valids = append(valids, &validators.StringIsPresent{Field: u.Email, Name: "Email"})
@@ -85,16 +117,23 @@ func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(valids...), nil
 }
 
-// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
-// This method is not required and may be deleted.
-func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
 // ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
 // This method is not required and may be deleted.
 func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
+	valids := make([]validate.Validator, 0)
+	valids = append(valids, &validators.StringIsPresent{Field: u.Username, Name: "Username"})
+	valids = append(valids, &validators.StringIsPresent{Field: u.Email, Name: "Email"})
+	valids = append(valids, &validators.StringIsPresent{Field: u.Name, Name: "Name"})
+	valids = append(valids, &validators.EmailIsPresent{Name: "Email", Field: u.Email})
+	valids = append(valids, &validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirm, Message: "Passwords do not match."})
+	// valids = append(valids, &UsernameNotTaken{Name: "Username", Field: u.Username, tx: tx})
+	// valids = append(valids, &EmailNotTaken{Name: "Email", Field: u.Email, tx: tx})
+
+	if u.PermissionScreening {
+		valids = append(valids, &validators.StringIsPresent{Field: u.Site, Name: "Site"})
+	}
+
+	return validate.Validate(valids...), nil
 }
 
 // UsernameNotTaken Check

@@ -34,22 +34,13 @@
                             <div class="col-sm-6">
                                 <h5><%= t("header_right_eye") %></h5>
                                 <div class="img-thumbnail text-center">
-                                    <a href="#" data-target=".right-eye-modal-lg" data-toggle="modal"><img src="<%= assetPath("images/right-thumb.jpg") %>" width="320">
-                                    </a>
-                                </div>
-                                <div aria-hidden="true" aria-labelledby="myLargeModalLabel" class="modal fade right-eye-modal-lg eye-image-model" role="dialog"
-                                    tabindex="-1">
-                                    <div class="modal-dialog" style="width: 100%;max-width: 1224px;max-height: 612px;height: 100%;">
-                                        <div class="modal-content">
-                                            <div class="modal-body text-center">
-                                                <div id="image-left-eye">
-                                                    <img src='<%= assetPath("images/right.jpg") %>' data-high-res-src='<%= assetPath("images/right.jpg") %>' alt="" class="pannable-image" height="700px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <img class="fullscreen-image" src="<%= assetPath("images/right-thumb.jpg") %>" data-high-res-src="<%= assetPath("images/right.jpg") %>">
                                 </div>
                                 <div class="none" style="margin-top: 20px"></div>
+                                <div class="form-group">
+                                    <label for=""><%= t("field_visual_acuity") %></label>
+                                    <input class="form-control" type="text" value="<%= screening.Eyes.RightEye.VisualAcuity.String %>" disabled>
+                                </div>
                                 <div class="form-group">
                                     <label for=""><%= t("label_drgrading") %></label>
                                     <select class="form-control" name="Eyes.RightEye.DRGrading">
@@ -84,26 +75,32 @@
                                         </option>
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                        <label for=""><%= t("label_suspected_pathology") %></label>
+                                        <select class="form-control select2" multiple="true" name="Eyes.RightEye.SuspectedPathologies">
+                                            <option value="Glaucoma">
+                                                <%= t("option_suspected_glaucoma") %>
+                                            </option>
+                                            <option value="AMD">
+                                                <%= t("option_suspected_amd") %>
+                                            </option>
+                                            <option value="Other">
+                                                <%= t("option_suspected_other") %>
+                                            </option>
+                                        </select>
+                                    </div>
                             </div>
+
                             <div class="col-sm-6 ml-auto">
                                 <h5><%= t("header_left_eye") %></h5>
-                                  <div class="img-thumbnail text-center">
-                                    <a href="#" data-target=".left-eye-modal-lg" data-toggle="modal"><img src="<%= assetPath("images/left-thumb.jpg") %>" width="320">
-                                    </a>
-                                </div>
-                                <div aria-hidden="true" aria-labelledby="myLargeModalLabel" class="modal fade left-eye-modal-lg eye-image-model" role="dialog"
-                                    tabindex="-1">
-                                    <div class="modal-dialog" style="width: 100%;max-width: 1224px;max-height: 612px;height: 100%;">
-                                        <div class="modal-content">
-                                            <div class="modal-body text-center">
-                                                <div id="image-left-eye">
-                                                    <img src='<%= assetPath("images/left.jpg") %>'data-high-res-src='<%= assetPath("images/left.jpg") %>' alt="" class="pannable-image" height="700px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="img-thumbnail text-center">
+                                    <img class="fullscreen-image" src="<%= assetPath("images/left-thumb.jpg") %>" data-high-res-src="<%= assetPath("images/left.jpg") %>">
                                 </div>
                                 <div class="none" style="margin-top: 20px"></div>
+                                <div class="form-group">
+                                    <label for=""><%= t("field_visual_acuity") %></label>
+                                    <input class="form-control" type="text" value="<%= screening.Eyes.LeftEye.VisualAcuity.String %>" disabled>
+                                </div>
                                 <div class="form-group">
                                     <label for=""><%= t("label_drgrading") %></label>
                                     <select class="form-control" name="Eyes.LeftEye.DRGrading">
@@ -138,6 +135,20 @@
                                         </option>
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                        <label for=""><%= t("label_suspected_pathology") %></label>
+                                        <select class="form-control select2" multiple="true" name="Eyes.LeftEye.SuspectedPathologies">
+                                            <option value="Glaucoma">
+                                                <%= t("option_suspected_glaucoma") %>
+                                            </option>
+                                            <option value="AMD">
+                                                <%= t("option_suspected_amd") %>
+                                            </option>
+                                            <option value="Other">
+                                                <%= t("option_suspected_other") %>
+                                            </option>
+                                        </select>
+                                    </div>
                             </div>
                         </div>
                     </fieldset>
