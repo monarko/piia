@@ -169,6 +169,63 @@ func UsersCreatePost(c buffalo.Context) error {
 	return c.Redirect(302, "/users/index")
 }
 
+// UsersEditGet returns the form
+func UsersEditGet(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	user := &models.User{}
+	if err := tx.Find(user, c.Param("uid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("user", user)
+
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Users"] = "/users/index"
+	breadcrumbMap["Edit User"] = "/users/edit"
+	c.Set("breadcrumbMap", breadcrumbMap)
+	return c.Render(200, r.HTML("users/edit.html"))
+}
+
+// UsersEditPost returns the form
+func UsersEditPost(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	user := &models.User{}
+	if err := tx.Find(user, c.Param("uid")); err != nil {
+		return c.Error(404, err)
+	}
+	user.Admin = false
+	user.PermissionStudyCoordinator = false
+	user.PermissionScreening = false
+	user.PermissionOverRead = false
+	if err := c.Bind(user); err != nil {
+		return errors.WithStack(err)
+	}
+	verrs, err := user.Update(tx)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	if verrs.HasAny() {
+		c.Set("user", user)
+		c.Set("errors", verrs.Errors)
+		breadcrumbMap := make(map[string]interface{})
+		breadcrumbMap["Users"] = "/users/index"
+		breadcrumbMap["Edit User"] = "/users/edit"
+		c.Set("breadcrumbMap", breadcrumbMap)
+		return c.Render(422, r.HTML("users/edit.html"))
+	}
+
+	currentUser := c.Value("current_user").(*models.User)
+	logErr := InsertLog("update", "User updated the user: "+user.Name, "", user.ID.String(), "user", currentUser.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
+
+	// If there are no errors set a success message
+	c.Flash().Add("success", "User is updated.")
+	// and redirect to the home page
+	return c.Redirect(302, "/users/index")
+}
+
 // SetCurrentUser attempts to find a user based on the current_user_id
 // in the session. If one is found it is set on the context.
 func SetCurrentUser(next buffalo.Handler) buffalo.Handler {

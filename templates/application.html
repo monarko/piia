@@ -88,29 +88,28 @@
                 </div>
                 <div class="menu-actions">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <%= if (current_lang && current_lang == "bn") { %>
-                            <img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px">
+                            <img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %>
                             <% } else if (current_lang && current_lang == "th") { %>
-                            <img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px">
+                            <img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %>
                             <% } else { %>
-                            <img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px">
+                            <img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %>
                             <% } %>
-                            <%= t("language_btn_txt") %>
                         </button>
                         <div class="dropdown-menu">
                             <%= if (current_lang && current_lang == "bn") { %>
-                            <a class="dropdown-item" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
-                            <a class="dropdown-item active" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
+                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
+                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
+                            <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
                             <% } else if (current_lang && current_lang == "th") { %>
-                            <a class="dropdown-item" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item active" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
+                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
+                            <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
+                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
                             <% } else { %>
-                            <a class="dropdown-item active" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px; margin-right: 15px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
+                            <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
+                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
+                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
                             <% } %>
                         </div>
                     </div>
@@ -211,7 +210,6 @@
     <%= javascriptTag("imageviewer.js") %>
     <script>
         $(function () {
-            openImageViewer();
             $(".select2").select2();
             $('.tasks-header-toggler').on('click', function () {
                 $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
@@ -227,14 +225,14 @@
                 var overReadJson = JSON.stringify(JSON.parse($("#overread-json-data").val()), undefined, 4);
                 $("#overread-json-data").text(overReadJson);
             }
-        });
 
-        function openImageViewer() {
-            $('.pannable-image').ImageViewer();
-        }
-
-        $(".eye-image-model").on('shown.bs.modal', function () {
-            openImageViewer();
+            var viewer = ImageViewer();
+            $('.fullscreen-image').click(function () {
+                var imgSrc = this.src,
+                    highResolutionImage = $(this).data('high-res-src');
+        
+                viewer.show(imgSrc, highResolutionImage);
+            });
         });
     </script>
 </body>

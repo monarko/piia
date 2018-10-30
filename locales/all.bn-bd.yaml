@@ -145,6 +145,12 @@
 - id: option_dme_notpresent
   translation: "অনুপস্থিত"
 
+- id: option_yes
+  translation: "হ্যাঁ"
+- id: option_no
+  translation: "না"
+- id: button_submit
+  translation: "সাবমিট করুন"
 
 #forms
 - id: form_select_any

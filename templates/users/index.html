@@ -123,7 +123,9 @@
 									<%= user.CreatedAt.Format("02-Jan-2006") %>
 								</td>
 								<td class="row-actions">
-									<!-- <a href="#"><i class="os-icon os-icon-ui-49"></i></a> -->
+									<%= if (user.ID.String() != current_user.ID.String()) { %>
+									<a href="<%= usersEditPath({uid: user.ID}) %>"><i class="os-icon os-icon-pencil-1"></i></a>
+									<% } %>
 									<!-- <a href="#"><i class="os-icon os-icon-grid-10"></i></a> -->
 									<!--<a class="danger" href="#"><i class="os-icon os-icon-ui-15"></i></a>-->
 								</td>
