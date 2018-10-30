@@ -171,9 +171,9 @@
 - id: field_right_eye
   translation: "Right Eye"
 - id: field_left_eye
-  translation: "Left Eye"  
+  translation: "Left Eye"
 - id: field_eye_assessment
-  translation: "Eye Assessment" 
+  translation: "Eye Assessment"
 - id: option_type_1
   translation: "Type 1"
 - id: option_type_2
@@ -189,6 +189,6 @@
 - id: language_en
   translation: "English"
 - id: language_th
-  translation: "Thai"
+  translation: "ไทย"
 - id: language_bd
-  translation: "Bengali"
+  translation: "বাংলা"
