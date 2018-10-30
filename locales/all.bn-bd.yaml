@@ -127,6 +127,8 @@
   translation: "অন্যান্য প্যাথোলজি আছে"
 - id: label_refer
   translation: "মূল্যায়নের জন্য রেফারেল"
+- id: label_suspected_pathology
+  translation: "সন্দেহজনক প্যাথলজি"
 # grading scales
 - id: option_ungradeable
   translation: "গ্রেড করা যাচ্ছে না"
@@ -144,6 +146,12 @@
   translation: "উপস্থিত"
 - id: option_dme_notpresent
   translation: "অনুপস্থিত"
+- id: option_suspected_glaucoma
+  translation: "গ্লুকোমা"
+- id: option_suspected_amd
+  translation: "এএমডি"
+- id: option_suspected_other
+  translation: "অন্যান্য"
 
 - id: option_yes
   translation: "হ্যাঁ"

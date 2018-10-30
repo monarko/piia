@@ -12,8 +12,9 @@ import (
 
 // EyeOverRead model
 type EyeOverRead struct {
-	DRGrading     nulls.String `json:"dr"`
-	DMEAssessment nulls.String `json:"dme"`
+	DRGrading            nulls.String `json:"dr"`
+	DMEAssessment        nulls.String `json:"dme"`
+	SuspectedPathologies []string     `json:"suspected_pathologies"`
 }
 
 // EyeOverReading model

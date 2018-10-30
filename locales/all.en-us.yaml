@@ -133,6 +133,8 @@
   translation: "Other Pathology Present"
 - id: label_refer
   translation: "Refer for assessment"
+- id: label_suspected_pathology
+  translation: "Suspected Pathologies"
 # grading scales
 - id: option_ungradeable
   translation: "Ungradeable"
@@ -150,7 +152,12 @@
   translation: "Present"
 - id: option_dme_notpresent
   translation: "Not Present"
-
+- id: option_suspected_glaucoma
+  translation: "Glaucoma"
+- id: option_suspected_amd
+  translation: "AMD"
+- id: option_suspected_other
+  translation: "Other"
 
 #forms
 - id: form_select_any
