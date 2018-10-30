@@ -1,0 +1,162 @@
+# For more information on using i18n see: https://github.com/nicksnyder/go-i18n
+- id: meta_title
+  translation: "PIIA (peer)"
+# login specific
+- id: login_greeting
+  translation: "Piia <peer> Login"
+- id: label_username
+  translation: "ชื่อผู้ใช้"
+- id: label_email
+  translation: "อีเมล"
+- id: placeholder_username
+  translation: "กรอกอีเมล์ของคุณ"
+- id: label_password
+  translation: "รหัสผ่าน"
+- id: placeholder_password
+  translation: "ป้อนรหัสผ่านของคุณ"
+- id: button_login
+  translation: "เข้าสู่ระบบฉัน"
+- id: button_submit
+  translation: "เสนอ"
+- id: option_yes
+  translation: "ใช่่"
+- id: option_no
+  translation: "ไม่"
+# admin dashboard
+- id: header_title
+  translation: "Piia ผู้ดูแลระบบ"
+- id: role_admin
+  translation: "ผู้บริหาร"
+- id: role_general
+  translation: "สมาชิก "
+- id: role_screener
+  translation: "สมาชิก"
+- id: role_reader
+  translation: "ผู้วิจารณ์"
+- id: role_study_coordinator
+  translation: "ผู้ประสานงาน"
+# nav items & breadcrumbs
+- id: nav_home
+  translation: "แผงควบคุม"
+- id: nav_logout
+  translation: "ออกจากระบบ"
+- id: nav_participants
+  translation: "ผู้เข้าร่วม"
+- id: nav_overreading
+  translation: "สำหรับรีวิว"
+- id: nav_users
+  translation: "การจัดการผู้ใช้"
+- id: nav_logs
+  translation: "ท่อน"
+- id: nav_cases
+  translation: "กรณีเพื่อตรวจสอบ"
+# participants
+- id: page_participants_title
+  translation: "ผู้เข้าร่วมการศึกษา"
+- id: button_download_csv
+  translation: "Download CSV"
+- id: button_enroll
+  translation: "ลงทะเบียนผู้เข้าร่วมใหม่"
+- id: filter_status_select
+  translation: "Filter by status"
+- id: option_enrolled
+  translation: "ลงทะเบียน"
+- id: option_screened
+  translation: "การตรวจคัดกรอง"
+- id: option_overread
+  translation: "สอบทาน"
+- id: button_filter_status
+  translation: "ไป"
+# participant table header labels
+- id: th_participant_id
+  translation: "หมายเลขผู้เข้าร่วม"
+- id: th_patient_id
+  translation: "รหัสผู้ป่วย"
+- id: th_name
+  translation: "ชื่อ"
+- id: th_gender
+  translation: "เพศ"
+- id: th_age
+  translation: "อายุ"
+- id: th_consented
+  translation: "ยินยอม"
+- id: th_enrolled_date
+  translation: "วันที่ลงทะเบียน"
+- id: th_screening_date
+  translation: "วันที่คัดเลือก"
+- id: th_overread_date
+  translation: "วันที่สอบทาน"
+- id: th_workflow_status
+  translation: "สถานะ"
+- id: th_actions
+  translation: "การปฏิบัติ"
+- id: pagination_title
+  translation: "การแสดง"
+- id: pagination_view_label
+  translation: "ดู"
+- id: pagination_perpage_label
+  translation: "ต่อหน้า"
+- id: pagination_options_10
+  translation: "10"
+- id: pagination_options_20
+  translation: "20"
+- id: pagination_options_50
+  translation: "50"
+# create new - enrollment
+- id: page_enroll_title
+  translation: "ลงทะเบียนเข้าศึกษา"
+- id: form_enroll_header
+  translation: "ลงทะเบียนผู้เข้าร่วมใหม่"
+- id: form_enroll_desc
+  translation: "กรอกแบบฟอร์มเพื่อลงทะเบียน"
+- id: breadcrumb_enrol_participant
+  translation: "ลงทะเบียนผู้เข้าร่วม"
+# over-reading index
+- id: page_overreading_title
+  translation: "รายการตรวจสอบ"
+# over-readin case
+- id: page_overreadcase_title
+  translation: "ตรวจสอบกรณี"
+- id: section_dr_assessment_header
+  translation: "การประเมิน DR"
+- id: section_referral_header
+  translation: "ต้องการการอ้างอิง"
+- id: header_right_eye
+  translation: "ตาขวา (OD)"
+- id: header_left_eye
+  translation: "ตาซ้าย (OS)"
+- id: label_drgrading
+  translation: "เกรด DR"
+- id: label_dme
+  translation: "DME Assessment"
+- id: label_other_pathology
+  translation: "Other Pathology Present"
+- id: label_refer
+  translation: "Refer for assessment"
+# grading scales
+- id: option_ungradeable
+  translation: "Ungradeable"
+- id: option_normal
+  translation: "ปกติ"
+- id: option_mild_npdr
+  translation: "อ่อน NPDR"
+- id: option_mod_npdr
+  translation: "ปานกลาง NPDR"
+- id: option_severe_npdr
+  translation: "รุนแรง NPDR"
+- id: option_proliferative_dr
+  translation: "PDR"
+- id: option_dme_present
+  translation: "ปัจจุบัน"
+- id: option_dme_notpresent
+  translation: "ไม่ใช่ปัจจุบัน"
+# languages
+- id: language_btn_txt
+  translation: "Language"
+- id: language_th
+  translation: "ไทย"
+- id: language_en
+  translation: "English"
+- id: language_bd
+  translation: "বাংলা"
+

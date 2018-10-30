@@ -172,9 +172,9 @@
 - id: field_right_eye
   translation: "ডান চোখ"
 - id: field_left_eye
-  translation: "বাম চোখ"  
+  translation: "বাম চোখ"
 - id: field_eye_assessment
-  translation: "চোখের মূল্যায়ন" 
+  translation: "চোখের মূল্যায়ন"
 - id: option_type_1
   translation: "টাইপ ১"
 - id: option_type_2
@@ -188,9 +188,9 @@
 - id: language_btn_txt
   translation: "ভাষা"
 - id: language_en
-  translation: "ইংরেজি"
+  translation: "English"
 - id: language_th
-  translation: "থাই"
+  translation: "ไทย"
 - id: language_bd
   translation: "বাংলা"
 
