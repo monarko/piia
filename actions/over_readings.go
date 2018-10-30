@@ -95,7 +95,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
-		overReading.Referral.Referred.Bool = true
+		overReading.Referral.Referred = true
 	}
 
 	// images
@@ -106,7 +106,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	c.Set("rightEyeLink", rightEye)
 
 	shouldBeRefer := shouldBeReferred(overReading)
-	if shouldBeRefer && !overReading.Referral.Referred.Bool {
+	if shouldBeRefer && !overReading.Referral.Referred {
 		c.Set("participant", participant)
 		c.Set("screening", screening)
 		c.Set("overReading", overReading)
@@ -188,7 +188,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 }
 
 func checkScreeningAndOverReading(screening *models.Screening, overReading *models.OverReading) bool {
-	if !screening.Referral.Referred.Bool && overReading.Referral.Referred.Bool {
+	if !screening.Referral.Referred && overReading.Referral.Referred {
 		return true
 	}
 	return false

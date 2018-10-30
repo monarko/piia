@@ -4,15 +4,13 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-
-	"github.com/gobuffalo/pop/nulls"
 )
 
 /* Referral */
 
 // ReferralScreening model
 type ReferralScreening struct {
-	Referred nulls.Bool `json:"referred"`
+	Referred bool `json:"referred"`
 }
 
 // Value returns database driver compatible type
