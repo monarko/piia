@@ -172,7 +172,15 @@
   translation: "Left Eye"  
 - id: field_eye_assessment
   translation: "Eye Assessment" 
-
+- id: option_type_1
+  translation: "Type 1"
+- id: option_type_2
+  translation: "Type 2"
+- id: option_pre_diabetes
+  translation: "Pre-Diabetes"
+- id: option_gestational_diabetes
+  translation: "Gestational Diabetes"
+  
 #language
 - id: language_btn_txt
   translation: "ภาษา"

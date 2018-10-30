@@ -175,6 +175,14 @@
   translation: "বাম চোখ"  
 - id: field_eye_assessment
   translation: "চোখের মূল্যায়ন" 
+- id: option_type_1
+  translation: "টাইপ ১"
+- id: option_type_2
+  translation: "টাইপ ২"
+- id: option_pre_diabetes
+  translation: "প্রি-ডায়াবেটিস"
+- id: option_gestational_diabetes
+  translation: "গর্ভাবস্থার ডায়াবেটিস"
 
 #language
 - id: language_btn_txt
