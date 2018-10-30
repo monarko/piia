@@ -47,6 +47,50 @@ func (s Screenings) String() string {
 	return string(js)
 }
 
+// Status object
+type Status struct {
+	Section string `json:"section"`
+	Done    bool   `json:"done"`
+}
+
+// Statuses returns status for all parts
+func (s Screening) Statuses() []Status {
+	diabetes := Status{"Diabetes", false}
+	medicalHistory := Status{"Medical History", false}
+	medications := Status{"Medications", false}
+	measurements := Status{"Measurements", false}
+	pathology := Status{"Pathology", false}
+	eyeAssessments := Status{"Eye Assessment", false}
+
+	if len(s.Diabetes.DiabetesType.String) > 0 && s.Diabetes.Duration.Valid {
+		diabetes.Done = true
+	}
+
+	if s.Medications.TakingMedications.Valid && s.Medications.OnInsulin.Valid {
+		medications.Done = true
+	}
+
+	if s.Measurements.BloodPressure.SBP.Valid && s.Measurements.BloodPressure.DBP.Valid && s.Measurements.BloodPressure.AssessmentDate.Valid {
+		measurements.Done = true
+	}
+
+	if s.Pathology.HbA1C.HbA1C.Valid && s.Pathology.HbA1C.AssessmentDate.Valid && s.Pathology.Lipids.TotalCholesterol.Valid && s.Pathology.Lipids.HDL.Valid && s.Pathology.Lipids.TG.Valid && s.Pathology.Lipids.AssessmentDate.Valid {
+		pathology.Done = true
+	}
+
+	if len(s.Eyes.RightEye.VisualAcuity.String) > 0 && len(s.Eyes.RightEye.DRGrading.String) > 0 && len(s.Eyes.RightEye.DMEAssessment.String) > 0 && len(s.Eyes.LeftEye.VisualAcuity.String) > 0 && len(s.Eyes.LeftEye.DRGrading.String) > 0 && len(s.Eyes.LeftEye.DMEAssessment.String) > 0 {
+		eyeAssessments.Done = true
+	}
+
+	if s.MedicalHistory.Morbidities != nil || (diabetes.Done && medications.Done && measurements.Done && pathology.Done && eyeAssessments.Done) {
+		medicalHistory.Done = true
+	}
+
+	statuses := []Status{diabetes, medicalHistory, measurements, pathology, eyeAssessments}
+
+	return statuses
+}
+
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (s *Screening) Validate(tx *pop.Connection) (*validate.Errors, error) {

@@ -173,8 +173,13 @@
                                 <td class="text-center">
                                     <%= if (len(p.Screenings) > 0) { %>
                                     <% let psc = p.Screenings[0] %>
-                                    <%= psc.Screener.Name %><br>
-                                    <%= psc.CreatedAt.Format("02-Jan-2006") %>
+                                    <%= for (n) in psc.Statuses() { %>
+                                        <%= if (n.Done) { %>
+                                        <span class="badge badge-primary-inverted"><%= n.Section %></span>
+                                        <% } else { %>
+                                            <span class="badge badge-danger-inverted"><%= n.Section %></span>
+                                        <% } %><br>
+                                    <% } %>
                                     <% } %>
                                 </td>
                                 <td class="text-center">
