@@ -117,9 +117,12 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
 		c.Set("breadcrumbMap", breadcrumbMap)
 
-		str := "You should REFER the participant as he/she fall into the follwoing criteria: DR is Ungradable, moderate or severe, DME is present"
+		errs := make(map[string][]string)
+		errs["a"] = []string{"You should REFER the participant as he/she fall into the follwoing criteria:"}
+		errs["b"] = []string{"DR is Ungradable, Moderate or Severe"}
+		errs["c"] = []string{"DME is Present"}
 
-		c.Flash().Add("danger", str)
+		c.Set("errors", errs)
 
 		return c.Render(422, r.HTML("over_readings/create.html"))
 	}

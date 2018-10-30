@@ -42,6 +42,14 @@ func init() {
 					return "Other"
 				}
 			},
+			"stringInSlice": func(s string, sa []string) bool {
+				for _, str := range sa {
+					if str == s {
+						return true
+					}
+				}
+				return false
+			},
 		},
 	})
 }

@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/gobuffalo/pop"
@@ -47,20 +48,28 @@ func (s Screenings) String() string {
 	return string(js)
 }
 
-// Status object
-type Status struct {
+// SectionStatus object
+type SectionStatus struct {
 	Section string `json:"section"`
 	Done    bool   `json:"done"`
 }
 
+// Status object
+type Status struct {
+	Sections  []SectionStatus `json:"sections"`
+	Completed bool            `json:"completed"`
+}
+
 // Statuses returns status for all parts
-func (s Screening) Statuses() []Status {
-	diabetes := Status{"Diabetes", false}
-	medicalHistory := Status{"Medical History", false}
-	medications := Status{"Medications", false}
-	measurements := Status{"Measurements", false}
-	pathology := Status{"Pathology", false}
-	eyeAssessments := Status{"Eye Assessment", false}
+func (s Screening) Statuses() Status {
+	diabetes := SectionStatus{"Diabetes", false}
+	medicalHistory := SectionStatus{"Medical History", false}
+	medications := SectionStatus{"Medications", false}
+	measurements := SectionStatus{"Measurements", false}
+	pathology := SectionStatus{"Pathology", false}
+	eyeAssessments := SectionStatus{"Eye Assessment", false}
+
+	completed := false
 
 	if len(s.Diabetes.DiabetesType.String) > 0 && s.Diabetes.Duration.Valid {
 		diabetes.Done = true
@@ -86,9 +95,21 @@ func (s Screening) Statuses() []Status {
 		medicalHistory.Done = true
 	}
 
-	statuses := []Status{diabetes, medicalHistory, measurements, pathology, eyeAssessments}
+	if diabetes.Done && medicalHistory.Done && medications.Done && measurements.Done && pathology.Done && eyeAssessments.Done {
+		completed = true
+	}
 
-	return statuses
+	statuses := []SectionStatus{diabetes, medicalHistory, medications, measurements, pathology, eyeAssessments}
+	all := Status{statuses, completed}
+
+	return all
+}
+
+// DaysAgo returns days ago its updated
+func (s Screening) DaysAgo() int {
+	days := int(math.Floor(time.Now().Sub(s.UpdatedAt).Hours() / 24))
+
+	return days
 }
 
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.

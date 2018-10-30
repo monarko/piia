@@ -116,3 +116,89 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 
 	return c.Redirect(302, "/participants/index")
 }
+
+// ScreeningsEditGet renders the form for creating a new Screening.
+func ScreeningsEditGet(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("participant", participant)
+	screening := &models.Screening{}
+	if err := tx.Find(screening, c.Param("sid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("screening", screening)
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Participants"] = "/participants/index"
+	breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
+	c.Set("breadcrumbMap", breadcrumbMap)
+	return c.Render(200, r.HTML("screenings/edit.html"))
+}
+
+// ScreeningsEditPost renders the form for creating a new Screening.
+func ScreeningsEditPost(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	user := c.Value("current_user").(*models.User)
+	screening := &models.Screening{}
+	if err := tx.Find(screening, c.Param("sid")); err != nil {
+		return c.Error(404, err)
+	}
+	if err := c.Bind(screening); err != nil {
+		return errors.WithStack(err)
+	}
+	// screening.ScreenerID = user.ID
+	// screening.ParticipantID = participant.ID
+	referral := c.Request().FormValue("referral")
+	if referral == "yes" {
+		screening.Referral.Referred = true
+	}
+
+	verrs, err := tx.ValidateAndUpdate(screening)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	if verrs.HasAny() {
+		c.Set("participant", participant)
+		c.Set("screening", screening)
+		c.Set("errors", verrs.Errors)
+		breadcrumbMap := make(map[string]interface{})
+		breadcrumbMap["Participants"] = "/participants/index"
+		breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
+		c.Set("breadcrumbMap", breadcrumbMap)
+		return c.Render(422, r.HTML("screenings/edit.html"))
+	}
+
+	if len(screening.Eyes.RightEye.VisualAcuity.String) > 0 && len(screening.Eyes.RightEye.DRGrading.String) > 0 && len(screening.Eyes.RightEye.DMEAssessment.String) > 0 && len(screening.Eyes.LeftEye.VisualAcuity.String) > 0 && len(screening.Eyes.LeftEye.DRGrading.String) > 0 && len(screening.Eyes.LeftEye.DMEAssessment.String) > 0 {
+		participant.Status = "11"
+		perrs, err := tx.ValidateAndUpdate(participant)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		if perrs.HasAny() {
+			c.Set("participant", participant)
+			c.Set("screening", screening)
+			c.Set("errors", verrs.Errors)
+			breadcrumbMap := make(map[string]interface{})
+			breadcrumbMap["Participants"] = "/participants/index"
+			breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
+			c.Set("breadcrumbMap", breadcrumbMap)
+			return c.Render(422, r.HTML("screenings/edit.html"))
+		}
+	}
+
+	logErr := InsertLog("update", "User updated a screening", "", screening.ID.String(), "screening", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
+
+	// If there are no errors set a success message
+	c.Flash().Add("success", "Screening updated successfully.")
+
+	return c.Redirect(302, "/participants/index")
+}

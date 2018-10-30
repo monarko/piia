@@ -2,7 +2,7 @@
     <div class="col-lg-10">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Add New Screening
+                Update Screening
             </h6>
             <div class="element-box">
                 <div class="row" style="margin-bottom: 20px;">
@@ -19,7 +19,7 @@
                         <% } %>
                     </div>
                 </div>
-                <form action="<%= participantScreeningsCreatePath({pid: participant.ID}) %>" method="POST">
+                <form action="<%= participantScreeningsEditPath({pid: participant.ID, sid: screening.ID}) %>" method="POST">
                     <%= csrf() %>
                     <div class="element-actions">
                         <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button">
@@ -56,16 +56,16 @@
                                                         <option value="">
                                                             <%= t("form_select_any") %>
                                                         </option>
-                                                        <option value="Type 1">
+                                                        <option value="Type 1" <%= if (screening.Diabetes.DiabetesType.String == "Type 1") { %> selected <% } %>>
                                                             <%= t("option_type_1") %>
                                                         </option>
-                                                        <option value="Type 2">
+                                                        <option value="Type 2" <%= if (screening.Diabetes.DiabetesType.String == "Type 2") { %> selected <% } %>>
                                                             <%= t("option_type_2") %>
                                                         </option>
-                                                        <option value="Pre-Diabetes">
+                                                        <option value="Pre-Diabetes" <%= if (screening.Diabetes.DiabetesType.String == "Pre-Diabetes") { %> selected <% } %>>
                                                             <%= t("option_pre_diabetes") %>
                                                         </option>
-                                                        <option value="Gestational Diabetes">
+                                                        <option value="Gestational Diabetes" <%= if (screening.Diabetes.DiabetesType.String == "Gestational Diabetes") { %> selected <% } %>>
                                                             <%= t("option_gestational_diabetes") %>
                                                         </option>
                                                     </select>
@@ -76,7 +76,7 @@
                                                     <label for="">Duration</label>
                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                         <input class="form-control" placeholder="Duration in Years" min="0"
-                                                            type="number" name="Diabetes.Duration" />
+                                                            type="number" name="Diabetes.Duration" value="<%= if (screening.Diabetes.Duration.Valid) { %><%= screening.Diabetes.Duration.Int %><% } %>" />
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 years
@@ -102,13 +102,13 @@
                                                 <div class="form-group">
                                                     <label for="">Select Co-Morbidities</label>
                                                     <select class="form-control select2" multiple="true" name="MedicalHistory.Morbidities">
-                                                        <option value="Hypertension">
+                                                        <option value="Hypertension" <%= if (stringInSlice("Hypertension", screening.MedicalHistory.Morbidities)) { %> selected <% } %>>
                                                             Hypertension
                                                         </option>
-                                                        <option value="KidneyDisease">
+                                                        <option value="KidneyDisease" <%= if (stringInSlice("KidneyDisease", screening.MedicalHistory.Morbidities)) { %> selected <% } %>>
                                                             Kidney Disease
                                                         </option>
-                                                        <option value="CardiovascularDisease">
+                                                        <option value="CardiovascularDisease" <%= if (stringInSlice("CardiovascularDisease", screening.MedicalHistory.Morbidities)) { %> selected <% } %>>
                                                             Cardiovascular Disease
                                                         </option>
                                                     </select>
@@ -134,14 +134,14 @@
                                                             <div class="form-check">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="Medications.TakingMedications" type="radio"
-                                                                        value="true">Yes</label>
+                                                                        value="true" <%= if (screening.Medications.TakingMedications.Bool) { %> checked <% } %>>Yes</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <div class="form-check">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="Medications.TakingMedications" type="radio"
-                                                                        value="false">No</label>
+                                                                        value="false" <%= if (screening.Medications.TakingMedications.Valid && !screening.Medications.TakingMedications.Bool) { %> checked <% } %>>No</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -154,13 +154,13 @@
                                                         <div class="col-sm-3">
                                                             <div class="form-check">
                                                                 <label class="form-check-label"><input class="form-check-input"
-                                                                        name="Medications.OnInsulin" type="radio" value="true">Yes</label>
+                                                                        name="Medications.OnInsulin" type="radio" value="true" <%= if (screening.Medications.OnInsulin.Bool) { %> checked <% } %>>Yes</label>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <div class="form-check">
                                                                 <label class="form-check-label"><input class="form-check-input"
-                                                                        name="Medications.OnInsulin" type="radio" value="false">No</label>
+                                                                        name="Medications.OnInsulin" type="radio" value="false" <%= if (screening.Medications.OnInsulin.Valid && !screening.Medications.OnInsulin.Bool) { %> checked <% } %>>No</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -183,14 +183,14 @@
                                                     <label for="">Blood Pressure</label>
                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                         <input class="form-control" placeholder="SBP" type="number"
-                                                            name="Measurements.BloodPressure.SBP" min="80" max="250" />
+                                                            name="Measurements.BloodPressure.SBP" min="80" max="250" value="<%= if (screening.Measurements.BloodPressure.SBP.Valid) { %><%= screening.Measurements.BloodPressure.SBP.Int %><% } %>" />
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 /
                                                             </div>
                                                         </div>
                                                         <input class="form-control" placeholder="DBP" type="number"
-                                                            name="Measurements.BloodPressure.DBP" min="50" max="180" />
+                                                            name="Measurements.BloodPressure.DBP" min="50" max="180" value="<%= if (screening.Measurements.BloodPressure.DBP.Valid) { %><%= screening.Measurements.BloodPressure.DBP.Int %><% } %>" />
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 mmHg
@@ -203,7 +203,7 @@
                                                 <div class="form-group">
                                                     <label for="">Date of Last Assessment</label>
                                                     <input class="form-control" placeholder="Select date" type="date"
-                                                        name="Measurements.BloodPressure.AssessmentDate" />
+                                                        name="Measurements.BloodPressure.AssessmentDate" value='<%= if (screening.Measurements.BloodPressure.AssessmentDate.Valid && screening.Measurements.BloodPressure.AssessmentDate.Time.Format("2006-01-02") != "0001-01-01") { %><%= screening.Measurements.BloodPressure.AssessmentDate.Time.Format("2006-01-02") %><% } %>' />
                                                 </div>
                                             </div>
                                         </div>
@@ -225,7 +225,7 @@
                                                         <label for="">HbA1C (in %)</label>
                                                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                             <input class="form-control" placeholder="" type="number"
-                                                                name="Pathology.HbA1C.HbA1C" step="0.1" min="3.0" max="30.0" />
+                                                                name="Pathology.HbA1C.HbA1C" step="0.1" min="3.0" max="30.0" value="<%= if (screening.Pathology.HbA1C.HbA1C.Valid) { %><%= screening.Pathology.HbA1C.HbA1C.Float64 %><% } %>" />
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text">
                                                                     %
@@ -239,7 +239,7 @@
                                                     <div class="form-group">
                                                         <label for="">Date of Last Assessment</label>
                                                         <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Pathology.HbA1C.AssessmentDate" />
+                                                            name="Pathology.HbA1C.AssessmentDate" value='<%= if (screening.Pathology.HbA1C.AssessmentDate.Valid && screening.Pathology.HbA1C.AssessmentDate.Time.Format("2006-01-02") != "0001-01-01") { %><%= screening.Pathology.HbA1C.AssessmentDate.Time.Format("2006-01-02") %><% } %>' />
                                                     </div>
                                                 </div>
                                             </div>
@@ -254,7 +254,7 @@
                                                                 <label for="">Total Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                                     <input class="form-control" placeholder="" type="text"
-                                                                        name="Pathology.Lipids.TotalCholesterol" />
+                                                                        name="Pathology.Lipids.TotalCholesterol" value="<%= if (screening.Pathology.Lipids.TotalCholesterol.Valid) { %><%= screening.Pathology.Lipids.TotalCholesterol.Float64 %><% } %>" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
                                                                             mmol/L
@@ -268,7 +268,7 @@
                                                                 <label for="">HDL Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                                     <input class="form-control" placeholder="" type="text"
-                                                                        name="Pathology.Lipids.HDL" />
+                                                                        name="Pathology.Lipids.HDL" value="<%= if (screening.Pathology.Lipids.HDL.Valid) { %><%= screening.Pathology.Lipids.HDL.Float64 %><% } %>" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
                                                                             mmol/L
@@ -282,7 +282,7 @@
                                                                 <label for="">LDL Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                                     <input class="form-control" placeholder="" type="text"
-                                                                        name="Pathology.Lipids.LDL" disabled />
+                                                                        name="Pathology.Lipids.LDL" value="<%= if (screening.Pathology.Lipids.LDL.Valid) { %><%= screening.Pathology.Lipids.LDL.Float64 %><% } %>" disabled />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
                                                                             mmol/L
@@ -296,7 +296,7 @@
                                                                 <label for="">Triglyceride</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                                     <input class="form-control" placeholder="" type="text"
-                                                                        name="Pathology.Lipids.TG" />
+                                                                        name="Pathology.Lipids.TG" value="<%= if (screening.Pathology.Lipids.TG.Valid) { %><%= screening.Pathology.Lipids.TG.Float64 %><% } %>" />
                                                                     <div class="input-group-append">
                                                                         <div class="input-group-text">
                                                                             mmol/L
@@ -312,7 +312,7 @@
                                                     <div class="form-group">
                                                         <label for="">Date of Last Assessment</label>
                                                         <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Pathology.Lipids.AssessmentDate" />
+                                                            name="Pathology.Lipids.AssessmentDate" value='<%= if (screening.Pathology.Lipids.AssessmentDate.Valid && screening.Pathology.Lipids.AssessmentDate.Time.Format("2006-01-02") != "0001-01-01") { %><%= screening.Pathology.Lipids.AssessmentDate.Time.Format("2006-01-02") %><% } %>' />
                                                     </div>
                                                 </div>
                                             </div>
@@ -336,16 +336,16 @@
                                                         <option value="">
                                                             <%= t("form_select_any") %>
                                                         </option>
-                                                        <option value="NLP">NLP</option>
-                                                        <option value="LP">LP</option>
-                                                        <option value="HM">HM</option>
-                                                        <option value="CF">CF</option>
-                                                        <option value="20/200">20/200</option>
-                                                        <option value="20/100">20/100</option>
-                                                        <option value="20/70">20/70</option>
-                                                        <option value="20/50">20/50</option>
-                                                        <option value="20/40">20/40</option>
-                                                        <option value="20/20">20/20</option>
+                                                        <option value="NLP" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
+                                                        <option value="LP" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
+                                                        <option value="HM" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
+                                                        <option value="CF" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
+                                                        <option value="20/200" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/200") { %> selected <% } %>>20/200</option>
+                                                        <option value="20/100" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/100") { %> selected <% } %>>20/100</option>
+                                                        <option value="20/70" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/70") { %> selected <% } %>>20/70</option>
+                                                        <option value="20/50" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/50") { %> selected <% } %>>20/50</option>
+                                                        <option value="20/40" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40</option>
+                                                        <option value="20/20" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -354,22 +354,22 @@
                                                         <option value="">
                                                             <%= t("form_select_any") %>
                                                         </option>
-                                                        <option value="Ungradeable">
+                                                        <option value="Ungradeable" <%= if (screening.Eyes.RightEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
                                                             <%= t("option_ungradeable") %>
                                                         </option>
-                                                        <option value="Normal">
+                                                        <option value="Normal" <%= if (screening.Eyes.RightEye.DRGrading.String == "Normal") { %> selected <% } %>>
                                                             <%= t("option_normal") %>
                                                         </option>
-                                                        <option value="Mild DR">
+                                                        <option value="Mild DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
                                                             <%= t("option_mild_npdr") %>
                                                         </option>
-                                                        <option value="Moderate DR">
+                                                        <option value="Moderate DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
                                                             <%= t("option_mod_npdr") %>
                                                         </option>
-                                                        <option value="Severe DR">
+                                                        <option value="Severe DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
                                                             <%= t("option_severe_npdr") %>
                                                         </option>
-                                                        <option value="Proliferative DR">
+                                                        <option value="Proliferative DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
                                                             <%= t("option_proliferative_dr") %>
                                                         </option>
                                                     </select>
@@ -380,10 +380,10 @@
                                                         <option value="">
                                                             <%= t("form_select_any") %>
                                                         </option>
-                                                        <option value="Present">
+                                                        <option value="Present" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Present") { %> selected <% } %>>
                                                             <%= t("option_dme_present") %>
                                                         </option>
-                                                        <option value="Not Present">
+                                                        <option value="Not Present" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Not Present") { %> selected <% } %>>
                                                             <%= t("option_dme_notpresent") %>
                                                         </option>
                                                     </select>
@@ -397,16 +397,16 @@
                                                         <option value="">
                                                             <%= t("form_select_any") %>
                                                         </option>
-                                                        <option value="NLP">NLP</option>
-                                                        <option value="LP">LP</option>
-                                                        <option value="HM">HM</option>
-                                                        <option value="CF">CF</option>
-                                                        <option value="20/200">20/200</option>
-                                                        <option value="20/100">20/100</option>
-                                                        <option value="20/70">20/70</option>
-                                                        <option value="20/50">20/50</option>
-                                                        <option value="20/40">20/40</option>
-                                                        <option value="20/20">20/20</option>
+                                                        <option value="NLP" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
+                                                        <option value="LP" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
+                                                        <option value="HM" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
+                                                        <option value="CF" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
+                                                        <option value="20/200" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/200") { %> selected <% } %>>20/200</option>
+                                                        <option value="20/100" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/100") { %> selected <% } %>>20/100</option>
+                                                        <option value="20/70" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/70") { %> selected <% } %>>20/70</option>
+                                                        <option value="20/50" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/50") { %> selected <% } %>>20/50</option>
+                                                        <option value="20/40" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40</option>
+                                                        <option value="20/20" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -415,22 +415,22 @@
                                                         <option value="">
                                                             <%= t("form_select_any") %>
                                                         </option>
-                                                        <option value="Ungradeable">
+                                                        <option value="Ungradeable" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
                                                             <%= t("option_ungradeable") %>
                                                         </option>
-                                                        <option value="Normal">
+                                                        <option value="Normal" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Normal") { %> selected <% } %>>
                                                             <%= t("option_normal") %>
                                                         </option>
-                                                        <option value="Mild DR">
+                                                        <option value="Mild DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
                                                             <%= t("option_mild_npdr") %>
                                                         </option>
-                                                        <option value="Moderate DR">
+                                                        <option value="Moderate DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
                                                             <%= t("option_mod_npdr") %>
                                                         </option>
-                                                        <option value="Severe DR">
+                                                        <option value="Severe DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
                                                             <%= t("option_severe_npdr") %>
                                                         </option>
-                                                        <option value="Proliferative DR">
+                                                        <option value="Proliferative DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
                                                             <%= t("option_proliferative_dr") %>
                                                         </option>
                                                     </select>
@@ -441,10 +441,10 @@
                                                         <option value="">
                                                             <%= t("form_select_any") %>
                                                         </option>
-                                                        <option value="Present">
+                                                        <option value="Present" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Present") { %> selected <% } %>>
                                                             <%= t("option_dme_present") %>
                                                         </option>
-                                                        <option value="Not Present">
+                                                        <option value="Not Present" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %> selected <% } %>>
                                                             <%= t("option_dme_notpresent") %>
                                                         </option>
                                                     </select>
@@ -465,10 +465,10 @@
                                             <div class="col-sm-12">
                                                 <label for="">Referred</label>
                                                 <select class="form-control" name="referral">
-                                                    <option value="yes">
+                                                    <option value="yes" <%= if (screening.Referral.Referred) { %> selected <% } %>>
                                                         Yes
                                                     </option>
-                                                    <option value="no" selected>
+                                                    <option value="no" <%= if (!screening.Referral.Referred) { %> selected <% } %>>
                                                         No
                                                     </option>
                                                 </select>

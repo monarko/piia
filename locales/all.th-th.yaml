@@ -133,6 +133,8 @@
   translation: "Other Pathology Present"
 - id: label_refer
   translation: "Refer for assessment"
+- id: label_suspected_pathology
+  translation: "Suspected Pathologies"
 # grading scales
 - id: option_ungradeable
   translation: "Ungradeable"
@@ -150,7 +152,36 @@
   translation: "ปัจจุบัน"
 - id: option_dme_notpresent
   translation: "ไม่ใช่ปัจจุบัน"
-# languages
+- id: option_suspected_glaucoma
+  translation: "Glaucoma"
+- id: option_suspected_amd
+  translation: "AMD"
+- id: option_suspected_other
+  translation: "Other"
+#forms
+- id: form_select_any
+  translation: "Select any"
+- id: field_dr_grading
+  translation: "DR Grading"
+- id: field_dme_assessment
+  translation: "DME Assessment"
+- id: field_visual_acuity
+  translation: "Visual Acuity"
+- id: field_right_eye
+  translation: "Right Eye"
+- id: field_left_eye
+  translation: "Left Eye"  
+- id: field_eye_assessment
+  translation: "Eye Assessment" 
+- id: option_type_1
+  translation: "Type 1"
+- id: option_type_2
+  translation: "Type 2"
+- id: option_pre_diabetes
+  translation: "Pre-Diabetes"
+- id: option_gestational_diabetes
+  translation: "Gestational Diabetes"
+  # languages
 - id: language_btn_txt
   translation: "Language"
 - id: language_th
@@ -159,4 +190,3 @@
   translation: "English"
 - id: language_bd
   translation: "বাংলা"
-
