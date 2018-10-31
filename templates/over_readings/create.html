@@ -30,22 +30,22 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_drgrading") %></label>
                                     <select class="form-control" name="Eyes.RightEye.DRGrading">
-                                        <option value="Ungradeable">
+                                        <option value="Ungradeable" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
                                             <%= t("option_ungradeable") %>
                                         </option>
-                                        <option value="Normal">
+                                        <option value="Normal" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Normal") { %> selected <% } %>>
                                             <%= t("option_normal") %>
                                         </option>
-                                        <option value="Mild DR">
+                                        <option value="Mild DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
                                             <%= t("option_mild_npdr") %>
                                         </option>
-                                        <option value="Moderate DR">
+                                        <option value="Moderate DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
                                             <%= t("option_mod_npdr") %>
                                         </option>
-                                        <option value="Severe DR">
+                                        <option value="Severe DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
                                             <%= t("option_severe_npdr") %>
                                         </option>
-                                        <option value="Proliferative DR">
+                                        <option value="Proliferative DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
                                             <%= t("option_proliferative_dr") %>
                                         </option>
                                     </select>
@@ -53,10 +53,10 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_dme") %></label>
                                     <select class="form-control" name="Eyes.RightEye.DMEAssessment">
-                                        <option value="Present">
+                                        <option value="Present" <%= if (overReading.Eyes.RightEye.DMEAssessment.String == "Present") { %> selected <% } %>>
                                             <%= t("option_dme_present") %>
                                         </option>
-                                        <option value="Not Present">
+                                        <option value="Not Present" <%= if (overReading.Eyes.RightEye.DMEAssessment.String == "Not Present") { %> selected <% } %>>
                                             <%= t("option_dme_notpresent") %>
                                         </option>
                                     </select>
@@ -64,13 +64,13 @@
                                 <div class="form-group">
                                         <label for=""><%= t("label_suspected_pathology") %></label>
                                         <select class="form-control select2" multiple="true" name="Eyes.RightEye.SuspectedPathologies">
-                                            <option value="Glaucoma">
+                                            <option value="Glaucoma" <%= if (stringInSlice("Glaucoma", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
                                                 <%= t("option_suspected_glaucoma") %>
                                             </option>
-                                            <option value="AMD">
+                                            <option value="AMD" <%= if (stringInSlice("AMD", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
                                                 <%= t("option_suspected_amd") %>
                                             </option>
-                                            <option value="Other">
+                                            <option value="Other" <%= if (stringInSlice("Other", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
                                                 <%= t("option_suspected_other") %>
                                             </option>
                                         </select>
@@ -90,22 +90,22 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_drgrading") %></label>
                                     <select class="form-control" name="Eyes.LeftEye.DRGrading">
-                                        <option value="Ungradeable">
+                                        <option value="Ungradeable" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
                                             <%= t("option_ungradeable") %>
                                         </option>
-                                        <option value="Normal">
+                                        <option value="Normal" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Normal") { %> selected <% } %>>
                                             <%= t("option_normal") %>
                                         </option>
-                                        <option value="Mild DR">
+                                        <option value="Mild DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
                                             <%= t("option_mild_npdr") %>
                                         </option>
-                                        <option value="Moderate DR">
+                                        <option value="Moderate DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
                                             <%= t("option_mod_npdr") %>
                                         </option>
-                                        <option value="Severe DR">
+                                        <option value="Severe DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
                                             <%= t("option_severe_npdr") %>
                                         </option>
-                                        <option value="Proliferative DR">
+                                        <option value="Proliferative DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
                                             <%= t("option_proliferative_dr") %>
                                         </option>
                                     </select>
@@ -113,10 +113,10 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_dme") %></label>
                                     <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
-                                        <option value="Present">
+                                        <option value="Present" <%= if (overReading.Eyes.LeftEye.DMEAssessment.String == "Present") { %> selected <% } %>>
                                             <%= t("option_dme_present") %>
                                         </option>
-                                        <option value="Not Present">
+                                        <option value="Not Present" <%= if (overReading.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %> selected <% } %>>
                                             <%= t("option_dme_notpresent") %>
                                         </option>
                                     </select>
@@ -124,13 +124,13 @@
                                 <div class="form-group">
                                         <label for=""><%= t("label_suspected_pathology") %></label>
                                         <select class="form-control select2" multiple="true" name="Eyes.LeftEye.SuspectedPathologies">
-                                            <option value="Glaucoma">
+                                            <option value="Glaucoma" <%= if (stringInSlice("Glaucoma", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
                                                 <%= t("option_suspected_glaucoma") %>
                                             </option>
-                                            <option value="AMD">
+                                            <option value="AMD" <%= if (stringInSlice("AMD", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
                                                 <%= t("option_suspected_amd") %>
                                             </option>
-                                            <option value="Other">
+                                            <option value="Other" <%= if (stringInSlice("Other", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
                                                 <%= t("option_suspected_other") %>
                                             </option>
                                         </select>
@@ -159,10 +159,10 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_refer") %></label>
                                     <select class="form-control" name="referral">
-                                        <option value="yes">
+                                        <option value="yes" <%= if (overReading.Referral.Referred) { %> selected <% } %>>
                                             <%= t("option_yes") %>
                                         </option>
-                                        <option value="no" selected>
+                                        <option value="no" <%= if (!overReading.Referral.Referred) { %> selected <% } %>>
                                             <%= t("option_no") %>
                                         </option>
                                     </select>

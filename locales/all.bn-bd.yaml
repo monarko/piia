@@ -84,6 +84,12 @@
   translation: "স্ট্যাটাস"
 - id: th_actions
   translation: "ক্রিয়াকলাপ"
+- id: th_screening
+  translation: "স্ক্রিনিং"
+- id: th_overreading
+  translation: "ওভাররীডিং"
+- id: th_completed
+  translation: "সম্পন্ন"
 - id: pagination_title
   translation: "দেখাচ্ছে"
 - id: pagination_view_label

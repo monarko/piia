@@ -90,6 +90,12 @@
   translation: "Status"
 - id: th_actions
   translation: "Actions"
+- id: th_screening
+  translation: "Screening"
+- id: th_overreading
+  translation: "Over Reading"
+- id: th_completed
+  translation: "Completed"
 - id: pagination_title
   translation: "Showing"
 - id: pagination_view_label

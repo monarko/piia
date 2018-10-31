@@ -28,9 +28,9 @@ func ParticipantsIndex(c buffalo.Context) error {
 	} else if user.PermissionScreening && user.PermissionOverRead {
 		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else if user.PermissionScreening {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "1").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else if user.PermissionOverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "11").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else {
 		// If there are no errors set a success message
 		c.Flash().Add("danger", "You don't have sufficient permission.")

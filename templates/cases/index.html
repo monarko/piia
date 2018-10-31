@@ -1,5 +1,5 @@
 <div class="row justify-content-lg-center">
-    <div class="col-lg-10">
+    <div class="col-sm-12">
         <div class="element-wrapper">
             <h6 class="element-header">
                 <%= t("page_overreading_title") %>
@@ -25,7 +25,7 @@
                         <thead>
                             <tr>
                                 <th class="text-center">
-                                    <input class="form-control" type="checkbox">
+                                    Flag
                                 </th>
                                 <th>
                                     <%= t("th_participant_id") %>
@@ -37,15 +37,47 @@
                                     <%= t("th_age") %>
                                 </th>
                                 <th>
+                                    <%= t("th_screening_date") %>
+                                </th>
+                                <th>
+                                    <%= t("th_screening") %>
+                                </th>
+                                <th>
+                                    <%= t("th_overreading") %>
+                                </th>
+                                <th>
+                                    <%= t("th_completed") %>
+                                </th>
+                                <th>
                                     <%= t("th_actions") %>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <%= for (p) in participants { %>
+                            <%
+                            let colorCode = ""
+                            let psc = p.Screenings[0]
+                            let pov = ""
+                            let flag = psc.DaysAgo()
+                            if (flag < 5) {
+                                colorCode = "1E8449"
+                            } else if (flag < 7) {
+                                colorCode = "FF5733"
+                            } else {
+                                colorCode = "FF0000"
+                            }
+
+                            if (len(p.OverReadings) > 0) {
+                                colorCode = ""
+                                pov = p.OverReadings[0]
+                            }
+                            %>
                             <tr>
                                 <td class="text-center">
-                                    <input class="form-control" type="checkbox">
+                                    <%= if (len(colorCode) > 0) { %>
+                                    <i class="fa fa-flag" style="color: #<%= colorCode %>;"></i>
+                                    <% } %>
                                 </td>
                                 <td class="text-center">
                                     <%= p.ParticipantID %>
@@ -56,10 +88,63 @@
                                 <td class="text-center">
                                     <%= ageHelper(p.DOB) %>
                                 </td>
+                                <td class="text-center">
+                                    <%= psc.UpdatedAt.Format("2006-01-02") %>
+                                </td>
+                                <td>
+                                    <%= if (len(p.OverReadings) > 0) { %>
+                                    <strong>Right Eye</strong><br>
+                                    DR:
+                                    <%= psc.Eyes.RightEye.DRGrading.String %><br>
+                                    DME:
+                                    <%= psc.Eyes.RightEye.DMEAssessment.String %><br>
+                                    <br>
+                                    <strong>Left Eye</strong><br>
+                                    DR:
+                                    <%= psc.Eyes.LeftEye.DRGrading.String %><br>
+                                    DME:
+                                    <%= psc.Eyes.LeftEye.DMEAssessment.String %><br>
+                                    <br>
+                                    <strong>Referral</strong>
+                                    <%= if (psc.Referral.Referred) { %>
+                                    <span class="badge badge-success">Yes</span>
+                                    <% } else { %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <%= if (len(p.OverReadings) > 0) { %>
+                                    <strong>Right Eye</strong><br>
+                                    DR:
+                                    <%= pov.Eyes.RightEye.DRGrading.String %><br>
+                                    DME:
+                                    <%= pov.Eyes.RightEye.DMEAssessment.String %><br>
+                                    <br>
+                                    <strong>Left Eye</strong><br>
+                                    DR:
+                                    <%= pov.Eyes.LeftEye.DRGrading.String %><br>
+                                    DME:
+                                    <%= pov.Eyes.LeftEye.DMEAssessment.String %><br>
+                                    <br>
+                                    <strong>Referral</strong>
+                                    <%= if (pov.Referral.Referred) { %>
+                                    <span class="badge badge-success">Yes</span>
+                                    <% } else { %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
+                                    <% } %>
+                                </td>
+                                <td class="text-center">
+                                    <%= if (len(p.OverReadings) > 0) { %>
+                                    <span class="badge badge-primary">Yes</span>
+                                    <% } else { %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
+                                </td>
                                 <td class="row-actions">
                                     <%= if (p.Status == "11" && (current_user.PermissionOverRead || current_user.Admin)) { %>
-                                    <a href="<%= caseOverreadingsCreatePath({pid: p.ID}) %>" title="Over Read"><i
-                                            class="os-icon os-icon-documents-07"></i></a>
+                                    <a href="<%= caseOverreadingsCreatePath({pid: p.ID}) %>" title="Over Read"><i class="os-icon os-icon-documents-07"></i></a>
                                     <% } %>
                                 </td>
                             </tr>
@@ -76,9 +161,12 @@
                         <%= pagination.TotalEntriesSize %>
                         |
                         <%= t("pagination_view_label") %>
-                        <a href="?per_page=10"><%= t("pagination_options_10") %></a> /
-                        <a href="?per_page=20"><%= t("pagination_options_20") %></a> /
-                        <a href="?per_page=50"><%= t("pagination_options_50") %></a>
+                        <a href="?per_page=10">
+                            <%= t("pagination_options_10") %></a> /
+                        <a href="?per_page=20">
+                            <%= t("pagination_options_20") %></a> /
+                        <a href="?per_page=50">
+                            <%= t("pagination_options_50") %></a>
                         <%= t("pagination_perpage_label") %>
                     </div>
                     <div class="table-records-pages">

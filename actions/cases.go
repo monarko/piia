@@ -14,7 +14,7 @@ func CasesIndex(c buffalo.Context) error {
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	user := c.Value("current_user").(*models.User)
-	q := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", "11").PaginateFromParams(c.Params()).Order("created_at ASC")
+	q := tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at ASC")
 	// Retrieve all Posts from the DB
 	if err := q.All(participants); err != nil {
 		return errors.WithStack(err)

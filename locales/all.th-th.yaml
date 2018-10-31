@@ -90,6 +90,12 @@
   translation: "สถานะ"
 - id: th_actions
   translation: "การปฏิบัติ"
+- id: th_screening
+  translation: "การฉาย"
+- id: th_overreading
+  translation: "สำหรับการตรวจสอบ"
+- id: th_completed
+  translation: "เสร็จ"
 - id: pagination_title
   translation: "การแสดง"
 - id: pagination_view_label
