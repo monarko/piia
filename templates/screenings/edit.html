@@ -111,6 +111,9 @@
                                                         <option value="CardiovascularDisease" <%= if (stringInSlice("CardiovascularDisease", screening.MedicalHistory.Morbidities)) { %> selected <% } %>>
                                                             Cardiovascular Disease
                                                         </option>
+                                                        <option value="HighCholesterol" <%= if (stringInSlice("HighCholesterol", screening.MedicalHistory.Morbidities)) { %> selected <% } %>>
+                                                            High Cholesterol
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>

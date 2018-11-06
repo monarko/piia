@@ -94,7 +94,16 @@ func UsersLoginPost(c buffalo.Context) error {
 	}
 	c.Session().Set("current_user_id", user.ID)
 	c.Flash().Add("success", "Welcome back!")
-	return c.Redirect(302, "/")
+
+	redirectPath := "/"
+
+	if user.PermissionOverRead && !user.PermissionScreening && !user.PermissionStudyCoordinator {
+		redirectPath = "/cases/index"
+	} else if !user.Admin {
+		redirectPath = "/participants/index"
+	}
+
+	return c.Redirect(302, redirectPath)
 }
 
 // UsersLogout clears the session and logs out the user.
