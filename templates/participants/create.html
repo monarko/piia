@@ -1,5 +1,5 @@
 <div class="row justify-content-lg-center">
-    <div class="col-lg-auto">
+    <div class="col-8">
         <div class="element-wrapper">
             <h6 class="element-header">
                 <%= t("page_enroll_title") %>
@@ -51,10 +51,21 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="">Name</label><input class="form-control" placeholder="Name" type="text"
                                         name="Name">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="">Contact Number</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">+66</span>
+                                        </div>
+                                        <input class="form-control" placeholder="Contact number" type="text" name="ContactNumber">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -84,37 +95,35 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="">Contact Number</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">+66</span>
-                                        </div>
-                                        <input class="form-control" placeholder="Contact number" type="text" name="ContactNumber">
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
-                        <legend><span>Study Consent</span></legend>
+                        <legend><span>Study Eligibility & Consent</span></legend>
+                        <div class="form-group">
+                            <div class="eligibility-criteria">
+                                <p>Ensure all eligibility criteria are met and that:</p>
+                                <ol>
+                                    <li>Patient does not have any pre-existing eye disease</li>
+                                    <li>Patient is able to give free and informed consent</li>
+                                </ol>
+                        </div>
+                        <hr/>
                         <div class="form-check">
-                            <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="Consented">Confirm
-                                that the patient has provided informed consent</label>
+                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="Consented">By checking this box, you confirm
+                                that (i) the patient is eligible for the study and (ii) has provided informed consent to participate</label>
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
                         <legend><span>Participant ID</span></legend>
-                        <p>Record the Participant ID in the patient record</p>
-                        <span class="button btn-lg btn-primary">
+                        <p class="lead">This is the unique study ID for this participant. Please record this in the patient notes.</p>
+                        <span class="button btn-lg btn-default" style="border: 1px solid #333;">
                             <%= luhnID %>
                         </span>
                         <input type="hidden" name="ParticipantID" value="<%= luhnID %>">
                     </fieldset>
                 </div>
                 <div class="form-buttons-w">
-                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <button class="btn btn-primary btn-lg" type="submit">Submit</button>
                 </div>
             </form>
         </div>
