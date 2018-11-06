@@ -98,33 +98,19 @@
                                 <th>
                                     <%= t("th_patient_id") %>
                                 </th>
-                                <th>
-                                    <%= t("th_name") %>
-                                </th>
                                 <% } %>
                                 <th>
-                                    <%= t("th_gender") %>
-                                </th>
-                                <th>
-                                    <%= t("th_age") %>
-                                </th>
-                                <th>
-                                    <%= t("th_consented") %>
+                                    <%= t("th_demographics") %>
                                 </th>
                                 <th>
                                     <%= t("th_enrolled_date") %>
                                 </th>
                                 <th>
-                                    <%= t("th_screening_date") %>
-                                </th>
-                                <%= if (current_user.Admin || current_user.PermissionStudyCoordinator) { %>
-                                <th>
-                                    <%= t("th_overread_date") %>
+                                    <%= t("th_consented") %>
                                 </th>
                                 <th>
                                     <%= t("th_workflow_status") %>
                                 </th>
-                                <% } %>
                                 <th>
                                     <%= t("th_actions") %>
                                 </th>
@@ -139,84 +125,60 @@
                                 <td class="text-center">
                                     <%= p.ParticipantID %>
                                 </td>
+                                <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
                                 <td class="text-center">
                                     <%= if (p.IDType == "hospital_id") { %>
                                     <strong>H</strong>:&nbsp;<%= p.IDNumber %>
                                     <% } else if (p.IDType == "national_id") { %>
                                     <strong>N</strong>:&nbsp;<%= p.IDNumber %>
                                     <% } %>
-                                </td>
-                                <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
-                                <td>
-                                    <%= p.Name %>
-                                    <%= if (len(p.ContactNumber) > 0) { %>
-                                    <br><%= p.ContactNumber %>
-                                    <% } %>
-                                </td>
                                 <% } %>
-                                <td>
-                                    <%= genderHelper(p.Gender) %>
-                                </td>
-                                <td>
-                                    <%= ageHelper(p.DOB) %>
                                 </td>
                                 <td class="text-center">
-                                    <%= if (p.Consented) { %>
-                                    <span class="badge badge-primary">Yes</span>
+                                    <%= ageHelper(p.DOB) %>&nbsp;
+                                    <%= if (p.Gender == "M") { %>
+                                        <span><i class="fa fa-venus fa-lg"></i></span>
+                                    <% } else { %>
+                                        <span><i class="fa fa-mars fa-lg"></i></span>
                                     <% } %>
                                 </td>
                                 <td class="text-center">
-                                    <%= p.User.Name %><br>
                                     <%= p.CreatedAt.Format("02-Jan-2006") %>
                                 </td>
                                 <td class="text-center">
-                                    <%= if (len(p.Screenings) > 0) { %>
-                                    <% let psc = p.Screenings[0] %>
-                                    <% let statuses = psc.Statuses() %>
-                                    <%= for (n) in statuses.Sections { %>
-                                        <%= if (n.Done) { %>
-                                        <span class="badge badge-primary-inverted"><%= n.Section %></span>
-                                        <% } else { %>
-                                            <span class="badge badge-danger-inverted"><%= n.Section %></span>
-                                        <% } %><br>
-                                    <% } %>
-                                    <% } %>
-                                </td>
-                                <%= if (current_user.Admin || current_user.PermissionStudyCoordinator) { %>
-                                <td class="text-center">
-                                    <%= if (len(p.OverReadings) > 0) { %>
-                                    <% let pov = p.OverReadings[0] %>
-                                    <%= pov.OverReader.Name %><br>
-                                    <%= pov.CreatedAt.Format("02-Jan-2006") %>
+                                    <%= if (p.Consented) { %>
+                                    <span class="badge badge-primary">Active</span>
                                     <% } %>
                                 </td>
                                 <td class="text-center">
                                     <%= if (len(p.Status) == 1 && p.Status == "1") { %>
                                     <div class="status-pill green" data-title="Registered" data-toggle="tooltip"></div>
+                                    <div class="status-pill gray" data-title="Screened" data-toggle="tooltip"></div>
+                                    <div class="status-pill gray" data-title="Overread" data-toggle="tooltip"></div>
                                     <% } else if (len(p.Status) == 2 && p.Status == "11") { %>
                                     <div class="status-pill green" data-title="Registered" data-toggle="tooltip"></div>
-                                    <div class="status-pill yellow" data-title="Screening" data-toggle="tooltip"></div>
+                                    <div class="status-pill green" data-title="Screened" data-toggle="tooltip"></div>
+                                    <div class="status-pill gray" data-title="Overread" data-toggle="tooltip"></div>
                                     <% } else if (len(p.Status) == 3 && p.Status == "111") { %>
                                     <div class="status-pill green" data-title="Registered" data-toggle="tooltip"></div>
-                                    <div class="status-pill yellow" data-title="Screening" data-toggle="tooltip"></div>
-                                    <div class="status-pill red" data-title="Over-read" data-toggle="tooltip"></div>
+                                    <div class="status-pill green" data-title="Screened" data-toggle="tooltip"></div>
+                                    <div class="status-pill green" data-title="Overread" data-toggle="tooltip"></div>
                                     <% } %>
                                 </td>
-                                <% } %>
                                 <td class="row-actions">
                                     <%= if (current_user.PermissionScreening || current_user.Admin) { %>
                                         <%= if (len(p.Screenings) > 0) { %>
                                             <% let psc = p.Screenings[0] %>
                                             <% let statuses = psc.Statuses() %>
                                             <%= if (!statuses.Completed) { %>
-                                            <a href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="os-icon os-icon-pencil-1"></i></a>
+                                            <a href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil fa-lg"></i></a>
                                             <% } %>
                                         <% } else { %>
-                                            <a href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="os-icon os-icon-pencil-1"></i></a>
+                                            <a href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="fa fa-pencil fa-lg"></i></a>
                                         <% } %>
                                     <% } %>
                                     <%= if (p.Status == "111" && (current_user.Admin || current_user.PermissionStudyCoordinator || current_user.PermissionScreening)) { %>
-                                    <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="os-icon os-icon-newspaper"></i></a>
+                                    <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
                                     <% } %>
                                 </td>
                             </tr>

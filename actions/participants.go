@@ -98,8 +98,11 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	if logErr != nil {
 		return errors.WithStack(logErr)
 	}
+
+	message := "New participant registered into study with Participant ID " + participant.ParticipantID
+
 	// If there are no errors set a success message
-	c.Flash().Add("success", "New participant added successfully.")
+	c.Flash().Add("success", message)
 	// and redirect to the index page
 	return c.Redirect(302, "/participants/index")
 }

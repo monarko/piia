@@ -31,19 +31,10 @@
                                     <%= t("th_participant_id") %>
                                 </th>
                                 <th>
-                                    <%= t("th_gender") %>
-                                </th>
-                                <th>
-                                    <%= t("th_age") %>
+                                    <%= t("th_demographics") %>
                                 </th>
                                 <th>
                                     <%= t("th_screening_date") %>
-                                </th>
-                                <th>
-                                    <%= t("th_screening") %>
-                                </th>
-                                <th>
-                                    <%= t("th_overreading") %>
                                 </th>
                                 <th>
                                     <%= t("th_completed") %>
@@ -83,15 +74,17 @@
                                     <%= p.ParticipantID %>
                                 </td>
                                 <td class="text-center">
-                                    <%= genderHelper(p.Gender) %>
-                                </td>
-                                <td class="text-center">
-                                    <%= ageHelper(p.DOB) %>
+                                    <%= ageHelper(p.DOB) %>&nbsp;
+                                    <%= if (p.Gender == "M") { %>
+                                        <span><i class="fa fa-venus fa-lg"></i></span>
+                                    <% } else { %>
+                                        <span><i class="fa fa-mars fa-lg"></i></span>
+                                    <% } %>
                                 </td>
                                 <td class="text-center">
                                     <%= psc.UpdatedAt.Format("2006-01-02") %>
                                 </td>
-                                <td>
+                                <!--<td>
                                     <%= if (len(p.OverReadings) > 0) { %>
                                     <strong>Right Eye</strong><br>
                                     DR:
@@ -134,7 +127,7 @@
                                     <span class="badge badge-danger">No</span>
                                     <% } %>
                                     <% } %>
-                                </td>
+                                </td>-->
                                 <td class="text-center">
                                     <%= if (len(p.OverReadings) > 0) { %>
                                     <span class="badge badge-primary">Yes</span>
@@ -144,7 +137,7 @@
                                 </td>
                                 <td class="row-actions">
                                     <%= if (p.Status == "11" && (current_user.PermissionOverRead || current_user.Admin)) { %>
-                                    <a href="<%= caseOverreadingsCreatePath({pid: p.ID}) %>" title="Over Read"><i class="os-icon os-icon-documents-07"></i></a>
+                                    <a href="<%= caseOverreadingsCreatePath({pid: p.ID}) %>" title="Over Read"><i class="fa fa-pencil fa-lg"></i></a>
                                     <% } %>
                                 </td>
                             </tr>
