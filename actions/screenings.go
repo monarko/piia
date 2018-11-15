@@ -130,6 +130,8 @@ func ScreeningsEditGet(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	c.Set("screening", screening)
+	// statuses := screening.StatusesMap()
+	// c.Set("screeningStatuses", statuses)
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
 	breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
@@ -174,7 +176,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("screenings/edit.html"))
 	}
 
-	if len(screening.Eyes.RightEye.VisualAcuity.String) > 0 && len(screening.Eyes.RightEye.DRGrading.String) > 0 && len(screening.Eyes.RightEye.DMEAssessment.String) > 0 && len(screening.Eyes.LeftEye.VisualAcuity.String) > 0 && len(screening.Eyes.LeftEye.DRGrading.String) > 0 && len(screening.Eyes.LeftEye.DMEAssessment.String) > 0 {
+	if participant.Status == "1" && len(screening.Eyes.RightEye.VisualAcuity.String) > 0 && len(screening.Eyes.RightEye.DRGrading.String) > 0 && len(screening.Eyes.RightEye.DMEAssessment.String) > 0 && len(screening.Eyes.LeftEye.VisualAcuity.String) > 0 && len(screening.Eyes.LeftEye.DRGrading.String) > 0 && len(screening.Eyes.LeftEye.DMEAssessment.String) > 0 {
 		participant.Status = "11"
 		perrs, err := tx.ValidateAndUpdate(participant)
 		if err != nil {

@@ -105,6 +105,19 @@ func (s Screening) Statuses() Status {
 	return all
 }
 
+// StatusesMap returns status for all parts in Map
+func (s Screening) StatusesMap() map[string]bool {
+	all := s.Statuses()
+
+	maps := make(map[string]bool)
+
+	for _, s := range all.Sections {
+		maps[s.Section] = s.Done
+	}
+
+	return maps
+}
+
 // DaysAgo returns days ago its updated
 func (s Screening) DaysAgo() int {
 	days := int(math.Floor(time.Now().Sub(s.UpdatedAt).Hours() / 24))
