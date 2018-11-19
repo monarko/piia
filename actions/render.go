@@ -50,6 +50,12 @@ func init() {
 				}
 				return false
 			},
+			"lastElement": func(s string, sep string) string {
+				ss := strings.Split(s, sep)
+				last := ss[len(ss)-1]
+
+				return last
+			},
 		},
 	})
 }
