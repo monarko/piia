@@ -59,7 +59,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	}
 	user := c.Value("current_user").(*models.User)
 	screening := &models.Screening{}
-
+	oldScreening := screening.Maps()
 	if err := c.Bind(screening); err != nil {
 		return errors.WithStack(err)
 	}
@@ -104,6 +104,12 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 			c.Set("breadcrumbMap", breadcrumbMap)
 			return c.Render(422, r.HTML("screenings/create.html"))
 		}
+	}
+
+	newScreening := screening.Maps()
+	auditErr := MakeAudit("Screening", screening.ID, oldScreening, newScreening, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
 	}
 
 	logErr := InsertLog("create", "User did a screening", "", screening.ID.String(), "screening", user.ID, c)
@@ -151,6 +157,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 	if err := tx.Find(screening, c.Param("sid")); err != nil {
 		return c.Error(404, err)
 	}
+	oldScreening := screening.Maps()
 	if err := c.Bind(screening); err != nil {
 		return errors.WithStack(err)
 	}
@@ -192,6 +199,12 @@ func ScreeningsEditPost(c buffalo.Context) error {
 			c.Set("breadcrumbMap", breadcrumbMap)
 			return c.Render(422, r.HTML("screenings/edit.html"))
 		}
+	}
+
+	newScreening := screening.Maps()
+	auditErr := MakeAudit("Screening", screening.ID, oldScreening, newScreening, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
 	}
 
 	logErr := InsertLog("update", "User updated a screening", "", screening.ID.String(), "screening", user.ID, c)

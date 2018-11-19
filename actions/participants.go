@@ -235,8 +235,14 @@ func ParticipantsDetail(c buffalo.Context) error {
 	}
 	sort.Strings(keys)
 
+	audits := &models.Audits{}
+	if err := tx.Eager().Where("model_type = ?", "Screening").Where("model_id = ?", participant.Screenings[0].ID).All(audits); err != nil {
+		return c.Error(404, err)
+	}
+
 	c.Set("user_activities", userActivities)
 	c.Set("activities_keys", keys)
+	c.Set("audits", audits)
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["page_participants_title"] = "/participants/index"

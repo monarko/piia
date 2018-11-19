@@ -39,6 +39,18 @@ func (s Screening) String() string {
 	return string(js)
 }
 
+// Maps will return a map
+func (s Screening) Maps() map[string]interface{} {
+	bt, _ := json.Marshal(s)
+	m := make(map[string]interface{})
+	json.Unmarshal(bt, &m)
+	delete(m, "screener")
+	delete(m, "participant")
+	delete(m, "created_at")
+	delete(m, "updated_at")
+	return m
+}
+
 // Screenings is not required by pop and may be deleted
 type Screenings []Screening
 
