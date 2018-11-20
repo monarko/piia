@@ -1,0 +1,9 @@
+create_table("audits") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("model_type", "string", {"default":""})
+	t.Column("model_id", "uuid", {})
+	t.Column("old_data", "jsonb", {"null": true})
+	t.Column("new_data", "jsonb", {"null": true})
+	t.Column("changes", "jsonb", {"null": true})
+	t.Column("user_id", "uuid", {})
+}

@@ -39,6 +39,18 @@ func (s Screening) String() string {
 	return string(js)
 }
 
+// Maps will return a map
+func (s Screening) Maps() map[string]interface{} {
+	bt, _ := json.Marshal(s)
+	m := make(map[string]interface{})
+	json.Unmarshal(bt, &m)
+	delete(m, "screener")
+	delete(m, "participant")
+	delete(m, "created_at")
+	delete(m, "updated_at")
+	return m
+}
+
 // Screenings is not required by pop and may be deleted
 type Screenings []Screening
 
@@ -103,6 +115,19 @@ func (s Screening) Statuses() Status {
 	all := Status{statuses, completed}
 
 	return all
+}
+
+// StatusesMap returns status for all parts in Map
+func (s Screening) StatusesMap() map[string]bool {
+	all := s.Statuses()
+
+	maps := make(map[string]bool)
+
+	for _, s := range all.Sections {
+		maps[s.Section] = s.Done
+	}
+
+	return maps
 }
 
 // DaysAgo returns days ago its updated

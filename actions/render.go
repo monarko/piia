@@ -50,6 +50,12 @@ func init() {
 				}
 				return false
 			},
+			"lastElement": func(s string, sep string) string {
+				ss := strings.Split(s, sep)
+				last := ss[len(ss)-1]
+
+				return last
+			},
 		},
 	})
 }
@@ -113,13 +119,13 @@ func Age(a time.Time) string {
 		}
 	}
 	/*
-	if month > 0 {
-		if month > 1 {
-			monthText = strconv.Itoa(month) + " months"
-		} else {
-			monthText = strconv.Itoa(month) + " month"
+		if month > 0 {
+			if month > 1 {
+				monthText = strconv.Itoa(month) + " months"
+			} else {
+				monthText = strconv.Itoa(month) + " month"
+			}
 		}
-	}
 	*/
 
 	if month == 0 && year == 0 {

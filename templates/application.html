@@ -201,6 +201,11 @@
                         <%= partial("flash.html") %>
                         <%= yield %>
                     </div>
+                    <%= if (len(audits) > 0) { %>
+                        <div class="content-panel">
+                            <%= partial("audits.html") %>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>

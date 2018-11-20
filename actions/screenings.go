@@ -59,7 +59,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	}
 	user := c.Value("current_user").(*models.User)
 	screening := &models.Screening{}
-
+	oldScreening := screening.Maps()
 	if err := c.Bind(screening); err != nil {
 		return errors.WithStack(err)
 	}
@@ -106,6 +106,12 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		}
 	}
 
+	newScreening := screening.Maps()
+	auditErr := MakeAudit("Screening", screening.ID, oldScreening, newScreening, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
+	}
+
 	logErr := InsertLog("create", "User did a screening", "", screening.ID.String(), "screening", user.ID, c)
 	if logErr != nil {
 		return errors.WithStack(logErr)
@@ -130,6 +136,8 @@ func ScreeningsEditGet(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	c.Set("screening", screening)
+	// statuses := screening.StatusesMap()
+	// c.Set("screeningStatuses", statuses)
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
 	breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
@@ -149,6 +157,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 	if err := tx.Find(screening, c.Param("sid")); err != nil {
 		return c.Error(404, err)
 	}
+	oldScreening := screening.Maps()
 	if err := c.Bind(screening); err != nil {
 		return errors.WithStack(err)
 	}
@@ -174,7 +183,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("screenings/edit.html"))
 	}
 
-	if len(screening.Eyes.RightEye.VisualAcuity.String) > 0 && len(screening.Eyes.RightEye.DRGrading.String) > 0 && len(screening.Eyes.RightEye.DMEAssessment.String) > 0 && len(screening.Eyes.LeftEye.VisualAcuity.String) > 0 && len(screening.Eyes.LeftEye.DRGrading.String) > 0 && len(screening.Eyes.LeftEye.DMEAssessment.String) > 0 {
+	if participant.Status == "1" && len(screening.Eyes.RightEye.VisualAcuity.String) > 0 && len(screening.Eyes.RightEye.DRGrading.String) > 0 && len(screening.Eyes.RightEye.DMEAssessment.String) > 0 && len(screening.Eyes.LeftEye.VisualAcuity.String) > 0 && len(screening.Eyes.LeftEye.DRGrading.String) > 0 && len(screening.Eyes.LeftEye.DMEAssessment.String) > 0 {
 		participant.Status = "11"
 		perrs, err := tx.ValidateAndUpdate(participant)
 		if err != nil {
@@ -190,6 +199,12 @@ func ScreeningsEditPost(c buffalo.Context) error {
 			c.Set("breadcrumbMap", breadcrumbMap)
 			return c.Render(422, r.HTML("screenings/edit.html"))
 		}
+	}
+
+	newScreening := screening.Maps()
+	auditErr := MakeAudit("Screening", screening.ID, oldScreening, newScreening, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
 	}
 
 	logErr := InsertLog("update", "User updated a screening", "", screening.ID.String(), "screening", user.ID, c)

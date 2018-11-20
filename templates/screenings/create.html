@@ -42,9 +42,11 @@
                             <div class="all-tasks-w" style="padding-top: 0;">
                                 <div class="tasks-section">
                                     <div class="tasks-header-w" style="margin-top: 0;">
-                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
+                                        <a class="tasks-header-toggler" href="#">
+                                            <i class="fa fa-minus-circle"></i>
+                                        </a>
                                         <h5 class="tasks-header">
-                                            Diabetes
+                                            Medical History
                                         </h5>
                                     </div>
                                     <div class="tasks-list-w">
@@ -74,6 +76,7 @@
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
                                                     <label for="">Duration</label>
+                                                    <input type="hidden" name="Diabetes.DurationType" value="year">
                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                         <input class="form-control" placeholder="Duration in Years" min="0"
                                                             type="number" name="Diabetes.Duration" />
@@ -82,26 +85,15 @@
                                                                 years
                                                             </div>
                                                         </div>
-                                                        <input type="hidden" name="Diabetes.DurationType" value="year">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="tasks-section">
-                                    <div class="tasks-header-w">
-                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
-                                        <h5 class="tasks-header">
-                                            Medical History
-                                        </h5>
-                                    </div>
-                                    <div class="tasks-list-w">
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="">Select Co-Morbidities</label>
-                                                    <select class="form-control select2" multiple="true" name="MedicalHistory.Morbidities">
+                                                    <select class="form-control select2" style="width: 100%;" multiple="true" name="MedicalHistory.Morbidities">
                                                         <option value="Hypertension">
                                                             Hypertension
                                                         </option>
@@ -226,6 +218,7 @@
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label for="">HbA1C (in %)</label>
+                                                        <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
                                                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                             <input class="form-control" placeholder="" type="number"
                                                                 name="Pathology.HbA1C.HbA1C" step="0.1" min="3.0" max="30.0" />
@@ -234,7 +227,6 @@
                                                                     %
                                                                 </div>
                                                             </div>
-                                                            <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -454,16 +446,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="tasks-section">
-                                    <div class="tasks-header-w">
-                                        <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
-                                        <h5 class="tasks-header">
-                                            Referral
-                                        </h5>
-                                    </div>
-                                    <div class="tasks-list-w">
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <label for="">Referred</label>

@@ -1,0 +1,53 @@
+<div class="element-wrapper">
+    <h6 class="element-header">
+      Changes
+    </h6>
+    <div class="element-box-tp">
+      <%= for (audit) in audits { %>
+      <div class="users-list-w">
+        <div class="user-w with-status">
+          <div class="user-avatar-w" style="width: 180px;">
+            <%= audit.CreatedAt.Format("02-Jan-2006 03:04:05") %>
+          </div>
+          <div class="user-name">
+            <h6 class="user-title">
+              <%= audit.User.Name %>
+            </h6>
+            <div class="user-role">
+                <%= if (audit.User.Admin) { %>
+                  <%= t("role_admin") %>
+                  <% } else if (audit.User.PermissionScreening) { %>
+                  <%= t("role_screener") %>
+                  <% } else if (audit.User.PermissionOverRead) { %>
+                  <%= t("role_reader") %>
+                  <% } else if (audit.User.PermissionStudyCoordinator) { %>
+                  <%= t("role_study_coordinator") %>
+                  <% } else { %>
+                  <%= t("role_general") %>
+                <% } %>
+            </div>
+          </div>
+          <div class="user-action" style="width: 60%;">
+            <%= for (k, v) in audit.Changes { %>
+              <%= if ((lastElement(k, "->") != "assessment_date") && (lastElement(k, "->") != "id") && (lastElement(k, "->") != "unit")) { %>
+                <div class="profile-tile" style="border-bottom: none; margin-right: 1rem; margin-bottom: 0; float: left;">
+                    <a class="profile-tile-box" href="#" style="width: auto; padding: .5rem; text-align: left;">
+                      <div class="">
+                          <span class="badge badge-primary-inverted" style="text-transform: uppercase; font-size: 60% !important;">
+                              <%= k %>
+                          </span><br>
+                      </div>
+                      <div class="pt-user-name">
+                          <span class="badge badge-warning" style="font-size: 85% !important;">From</span> <%= v["from"] %><br>
+                          <span class="badge badge-info" style="font-size: 85% !important;">To</span> <%= v["to"] %>
+                      </div>
+                    </a>
+                  </div>
+              <% } %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </div>
+</div>
