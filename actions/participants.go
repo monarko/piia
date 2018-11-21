@@ -2,10 +2,12 @@ package actions
 
 import (
 	"sort"
+	"strings"
+
+	"github.com/monarko/piia/helpers"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
-	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -40,7 +42,13 @@ func ParticipantsIndex(c buffalo.Context) error {
 
 	// Retrieve all Posts from the DB
 	if err := q.All(participants); err != nil {
-		return errors.WithStack(err)
+		// return errors.WithStack(err)
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		return c.Redirect(302, "/")
 	}
 	// Make posts available inside the html template
 	c.Set("participants", participants)
@@ -52,7 +60,13 @@ func ParticipantsIndex(c buffalo.Context) error {
 	c.Set("filterStatus", c.Params().Get("status"))
 	logErr := InsertLog("view", "User viewed participants", "", "", "", user.ID, c)
 	if logErr != nil {
-		return errors.WithStack(logErr)
+		// return errors.WithStack(logErr)
+		errStr := logErr.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/index.html"))
 	}
 	return c.Render(200, r.HTML("participants/index.html"))
 }
@@ -60,9 +74,9 @@ func ParticipantsIndex(c buffalo.Context) error {
 // ParticipantsCreateGet for the insert form
 func ParticipantsCreateGet(c buffalo.Context) error {
 	c.Set("participant", &models.Participant{})
-	user := c.Value("current_user").(*models.User)
-	luhnID := helpers.GenerateLuhnIDWithGivenPrefix(user.Site)
-	c.Set("luhnID", luhnID.ID)
+	// user := c.Value("current_user").(*models.User)
+	// luhnID := helpers.GenerateLuhnIDWithGivenPrefix(user.Site)
+	// c.Set("luhnID", luhnID.ID)
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["page_participants_title"] = "/participants/index"
 	breadcrumbMap["breadcrumb_enrol_participant"] = "/participants/create"
@@ -77,17 +91,56 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	user := c.Value("current_user").(*models.User)
 	// Bind participant to the html form elements
 	if err := c.Bind(participant); err != nil {
-		return errors.WithStack(err)
+		// return errors.WithStack(err)
+		errStr := err.Error()
+		errs := map[string][]string{
+			"create_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/create.html"))
 	}
+
+	if len(participant.ParticipantID) != 9 || !helpers.Valid(participant.ParticipantID) {
+		errStr := "Invalid Participant ID, please check your input again for valid checksum."
+		errs := map[string][]string{
+			"checksum_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/create.html"))
+	}
+
+	if len(participant.ParticipantID) == 9 && !strings.HasPrefix(participant.ParticipantID, "P") {
+		errStr := "Participant ID should start with letter \"P\"."
+		errs := map[string][]string{
+			"checksum_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/create.html"))
+	}
+
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
 	// Validate the data from the html form
 	participant.UserID = user.ID
 	participant.Status = "1"
-	c.Set("luhnID", c.Request().FormValue("ParticipantID"))
+
+	// c.Set("luhnID", c.Request().FormValue("ParticipantID"))
 	verrs, err := tx.ValidateAndCreate(participant)
 	if err != nil {
-		return errors.WithStack(err)
+		// return errors.WithStack(err)
+		errStr := err.Error()
+		if strings.Contains(errStr, "duplicate") && strings.Contains(errStr, "participants_participant_id_idx") {
+			errStr = "Participant ID already in use. Please check again for correct Participant ID."
+		}
+		errs := map[string][]string{
+			"create_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/create.html"))
 	}
 	if verrs.HasAny() {
 		c.Set("participant", participant)
@@ -96,15 +149,31 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	}
 	logErr := InsertLog("create", "User created a participant", "", participant.ID.String(), "participant", user.ID, c)
 	if logErr != nil {
-		return errors.WithStack(logErr)
+		// return errors.WithStack(logErr)
+		errStr := logErr.Error()
+		errs := map[string][]string{
+			"create_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/create.html"))
 	}
 
+	btnAction := c.Request().FormValue("submitBtn")
+	redirectPath := "/participants/index"
 	message := "New participant registered into study with Participant ID " + participant.ParticipantID
+	if btnAction == "enrollAddAnother" {
+		redirectPath = "/participants/create"
+		message += ". You can add another one now."
+	} else if btnAction == "enrollGoToScreening" {
+		redirectPath = "/participants/" + participant.ID.String() + "/screenings/create"
+		message += ". You can add screening for this participant here."
+	}
 
 	// If there are no errors set a success message
 	c.Flash().Add("success", message)
 	// and redirect to the index page
-	return c.Redirect(302, "/participants/index")
+	return c.Redirect(302, redirectPath)
 }
 
 // ParticipantsEditGet displays a form to edit the post.

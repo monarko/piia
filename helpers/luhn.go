@@ -86,9 +86,16 @@ func generateControlDigit(luhnString string) int {
 }
 
 func calculateChecksum(luhnString string, double bool) int {
-	prefixInt := fmt.Sprintf("%d", luhnString[0])
-	suffix := luhnString[1:]
-	theString := string(prefixInt) + suffix
+	theString := ""
+	for i := 0; i < len(luhnString); i++ {
+		num := fmt.Sprintf("%d", luhnString[i])
+		numS, _ := strconv.Atoi(num)
+		if (numS >= 65 && numS <= 90) || (numS >= 97 && numS <= 122) {
+			theString = theString + num
+		} else {
+			theString = theString + string(luhnString[i])
+		}
+	}
 	source := strings.Split(theString, "")
 	checksum := 0
 

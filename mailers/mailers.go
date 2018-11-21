@@ -13,6 +13,7 @@ import (
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/packr"
+	mailgun "github.com/mailgun/mailgun-go"
 	"github.com/monarko/piia/helpers"
 	"github.com/pkg/errors"
 )
