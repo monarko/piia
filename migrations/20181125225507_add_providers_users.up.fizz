@@ -1,0 +1,5 @@
+add_column("users", "provider", "string", {"default":""})
+add_column("users", "provider_id", "string", {"default":""})
+add_column("users", "avatar", "string", {"default":""})
+
+add_index("users", ["provider", "provider_id"])

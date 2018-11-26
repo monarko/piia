@@ -234,17 +234,17 @@ func ParticipantsDetail(c buffalo.Context) error {
 	c.Set("participant", participant)
 
 	userActivities := make(map[string][]map[string]string)
-	participantCreatedDate := participant.CreatedAt.Format("2006 Jan 02")
+	participantCreatedDate := participant.CreatedAt.Format("2006-01-02")
 	participantCreatedTime := participant.CreatedAt.Format("3:04")
 	participantCreatedPm := participant.CreatedAt.Format("pm")
 	participantCreatedMsg := participant.User.Name + " registered the participant"
 
-	screeningCreatedDate := participant.Screenings[0].CreatedAt.Format("2006 Jan 02")
+	screeningCreatedDate := participant.Screenings[0].CreatedAt.Format("2006-01-02")
 	screeningCreatedTime := participant.Screenings[0].CreatedAt.Format("3:04")
 	screeningCreatedPm := participant.Screenings[0].CreatedAt.Format("pm")
 	screeningCreatedMsg := participant.Screenings[0].Screener.Name + " screened the participant"
 
-	overReadCreatedDate := participant.OverReadings[0].CreatedAt.Format("2006 Jan 02")
+	overReadCreatedDate := participant.OverReadings[0].CreatedAt.Format("2006-01-02")
 	overReadCreatedTime := participant.OverReadings[0].CreatedAt.Format("3:04")
 	overReadCreatedPm := participant.OverReadings[0].CreatedAt.Format("pm")
 	overReadCreatedMsg := participant.OverReadings[0].OverReader.Name + " over read the participant"
@@ -285,7 +285,7 @@ func ParticipantsDetail(c buffalo.Context) error {
 		}
 
 		for _, l := range *logs {
-			logCreatedDate := l.CreatedAt.Format("2006 Jan 02")
+			logCreatedDate := l.CreatedAt.Format("2006-01-02")
 			logCreatedTime := l.CreatedAt.Format("3:04")
 			logCreatedPm := l.CreatedAt.Format("pm")
 			logCreatedMsg := l.User.Name + " performed activity on notification: " + l.Activity
@@ -296,6 +296,24 @@ func ParticipantsDetail(c buffalo.Context) error {
 				"msg":  logCreatedMsg,
 			})
 		}
+	}
+
+	slogs := &models.SystemLogs{}
+	if err := tx.Eager().Where("resource_id = ?", participant.ID).Where("resource_type = ?", "participant").Where("action = ?", "update").All(slogs); err != nil {
+		return c.Error(404, err)
+	}
+
+	for _, l := range *slogs {
+		logCreatedDate := l.CreatedAt.Format("2006-01-02")
+		logCreatedTime := l.CreatedAt.Format("3:04")
+		logCreatedPm := l.CreatedAt.Format("pm")
+		logCreatedMsg := l.User.Name + " performed activity on participant: " + l.Activity
+
+		userActivities[logCreatedDate] = append(userActivities[logCreatedDate], map[string]string{
+			"time": logCreatedTime,
+			"ampm": logCreatedPm,
+			"msg":  logCreatedMsg,
+		})
 	}
 
 	var keys []string
@@ -318,4 +336,29 @@ func ParticipantsDetail(c buffalo.Context) error {
 	breadcrumbMap["breadcrumb_enrol_participant"] = ""
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/detail.html"))
+}
+
+// ParticipantsReferralAppointmentDone implementation
+func ParticipantsReferralAppointmentDone(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	participant.ReferralAppointment = true
+	verrs, err := tx.ValidateAndUpdate(participant)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	if verrs.HasAny() {
+		c.Set("errors", verrs.Errors)
+		return c.Redirect(302, "/referrals/index")
+	}
+	user := c.Value("current_user").(*models.User)
+	logErr := InsertLog("update", "User marked a participant for appointment completed", "", participant.ID.String(), "participant", user.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
+	c.Flash().Add("success", "Participant is marked successfully.")
+	return c.Redirect(302, "/referrals/index")
 }

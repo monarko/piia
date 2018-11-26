@@ -166,8 +166,12 @@
                     <%= for (log) in logs { %>
                     <tr>
                         <td class="cell-with-media">
-                            <img alt="" src="<%= assetPath("images/avatar1.jpg") %>" style="height: 25px;"><span>
-                                <%= log.User.Name %></span>
+                                <%= if (len(log.User.Avatar) > 10) { %>
+                                    <img alt="" src="<%= log.User.Avatar %>" style="height: 25px; border-radius: 50%;">
+                                <% } else { %>
+                                    <img alt="" src="<%= assetPath("images/avatar1.jpg") %>" style="height: 25px; border-radius: 50%;">
+                                <% } %>                            
+                            <span><%= log.User.Name %></span>
                         </td>
                         <td class="nowrap">
                             <%= upcase(log.Action) %>

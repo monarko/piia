@@ -205,6 +205,7 @@ func UsersEditPost(c buffalo.Context) error {
 	user.PermissionStudyCoordinator = false
 	user.PermissionScreening = false
 	user.PermissionOverRead = false
+	user.PermissionReferralTracker = false
 	if err := c.Bind(user); err != nil {
 		return errors.WithStack(err)
 	}
@@ -299,6 +300,20 @@ func OverReadingPermissionRequired(next buffalo.Handler) buffalo.Handler {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
 			if user.Admin || user.PermissionOverRead || user.PermissionStudyCoordinator {
+				return next(c)
+			}
+		}
+		c.Flash().Add("danger", "You are not authorized to view that page.")
+		return c.Redirect(302, "/")
+	}
+}
+
+// ReferralTrackerPermissionRequired requires a user to be logged in and to be an admin before accessing a route.
+func ReferralTrackerPermissionRequired(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		user, ok := c.Value("current_user").(*models.User)
+		if ok {
+			if user.Admin || user.PermissionReferralTracker || user.PermissionStudyCoordinator {
 				return next(c)
 			}
 		}

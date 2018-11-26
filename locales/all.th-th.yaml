@@ -35,6 +35,8 @@
   translation: "ผู้วิจารณ์"
 - id: role_study_coordinator
   translation: "ผู้ประสานงาน"
+- id: role_referral_tracker
+  translation: "การอ้างอิงติดตาม"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "แผงควบคุม"
@@ -44,6 +46,8 @@
   translation: "ผู้เข้าร่วม"
 - id: nav_overreading
   translation: "สำหรับรีวิว"
+- id: "nav_referrals"
+  translation: "แน่ะ"
 - id: nav_users
   translation: "การจัดการผู้ใช้"
 - id: nav_logs

@@ -33,10 +33,14 @@ type User struct {
 	PermissionScreening        bool          `json:"-" db:"permission_screening"`
 	PermissionOverRead         bool          `json:"-" db:"permission_overread"`
 	PermissionStudyCoordinator bool          `json:"-" db:"permission_study_coordinator"`
+	PermissionReferralTracker  bool          `json:"-" db:"permission_referral_tracker"`
 	SystemLogs                 SystemLogs    `has_many:"system_logs" json:"-"`
 	Mobile                     string        `json:"mobile" db:"mobile"`
 	Site                       string        `json:"site" db:"site"`
 	Notifications              Notifications `has_many:"notifications" json:"-"`
+	Provider                   string        `json:"provider" db:"provider"`
+	ProviderID                 string        `json:"provider_id" db:"provider_id"`
+	Avatar                     string        `json:"avatar" db:"avatar"`
 }
 
 // String is not required by pop and may be deleted
