@@ -91,25 +91,25 @@
 									</div>
 									<% } %>
 
-									<%= if (user.PermissionStudyCoordinator) { %>
+									<%= if (user.Permission.StudyCoordinator) { %>
 									<div class="badge badge-primary">
 										Study Co-ordinator
 									</div>
 									<% } %>
 
-									<%= if (user.PermissionScreening) { %>
+									<%= if (user.Permission.Screening) { %>
 									<div class="badge badge-warning">
 										Screener
 									</div>
 									<% } %>
 
-									<%= if (user.PermissionOverRead) { %>
+									<%= if (user.Permission.OverRead) { %>
 									<div class="badge badge-info">
 										Over Reader
 									</div>
 									<% } %>
 
-									<%= if (user.PermissionReferralTracker) { %>
+									<%= if (user.Permission.ReferralTracker) { %>
 										<div class="badge badge-info">
 											Referral Tracker
 										</div>

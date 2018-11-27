@@ -14,7 +14,7 @@
                 <div class="controls-above-table">
                     <div class="row">
                         <div class="col-sm-6">
-                            <%= if (current_user.Admin || current_user.PermissionScreening) { %>
+                            <%= if (current_user.Admin || current_user.Permission.Screening) { %>
                             <a class="btn btn-primary btn" href="<%= participantsCreatePath() %>" role="button"><%= t("button_enroll") %></a>
                             <% } %>
                         </div>
@@ -94,7 +94,7 @@
                                 <th>
                                     <%= t("th_participant_id") %>
                                 </th>
-                                <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
+                                <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
                                 <th>
                                     <%= t("th_patient_id") %>
                                 </th>
@@ -125,7 +125,7 @@
                                 <td class="text-center">
                                     <%= p.ParticipantID %>
                                 </td>
-                                <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
+                                <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
                                 <td class="text-center">
                                     <%= if (p.IDType == "hospital_id") { %>
                                     <strong>H</strong>:&nbsp;<%= p.IDNumber %>
@@ -166,7 +166,7 @@
                                     <% } %>
                                 </td>
                                 <td class="row-actions">
-                                    <%= if (current_user.PermissionScreening || current_user.Admin) { %>
+                                    <%= if (current_user.Permission.Screening || current_user.Admin) { %>
                                         <%= if (len(p.Screenings) > 0) { %>
                                             <% let psc = p.Screenings[0] %>
                                             <% let statuses = psc.Statuses() %>
@@ -177,7 +177,7 @@
                                             <a href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="fa fa-pencil fa-lg"></i></a>
                                         <% } %>
                                     <% } %>
-                                    <%= if (p.Status == "111" && (current_user.Admin || current_user.PermissionStudyCoordinator || current_user.PermissionScreening)) { %>
+                                    <%= if (p.Status == "111" && (current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.Screening)) { %>
                                     <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
                                     <% } %>
                                 </td>

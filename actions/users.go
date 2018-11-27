@@ -98,7 +98,7 @@ func UsersLoginPost(c buffalo.Context) error {
 
 	redirectPath := "/"
 
-	if user.PermissionOverRead && !user.PermissionScreening && !user.PermissionStudyCoordinator {
+	if user.Permission.OverRead && !user.Permission.Screening && !user.Permission.StudyCoordinator {
 		redirectPath = "/cases/index"
 	} else if !user.Admin {
 		redirectPath = "/participants/index"
@@ -208,10 +208,10 @@ func UsersEditPost(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	user.Admin = false
-	user.PermissionStudyCoordinator = false
-	user.PermissionScreening = false
-	user.PermissionOverRead = false
-	user.PermissionReferralTracker = false
+	user.Permission.StudyCoordinator = false
+	user.Permission.Screening = false
+	user.Permission.OverRead = false
+	user.Permission.ReferralTracker = false
 	if err := c.Bind(user); err != nil {
 		return errors.WithStack(err)
 	}
@@ -290,7 +290,7 @@ func ScreeningPermissionRequired(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
-			if user.Admin || user.PermissionScreening || user.PermissionStudyCoordinator {
+			if user.Admin || user.Permission.Screening || user.Permission.StudyCoordinator {
 				return next(c)
 			}
 		}
@@ -304,7 +304,7 @@ func OverReadingPermissionRequired(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
-			if user.Admin || user.PermissionOverRead || user.PermissionStudyCoordinator {
+			if user.Admin || user.Permission.OverRead || user.Permission.StudyCoordinator {
 				return next(c)
 			}
 		}
@@ -318,7 +318,7 @@ func ReferralTrackerPermissionRequired(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
-			if user.Admin || user.PermissionReferralTracker || user.PermissionStudyCoordinator {
+			if user.Admin || user.Permission.ReferralTracker || user.Permission.StudyCoordinator {
 				return next(c)
 			}
 		}
@@ -332,7 +332,7 @@ func StudyCoordinatorPermissionRequired(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
 		user, ok := c.Value("current_user").(*models.User)
 		if ok {
-			if user.Admin || user.PermissionStudyCoordinator {
+			if user.Admin || user.Permission.StudyCoordinator {
 				return next(c)
 			}
 		}

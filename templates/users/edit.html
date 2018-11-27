@@ -1,5 +1,5 @@
 <div class="row justify-content-lg-center">
-    <div class="col-lg-auto">
+    <div class="col-lg-10 col-sm-12">
         <div class="element-wrapper">
             <h6 class="element-header">
                 Update User
@@ -126,23 +126,23 @@
                             </div>
                         </div>
                         <div class="row">
+                                <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="">Email</label>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        <i class="os-icon os-icon-email-2-at2"></i>
+                                                    </span>
+                                                </div>
+                                                <input class="form-control" placeholder="Email address" type="email" name="Email" value="<%= user.Email %>">
+                                            </div>
+                                        </div>
+                                    </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="mobile">Mobile</label>
                                     <input type="text" name="Mobile" id="mobile" placeholder="Enter mobile" class="form-control" value="<%= user.Mobile %>">
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="">Email</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                <i class="os-icon os-icon-email-2-at2"></i>
-                                            </span>
-                                        </div>
-                                        <input class="form-control" placeholder="Email address" type="email" name="Email" value="<%= user.Email %>">
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -182,12 +182,12 @@
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
-                                        <%= if (user.PermissionStudyCoordinator) { %>
+                                        <%= if (user.Permission.StudyCoordinator) { %>
                                             <input class="btn form-check-input" type="checkbox"
-                                            name="PermissionStudyCoordinator" value="true" checked>
+                                            name="Permission.StudyCoordinator" value="true" checked>
                                         <% } else { %>
                                             <input class="btn form-check-input" type="checkbox"
-                                            name="PermissionStudyCoordinator" value="true">
+                                            name="Permission.StudyCoordinator" value="true">
                                         <% } %>
                                         <strong>Is Study Co-ordinator?</strong>
                                     </label>
@@ -201,12 +201,12 @@
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
-                                            <%= if (user.PermissionScreening) { %>
+                                            <%= if (user.Permission.Screening) { %>
                                                 <input class="btn form-check-input" type="checkbox"
-                                            name="PermissionScreening" value="true" checked>
+                                            name="Permission.Screening" value="true" checked>
                                             <% } else { %>
                                                 <input class="btn form-check-input" type="checkbox"
-                                            name="PermissionScreening" value="true">
+                                            name="Permission.Screening" value="true">
                                             <% } %>
                                         Screening Permission
                                     </label>
@@ -215,12 +215,12 @@
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
-                                            <%= if (user.PermissionOverRead) { %>
+                                            <%= if (user.Permission.OverRead) { %>
                                                 <input class="btn form-check-input" type="checkbox"
-                                            name="PermissionOverRead" value="true" checked>
+                                            name="Permission.OverRead" value="true" checked>
                                             <% } else { %>
                                                 <input class="btn form-check-input" type="checkbox"
-                                            name="PermissionOverRead" value="true">
+                                            name="Permission.OverRead" value="true">
                                             <% } %>
                                         Over Read Permission
                                     </label>
@@ -231,12 +231,12 @@
                             <div class="col-sm-6">   
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
-                                            <%= if (user.PermissionReferralTracker) { %>
+                                            <%= if (user.Permission.ReferralTracker) { %>
                                                 <input class="btn form-check-input" type="checkbox"
-                                            name="PermissionReferralTracker" value="true" checked>
+                                            name="Permission.ReferralTracker" value="true" checked>
                                             <% } else { %>
                                                 <input class="btn form-check-input" type="checkbox"
-                                            name="PermissionReferralTracker" value="true">
+                                            name="Permission.ReferralTracker" value="true">
                                             <% } %>
                                         Referral Tracking Permission
                                     </label>

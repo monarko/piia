@@ -136,7 +136,7 @@
                                     <% } %>
                                 </td>
                                 <td class="row-actions">
-                                    <%= if (p.Status == "11" && (current_user.PermissionOverRead || current_user.Admin)) { %>
+                                    <%= if (p.Status == "11" && (current_user.Permission.OverRead || current_user.Admin)) { %>
                                     <a href="<%= caseOverreadingsCreatePath({pid: p.ID}) %>" title="Over Read"><i class="fa fa-pencil fa-lg"></i></a>
                                     <% } %>
                                 </td>

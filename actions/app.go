@@ -65,8 +65,8 @@ func App() *buffalo.App {
 
 		// app.Resource("/users", UsersResource{})
 		auth := app.Group("/users")
-		auth.GET("/register", UsersRegisterGet)
-		auth.POST("/register", UsersRegisterPost)
+		// auth.GET("/register", UsersRegisterGet)
+		// auth.POST("/register", UsersRegisterPost)
 		auth.GET("/login", UsersLoginGet)
 		auth.POST("/login", UsersLoginPost)
 		auth.GET("/logout", UsersLogout)
