@@ -4,6 +4,7 @@ import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/validate"
+	"github.com/monarko/piia/mailers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -160,21 +161,26 @@ func UsersCreatePost(c buffalo.Context) error {
 		return errors.WithStack(logErr)
 	}
 
-	// newUserEmail := mailers.EmailDetails{
-	// 	To:      []string{user.Email},
-	// 	Subject: "Welcome to PIIA (peer)",
-	// 	Data:    map[string]interface{}{"name": user.Name},
-	// }
+	newUserEmail := &mailers.EmailDetails{}
+	newUserEmail.To = []string{user.Email}
+	newUserEmail.Subject = "Welcome to PIIA (peer)"
+	newUserEmail.Data = map[string]interface{}{
+		"name":  user.Name,
+		"email": user.Email,
+		"root":  App().Host,
+		"link":  App().Host + "/auth/google",
+	}
 
-	// // mailers.SendWelcomeEmail(newUserEmail)
-	// err = newUserEmail.Send(c)
-	// if err != nil {
-	// 	c.Flash().Add("danger", err.Error())
-	// }
+	// return c.Render(200, r.JSON(newUserEmail))
 
-	// If there are no errors set a success message
+	// mailers.SendWelcomeEmail(newUserEmail)
+	err = newUserEmail.SendMessage(c)
+	if err != nil {
+		return errors.WithStack(err)
+		// c.Flash().Add("danger", err.Error())
+	}
+
 	c.Flash().Add("success", "User is created.")
-	// and redirect to the home page
 	return c.Redirect(302, "/users/index")
 }
 
@@ -244,12 +250,11 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 			u := &models.User{}
 			tx := c.Value("tx").(*pop.Connection)
 			err := tx.Find(u, uid)
-			if err != nil {
-				return errors.WithStack(err)
-			}
-			c.Set("current_user", u)
-			if u.Admin {
-				c.Set("admin_user", u.Admin)
+			if err == nil {
+				c.Set("current_user", u)
+				if u.Admin {
+					c.Set("admin_user", u.Admin)
+				}
 			}
 		}
 		return next(c)

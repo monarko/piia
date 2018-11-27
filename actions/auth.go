@@ -3,6 +3,7 @@ package actions
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/monarko/piia/models"
 
@@ -30,7 +31,7 @@ func AuthCallback(c buffalo.Context) error {
 		// return c.Error(401, err)
 	}
 	tx := c.Value("tx").(*pop.Connection)
-	q := tx.Where("provider = ? and provider_id = ?", guser.Email, guser.UserID)
+	q := tx.Where("provider = ? and provider_id = ?", "google", guser.UserID)
 	exists, err := q.Exists("users")
 	if err != nil {
 		return errors.WithStack(err)
@@ -55,7 +56,9 @@ func AuthCallback(c buffalo.Context) error {
 			if err != nil {
 				return errors.WithStack(err)
 			}
-			u.Name = guser.Name
+			if len(strings.TrimSpace(u.Name)) == 0 {
+				u.Name = guser.Name
+			}
 			u.Provider = guser.Provider
 			u.ProviderID = guser.UserID
 			u.Avatar = guser.AvatarURL
@@ -79,5 +82,18 @@ func AuthCallback(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	return c.Redirect(302, "/")
+	logErr := InsertLog("login", "User logged in", "", "", "", u.ID, c)
+	if logErr != nil {
+		return errors.WithStack(logErr)
+	}
+
+	redirectPath := "/"
+
+	if u.PermissionOverRead && !u.PermissionScreening && !u.PermissionStudyCoordinator {
+		redirectPath = "/cases/index"
+	} else if !u.Admin {
+		redirectPath = "/participants/index"
+	}
+
+	return c.Redirect(302, redirectPath)
 }
