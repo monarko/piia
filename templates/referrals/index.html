@@ -1,0 +1,147 @@
+<div class="row justify-content-lg-center">
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                <!-- <%= t("page_overreading_title") %> -->
+                Referrals
+            </h6>
+            <div class="element-box">
+                <!-- controls above table -->
+                <div class="controls-above-table">
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                        </div>
+                        <div class="col-sm-6">
+                            <form class="form-inline justify-content-sm-end">
+                                <input class="form-control form-control-sm rounded bright" name="search" 
+                                placeholder="Search Participant ID" type="text" value="<%= search %>">
+                                <button type="submit" class="btn btn-info btn-rounded">Go</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-lg table-v2 table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <%= t("th_participant_id") %>
+                                </th>
+                                <th>
+                                    <%= t("th_demographics") %>
+                                </th>
+                                <th>
+                                    <%= t("th_screening_date") %>
+                                </th>
+                                <th>
+                                    <%= t("th_completed") %>
+                                </th>
+                                <th>
+                                    Screener Referred
+                                </th>
+                                <th>
+                                    Over Reader Referred
+                                </th>
+                                <th>
+                                    <%= t("th_actions") %>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= for (p) in participants { %>
+                            <%
+                            let colorCode = ""
+                            let psc = p.Screenings[0]
+                            let pov = ""
+                            let flag = psc.DaysAgo()
+                            if (flag < 5) {
+                                colorCode = "1E8449"
+                            } else if (flag < 7) {
+                                colorCode = "FF5733"
+                            } else {
+                                colorCode = "FF0000"
+                            }
+
+                            if (len(p.OverReadings) > 0) {
+                                colorCode = ""
+                                pov = p.OverReadings[0]
+                            }
+                            %>
+                            <tr>
+                                <td class="text-center">
+                                    <%= p.ParticipantID %>
+                                </td>
+                                <td class="text-center">
+                                    <%= ageHelper(p.DOB) %>&nbsp;
+                                    <%= if (p.Gender == "M") { %>
+                                        <span><i class="fa fa-venus fa-lg"></i></span>
+                                    <% } else { %>
+                                        <span><i class="fa fa-mars fa-lg"></i></span>
+                                    <% } %>
+                                </td>
+                                <td class="text-center">
+                                    <%= psc.UpdatedAt.Format("2006-01-02") %>
+                                </td>
+                                <td class="text-center">
+                                    <%= if (len(p.OverReadings) > 0) { %>
+                                    <span class="badge badge-primary">Yes</span>
+                                    <% } else { %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
+                                </td>
+                                <td class="text-center">
+                                        <%= if (psc.Referral.Referred) { %>
+                                            <span class="badge badge-primary">Yes</span>
+                                        <% } else { %>
+                                            <span class="badge badge-danger">No</span>
+                                        <% } %>
+                                </td>
+                                <td class="text-center">
+                                        <%= if (pov.Referral.Referred) { %>
+                                            <span class="badge badge-primary">Yes</span>
+                                        <% } else { %>
+                                            <span class="badge badge-danger">No</span>
+                                        <% } %>
+                                </td>
+                                <td class="row-actions">
+                                    <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
+                                    <a href="<%= participantsAppointmentPath({pid: p.ID}) %>" title="Mark"><i class="fa fa-thumb-tack fa-lg"></i></a>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="controls-below-table">
+                    <div class="table-records-info">
+                        <%= t("pagination_title") %>
+                        <%= pagination.Offset + 1 %> -
+                        <%= pagination.Offset + pagination.CurrentEntriesSize %> of
+                        <%= pagination.TotalEntriesSize %>
+                        |
+                        <%= t("pagination_view_label") %>
+                        <a href="?per_page=10">
+                            <%= t("pagination_options_10") %></a> /
+                        <a href="?per_page=20">
+                            <%= t("pagination_options_20") %></a> /
+                        <a href="?per_page=50">
+                            <%= t("pagination_options_50") %></a>
+                        <%= t("pagination_perpage_label") %>
+                    </div>
+                    <div class="table-records-pages">
+                        <style>
+                            .page-link {
+                                border: none;
+                                padding: 0 2px;
+                            }
+                        </style>
+                        <%= paginator(pagination, {"class":"", "previousContent": "Previous", "nextContent": "Next"}) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

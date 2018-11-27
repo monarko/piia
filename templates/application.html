@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= current_lang %>">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,7 +35,11 @@
                 <div class="logged-user-w avatar-inline">
                     <div class="logged-user-i">
                         <div class="avatar-w">
-                            <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                            <%= if (len(current_user.Avatar) > 10) { %>
+                                <img alt="" src="<%= current_user.Avatar %>">
+                            <% } else { %>
+                                <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                            <% } %>
                         </div>
                         <div class="logged-user-info-w">
                             <div class="logged-user-name">
@@ -50,6 +54,8 @@
                                 <%= t("role_reader") %>
                                 <% } else if (current_user.PermissionStudyCoordinator) { %>
                                 <%= t("role_study_coordinator") %>
+                                <% } else if (current_user.PermissionReferralTracker) { %>
+                                <%= t("role_referral_tracker") %>
                                 <% } else { %>
                                 <%= t("role_general") %>
                                 <% } %>
@@ -61,7 +67,11 @@
                         <div class="logged-user-menu color-style-bright">
                             <div class="logged-user-avatar-info">
                                 <div class="avatar-w">
-                                    <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                                        <%= if (len(current_user.Avatar) > 10) { %>
+                                            <img alt="" src="<%= current_user.Avatar %>">
+                                        <% } else { %>
+                                            <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                                        <% } %>
                                 </div>
                                 <div class="logged-user-info-w">
                                     <div class="logged-user-name">
@@ -139,6 +149,18 @@
                                 <%= t("nav_overreading") %></span>
                         </a>
                     </li>
+                    <% } %>
+
+                    <%= if (current_user.Admin || current_user.PermissionReferralTracker || current_user.PermissionStudyCoordinator) { %>
+                        <li class="">
+                            <a href="<%= referralsIndexPath() %>">
+                                <div class="icon-w">
+                                    <div class="fa fa-exchange"></div>
+                                </div>
+                                <span>
+                                    <%= t("nav_referrals") %></span>
+                            </a>
+                        </li>
                     <% } %>
 
                     <%= if (current_user.Admin) { %>
@@ -238,6 +260,8 @@
 
                 viewer.show(imgSrc, highResolutionImage);
             });
+
+            $(".participantID_field").inputmask("AA-9999-9");
         });
     </script>
 </body>

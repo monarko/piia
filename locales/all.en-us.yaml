@@ -35,6 +35,8 @@
   translation: "Over Reader"
 - id: role_study_coordinator
   translation: "Study Co-ordinator"
+- id: role_referral_tracker
+  translation: "Referral Tracker"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "Dashboard"
@@ -44,6 +46,8 @@
   translation: "Participants"
 - id: nav_overreading
   translation: "Overreading"
+- id: "nav_referrals"
+  translation: "Referrals"
 - id: nav_users
   translation: "User Management"
 - id: nav_logs

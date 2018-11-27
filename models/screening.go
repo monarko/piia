@@ -169,7 +169,7 @@ type InRangeFloat64 struct {
 	End   float64
 }
 
-// IsValid checks if username is valid or not
+// IsValid checks if is valid or not
 func (v *InRangeFloat64) IsValid(errors *validate.Errors) {
 	if v.Field.Valid {
 		if v.Field.Float64 < v.Start || v.Field.Float64 > v.End {
@@ -186,7 +186,7 @@ type InRangeInt struct {
 	End   int
 }
 
-// IsValid checks if username is valid or not
+// IsValid checks if is valid or not
 func (v *InRangeInt) IsValid(errors *validate.Errors) {
 	if v.Field.Valid {
 		if v.Field.Int < v.Start || v.Field.Int > v.End {

@@ -1,0 +1,1 @@
+add_column("participants", "referral_appointment", "boolean", {"default": false})

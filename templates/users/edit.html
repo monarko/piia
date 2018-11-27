@@ -128,13 +128,6 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="text" name="Username" id="username" placeholder="Enter username" class="form-control"
-                                        value="<%= user.Username %>">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
                                     <label for="mobile">Mobile</label>
                                     <input type="text" name="Mobile" id="mobile" placeholder="Enter mobile" class="form-control" value="<%= user.Mobile %>">
                                 </div>
@@ -172,7 +165,7 @@
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
-                        <legend><span>Permissions</span></legend>
+                        <legend><span>Role</span></legend>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
@@ -201,6 +194,9 @@
                                 </div>
                             </div>
                         </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <legend><span>Permissions</span></legend>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
@@ -227,6 +223,22 @@
                                             name="PermissionOverRead" value="true">
                                             <% } %>
                                         Over Read Permission
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">   
+                                <div class="form-check form-group">
+                                    <label class="form-check-label">
+                                            <%= if (user.PermissionReferralTracker) { %>
+                                                <input class="btn form-check-input" type="checkbox"
+                                            name="PermissionReferralTracker" value="true" checked>
+                                            <% } else { %>
+                                                <input class="btn form-check-input" type="checkbox"
+                                            name="PermissionReferralTracker" value="true">
+                                            <% } %>
+                                        Referral Tracking Permission
                                     </label>
                                 </div>
                             </div>

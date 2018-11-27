@@ -14,6 +14,8 @@ import (
 	"github.com/gobuffalo/packr"
 	"github.com/monarko/piia/models"
 	"github.com/unrolled/secure"
+
+	"github.com/markbates/goth/gothic"
 )
 
 // ENV is used to help switch settings based on where the
@@ -83,6 +85,7 @@ func App() *buffalo.App {
 		participants.POST("/create", ParticipantsCreatePost)
 		participants.GET("/edit/{pid}", ParticipantsEditGet).Name("participantsEditPath")
 		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
+		participants.GET("/{pid}/appointmentdone", ParticipantsReferralAppointmentDone).Name("participantsAppointmentPath")
 		participants.GET("/{pid}", ParticipantsDetail)
 		// participants.GET("/delete", ParticipantsDelete)
 		// participants.GET("/detail", ParticipantsDetail)
@@ -106,6 +109,11 @@ func App() *buffalo.App {
 		overReadings.GET("/create", OverReadingsCreateGet)
 		overReadings.POST("/create", OverReadingsCreatePost)
 
+		referrals := app.Group("/referrals")
+		referrals.Use(LoginRequired)
+		referrals.Use(ReferralTrackerPermissionRequired)
+		referrals.GET("/index", ReferralsIndex)
+
 		// app.Resource("/system_logs", SystemLogsResource{})
 		logs := app.Group("/logs")
 		logs.Use(AdminRequired)
@@ -115,6 +123,10 @@ func App() *buffalo.App {
 
 		app.GET("/switch", ChangeLanguage)
 		app.POST("/notifications", ScreeningPermissionRequired(ChangeNotificationStatus))
+
+		authGoth := app.Group("/auth")
+		authGoth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
+		authGoth.GET("/{provider}/callback", AuthCallback)
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

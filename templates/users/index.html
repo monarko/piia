@@ -44,9 +44,6 @@
 									<input class="form-control" type="checkbox">
 								</th>
 								<th>
-									Username
-								</th>
-								<th>
 									Email
 								</th>
 								<th>
@@ -74,9 +71,6 @@
 							<tr>
 								<td class="text-center">
 									<input class="form-control" type="checkbox">
-								</td>
-								<td>
-									<%= user.Username %>
 								</td>
 								<td>
 									<%= user.Email %>
@@ -113,6 +107,12 @@
 									<div class="badge badge-info">
 										Over Reader
 									</div>
+									<% } %>
+
+									<%= if (user.PermissionReferralTracker) { %>
+										<div class="badge badge-info">
+											Referral Tracker
+										</div>
 									<% } %>
 								</td>
 								<td class="text-center">

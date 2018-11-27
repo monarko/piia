@@ -29,6 +29,8 @@
   translation: "ওভাররীডার"
 - id: role_study_coordinator
   translation: "স্টাডি কো-অর্ডিনেটর"
+- id: role_referral_tracker
+  translation: "রেফারেল ট্র্যাকার"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "ড্যাশবোর্ড"
@@ -38,6 +40,8 @@
   translation: "অংশগ্রহণকারীরা"
 - id: nav_overreading
   translation: "কেস সমূহ"
+- id: "nav_referrals"
+  translation: "রেফারেল"
 - id: nav_users
   translation: "ইউজার ম্যানেজমেন্ট"
 - id: nav_logs
