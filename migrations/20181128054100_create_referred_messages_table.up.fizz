@@ -1,0 +1,7 @@
+create_table("referred_messages") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("participant_id", "uuid", {})
+	t.Column("screening_id", "uuid", {})
+	t.Column("message", "text", {})
+	t.Column("user_id", "uuid", {})
+}

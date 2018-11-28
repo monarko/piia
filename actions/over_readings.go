@@ -92,6 +92,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 
 	overReading.OverReaderID = user.ID
 	overReading.ParticipantID = participant.ID
+	overReading.ScreeningID = screening.ID
 
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {

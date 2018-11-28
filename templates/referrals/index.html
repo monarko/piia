@@ -74,7 +74,7 @@
                                     <%= p.ParticipantID %>
                                 </td>
                                 <td class="text-center">
-                                    <%= ageHelper(p.DOB) %>&nbsp;
+                                    <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
                                     <%= if (p.Gender == "M") { %>
                                         <span><i class="fa fa-venus fa-lg"></i></span>
                                     <% } else { %>
@@ -107,7 +107,35 @@
                                 </td>
                                 <td class="row-actions">
                                     <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
-                                    <a href="<%= participantsAppointmentPath({pid: p.ID}) %>" title="Mark"><i class="fa fa-thumb-tack fa-lg"></i></a>
+                                    <a href="#" title="Mark" data-target=".<%= psc.ID %>-modal-sm" data-toggle="modal"><i class="fa fa-thumb-tack fa-lg"></i></a>
+                                
+                                    <div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade <%= psc.ID %>-modal-sm"
+                                        role="dialog" tabindex="-1">
+                                        <div class="modal-dialog modal-sm">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">
+                                                        Message
+                                                    </h5>
+                                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                                                            aria-hidden="true"> &times;</span></button>
+                                                </div>
+                                                <form method="POST" action="<%= participantsAppointmentPath({pid: p.ID, sid: psc.ID}) %>">
+                                                    <div class="modal-body">
+                                                        <%= csrf() %>
+                                                        <div class="form-group">
+                                                            <label for=""> Message</label>
+                                                            <textarea name="Message" id="Message" cols="30" rows="10" class="form-control"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
+                                                        <button class="btn btn-primary" type="submit"> Save changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <% } %>

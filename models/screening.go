@@ -103,7 +103,7 @@ func (s Screening) Statuses() Status {
 		eyeAssessments.Done = true
 	}
 
-	if s.MedicalHistory.Morbidities != nil || (diabetes.Done && medications.Done && measurements.Done && pathology.Done && eyeAssessments.Done) {
+	if s.MedicalHistory.Smoker.Valid && (s.MedicalHistory.Morbidities != nil || (diabetes.Done && medications.Done && measurements.Done && pathology.Done && eyeAssessments.Done)) {
 		medicalHistory.Done = true
 	}
 

@@ -21,6 +21,8 @@ type OverReading struct {
 	OverReaderID  uuid.UUID               `json:"-" db:"over_reader_id"`
 	Participant   Participant             `belongs_to:"participant" json:"participant"`
 	ParticipantID uuid.UUID               `json:"-" db:"participant_id"`
+	Screening     Screening               `belongs_to:"screening" json:"screening"`
+	ScreeningID   uuid.UUID               `json:"-" db:"screening_id"`
 }
 
 // String is not required by pop and may be deleted

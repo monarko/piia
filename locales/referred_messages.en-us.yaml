@@ -1,0 +1,6 @@
+- id: "referred_message.created.success"
+  translation: "ReferredMessage was successfully created."
+- id: "referred_message.updated.success"
+  translation: "ReferredMessage was successfully updated."
+- id: "referred_message.destroyed.success"
+  translation: "ReferredMessage was successfully destroyed."

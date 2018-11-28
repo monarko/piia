@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>New ReferredMessage</h1>
+</div>
+
+<%= form_for(referredMessage, {action: referredMessagesPath(), method: "POST"}) { %>
+  <%= partial("referred_messages/form.html") %>
+  <a href="<%= referredMessagesPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

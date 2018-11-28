@@ -243,6 +243,23 @@
                 return false;
             });
 
+            $('.expand-row').on('click', function (e) {
+                e.preventDefault()
+                var elemId = $(this).attr("data-src")
+                var elemContent = elemId + "-content"
+                // alert(elemId)
+                var accordionRow = $("#"+elemId);
+                var accordionContent = $("#"+elemContent);
+                // alert(accordionRow.html())
+                if (!accordionRow.is(":visible")) {
+                    accordionRow.show()
+                    accordionContent.slideDown()
+                } else {
+                    accordionContent.slideUp()
+                    accordionRow.hide();
+                }
+            });
+
             if ($("#screening-json-data").length) {
                 var screeningJson = JSON.stringify(JSON.parse($("#screening-json-data").val()), undefined, 4);
                 $("#screening-json-data").text(screeningJson);

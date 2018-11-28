@@ -1,0 +1,1 @@
+drop_column("over_readings", "screening_id")

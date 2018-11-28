@@ -4,13 +4,16 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+
+	"github.com/gobuffalo/pop/nulls"
 )
 
 /* Medical History */
 
 // MedicalHistoryScreening model
 type MedicalHistoryScreening struct {
-	Morbidities []string `json:"morbidities"`
+	Morbidities []string   `json:"morbidities"`
+	Smoker      nulls.Bool `json:"smoker"`
 }
 
 // Value returns database driver compatible type

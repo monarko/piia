@@ -74,7 +74,7 @@
                                     <%= p.ParticipantID %>
                                 </td>
                                 <td class="text-center">
-                                    <%= ageHelper(p.DOB) %>&nbsp;
+                                    <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
                                     <%= if (p.Gender == "M") { %>
                                         <span><i class="fa fa-venus fa-lg"></i></span>
                                     <% } else { %>
@@ -84,50 +84,6 @@
                                 <td class="text-center">
                                     <%= psc.UpdatedAt.Format("2006-01-02") %>
                                 </td>
-                                <!--<td>
-                                    <%= if (len(p.OverReadings) > 0) { %>
-                                    <strong>Right Eye</strong><br>
-                                    DR:
-                                    <%= psc.Eyes.RightEye.DRGrading.String %><br>
-                                    DME:
-                                    <%= psc.Eyes.RightEye.DMEAssessment.String %><br>
-                                    <br>
-                                    <strong>Left Eye</strong><br>
-                                    DR:
-                                    <%= psc.Eyes.LeftEye.DRGrading.String %><br>
-                                    DME:
-                                    <%= psc.Eyes.LeftEye.DMEAssessment.String %><br>
-                                    <br>
-                                    <strong>Referral</strong>
-                                    <%= if (psc.Referral.Referred) { %>
-                                    <span class="badge badge-success">Yes</span>
-                                    <% } else { %>
-                                    <span class="badge badge-danger">No</span>
-                                    <% } %>
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <%= if (len(p.OverReadings) > 0) { %>
-                                    <strong>Right Eye</strong><br>
-                                    DR:
-                                    <%= pov.Eyes.RightEye.DRGrading.String %><br>
-                                    DME:
-                                    <%= pov.Eyes.RightEye.DMEAssessment.String %><br>
-                                    <br>
-                                    <strong>Left Eye</strong><br>
-                                    DR:
-                                    <%= pov.Eyes.LeftEye.DRGrading.String %><br>
-                                    DME:
-                                    <%= pov.Eyes.LeftEye.DMEAssessment.String %><br>
-                                    <br>
-                                    <strong>Referral</strong>
-                                    <%= if (pov.Referral.Referred) { %>
-                                    <span class="badge badge-success">Yes</span>
-                                    <% } else { %>
-                                    <span class="badge badge-danger">No</span>
-                                    <% } %>
-                                    <% } %>
-                                </td>-->
                                 <td class="text-center">
                                     <%= if (len(p.OverReadings) > 0) { %>
                                     <span class="badge badge-primary">Yes</span>
@@ -137,7 +93,8 @@
                                 </td>
                                 <td class="row-actions">
                                     <%= if (p.Status == "11" && (current_user.Permission.OverRead || current_user.Admin)) { %>
-                                    <a href="<%= caseOverreadingsCreatePath({pid: p.ID}) %>" title="Over Read"><i class="fa fa-pencil fa-lg"></i></a>
+                                        <% let s = p.Screenings[0] %>
+                                    <a href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over Read"><i class="fa fa-pencil fa-lg"></i></a>
                                     <% } %>
                                 </td>
                             </tr>

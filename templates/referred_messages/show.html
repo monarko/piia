@@ -1,0 +1,10 @@
+<div class="page-header">
+  <h1>ReferredMessage#Show</h1>
+</div>
+
+<ul class="list-unstyled list-inline">
+  <li class="list-inline-item"><a href="<%= referredMessagesPath() %>" class="btn btn-info">Back to all ReferredMessages</a></li>
+  <li class="list-inline-item"><a href="<%= editReferredMessagePath({ referred_message_id: referredMessage.ID })%>" class="btn btn-warning">Edit</a></li>
+  <li class="list-inline-item"><a href="<%= referredMessagePath({ referred_message_id: referredMessage.ID })%>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
+</ul>
+

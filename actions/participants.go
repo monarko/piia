@@ -4,8 +4,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/monarko/piia/helpers"
-
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/models"
@@ -101,8 +99,8 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("participants/create.html"))
 	}
 
-	if len(participant.ParticipantID) != 9 || !helpers.Valid(participant.ParticipantID) {
-		errStr := "Invalid Participant ID, please check your input again for valid checksum."
+	if len(participant.ParticipantID) != 9 {
+		errStr := "Invalid Participant ID."
 		errs := map[string][]string{
 			"checksum_error": {errStr},
 		}
@@ -327,9 +325,15 @@ func ParticipantsDetail(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
+	allLogs := &models.SystemLogs{}
+	if err := tx.Eager().Where("resource_id = ?", participant.Screenings[0].ID).Where("resource_type = ?", "screening").All(allLogs); err != nil {
+		return c.Error(404, err)
+	}
+
 	c.Set("user_activities", userActivities)
 	c.Set("activities_keys", keys)
 	c.Set("audits", audits)
+	c.Set("logs", allLogs)
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["page_participants_title"] = "/participants/index"

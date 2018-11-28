@@ -5,13 +5,13 @@
                 <%= t("page_overreadcase_title") %>
             </h6>
             <div class="element-box">
-                <form action="<%= caseOverreadingsCreatePath({pid: participant.ID}) %>" method="POST">
+                <form action="<%= participantScreeningOverreadingsCreatePath({pid: participant.ID, sid: screening.ID}) %>" method="POST">
                     <%= csrf() %>
                     <div class="form-desc">
                         <h6><%= participant.ParticipantID %></h6>
                         <p>
                             <%= genderHelper(participant.Gender) %> |
-                            <%= ageHelper(participant.DOB) %>
+                            <%= ageHelper(participant.DOB.CalculatedDate) %>
                         </p>
                     </div>
                     <fieldset class="form-group">
