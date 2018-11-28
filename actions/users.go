@@ -2,6 +2,7 @@ package actions
 
 import (
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/validate"
 	"github.com/monarko/piia/mailers"
@@ -167,8 +168,8 @@ func UsersCreatePost(c buffalo.Context) error {
 	newUserEmail.Data = map[string]interface{}{
 		"name":  user.Name,
 		"email": user.Email,
-		"root":  App().Host,
-		"link":  App().Host + "/auth/google",
+		"root":  envy.Get("APP_HOST", "http://127.0.0.1"),
+		"link":  envy.Get("APP_HOST", "http://127.0.0.1") + "/auth/google",
 	}
 
 	// return c.Render(200, r.JSON(newUserEmail))
