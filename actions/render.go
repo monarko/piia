@@ -56,12 +56,30 @@ func init() {
 
 				return last
 			},
+			"currentDate": func(calendar string) string {
+				currentTime := time.Now()
+				if calendar == "thai" {
+					currentTime = currentTime.AddDate(543, 0, 0)
+				}
+				return currentTime.Format("2006-01-02")
+			},
+			"languageDate": func(gregorianDate time.Time, format, calendar string) string {
+				theDate := gregorianDate
+				if calendar == "thai" {
+					theDate = theDate.AddDate(543, 0, 0)
+				}
+				return theDate.Format(format)
+			},
 		},
 	})
 }
 
 // Age calculates the participant's age
 func Age(a time.Time) string {
+	if a.IsZero() {
+		return "Not given"
+	}
+
 	b := time.Now()
 	if a.Location() != b.Location() {
 		b = b.In(a.Location())

@@ -16,11 +16,11 @@
             <div class="user-role">
                 <%= if (audit.User.Admin) { %>
                   <%= t("role_admin") %>
-                  <% } else if (audit.User.PermissionScreening) { %>
+                  <% } else if (audit.User.Permission.Screening) { %>
                   <%= t("role_screener") %>
-                  <% } else if (audit.User.PermissionOverRead) { %>
+                  <% } else if (audit.User.Permission.OverRead) { %>
                   <%= t("role_reader") %>
-                  <% } else if (audit.User.PermissionStudyCoordinator) { %>
+                  <% } else if (audit.User.Permission.StudyCoordinator) { %>
                   <%= t("role_study_coordinator") %>
                   <% } else { %>
                   <%= t("role_general") %>

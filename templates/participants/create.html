@@ -83,10 +83,21 @@
                                 <div class="form-group">
                                     <label for=""> Date of Birth</label>
                                     <div class="date-input">
-                                        <input class="single-daterange form-control" placeholder="Date of birth" type="date"
-                                            name="DOB" value="<%= if (!participant.DOB.IsZero()) { participant.DOB.Format("2006-01-02") } %>">
+                                        <%= if (!participant.DOB.GivenDate.IsZero()) { %>
+                                            <input class="single-daterange form-control" placeholder="Date of birth" type="date"
+                                            name="DOB.GivenDate" value="<%= participant.DOB.GivenDate.Format("2006-01-02") %>">
+                                        <% } else { %>
+                                            <%= if (t("lang_calendar") == "thai") { %>
+                                                <input class="single-daterange form-control" placeholder="Date of birth" type="date"
+                                                name="DOB.GivenDate" value="<%= currentDate("thai") %>">
+                                            <% } else { %>
+                                                <input class="single-daterange form-control" placeholder="Date of birth" type="date"
+                                                name="DOB.GivenDate" value="">
+                                            <% } %>
+                                        <% } %>
                                     </div>
                                 </div>
+                                <input type="hidden" name="DOB.Calendar" value="<%= t("lang_calendar") %>">
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">

@@ -14,7 +14,7 @@ import (
 type HbA1CScreening struct {
 	HbA1C          nulls.Float64 `json:"value"`
 	Unit           nulls.String  `json:"unit"`
-	AssessmentDate nulls.Time    `json:"assessment_date"`
+	AssessmentDate CustomDate    `json:"assessment_date"`
 }
 
 // Value returns database driver compatible type
@@ -50,7 +50,7 @@ type LipidScreening struct {
 	LDL              nulls.Float64 `json:"ldl"`
 	TG               nulls.Float64 `json:"tg"`
 	Unit             nulls.String  `json:"unit"`
-	AssessmentDate   nulls.Time    `json:"assessment_date"`
+	AssessmentDate   CustomDate    `json:"assessment_date"`
 }
 
 // Value returns database driver compatible type

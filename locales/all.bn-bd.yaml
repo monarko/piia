@@ -203,4 +203,5 @@
   translation: "ไทย"
 - id: language_bd
   translation: "বাংলা"
-
+- id: lang_calendar
+  translation: "gregorian"

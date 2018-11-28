@@ -28,9 +28,9 @@ func ParticipantsIndex(c buffalo.Context) error {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at ASC")
 		}
 	} else if user.Permission.Screening && user.Permission.OverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else if user.Permission.Screening {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else if user.Permission.OverRead {
 		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else {

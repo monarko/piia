@@ -135,7 +135,7 @@
                                 <% } %>
                                 </td>
                                 <td class="text-center">
-                                    <%= ageHelper(p.DOB) %>&nbsp;
+                                    <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
                                     <%= if (p.Gender == "M") { %>
                                         <span><i class="fa fa-venus fa-lg"></i></span>
                                     <% } else { %>
@@ -143,7 +143,7 @@
                                     <% } %>
                                 </td>
                                 <td class="text-center">
-                                    <%= p.CreatedAt.Format("02-Jan-2006") %>
+                                    <%= languageDate(p.CreatedAt, "02-Jan-2006", t("lang_calendar")) %>
                                 </td>
                                 <td class="text-center">
                                     <%= if (p.Consented) { %>
