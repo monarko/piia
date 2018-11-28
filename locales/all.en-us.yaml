@@ -59,6 +59,12 @@
   translation: "Enrolled Participants"
 - id: button_download_csv
   translation: "Download CSV"
+- id: participantID_field
+  translation: "Participant Study Id"
+- id: participant_ID_description
+  translation: "Enter in the assigned participant ID (from the sticker)"
+- id: participant_personal_details
+  translation: "Personal Details"
 - id: button_enroll
   translation: "Enroll New Participant"
 - id: filter_status_select

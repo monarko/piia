@@ -1,4 +1,4 @@
-/* 
+/*
 TABLE OF CONTENTS
 
 
@@ -16,7 +16,7 @@ TABLE OF CONTENTS
   3h. Override bootstrap modal styles
   3i. Override bootstrap alerts styles
 4. Overrides for various plugins that are included with this template
-5. Handy Animations 
+5. Handy Animations
 6. User Profiles
 7. Layout styles
 8. Menu styles
@@ -10342,7 +10342,7 @@ a.text-dark:hover, a.text-dark:focus {
   text-align: center;
   border-top: 1px solid #999;
   border-bottom: 1px solid #999;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: #eee;
 }
 
 .table.table-v2 thead tr th:first-child, .table.table-v2 tfoot tr th:first-child {
@@ -11154,7 +11154,7 @@ legend:before {
   list-style: none;
   margin: 0px;
   padding: 10px 30px 10px 30px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  /*border-bottom: 1px solid rgba(0, 0, 0, 0.05);*/
   background-color: transparent;
   letter-spacing: 0.7px;
 }
@@ -12627,6 +12627,7 @@ body.menu-side-right .layout-w {
  SIDE PANEL IS ACTIVE - ADD STYLES
 */
 .with-side-panel .content-i {
+  background: #fff !important;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -12698,14 +12699,14 @@ body.menu-side-right .layout-w {
 /* 8. Menu styles */
 /*
   STYLE NAVIGATION
-  
+
 #1. Logged User Box
 #2. Shared styles between Top Bar & Main Menu
 #3. Desktop Menu
 #4. Mobile Menu
 
 */
-/* 
+/*
 #1. Logged User Box
 */
 .logged-user-w {
@@ -12766,6 +12767,7 @@ body.menu-side-right .layout-w {
 .logged-user-w.avatar-inline .logged-user-i .logged-user-info-w {
   padding-left: 20px;
   text-align: left;
+  float:  left;
 }
 
 .logged-user-w.avatar-inline .logged-user-toggler-arrow {
@@ -13149,13 +13151,13 @@ body.menu-side-right .layout-w {
 
 .menu-w ul.main-menu {
   list-style: none;
-  padding: 2rem 1rem;
+  padding: 0 1rem;
   margin-bottom: 0px;
 }
 
 .menu-w ul.main-menu > li {
   display: block;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  /*border-bottom: 1px solid rgba(0, 0, 0, 0.05);*/
 }
 
 .menu-w ul.main-menu > li:last-child {
@@ -14059,6 +14061,7 @@ body.menu-side-right .layout-w {
 
 .menu-position-side.menu-side-right .content-w {
   border-radius: 6px 0px 0px 6px;
+  padding-top:  10px;
 }
 
 .menu-position-side.menu-w {
@@ -15622,7 +15625,7 @@ body.menu-side-right .layout-w {
 }
 
 /* 9. Styles for all element blocks */
-/* 
+/*
 
   # -- STYLES NAVIGATION:
 
@@ -16972,7 +16975,7 @@ a.el-tablo:hover .label {
  #12. Authorization styles
 */
 .auth-box-w {
-  max-width: 450px;
+  max-width: 550px;
   margin: 0px auto;
   background-color: #fff;
   border-radius: 6px;
@@ -16991,7 +16994,7 @@ a.el-tablo:hover .label {
 
 .auth-box-w .logo-w {
   text-align: center;
-  padding: 20%;
+  padding: 10%;
 }
 
 .auth-box-w .auth-header {
@@ -17016,7 +17019,7 @@ a.el-tablo:hover .label {
 }
 
 .auth-box-w form {
-  padding: 20px 80px;
+  padding: 5px 80px;
   padding-bottom: 60px;
 }
 
@@ -17460,7 +17463,7 @@ a.el-tablo:hover .label {
   line-height: 1;
 }
 
-/* 
+/*
 #16. Call to action box
 */
 .cta-w {
@@ -17628,7 +17631,7 @@ a.el-tablo:hover .label {
   vertical-align: middle;
 }
 
-/* 
+/*
 #18. Todo List Widget
 */
 .todo-list .todo-item {
@@ -17675,7 +17678,7 @@ a.el-tablo:hover .label {
   color: #1b850f;
 }
 
-/* 
+/*
 #19. Fancy Progress With Label
 */
 .fancy-progress-with-label {
@@ -19494,9 +19497,9 @@ a.with-avatar span {
 }
 
 /* 12. Chat */
-/* 
+/*
 
-Chat Styles 
+Chat Styles
 
 #1. Popup chat on a side
 
@@ -19766,12 +19769,12 @@ Chat Styles
 }
 
 /* 13. App - Email */
-/* Email App styles 
-#1. EMAIL APP WRAPPER 
-#2. LEFT MENU 
-#3. MESSAGES LIST 
-#4. CONTENT BOX 
-#5. MESSAGE BOX 
+/* Email App styles
+#1. EMAIL APP WRAPPER
+#2. LEFT MENU
+#3. MESSAGES LIST
+#4. CONTENT BOX
+#5. MESSAGE BOX
 #6. REPLY
 #7. FOLDED STYLES
 #8. DARK SCHEME
@@ -21192,16 +21195,16 @@ Chat Styles
 }
 
 /* 16. Pricing Plans */
-/* 
+/*
 
 Pricing Plans Styles
 
-#1. 
-#2. 
-#3. 
-#4. 
-#5. 
-#6. 
+#1.
+#2.
+#3.
+#4.
+#5.
+#6.
 
 
 */
@@ -22055,7 +22058,7 @@ Pricing Plans Styles
 }
 
 /* 19. App - TODO */
-/* 
+/*
 
 TODO Application
 
@@ -25788,6 +25791,7 @@ body.rentals-wrapper .select2-container--default .select2-results__option[aria-s
 
 .content-w > .top-bar {
   padding-left: 0px;
+  padding-top:  10px;
 }
 
 .top-bar {
@@ -25807,6 +25811,7 @@ body.rentals-wrapper .select2-container--default .select2-results__option[aria-s
           align-items: center;
   position: relative;
   border-radius: 0px 6px 0px 0px;
+  padding-top:  10px;
 }
 
 .top-bar > ul {
@@ -26020,6 +26025,7 @@ body.rentals-wrapper .select2-container--default .select2-results__option[aria-s
 
 .top-bar .logged-user-w .avatar-w img {
   width: 40px;
+  margin-right:  40px;
 }
 
 .top-bar .logged-user-w .logged-user-i {
@@ -27839,9 +27845,9 @@ body.color-scheme-dark .page-item.disabled .page-link, .content-panel.color-sche
 }
 
 /* ##. Responsive Styles */
-/* 
+/*
 
-Contents: 
+Contents:
 
 #1.  Screen size <= 1650px
 #2.  Screen size <= 1550px
@@ -28889,6 +28895,7 @@ Contents:
   }
   .content-i {
     display: block;
+    background: #fff;
   }
   .content-i .content-box {
     display: block;
@@ -28953,7 +28960,7 @@ Contents:
   background-size: cover;
   background-position: 50% 50%;
   transition: box-shadow .5s ease;
-  
+
   box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
 }
 
