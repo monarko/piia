@@ -91,11 +91,11 @@ func (s Screening) Statuses() Status {
 		medications.Done = true
 	}
 
-	if s.Measurements.BloodPressure.SBP.Valid && s.Measurements.BloodPressure.DBP.Valid && s.Measurements.BloodPressure.AssessmentDate.Valid {
+	if s.Measurements.BloodPressure.SBP.Valid && s.Measurements.BloodPressure.DBP.Valid {
 		measurements.Done = true
 	}
 
-	if s.Pathology.HbA1C.HbA1C.Valid && s.Pathology.HbA1C.AssessmentDate.Valid && s.Pathology.Lipids.TotalCholesterol.Valid && s.Pathology.Lipids.HDL.Valid && s.Pathology.Lipids.TG.Valid && s.Pathology.Lipids.AssessmentDate.Valid {
+	if s.Pathology.HbA1C.HbA1C.Valid && s.Pathology.Lipids.TotalCholesterol.Valid && s.Pathology.Lipids.HDL.Valid && s.Pathology.Lipids.TG.Valid {
 		pathology.Done = true
 	}
 
@@ -141,6 +141,21 @@ func (s Screening) DaysAgo() int {
 // This method is not required and may be deleted.
 func (s *Screening) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	valids := make([]validate.Validator, 0)
+
+	s.Measurements.BloodPressure.AssessmentDate.CalculatedDate = s.Measurements.BloodPressure.AssessmentDate.GivenDate
+	if s.Measurements.BloodPressure.AssessmentDate.Calendar == "thai" {
+		s.Measurements.BloodPressure.AssessmentDate.CalculatedDate = s.Measurements.BloodPressure.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
+	}
+
+	s.Pathology.HbA1C.AssessmentDate.CalculatedDate = s.Pathology.HbA1C.AssessmentDate.GivenDate
+	if s.Pathology.HbA1C.AssessmentDate.Calendar == "thai" {
+		s.Pathology.HbA1C.AssessmentDate.CalculatedDate = s.Pathology.HbA1C.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
+	}
+
+	s.Pathology.Lipids.AssessmentDate.CalculatedDate = s.Pathology.Lipids.AssessmentDate.GivenDate
+	if s.Pathology.Lipids.AssessmentDate.Calendar == "thai" {
+		s.Pathology.Lipids.AssessmentDate.CalculatedDate = s.Pathology.Lipids.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
+	}
 
 	valids = append(valids, &InRangeFloat64{Field: s.Pathology.HbA1C.HbA1C, Name: "HbA1C", Start: 3.0, End: 30.0})
 	valids = append(valids, &InRangeInt{Field: s.Measurements.BloodPressure.SBP, Name: "SBP", Start: 80, End: 250})
