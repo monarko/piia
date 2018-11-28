@@ -89,7 +89,7 @@ func AuthCallback(c buffalo.Context) error {
 
 	redirectPath := "/"
 
-	if u.PermissionOverRead && !u.PermissionScreening && !u.PermissionStudyCoordinator {
+	if u.Permission.OverRead && !u.Permission.Screening && !u.Permission.StudyCoordinator {
 		redirectPath = "/cases/index"
 	} else if !u.Admin {
 		redirectPath = "/participants/index"

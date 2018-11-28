@@ -1,0 +1,7 @@
+drop_column("users", "username")
+drop_column("users", "permission_screening")
+drop_column("users", "permission_overread")
+drop_column("users", "permission_study_coordinator")
+drop_column("users", "permission_referral_tracker")
+
+add_column("users", "permissions", "jsonb", {"null": true})

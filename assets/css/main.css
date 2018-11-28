@@ -28966,3 +28966,17 @@ Contents:
   cursor: pointer;
   width: 320px;
 }
+
+.expandable-row {
+  display: none;
+  width: 100%;
+}
+
+.expandable-content {
+  display: none;
+}
+
+/* table#audit-table tr {
+  display: block;
+  width: 100%;
+} */

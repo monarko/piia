@@ -4,8 +4,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/monarko/piia/helpers"
-
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/models"
@@ -21,17 +19,17 @@ func ParticipantsIndex(c buffalo.Context) error {
 	var q *pop.Query
 
 	user := c.Value("current_user").(*models.User)
-	if user.Admin || user.PermissionStudyCoordinator {
+	if user.Admin || user.Permission.StudyCoordinator {
 		if len(c.Param("status")) > 0 {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at ASC")
 		} else {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at ASC")
 		}
-	} else if user.PermissionScreening && user.PermissionOverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
-	} else if user.PermissionScreening {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
-	} else if user.PermissionOverRead {
+	} else if user.Permission.Screening && user.Permission.OverRead {
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
+	} else if user.Permission.Screening {
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at ASC")
+	} else if user.Permission.OverRead {
 		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at ASC")
 	} else {
 		// If there are no errors set a success message
@@ -101,8 +99,8 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("participants/create.html"))
 	}
 
-	if len(participant.ParticipantID) != 9 || !helpers.Valid(participant.ParticipantID) {
-		errStr := "Invalid Participant ID, please check your input again for valid checksum."
+	if len(participant.ParticipantID) != 9 {
+		errStr := "Invalid Participant ID."
 		errs := map[string][]string{
 			"checksum_error": {errStr},
 		}
@@ -327,9 +325,15 @@ func ParticipantsDetail(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
+	allLogs := &models.SystemLogs{}
+	if err := tx.Eager().Where("resource_id = ?", participant.Screenings[0].ID).Where("resource_type = ?", "screening").All(allLogs); err != nil {
+		return c.Error(404, err)
+	}
+
 	c.Set("user_activities", userActivities)
 	c.Set("activities_keys", keys)
 	c.Set("audits", audits)
+	c.Set("logs", allLogs)
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["page_participants_title"] = "/participants/index"

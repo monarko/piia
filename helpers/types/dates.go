@@ -4,28 +4,26 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-
-	"github.com/gobuffalo/pop/nulls"
+	"time"
 )
 
-/* Medical History */
-
-// MedicalHistoryScreening model
-type MedicalHistoryScreening struct {
-	Morbidities []string   `json:"morbidities"`
-	Smoker      nulls.Bool `json:"smoker"`
+// CustomDate model
+type CustomDate struct {
+	CalculatedDate time.Time `json:"calculated_date"`
+	GivenDate      time.Time `json:"given_date"`
+	Calendar       string    `json:"calendar"`
 }
 
 // Value returns database driver compatible type
-func (p MedicalHistoryScreening) Value() (driver.Value, error) {
+func (p CustomDate) Value() (driver.Value, error) {
 	j, err := json.Marshal(p)
 	return j, err
 }
 
 // Scan converts []byte to interface{} object
-func (p *MedicalHistoryScreening) Scan(src interface{}) error {
+func (p *CustomDate) Scan(src interface{}) error {
 	if src == nil {
-		*p = MedicalHistoryScreening{}
+		*p = CustomDate{}
 		return nil
 	}
 

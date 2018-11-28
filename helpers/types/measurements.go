@@ -14,7 +14,7 @@ import (
 type BPScreening struct {
 	SBP            nulls.Int  `json:"sbp"`
 	DBP            nulls.Int  `json:"dbp"`
-	AssessmentDate nulls.Time `json:"assessment_date"`
+	AssessmentDate CustomDate `json:"assessment_date"`
 }
 
 // Value returns database driver compatible type

@@ -91,3 +91,40 @@ var _ = grift.Namespace("user", func() {
 	})
 
 })
+
+var _ = grift.Namespace("user", func() {
+
+	grift.Desc("superadmin:create", "Create an user with superadmin previleges")
+	grift.Add("superadmin:create", func(c *grift.Context) error {
+		messages := make([]string, 0)
+		if len(c.Args) >= 1 {
+			email := strings.TrimSpace(c.Args[0])
+			name := strings.TrimSpace(c.Args[1])
+
+			user := &models.User{}
+			user.Admin = true
+			user.Name = name
+			user.Email = email
+			user.Permission.OverRead = false
+			user.Permission.Screening = false
+			user.Permission.StudyCoordinator = false
+			user.Permission.ReferralTracker = false
+
+			err := tx.Create(user)
+			if err != nil {
+				messages = append(messages, "=> \""+name+"\" creation failed")
+			} else {
+				messages = append(messages, "=> \""+name+"\" is created and has been given superadmin previleges")
+			}
+		}
+
+		if len(messages) == 0 {
+			messages = append(messages, "--- No valid input given ---")
+		}
+
+		fmt.Println(strings.Join(messages, "\n"))
+
+		return nil
+	})
+
+})

@@ -65,8 +65,8 @@ func App() *buffalo.App {
 
 		// app.Resource("/users", UsersResource{})
 		auth := app.Group("/users")
-		auth.GET("/register", UsersRegisterGet)
-		auth.POST("/register", UsersRegisterPost)
+		// auth.GET("/register", UsersRegisterGet)
+		// auth.POST("/register", UsersRegisterPost)
 		auth.GET("/login", UsersLoginGet)
 		auth.POST("/login", UsersLoginPost)
 		auth.GET("/logout", UsersLogout)
@@ -85,7 +85,6 @@ func App() *buffalo.App {
 		participants.POST("/create", ParticipantsCreatePost)
 		participants.GET("/edit/{pid}", ParticipantsEditGet).Name("participantsEditPath")
 		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
-		participants.GET("/{pid}/appointmentdone", ParticipantsReferralAppointmentDone).Name("participantsAppointmentPath")
 		participants.GET("/{pid}", ParticipantsDetail)
 		// participants.GET("/delete", ParticipantsDelete)
 		// participants.GET("/detail", ParticipantsDetail)
@@ -103,11 +102,13 @@ func App() *buffalo.App {
 		screenings.GET("/edit/{sid}", ScreeningsEditGet).Name("participantScreeningsEditPath")
 		screenings.POST("/edit/{sid}", ScreeningsEditPost).Name("participantScreeningsEditPath")
 
-		overReadings := cases.Group("/{pid}/overreadings")
+		overReadings := screenings.Group("/{sid}/overreadings")
 		overReadings.Use(OverReadingPermissionRequired)
 		// overReadings.GET("/index", OverReadingsIndex)
 		overReadings.GET("/create", OverReadingsCreateGet)
 		overReadings.POST("/create", OverReadingsCreatePost)
+
+		screenings.POST("/{sid}/appointmentdone", UpdateReferredMessage).Name("participantsAppointmentPath")
 
 		referrals := app.Group("/referrals")
 		referrals.Use(LoginRequired)

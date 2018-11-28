@@ -4,28 +4,26 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
-
-	"github.com/gobuffalo/pop/nulls"
 )
 
-/* Medical History */
-
-// MedicalHistoryScreening model
-type MedicalHistoryScreening struct {
-	Morbidities []string   `json:"morbidities"`
-	Smoker      nulls.Bool `json:"smoker"`
+// Permission model
+type Permission struct {
+	OverRead         bool `json:"overread"`
+	Screening        bool `json:"screening"`
+	StudyCoordinator bool `json:"study_coordinator"`
+	ReferralTracker  bool `json:"referral_tracker"`
 }
 
 // Value returns database driver compatible type
-func (p MedicalHistoryScreening) Value() (driver.Value, error) {
+func (p Permission) Value() (driver.Value, error) {
 	j, err := json.Marshal(p)
 	return j, err
 }
 
 // Scan converts []byte to interface{} object
-func (p *MedicalHistoryScreening) Scan(src interface{}) error {
+func (p *Permission) Scan(src interface{}) error {
 	if src == nil {
-		*p = MedicalHistoryScreening{}
+		*p = Permission{}
 		return nil
 	}
 

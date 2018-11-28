@@ -33,94 +33,94 @@
                             <div class="col-sm-10">
                                 <div class="form-group">
                                     <label for="">Name</label><input class="form-control" placeholder="Name" type="text"
-                                        name="Name">
+                                        name="Name" value="<%= user.Name %>">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for=""> Site</label>
                                     <select class="form-control" name="Site">
-                                        <option value="">
-                                            All
-                                        </option>
-                                        <option value="A">
-                                            A
-                                        </option>
-                                        <option value="B">
-                                            B
-                                        </option>
-                                        <option value="C">
-                                            C
-                                        </option>
-                                        <option value="D">
-                                            D
-                                        </option>
-                                        <option value="E">
-                                            E
-                                        </option>
-                                        <option value="F">
-                                            F
-                                        </option>
-                                        <option value="G">
-                                            G
-                                        </option>
-                                        <option value="H">
-                                            H
-                                        </option>
-                                        <option value="I">
-                                            I
-                                        </option>
-                                        <option value="J">
-                                            J
-                                        </option>
-                                        <option value="K">
-                                            K
-                                        </option>
-                                        <option value="L">
-                                            L
-                                        </option>
-                                        <option value="M">
-                                            M
-                                        </option>
-                                        <option value="N">
-                                            N
-                                        </option>
-                                        <option value="O">
-                                            O
-                                        </option>
-                                        <option value="P">
-                                            P
-                                        </option>
-                                        <option value="Q">
-                                            Q
-                                        </option>
-                                        <option value="R">
-                                            R
-                                        </option>
-                                        <option value="S">
-                                            S
-                                        </option>
-                                        <option value="T">
-                                            T
-                                        </option>
-                                        <option value="U">
-                                            U
-                                        </option>
-                                        <option value="V">
-                                            V
-                                        </option>
-                                        <option value="W">
-                                            W
-                                        </option>
-                                        <option value="X">
-                                            X
-                                        </option>
-                                        <option value="Y">
-                                            Y
-                                        </option>
-                                        <option value="Z">
-                                            Z
-                                        </option>
+                                            <option value="">
+                                                All
+                                            </option>
+                                            <option value="A" <%= if (user.Site == "A") { %> selected <% } %>>
+                                                A
+                                            </option>
+                                            <option value="B" <%= if (user.Site == "B") { %> selected <% } %>>
+                                                B
+                                            </option>
+                                            <option value="C" <%= if (user.Site == "C") { %> selected <% } %>>
+                                                C
+                                            </option>
+                                            <option value="D" <%= if (user.Site == "D") { %> selected <% } %>>
+                                                D
+                                            </option>
+                                            <option value="E" <%= if (user.Site == "E") { %> selected <% } %>>
+                                                E
+                                            </option>
+                                            <option value="F" <%= if (user.Site == "F") { %> selected <% } %>>
+                                                F
+                                            </option>
+                                            <option value="G" <%= if (user.Site == "G") { %> selected <% } %>>
+                                                G
+                                            </option>
+                                            <option value="H" <%= if (user.Site == "H") { %> selected <% } %>>
+                                                H
+                                            </option>
+                                            <option value="I" <%= if (user.Site == "I") { %> selected <% } %>>
+                                                I
+                                            </option>
+                                            <option value="J" <%= if (user.Site == "J") { %> selected <% } %>>
+                                                J
+                                            </option>
+                                            <option value="K" <%= if (user.Site == "K") { %> selected <% } %>>
+                                                K
+                                            </option>
+                                            <option value="L" <%= if (user.Site == "L") { %> selected <% } %>>
+                                                L
+                                            </option>
+                                            <option value="M" <%= if (user.Site == "M") { %> selected <% } %>>
+                                                M
+                                            </option>
+                                            <option value="N" <%= if (user.Site == "N") { %> selected <% } %>>
+                                                N
+                                            </option>
+                                            <option value="O" <%= if (user.Site == "O") { %> selected <% } %>>
+                                                O
+                                            </option>
+                                            <option value="P" <%= if (user.Site == "P") { %> selected <% } %>>
+                                                P
+                                            </option>
+                                            <option value="Q" <%= if (user.Site == "Q") { %> selected <% } %>>
+                                                Q
+                                            </option>
+                                            <option value="R" <%= if (user.Site == "R") { %> selected <% } %>>
+                                                R
+                                            </option>
+                                            <option value="S" <%= if (user.Site == "S") { %> selected <% } %>>
+                                                S
+                                            </option>
+                                            <option value="T" <%= if (user.Site == "T") { %> selected <% } %>>
+                                                T
+                                            </option>
+                                            <option value="U" <%= if (user.Site == "U") { %> selected <% } %>>
+                                                U
+                                            </option>
+                                            <option value="V" <%= if (user.Site == "V") { %> selected <% } %>>
+                                                V
+                                            </option>
+                                            <option value="W" <%= if (user.Site == "W") { %> selected <% } %>>
+                                                W
+                                            </option>
+                                            <option value="X" <%= if (user.Site == "X") { %> selected <% } %>>
+                                                X
+                                            </option>
+                                            <option value="Y" <%= if (user.Site == "Y") { %> selected <% } %>>
+                                                Y
+                                            </option>
+                                            <option value="Z" <%= if (user.Site == "Z") { %> selected <% } %>>
+                                                Z
+                                            </option>
                                     </select>
                                 </div>
                             </div>
@@ -135,14 +135,14 @@
                                                 <i class="os-icon os-icon-email-2-at2"></i>
                                             </span>
                                         </div>
-                                        <input class="form-control" placeholder="Email address" type="email" name="Email">
+                                        <input class="form-control" placeholder="Email address" type="email" name="Email" value="<%= user.Email %>">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">  
                                 <div class="form-group">
                                     <label for="mobile">Mobile</label>
-                                    <input type="text" name="Mobile" id="mobile" placeholder="Enter mobile" class="form-control">
+                                    <input type="text" name="Mobile" id="mobile" placeholder="Enter mobile" class="form-control" value="<%= user.Mobile %>">
                                 </div>
                             </div>
                         </div>
@@ -152,12 +152,25 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
-                                    <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="Admin"><strong>Is Admin?</strong></label>
+                                        <%= if (user.Admin) { %>
+                                            <input class="btn form-check-input" type="checkbox" name="Admin" checked>
+                                            <% } else { %>
+                                            <input class="btn form-check-input" type="checkbox" name="Admin">
+                                            <% } %>
+                                            <strong>Is Admin?</strong>
+                                            </label>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
-                                    <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionStudyCoordinator" value="true"><strong>Is Study Co-ordinator?</strong></label>
+                                        <%= if (user.Permission.StudyCoordinator) { %>
+                                            <input class="btn form-check-input" type="checkbox"
+                                            name="Permission.StudyCoordinator" value="true" checked>
+                                        <% } else { %>
+                                            <input class="btn form-check-input" type="checkbox"
+                                            name="Permission.StudyCoordinator" value="true">
+                                        <% } %>
+                                        <strong>Is Study Co-ordinator?</strong>
                                 </div>
                             </div>
                         </div>
@@ -165,24 +178,51 @@
                     <fieldset class="form-group">
                         <legend><span>Permissions</span></legend>
                         <div class="row">
-                            <div class="col-sm-6">   
-                                <div class="form-check form-group">
-                                    <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionScreening" value="true">Screening Permission</label>
+                                <div class="col-sm-6">
+                                    <div class="form-check form-group">
+                                        <label class="form-check-label">
+                                                <%= if (user.Permission.Screening) { %>
+                                                    <input class="btn form-check-input" type="checkbox"
+                                                name="Permission.Screening" value="true" checked>
+                                                <% } else { %>
+                                                    <input class="btn form-check-input" type="checkbox"
+                                                name="Permission.Screening" value="true">
+                                                <% } %>
+                                            Screening Permission
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-check form-group">
+                                        <label class="form-check-label">
+                                                <%= if (user.Permission.OverRead) { %>
+                                                    <input class="btn form-check-input" type="checkbox"
+                                                name="Permission.OverRead" value="true" checked>
+                                                <% } else { %>
+                                                    <input class="btn form-check-input" type="checkbox"
+                                                name="Permission.OverRead" value="true">
+                                                <% } %>
+                                            Over Read Permission
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">  
-                                <div class="form-check form-group">
-                                    <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionOverRead" value="true">Over Read Permission</label>
+                            <div class="row">
+                                <div class="col-sm-6">   
+                                    <div class="form-check form-group">
+                                        <label class="form-check-label">
+                                                <%= if (user.Permission.ReferralTracker) { %>
+                                                    <input class="btn form-check-input" type="checkbox"
+                                                name="Permission.ReferralTracker" value="true" checked>
+                                                <% } else { %>
+                                                    <input class="btn form-check-input" type="checkbox"
+                                                name="Permission.ReferralTracker" value="true">
+                                                <% } %>
+                                            Referral Tracking Permission
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">   
-                                <div class="form-check form-group">
-                                    <label class="form-check-label"><input class="btn form-check-input" type="checkbox" name="PermissionReferralTracker" value="true">Referral Tracking Permission</label>
-                                </div>
-                            </div>
-                        </div>
                     </fieldset>
                 </div>
                 <div class="form-buttons-w">

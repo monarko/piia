@@ -48,13 +48,13 @@
                             <div class="logged-user-role">
                                 <%= if (current_user.Admin) { %>
                                 <%= t("role_admin") %>
-                                <% } else if (current_user.PermissionScreening) { %>
+                                <% } else if (current_user.Permission.Screening) { %>
                                 <%= t("role_screener") %>
-                                <% } else if (current_user.PermissionOverRead) { %>
+                                <% } else if (current_user.Permission.OverRead) { %>
                                 <%= t("role_reader") %>
-                                <% } else if (current_user.PermissionStudyCoordinator) { %>
+                                <% } else if (current_user.Permission.StudyCoordinator) { %>
                                 <%= t("role_study_coordinator") %>
-                                <% } else if (current_user.PermissionReferralTracker) { %>
+                                <% } else if (current_user.Permission.ReferralTracker) { %>
                                 <%= t("role_referral_tracker") %>
                                 <% } else { %>
                                 <%= t("role_general") %>
@@ -127,7 +127,7 @@
                 <h1 class="menu-page-header">
                 </h1>
                 <ul class="main-menu">
-                    <%= if (current_user.Admin || current_user.PermissionScreening || current_user.PermissionStudyCoordinator) { %>
+                    <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
                     <li class="">
                         <a href="<%= participantsIndexPath() %>">
                             <div class="icon-w">
@@ -139,7 +139,7 @@
                     </li>
                     <% } %>
 
-                    <%= if (current_user.Admin || current_user.PermissionOverRead || current_user.PermissionStudyCoordinator) { %>
+                    <%= if (current_user.Admin || current_user.Permission.OverRead || current_user.Permission.StudyCoordinator) { %>
                     <li class="">
                         <a href="<%= casesIndexPath() %>">
                             <div class="icon-w">
@@ -151,7 +151,7 @@
                     </li>
                     <% } %>
 
-                    <%= if (current_user.Admin || current_user.PermissionReferralTracker || current_user.PermissionStudyCoordinator) { %>
+                    <%= if (current_user.Admin || current_user.Permission.ReferralTracker || current_user.Permission.StudyCoordinator) { %>
                         <li class="">
                             <a href="<%= referralsIndexPath() %>">
                                 <div class="icon-w">
@@ -241,6 +241,23 @@
             $('.tasks-header-toggler').on('click', function () {
                 $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
                 return false;
+            });
+
+            $('.expand-row').on('click', function (e) {
+                e.preventDefault()
+                var elemId = $(this).attr("data-src")
+                var elemContent = elemId + "-content"
+                // alert(elemId)
+                var accordionRow = $("#"+elemId);
+                var accordionContent = $("#"+elemContent);
+                // alert(accordionRow.html())
+                if (!accordionRow.is(":visible")) {
+                    accordionRow.show()
+                    accordionContent.slideDown()
+                } else {
+                    accordionContent.slideUp()
+                    accordionRow.hide();
+                }
             });
 
             if ($("#screening-json-data").length) {

@@ -38,13 +38,32 @@ func ReferralsIndex(c buffalo.Context) error {
 		ids = append(ids, o.ParticipantID.String())
 	}
 
+	refers := &models.ReferredMessages{}
+	rq := tx.PaginateFromParams(c.Params())
+	// Retrieve all Posts from the DB
+	if err := rq.All(refers); err != nil {
+		return errors.WithStack(err)
+	}
+	for _, s := range *refers {
+		t := s.ParticipantID.String()
+		for i, o := range ids {
+			if o == t {
+				ids = append(ids[:i], ids[i+1:]...)
+			}
+		}
+	}
+
 	var q *pop.Query
-	if len(c.Param("search")) > 0 {
-		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("referral_appointment != ?", true).Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at ASC")
-		c.Set("search", c.Param("search"))
+	c.Set("search", "")
+	if len(ids) > 0 {
+		if len(c.Param("search")) > 0 {
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("referral_appointment != ?", true).Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at ASC")
+			c.Set("search", c.Param("search"))
+		} else {
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("referral_appointment != ?", true).PaginateFromParams(c.Params()).Order("created_at ASC")
+		}
 	} else {
-		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("referral_appointment != ?", true).PaginateFromParams(c.Params()).Order("created_at ASC")
-		c.Set("search", "")
+		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("referral_appointment != ?", true).PaginateFromParams(c.Params()).Order("created_at ASC")
 	}
 
 	// Retrieve all Posts from the DB
@@ -53,7 +72,6 @@ func ReferralsIndex(c buffalo.Context) error {
 	}
 	// Make posts available inside the html template
 	c.Set("participants", participants)
-
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 	breadcrumbMap := make(map[string]interface{})

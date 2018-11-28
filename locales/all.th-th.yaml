@@ -200,3 +200,5 @@
   translation: "English"
 - id: language_bd
   translation: "বাংলা"
+- id: lang_calendar
+  translation: "thai"

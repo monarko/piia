@@ -1,53 +1,149 @@
-<div class="element-wrapper">
+<!-- <div class="element-wrapper">
     <h6 class="element-header">
-      Changes
+        Audit Log
     </h6>
     <div class="element-box-tp">
-      <%= for (audit) in audits { %>
-      <div class="users-list-w">
-        <div class="user-w with-status">
-          <div class="user-avatar-w" style="width: 180px;">
-            <%= audit.CreatedAt.Format("02-Jan-2006 03:04:05") %>
-          </div>
-          <div class="user-name">
-            <h6 class="user-title">
-              <%= audit.User.Name %>
-            </h6>
-            <div class="user-role">
-                <%= if (audit.User.Admin) { %>
-                  <%= t("role_admin") %>
-                  <% } else if (audit.User.PermissionScreening) { %>
-                  <%= t("role_screener") %>
-                  <% } else if (audit.User.PermissionOverRead) { %>
-                  <%= t("role_reader") %>
-                  <% } else if (audit.User.PermissionStudyCoordinator) { %>
-                  <%= t("role_study_coordinator") %>
-                  <% } else { %>
-                  <%= t("role_general") %>
-                <% } %>
+        <%= for (audit) in audits { %>
+        <div class="users-list-w">
+            <div class="user-w with-status">
+                <div class="user-avatar-w" style="width: 180px;">
+                    <%= audit.CreatedAt.Format("02-Jan-2006 03:04:05") %>
+                </div>
+                <div class="user-name">
+                    <h6 class="user-title">
+                        <%= audit.User.Name %>
+                    </h6>
+                    <div class="user-role">
+                        <%= if (audit.User.Admin) { %>
+                        <%= t("role_admin") %>
+                        <% } else if (audit.User.Permission.Screening) { %>
+                        <%= t("role_screener") %>
+                        <% } else if (audit.User.Permission.OverRead) { %>
+                        <%= t("role_reader") %>
+                        <% } else if (audit.User.Permission.StudyCoordinator) { %>
+                        <%= t("role_study_coordinator") %>
+                        <% } else { %>
+                        <%= t("role_general") %>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="user-action" style="width: 60%;">
+                    <%= for (k, v) in audit.Changes { %>
+                    <%= if ((lastElement(k, "->") != "given_date") && (lastElement(k, "->") != "calculated_date") && (lastElement(k, "->") != "calendar") && (lastElement(k, "->") != "id") && (lastElement(k, "->") != "unit")) { %>
+                    <div class="profile-tile" style="border-bottom: none; margin-right: 1rem; margin-bottom: 0; float: left;">
+                        <a class="profile-tile-box" href="#" style="width: auto; padding: .5rem; text-align: left;">
+                            <div class="">
+                                <span class="badge badge-primary-inverted" style="text-transform: uppercase; font-size: 60% !important;">
+                                    <%= k %>
+                                </span><br>
+                            </div>
+                            <div class="pt-user-name">
+                                <span class="badge badge-warning" style="font-size: 85% !important;">From</span>
+                                <%= v["from"] %><br>
+                                <span class="badge badge-info" style="font-size: 85% !important;">To</span>
+                                <%= v["to"] %>
+                            </div>
+                        </a>
+                    </div>
+                    <% } %>
+                    <% } %>
+                </div>
             </div>
-          </div>
-          <div class="user-action" style="width: 60%;">
-            <%= for (k, v) in audit.Changes { %>
-              <%= if ((lastElement(k, "->") != "assessment_date") && (lastElement(k, "->") != "id") && (lastElement(k, "->") != "unit")) { %>
-                <div class="profile-tile" style="border-bottom: none; margin-right: 1rem; margin-bottom: 0; float: left;">
-                    <a class="profile-tile-box" href="#" style="width: auto; padding: .5rem; text-align: left;">
-                      <div class="">
-                          <span class="badge badge-primary-inverted" style="text-transform: uppercase; font-size: 60% !important;">
-                              <%= k %>
-                          </span><br>
-                      </div>
-                      <div class="pt-user-name">
-                          <span class="badge badge-warning" style="font-size: 85% !important;">From</span> <%= v["from"] %><br>
-                          <span class="badge badge-info" style="font-size: 85% !important;">To</span> <%= v["to"] %>
-                      </div>
-                    </a>
-                  </div>
-              <% } %>
-            <% } %>
-          </div>
         </div>
-      </div>
-      <% } %>
+        <% } %>
+    </div>
+</div> -->
+
+
+<div class="element-wrapper">
+    <h6 class="element-header">
+        Audits
+    </h6>
+    <div class="element-box-tp">
+        <div class="table-responsive">
+            <table class="table table-padded" id="audit-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Activity
+                        </th>
+                        <th>
+                            User
+                        </th>
+                        <th>
+                            Message
+                        </th>
+                        <th class="text-center">
+                            Time
+                        </th>
+                        <th>
+                            IP
+                        </th>
+                        <th>
+                            View
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%= for (i, log) in logs { %>
+                    <tr>
+                        <td class="text-center">
+                            <a class="badge badge-success-inverted" href="" style="text-transform: uppercase;"><%= log.Action %></a>
+                        </td>
+                        <td>
+                            <div class="user-with-avatar">
+                                    <%= if (len(log.User.Avatar) > 10) { %>
+                                        <img alt="" src="<%= log.User.Avatar %>">
+                                    <% } else { %>
+                                        <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                                    <% } %>
+                                <span><%= log.User.Name %></span>
+                                <span class="badge badge-inverted badge-info">
+                                    <%= if (log.User.Admin) { %>
+                                            <%= t("role_admin") %>
+                                            <% } else if (log.User.Permission.Screening) { %>
+                                            <%= t("role_screener") %>
+                                            <% } else if (log.User.Permission.OverRead) { %>
+                                            <%= t("role_reader") %>
+                                            <% } else if (log.User.Permission.StudyCoordinator) { %>
+                                            <%= t("role_study_coordinator") %>
+                                            <% } else if (log.User.Permission.ReferralTracker) { %>
+                                            <%= t("role_referral_tracker") %>
+                                            <% } else { %>
+                                            <%= t("role_general") %>
+                                            <% } %>
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="lighter">
+                                <%= log.Activity %>
+                            </div>
+                        </td>
+                        <td>
+                            <span><%= languageDate(log.CreatedAt, "02-Jan-2006 03:04:05pm", t("lang_calendar")) %></span>
+                        </td>
+                        <td class="nowrap">
+                            <span><%= log.ClientIP %></span>
+                        </td>
+                        <td class="row-actions">
+                            <a href="#" class="expand-row" data-src="expandable-row-<%= i %>"><i class="os-icon os-icon-grid-10"></i></a>
+                        </td>
+                    </tr>
+                    <tr class="expandable-row" id="expandable-row-<%= i %>">
+                        <td colspan="6">
+                                <%= for (j, audit) in audits { %>
+                                    <%= if (i == j) { %>
+                                        <div id="expandable-row-<%= i %>-content" class="expandable-content">
+                                            <textarea class="form-control" rows="15" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'><%= audit %></textarea>
+                                        </div>
+                                    <% } %>
+                                <% } %>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

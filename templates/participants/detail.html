@@ -26,7 +26,7 @@
                         <%= participant.Name %>
                     </h2>
                     <h6 class="up-sub-header">
-                        <%= ageHelper(participant.DOB) %> old
+                        <%= ageHelper(participant.DOB.CalculatedDate) %> old
                         <%= genderHelper(participant.Gender) %>
                     </h6>
                 </div>

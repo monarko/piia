@@ -50,7 +50,7 @@ func HomeHandler(c buffalo.Context) error {
 
 	if len(strings.TrimSpace(loggedInUser.Site)) > 0 {
 		q = tx.Eager().Where("site = ?", loggedInUser.Site).Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
-	} else if loggedInUser.Admin || loggedInUser.PermissionStudyCoordinator {
+	} else if loggedInUser.Admin || loggedInUser.Permission.StudyCoordinator {
 		q = tx.Eager().Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
 	} else {
 		q = tx.Eager().Where("status != ?", "unknown").PaginateFromParams(c.Params()).Order("created_at DESC")
