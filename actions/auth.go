@@ -8,6 +8,7 @@ import (
 	"github.com/monarko/piia/models"
 
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/pop"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
@@ -19,7 +20,7 @@ func init() {
 	gothic.Store = App().SessionStore
 
 	goth.UseProviders(
-		google.New(os.Getenv("GOOGLE_KEY"), os.Getenv("GOOGLE_SECRET"), fmt.Sprintf("%s%s", App().Host, "/auth/google/callback")),
+		google.New(os.Getenv("GOOGLE_KEY"), os.Getenv("GOOGLE_SECRET"), fmt.Sprintf("%s%s", envy.Get("APP_HOST", "http://127.0.0.1"), "/auth/google/callback")),
 	)
 }
 
