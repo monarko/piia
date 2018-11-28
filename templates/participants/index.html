@@ -2,9 +2,9 @@
     <div class="col-sm-12">
         <div class="element-wrapper">
             <%= if (current_user.Admin) { %>
-            <div class="element-actions">
+            <!--<div class="element-actions">
                 <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button"><%= t("button_download_csv") %></a>
-            </div>
+            </div>-->
             <% } %>
             <h6 class="element-header">
                 <%= t("page_participants_title") %>
@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-lg table-v2 table-striped" style="margin-bottom: 1rem; font-size: 0.8rem;">
+                    <table class="table table-bordered table-v2 table-lg  table-striped" style="margin-bottom: 1.2rem; font-size: 0.8rem;">
                         <thead>
                             <tr>
                                 <!--<th class="text-center">

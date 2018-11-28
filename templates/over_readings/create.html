@@ -1,5 +1,5 @@
 <div class="row justify-content-lg-center">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="element-wrapper">
             <h6 class="element-header">
                 <%= t("page_overreadcase_title") %>
@@ -30,6 +30,9 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_drgrading") %></label>
                                     <select class="form-control" name="Eyes.RightEye.DRGrading">
+                                        <option value="">
+                                            <%= t("form_select_any") %>
+                                        </option>
                                         <option value="Ungradeable" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
                                             <%= t("option_ungradeable") %>
                                         </option>
@@ -53,6 +56,9 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_dme") %></label>
                                     <select class="form-control" name="Eyes.RightEye.DMEAssessment">
+                                        <option value="">
+                                            <%= t("form_select_any") %>
+                                        </option>
                                         <option value="Present" <%= if (overReading.Eyes.RightEye.DMEAssessment.String == "Present") { %> selected <% } %>>
                                             <%= t("option_dme_present") %>
                                         </option>
@@ -90,6 +96,9 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_drgrading") %></label>
                                     <select class="form-control" name="Eyes.LeftEye.DRGrading">
+                                        <option value="">
+                                            <%= t("form_select_any") %>
+                                        </option>
                                         <option value="Ungradeable" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
                                             <%= t("option_ungradeable") %>
                                         </option>
@@ -113,6 +122,9 @@
                                 <div class="form-group">
                                     <label for=""><%= t("label_dme") %></label>
                                     <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
+                                        <option value="">
+                                            <%= t("form_select_any") %>
+                                        </option>
                                         <option value="Present" <%= if (overReading.Eyes.LeftEye.DMEAssessment.String == "Present") { %> selected <% } %>>
                                             <%= t("option_dme_present") %>
                                         </option>

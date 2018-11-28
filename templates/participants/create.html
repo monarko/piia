@@ -1,5 +1,5 @@
 <div class="row justify-content-lg-center">
-    <div class="col-8">
+    <div class="col-12">
         <div class="element-wrapper">
             <h6 class="element-header">
                 <%= t("page_enroll_title") %>
@@ -28,8 +28,8 @@
                         <%= t("form_enroll_desc") %>
                     </div>
                     <fieldset class="form-group">
-                        <legend><span>Participant ID</span></legend>
-                        <p class="lead">This is the unique study ID for this participant. Please record this in the patient notes.</p>
+                        <legend><span><%= t("participantID_field") %></span></legend>
+                        <p class="lead"><%= t("participant_ID_description") %></p>
                         <div class="row">
                             <div class="col-sm-4">
                                 <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participant.ParticipantID %>">
@@ -37,7 +37,7 @@
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
-                        <legend><span>Patient Information</span></legend>
+                        <legend><span><%= t("participant_personal_details") %></span></legend>
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
@@ -135,9 +135,9 @@
                     </fieldset>
                 </div>
                 <div class="form-buttons-w">
-                    <button name="submitBtn" value="enrollGoBack" class="btn btn-primary btn-lg" type="submit">Enroll and Go Back</button>
-                    <button name="submitBtn" value="enrollAddAnother" class="btn btn-secondary btn-lg" type="submit">Enroll and Add Another</button>
-                    <button name="submitBtn" value="enrollGoToScreening" class="btn btn-success btn-lg" type="submit">Enroll and Go To Screening</button>
+                    <button name="submitBtn" value="enrollGoBack" class="btn btn-light btn-lg" type="submit">Enroll and Complete</button>
+                    <!--<button name="submitBtn" value="enrollAddAnother" class="btn btn-secondary btn-lg" type="submit">Enroll and Add Another</button>-->
+                    <button name="submitBtn" value="enrollGoToScreening" class="btn btn-grey btn-lg float-right" type="submit">Enroll and continue to Data Entry</button>
                 </div>
             </form>
         </div>

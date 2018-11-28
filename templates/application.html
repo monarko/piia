@@ -16,14 +16,13 @@
     <link rel="apple-touch-icon" href="<%= assetPath("images/apple-touch-icon.png") %>">
 </head>
 
-<body class="menu-position-top">
-
-    <div class="all-wrapper solid-bg-all">
+<body class="menu-position-side menu-side-left full-screen">
+    <div class="all-wrapper with-side-panel solid-bg-all" style="height: 100vh;">
         <div class="layout-w">
             <!--------------------
             START - Main Menu
             -------------------->
-            <div class="menu-w selected-menu-color-light menu-activated-on-hover menu-has-selected-link color-scheme-light color-style-transparent sub-menu-color-bright menu-position-top menu-layout-compact sub-menu-style-over">
+            <div class="menu-w selected-menu-color-light menu-activated-on-hover menu-has-selected-link color-scheme-light color-style-transparent sub-menu-color-bright menu-position-side menu-side-left menu-layout-full sub-menu-style-over" style="padding-top: 10px; height: 100vh;">
                 <div class="logo-w">
                     <a class="logo" href="<%= rootPath() %>">
                         <div class="logo-element"></div>
@@ -32,169 +31,83 @@
                         </div>
                     </a>
                 </div>
-                <div class="logged-user-w avatar-inline">
-                    <div class="logged-user-i">
-                        <div class="avatar-w">
-                            <%= if (len(current_user.Avatar) > 10) { %>
-                                <img alt="" src="<%= current_user.Avatar %>">
-                            <% } else { %>
-                                <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
-                            <% } %>
-                        </div>
-                        <div class="logged-user-info-w">
-                            <div class="logged-user-name">
-                                <%= current_user.Name %>
-                            </div>
-                            <div class="logged-user-role">
-                                <%= if (current_user.Admin) { %>
-                                <%= t("role_admin") %>
-                                <% } else if (current_user.Permission.Screening) { %>
-                                <%= t("role_screener") %>
-                                <% } else if (current_user.Permission.OverRead) { %>
-                                <%= t("role_reader") %>
-                                <% } else if (current_user.Permission.StudyCoordinator) { %>
-                                <%= t("role_study_coordinator") %>
-                                <% } else if (current_user.Permission.ReferralTracker) { %>
-                                <%= t("role_referral_tracker") %>
-                                <% } else { %>
-                                <%= t("role_general") %>
-                                <% } %>
-                            </div>
-                        </div>
-                        <div class="logged-user-toggler-arrow">
-                            <div class="os-icon os-icon-chevron-down"></div>
-                        </div>
-                        <div class="logged-user-menu color-style-bright">
-                            <div class="logged-user-avatar-info">
-                                <div class="avatar-w">
-                                        <%= if (len(current_user.Avatar) > 10) { %>
-                                            <img alt="" src="<%= current_user.Avatar %>">
-                                        <% } else { %>
-                                            <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
-                                        <% } %>
-                                </div>
-                                <div class="logged-user-info-w">
-                                    <div class="logged-user-name">
-                                        <%= current_user.Name %>
-                                    </div>
-                                    <div class="logged-user-role">
-                                        <%= if (current_user.Admin) { %>
-                                        <%= t("role_admin") %>
-                                        <% } %>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-icon">
-                                <i class="os-icon os-icon-wallet-loaded"></i>
-                            </div>
-                            <ul>
-                                <li>
-                                    <a href="<%= usersLogoutPath() %>"><i class="os-icon os-icon-signs-11"></i><span>
-                                            <%= t("nav_logout") %></span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
                 <div class="menu-actions">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <%= if (current_lang && current_lang == "bn") { %>
-                            <img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %>
-                            <% } else if (current_lang && current_lang == "th") { %>
-                            <img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %>
-                            <% } else { %>
-                            <img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %>
-                            <% } %>
-                        </button>
-                        <div class="dropdown-menu">
-                            <%= if (current_lang && current_lang == "bn") { %>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
-                            <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
-                            <% } else if (current_lang && current_lang == "th") { %>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
-                            <% } else { %>
-                            <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-                <h1 class="menu-page-header">
-                </h1>
-                <ul class="main-menu">
-                    <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
-                    <li class="">
-                        <a href="<%= participantsIndexPath() %>">
-                            <div class="icon-w">
-                                <div class="fa fa-address-book-o"></div>
-                            </div>
-                            <span>
-                                <%= t("nav_participants") %></span>
-                        </a>
-                    </li>
-                    <% } %>
-
-                    <%= if (current_user.Admin || current_user.Permission.OverRead || current_user.Permission.StudyCoordinator) { %>
-                    <li class="">
-                        <a href="<%= casesIndexPath() %>">
-                            <div class="icon-w">
-                                <div class="fa fa-address-book-o"></div>
-                            </div>
-                            <span>
-                                <%= t("nav_overreading") %></span>
-                        </a>
-                    </li>
-                    <% } %>
-
-                    <%= if (current_user.Admin || current_user.Permission.ReferralTracker || current_user.Permission.StudyCoordinator) { %>
+                    <ul class="main-menu">
                         <li class="">
-                            <a href="<%= referralsIndexPath() %>">
+                            <a href="/">
                                 <div class="icon-w">
-                                    <div class="fa fa-exchange"></div>
+                                    <div class="fa fa-home"></div>
                                 </div>
                                 <span>
-                                    <%= t("nav_referrals") %></span>
+                                    <%= t("nav_home") %></span>
                             </a>
                         </li>
-                    <% } %>
+                        <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
+                        <li class="">
+                            <a href="<%= participantsIndexPath() %>">
+                                <div class="icon-w">
+                                    <div class="fa fa-address-book-o"></div>
+                                </div>
+                                <span>
+                                    <%= t("nav_participants") %></span>
+                            </a>
+                        </li>
+                        <% } %>
 
-                    <%= if (current_user.Admin) { %>
-                    <li class="">
-                        <a href="<%= usersIndexPath() %>">
-                            <div class="icon-w">
-                                <div class="fa fa-users"></div>
-                            </div>
-                            <span>
-                                <%= t("nav_users") %></span>
-                        </a>
-                    </li>
+                        <%= if (current_user.Admin || current_user.Permission.OverRead || current_user.Permission.StudyCoordinator) { %>
+                        <li class="">
+                            <a href="<%= casesIndexPath() %>">
+                                <div class="icon-w">
+                                    <div class="fa fas fa-eye"></div>
+                                </div>
+                                <span>
+                                    <%= t("nav_overreading") %></span>
+                            </a>
+                        </li>
+                        <% } %>
 
-                    <li class="">
-                        <a href="<%= logsIndexPath() %>">
-                            <div class="icon-w">
-                                <div class="fa fa-database"></div>
-                            </div>
-                            <span>
-                                <%= t("nav_logs") %></span>
-                        </a>
-                    </li>
-                    <% } %>
-                </ul>
+                        <%= if (current_user.Admin || current_user.Permission.ReferralTracker || current_user.Permission.StudyCoordinator) { %>
+                            <li class="">
+                                <a href="<%= referralsIndexPath() %>">
+                                    <div class="icon-w">
+                                        <div class="fa fa-exchange"></div>
+                                    </div>
+                                    <span>
+                                        <%= t("nav_referrals") %></span>
+                                </a>
+                            </li>
+                        <% } %>
+
+                        <%= if (current_user.Admin) { %>
+                        <li class="">
+                            <a href="<%= usersIndexPath() %>">
+                                <div class="icon-w">
+                                    <div class="fa fa-users"></div>
+                                </div>
+                                <span>
+                                    <%= t("nav_users") %></span>
+                            </a>
+                        </li>
+
+                        <li class="">
+                            <a href="<%= logsIndexPath() %>">
+                                <div class="icon-w">
+                                    <div class="fa fa-database"></div>
+                                </div>
+                                <span>
+                                    <%= t("nav_logs") %></span>
+                            </a>
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
             </div>
-            <!--------------------
-            END - Main Menu
-            -------------------->
-
-            <div class="content-w">
-                <%= if (breadcrumbMap) { %>
-                <!--------------------
+        <div class="content-w"">
+            <div class="top-bar color-scheme-white">
+                 <!--------------------
               START - Breadcrumbs
               -------------------->
+              <%= if (breadcrumbMap) { %>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item">
                         <a href="<%= rootPath() %>">
@@ -217,21 +130,119 @@
               END - Breadcrumbs
               -------------------->
                 <% } %>
-
-                <div class="content-i">
-                    <div class="content-box">
-                        <%= partial("flash.html") %>
-                        <%= yield %>
-                    </div>
-                    <%= if (len(audits) > 0) { %>
-                        <div class="content-panel">
-                            <%= partial("audits.html") %>
+                <div class="top-menu-controls">
+                    <div class="menu-actions">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <%= if (current_lang && current_lang == "bn") { %>
+                                <img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %>
+                                <% } else if (current_lang && current_lang == "th") { %>
+                                <img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %>
+                                <% } else { %>
+                                <img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %>
+                                <% } %>
+                            </button>
+                            <div class="dropdown-menu">
+                                <%= if (current_lang && current_lang == "bn") { %>
+                                <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
+                                <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
+                                <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
+                                <% } else if (current_lang && current_lang == "th") { %>
+                                <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
+                                <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
+                                <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
+                                <% } else { %>
+                                <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
+                                <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
+                                <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=bn"><img src="<%= assetPath("img/flags-icons/bd.png") %>" height="25px"> <%= t("language_bd") %></a>
+                                <% } %>
+                            </div>
                         </div>
-                    <% } %>
+                    </div>
+                    <div class="logged-user-w avatar-inline">
+                        <div class="logged-user-i">
+                            <div class="avatar-w">
+                                <%= if (len(current_user.Avatar) > 10) { %>
+                                    <img alt="" src="<%= current_user.Avatar %>">
+                                <% } else { %>
+                                    <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                                <% } %>
+                            </div>
+                            <div class="logged-user-info-w">
+                                <div class="logged-user-name">
+                                    <%= current_user.Name %>
+                                </div>
+                                <div class="logged-user-role">
+                                    <%= if (current_user.Admin) { %>
+                                    <%= t("role_admin") %>
+                                    <% } else if (current_user.Permission.Screening) { %>
+                                    <%= t("role_screener") %>
+                                    <% } else if (current_user.Permission.OverRead) { %>
+                                    <%= t("role_reader") %>
+                                    <% } else if (current_user.Permission.StudyCoordinator) { %>
+                                    <%= t("role_study_coordinator") %>
+                                    <% } else if (current_user.Permission.ReferralTracker) { %>
+                                    <%= t("role_referral_tracker") %>
+                                    <% } else { %>
+                                    <%= t("role_general") %>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="logged-user-toggler-arrow">
+                                <div class="os-icon os-icon-chevron-down"></div>
+                            </div>
+                            <div class="logged-user-menu color-style-bright">
+                                <div class="logged-user-avatar-info">
+                                    <div class="avatar-w">
+                                            <%= if (len(current_user.Avatar) > 10) { %>
+                                                <img alt="" src="<%= current_user.Avatar %>">
+                                            <% } else { %>
+                                                <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                                            <% } %>
+                                    </div>
+                                    <div class="logged-user-info-w">
+                                        <div class="logged-user-name">
+                                            <%= current_user.Name %>
+                                        </div>
+                                        <div class="logged-user-role">
+                                            <%= if (current_user.Admin) { %>
+                                            <%= t("role_admin") %>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-icon">
+                                    <i class="os-icon os-icon-wallet-loaded"></i>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="<%= usersLogoutPath() %>"><i class="os-icon os-icon-signs-11"></i><span>
+                                                <%= t("nav_logout") %></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!--------------------
+            END - Main Menu
+            -------------------->
+
+            <div class="content-i" style="background: #fff;">
+                <div class="content-box container">
+                    <%= partial("flash.html") %>
+                    <%= yield %>
+                </div>
+            </div>
+            <%= if (len(audits) > 0) { %>
+            <div class="content-box" style="background: #fff;">
+                <%= partial("audits.html") %>
+            </div>
+            <% } %>
         </div>
     </div>
+</div>
 
     <%= javascriptTag("application.js") %>
     <%= javascriptTag("imageviewer.js") %>

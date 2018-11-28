@@ -14,10 +14,10 @@
                                 Participants Registered
                             </div>
                             <div class="value">
-                                <%= participants %> 
+                                <%= participants %>
                             </div>
                             <div class="trending trending-up-basic">
-                                
+
                             </div>
                         </a>
                     </div>
@@ -27,10 +27,10 @@
                                 Total Screened
                             </div>
                             <div class="value">
-                                <%= screenings %> 
+                                <%= screenings %>
                             </div>
                             <div class="trending trending-down-basic">
-                                
+
                             </div>
                         </a>
                     </div>
@@ -42,10 +42,10 @@
                                 Remaining Over-read
                             </div>
                             <div class="value">
-                                <%= overreadings %> 
+                                <%= overreadings %>
                             </div>
                             <div class="trending trending-up-basic">
-                                
+
                             </div>
                         </a>
                     </div>
@@ -55,10 +55,10 @@
                                 Total Users
                             </div>
                             <div class="value">
-                                <%= users %> 
+                                <%= users %>
                             </div>
                             <div class="trending trending-down-basic">
-                                
+
                             </div>
                         </a>
                     </div>
@@ -69,14 +69,14 @@
     <div class="col-sm-5">
         <div class="support-index" style="display:block;">
             <div class="support-tickets" style="margin: 0 0 0 20px; padding: 0 0 0 20px; border-right: 0;">
-              <div class="support-tickets-header">
+              <div class="support-tickets-header" style="margin-bottom: 2rem;">
                 <div class="tickets-control">
                   <h5>
                     Notifications
                   </h5>
                 </div>
               </div>
-              
+
               <%= if (len(notifications) > 0) { %>
                 <%= for (notification) in notifications { %>
               <div class="support-ticket ">

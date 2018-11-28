@@ -1,5 +1,5 @@
 <div class="row justify-content-lg-center">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <div class="element-wrapper">
             <h6 class="element-header">
                 Add New Screening
@@ -139,14 +139,14 @@
                                     <div class="tasks-header-w">
                                         <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
                                         <h5 class="tasks-header">
-                                            Medications
+                                            Diabetes Medications
                                         </h5>
                                     </div>
                                     <div class="tasks-list-w">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="">Taking Medications?</label>
+                                                    <label for="">Taking Oral Medications?</label>
                                                     <div class="row">
                                                         <div class="col-sm-3">
                                                             <div class="form-check">
@@ -245,51 +245,52 @@
                                             Pathology
                                         </h5>
                                     </div>
-                                    <div class="tasks-list-w">
-                                        <fieldset class="form-group" style="margin-top: 0.5rem;">
-                                            <legend><span>HbA1C</span></legend>
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="">HbA1C (in %)</label>
-                                                        <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
-                                                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                            <input class="form-control" placeholder="" type="number"
-                                                                name="Pathology.HbA1C.HbA1C" step="0.1" min="3.0" max="30.0" />
-                                                            <div class="input-group-append">
-                                                                <div class="input-group-text">
-                                                                    %
+                                    <div class="row">
+                                        <div class="tasks-list-w col-md-6">
+                                            <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                                <legend><span>HbA1C</span></legend>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="">HbA1C (in %)</label>
+                                                            <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
+                                                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                <input class="form-control" placeholder="" type="number"
+                                                                    name="Pathology.HbA1C.HbA1C" step="0.1" min="3.0" max="30.0" />
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text">
+                                                                        %
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-sm-6 ml-auto">
-                                                    <div class="form-group">
-                                                        <label for="">Date of Last Assessment</label>
-                                                        <%= if (Pathology.HbA1C && !Pathology.HbA1C.AssessmentDate.GivenDate.IsZero()) { %>
-                                                            <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
-                                                        <% } else { %>
-                                                            <%= if (t("lang_calendar") == "thai") { %>
+                                                    <div class="col-sm-6 ml-auto">
+                                                        <div class="form-group">
+                                                            <label for="">Date of Last Assessment</label>
+                                                            <%= if (Pathology.HbA1C && !Pathology.HbA1C.AssessmentDate.GivenDate.IsZero()) { %>
                                                                 <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
+                                                                name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                             <% } else { %>
-                                                                <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.HbA1C.AssessmentDate.GivenDate" value="">
+                                                                <%= if (t("lang_calendar") == "thai") { %>
+                                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                                    name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
+                                                                <% } else { %>
+                                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                                    name="Pathology.HbA1C.AssessmentDate.GivenDate" value="">
+                                                                <% } %>
                                                             <% } %>
-                                                        <% } %>
+                                                        </div>
+                                                        <input type="hidden" name="Pathology.HbA1C.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
                                                     </div>
-                                                    <input type="hidden" name="Pathology.HbA1C.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
                                                 </div>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset class="form-group" style="margin-top: 0.5rem;">
-                                            <legend><span>Lipids</span></legend>
-                                            <div class="row">
-                                                <div class="col-sm-9">
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
+                                            </fieldset>
+                                        </div>
+                                        <div class="tasks-list-w col-md-6">
+                                            <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                                <legend><span>Lipids</span></legend>
+                                                <div class="row">
+                                                        <div class="col-sm-6">
                                                             <div class="form-group">
                                                                 <label for="">Total Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
@@ -303,7 +304,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-3">
+                                                        <!--<div class="col-sm-3">
                                                             <div class="form-group">
                                                                 <label for="">HDL Cholesterol</label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
@@ -346,9 +347,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>-->
                                                 <input type="hidden" name="Pathology.Lipids.Unit" value="mmol/L">
-                                                <div class="col-sm-3 ml-auto">
+                                                <div class="col-sm-6 ml-auto">
                                                     <div class="form-group">
                                                         <label for="">Date of Last Assessment</label>
                                                         <%= if (Pathology.Lipids && !Pathology.Lipids.AssessmentDate.GivenDate.IsZero()) { %>
@@ -366,8 +367,8 @@
                                                     </div>
                                                     <input type="hidden" name="Pathology.Lipids.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
                                                 </div>
-                                            </div>
-                                        </fieldset>
+                                            </fieldset>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tasks-section">
@@ -521,7 +522,7 @@
                         </div>
                     </div>
                     <div class="form-buttons-w">
-                        <button class="btn btn-primary" type="submit"> Submit</button>
+                        <button class="btn btn-primary btn-lg col-sm-3" type="submit"> Submit</button>
                     </div>
                 </form>
             </div>
