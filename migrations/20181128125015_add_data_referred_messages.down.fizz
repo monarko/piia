@@ -1,0 +1,1 @@
+drop_column("referred_messages", "referral_data")

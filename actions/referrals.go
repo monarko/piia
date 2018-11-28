@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
@@ -44,26 +46,38 @@ func ReferralsIndex(c buffalo.Context) error {
 	if err := rq.All(refers); err != nil {
 		return errors.WithStack(err)
 	}
+
+	rIds := make([]string, 0)
+
 	for _, s := range *refers {
 		t := s.ParticipantID.String()
-		for i, o := range ids {
+		for _, o := range ids {
 			if o == t {
-				ids = append(ids[:i], ids[i+1:]...)
+				rIds = append(rIds, t)
 			}
 		}
 	}
+
+	ids = SliceStringUnique(ids, true)
+	rIds = SliceStringUnique(rIds, true)
+	sort.Strings(ids)
+	sort.Strings(rIds)
+
+	fmt.Println(ids, rIds)
+
+	ids = intersection(ids, rIds)
 
 	var q *pop.Query
 	c.Set("search", "")
 	if len(ids) > 0 {
 		if len(c.Param("search")) > 0 {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("referral_appointment != ?", true).Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at ASC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status = ?", "111").Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at ASC")
 			c.Set("search", c.Param("search"))
 		} else {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("referral_appointment != ?", true).PaginateFromParams(c.Params()).Order("created_at ASC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status = ?", "111").PaginateFromParams(c.Params()).Order("created_at ASC")
 		}
 	} else {
-		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("referral_appointment != ?", true).PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("status = ?", "111").PaginateFromParams(c.Params()).Order("created_at ASC")
 	}
 
 	// Retrieve all Posts from the DB
@@ -82,4 +96,73 @@ func ReferralsIndex(c buffalo.Context) error {
 		return errors.WithStack(logErr)
 	}
 	return c.Render(200, r.HTML("referrals/index.html"))
+}
+
+func intersection(a []string, b []string) (inter []string) {
+	// interacting on the smallest list first can potentailly be faster...but not by much, worse case is the same
+	low, high := a, b
+	if len(a) > len(b) {
+		low = b
+		high = a
+	}
+
+	done := false
+	for i, l := range low {
+		for j, h := range high {
+			// get future index values
+			f1 := i + 1
+			f2 := j + 1
+			if l == h {
+				inter = append(inter, h)
+				if f1 < len(low) && f2 < len(high) {
+					// if the future values aren't the same then that's the end of the intersection
+					if low[f1] != high[f2] {
+						done = true
+					}
+				}
+				// we don't want to interate on the entire list everytime, so remove the parts we already looped on will make it faster each pass
+				high = high[:j+copy(high[j:], high[j+1:])]
+				break
+			}
+		}
+		// nothing in the future so we are done
+		if done {
+			break
+		}
+	}
+	return
+}
+
+// SliceStringUnique returns a slice of unique strings by discarding duplicates from the original.
+func SliceStringUnique(original []string, caseSensitive bool) []string {
+	if original == nil {
+		return nil
+	}
+
+	unique := make([]string, 0)
+	keys := make(map[string]struct{})
+	for _, val := range original {
+		keyToCheck := val
+		if !caseSensitive {
+			keyToCheck = strings.ToLower(val)
+		}
+
+		if _, ok := keys[keyToCheck]; !ok {
+			keys[keyToCheck] = struct{}{}
+			unique = append(unique, val)
+		}
+	}
+
+	return unique
+}
+
+// SliceContainsString returns idx and true if a found in s. Otherwise -1 and false.
+func SliceContainsString(s []string, a string) (int, bool) {
+	for i, b := range s {
+		if b == a {
+			return i, true
+		}
+	}
+
+	return -1, false
 }
