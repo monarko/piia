@@ -45,13 +45,15 @@
                                     Over Reader Referred
                                 </th>
                                 <th>
+                                    Referral Reviewed?
+                                </th>
+                                <th>
                                     <%= t("th_actions") %>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <%= for (p) in participants { %>
-                                <%= if (!stringInSlice(p.ID.String(), finished)) { %>
                             <%
                             let colorCode = ""
                             let psc = p.Screenings[0]
@@ -106,8 +108,17 @@
                                     <span class="badge badge-danger">No</span>
                                     <% } %>
                                 </td>
+                                <td class="text-center">
+                                    <%= if (stringInSlice(p.ID.String(), finished)) { %>
+                                    <span class="badge badge-primary">Yes</span>
+                                    <% } else { %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
+                                </td>
                                 <td class="row-actions">
                                     <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
+                                    <%= if (!stringInSlice(p.ID.String(), finished)) { %>
+                                    
                                     <a href="#" title="Mark" data-target=".<%= psc.ID %>-modal-sm" data-toggle="modal"><i
                                             class="fa fa-thumb-tack fa-lg"></i></a>
 
@@ -231,9 +242,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <% } %>
                                 </td>
                             </tr>
-                            <% } %>
                             <% } %>
                         </tbody>
                     </table>

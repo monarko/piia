@@ -34,7 +34,11 @@ func UpdateReferredMessage(c buffalo.Context) error {
 		refer.ReferralData.ReferredForTreatment = false
 	}
 
-	// refer.ReferralData.Plans = c.Request().FormValue("Plans")
+	err := c.Request().ParseForm()
+	if err != nil {
+		return c.Error(404, err)
+	}
+	refer.ReferralData.Plans = c.Request().Form["Plans"]
 	refer.ReferralData.FollowUpPlan = c.Request().FormValue("FollowUp")
 
 	verrs, err := tx.ValidateAndCreate(refer)
