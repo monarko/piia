@@ -1,8 +1,6 @@
 package actions
 
 import (
-	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
@@ -60,12 +58,6 @@ func ReferralsIndex(c buffalo.Context) error {
 
 	ids = SliceStringUnique(ids, true)
 	rIds = SliceStringUnique(rIds, true)
-	sort.Strings(ids)
-	sort.Strings(rIds)
-
-	fmt.Println(ids, rIds)
-
-	ids = intersection(ids, rIds)
 
 	var q *pop.Query
 	c.Set("search", "")
@@ -86,6 +78,7 @@ func ReferralsIndex(c buffalo.Context) error {
 	}
 	// Make posts available inside the html template
 	c.Set("participants", participants)
+	c.Set("finished", rIds)
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 	breadcrumbMap := make(map[string]interface{})
