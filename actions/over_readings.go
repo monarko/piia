@@ -1,6 +1,14 @@
 package actions
 
 import (
+	"context"
+	"strings"
+	"time"
+
+	"github.com/gobuffalo/envy"
+	"google.golang.org/api/iterator"
+
+	"cloud.google.com/go/storage"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/models"
@@ -64,8 +72,14 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 	// 	return c.Redirect(302, "/cases/index")
 	// }
 
-	// c.Set("leftEyeLink", respData["left_eye"])
-	// c.Set("rightEyeLink", respData["right_eye"])
+	right, left, err := getImage(participant.ParticipantID)
+	if err != nil {
+		left = ""
+		right = ""
+	}
+
+	c.Set("leftEyeLink", left)
+	c.Set("rightEyeLink", right)
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Cases"] = "/cases/index"
@@ -100,11 +114,14 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	}
 
 	// images
-	leftEye := c.Param("leftEyeLink")
-	rightEye := c.Param("rightEyeLink")
+	right, left, err := getImage(participant.ParticipantID)
+	if err != nil {
+		left = ""
+		right = ""
+	}
 
-	c.Set("leftEyeLink", leftEye)
-	c.Set("rightEyeLink", rightEye)
+	c.Set("leftEyeLink", left)
+	c.Set("rightEyeLink", right)
 
 	shouldBeRefer := shouldBeReferred(overReading)
 	if shouldBeRefer && !overReading.Referral.Referred {
@@ -210,4 +227,81 @@ func shouldBeReferred(overReading *models.OverReading) bool {
 	}
 
 	return refer
+}
+
+func getImage(participantID string) (string, string, error) {
+	pID := participantID
+
+	fileNames := map[string]string{"right": pID + "-Right.jpg", "left": pID + "-Left.jpg"}
+	right := ""
+	left := ""
+	ctx := context.Background()
+
+	// Sets your Google Cloud Platform project ID.
+	// projectID := "piia-project"
+
+	// Creates a client.
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return right, left, err
+	}
+
+	// // Sets the name for the new bucket.
+	bucketName := "piia_images"
+
+	// Creates a Bucket instance.
+	bucket := client.Bucket(bucketName)
+
+	objs := bucket.Objects(ctx, &storage.Query{
+		Prefix:    pID,
+		Delimiter: "",
+	})
+
+	for {
+		attrs, err := objs.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			continue
+		}
+		if strings.Contains(attrs.Name, "Right") {
+			fileNames["right"] = attrs.Name
+		} else if strings.Contains(attrs.Name, "Left") {
+			fileNames["left"] = attrs.Name
+		}
+	}
+
+	// fmt.Println(fileNames)
+	// // rc, err := bucket.Object(fileNames[0]). .NewReader(ctx)
+	// // if err != nil {
+	// // 	return "", "", err
+	// // }
+	// // defer rc.Close()
+	// // body, err := ioutil.ReadAll(rc)
+	// // if err != nil {
+	// // 	return "", "", err
+	// // }
+
+	method := "GET"
+	expires := time.Now().Add(time.Second * 60 * 10)
+
+	for k, v := range fileNames {
+		url, err := storage.SignedURL(bucketName, v, &storage.SignedURLOptions{
+			GoogleAccessID: envy.Get("GOOGLE_STORAGE_SERVICE_EMAIL", ""),
+			PrivateKey:     []byte(envy.Get("GOOGLE_STORAGE_SERVICE_PRIVATE_KEY", "")),
+			Method:         method,
+			Expires:        expires,
+		})
+		if err != nil {
+			continue
+		}
+		if k == "right" {
+			right = url
+		} else if k == "left" {
+			left = url
+		}
+	}
+
+	return right, left, nil
 }
