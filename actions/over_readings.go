@@ -3,6 +3,7 @@ package actions
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -231,6 +232,13 @@ func shouldBeReferred(overReading *models.OverReading) bool {
 }
 
 func getImage(participantID string) (string, string, error) {
+	envVar := envy.Get("GOOGLE_APPLICATION_CREDENTIALS_PATH", "")
+	err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", envVar)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("Env", os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"), "ENVY", envVar)
+
 	pID := participantID
 	cleanPID := strings.Replace(pID, "-", "", -1)
 
