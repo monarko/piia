@@ -16,9 +16,12 @@ type ReferredMessage struct {
 	ID            uuid.UUID                    `json:"id" db:"id"`
 	CreatedAt     time.Time                    `json:"created_at" db:"created_at"`
 	UpdatedAt     time.Time                    `json:"updated_at" db:"updated_at"`
-	ParticipantID uuid.UUID                    `json:"participant_id" db:"participant_id"`
-	ScreeningID   uuid.UUID                    `json:"screening_id" db:"screening_id"`
-	UserID        uuid.UUID                    `json:"user_id" db:"user_id"`
+	User          User                         `belongs_to:"user" json:"user"`
+	UserID        uuid.UUID                    `json:"-" db:"user_id"`
+	Participant   Participant                  `belongs_to:"participant" json:"participant"`
+	ParticipantID uuid.UUID                    `json:"-" db:"participant_id"`
+	Screening     Screening                    `belongs_to:"screening" json:"screening"`
+	ScreeningID   uuid.UUID                    `json:"-" db:"screening_id"`
 	Message       string                       `json:"message" db:"message"`
 	ReferralData  types.ReferredMessageElement `json:"referral_data" db:"referral_data"`
 }

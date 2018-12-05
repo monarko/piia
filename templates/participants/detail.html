@@ -36,9 +36,9 @@
                     <div class="col-sm-6">
                         <div class="value-pair">
                             <div class="label">
-                                <%= if (participant.IDType == "hospital_id") { %>
+                                <%= if (participant.IDType.String == "hospital_id") { %>
                                 <strong>Hospital ID</strong>
-                                <% } else if (participant.IDType == "national_id") { %>
+                                <% } else if (participant.IDType.String == "national_id") { %>
                                 <strong>National ID</strong>
                                 <% } %>
                             </div>
@@ -192,7 +192,7 @@
             </div>
         </div>
 
-        <div class="element-wrapper">
+        <div class="element-wrapper" style="padding-bottom: 1rem;">
             <div class="element-box">
                 <div class="element-info">
                     <div class="element-info-with-icon">
@@ -213,6 +213,32 @@
                     <label>JSON Data</label>
                     <textarea class="form-control" rows="15" id="overread-json-data" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'>
                         <%= participant.OverReadings %>
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="element-wrapper" style="padding-bottom: 1rem;">
+            <div class="element-box">
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-delivery-box-2"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header">
+                                Referral
+                            </h5>
+                            <div class="element-inner-desc">
+                                Referral Data
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>JSON Data</label>
+                    <textarea class="form-control" rows="15" id="referrals-json-data" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'>
+                        <%= participant.Referrals %>
                     </textarea>
                 </div>
             </div>

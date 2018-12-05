@@ -53,6 +53,11 @@ func UpdateReferredMessage(c buffalo.Context) error {
 		if logErr != nil {
 			return errors.WithStack(logErr)
 		}
+
+		logErr = InsertLog("update", "User marked a participant for appointment completed", "", participant.ID.String(), "participant", user.ID, c)
+		if logErr != nil {
+			return errors.WithStack(logErr)
+		}
 	}
 
 	referrer := c.Request().Referer()

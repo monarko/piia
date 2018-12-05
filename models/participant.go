@@ -33,6 +33,7 @@ type Participant struct {
 	Screenings          Screenings       `has_many:"screenings" json:"-"`
 	OverReadings        OverReadings     `has_many:"over_readings" json:"-"`
 	Notifications       Notifications    `has_many:"notifications" json:"-"`
+	Referrals           ReferredMessages `has_many:"referred_messages" json:"-"`
 	ReferralAppointment bool             `json:"referral_appointment" db:"referral_appointment"`
 }
 

@@ -128,7 +128,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLabel">
-                                                        Message
+                                                        Follow Up
                                                     </h5>
                                                     <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
                                                             aria-hidden="true"> &times;</span></button>
@@ -137,8 +137,8 @@
                                                     <div class="modal-body">
                                                         <%= csrf() %>
                                                         <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group" style="text-align: left;">
                                                                     <label>
                                                                         Attended
                                                                     </label>
@@ -150,6 +150,8 @@
                                                                                         type="radio" value="yes">Yes</label>
                                                                             </div>
                                                                         </div>
+                                                                    </div>
+                                                                    <div class="row">
                                                                         <div class="col-sm-6">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label"><input
@@ -160,32 +162,11 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label for="">Referred for Treatment</label>
-                                                                    <div class="row">
-                                                                        <div class="col-sm-6">
-                                                                            <div class="form-check">
-                                                                                <label class="form-check-label"><input
-                                                                                        class="form-check-input" name="Treatment"
-                                                                                        type="radio" value="yes">Yes</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-sm-6">
-                                                                            <div class="form-check">
-                                                                                <label class="form-check-label"><input
-                                                                                        class="form-check-input" name="Treatment"
-                                                                                        type="radio" value="no">No</label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-12">
-                                                                <div class="form-group">
-                                                                    <label for="">Select Co-Morbidities</label>
+                                                                <div class="form-group" style="text-align: left;">
+                                                                    <label for="">Select Plans</label>
                                                                     <select class="form-control select2" style="width: 100%;"
                                                                         multiple="true" name="Plans">
                                                                         <option value="Lifestyle Advice">
@@ -206,7 +187,32 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-12">
-                                                                <div class="form-group">
+                                                                <div class="form-group" style="text-align: left;">
+                                                                    <label for="">Referred for Treatment</label>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-check">
+                                                                                <label class="form-check-label"><input
+                                                                                        class="form-check-input" name="Treatment"
+                                                                                        type="radio" value="yes">Yes</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-check">
+                                                                                <label class="form-check-label"><input
+                                                                                        class="form-check-input" name="Treatment"
+                                                                                        type="radio" value="no">No</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group" style="text-align: left;">
                                                                     <label for="">Follow Up</label>
                                                                     <select class="form-control" style="width: 100%;"
                                                                         name="FollowUp">
@@ -225,10 +231,10 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-12">
-                                                                <div class="form-group">
-                                                                    <label for=""> Message</label>
+                                                                <div class="form-group" style="text-align: left;">
+                                                                    <label for=""> Note</label>
                                                                     <textarea name="Message" id="Message" cols="30"
-                                                                        rows="10" class="form-control"></textarea>
+                                                                        rows="5" class="form-control"></textarea>
                                                                 </div>
                                                             </div>
                                                         </div>

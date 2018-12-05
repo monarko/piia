@@ -240,7 +240,7 @@ func ParticipantsEditPost(c buffalo.Context) error {
 func ParticipantsDetail(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	participant := &models.Participant{}
-	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Find(participant, c.Param("pid")); err != nil {
+	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader", "Referrals").Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
 	c.Set("participant", participant)

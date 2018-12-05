@@ -281,6 +281,11 @@
                 $("#overread-json-data").text(overReadJson);
             }
 
+            if ($("#referrals-json-data").length) {
+                var referralsJson = JSON.stringify(JSON.parse($("#referrals-json-data").val()), undefined, 4);
+                $("#referrals-json-data").text(referralsJson);
+            }
+
             var viewer = ImageViewer();
             $('.fullscreen-image').click(function () {
                 var imgSrc = this.src,
