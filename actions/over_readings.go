@@ -2,7 +2,8 @@ package actions
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
+	"io/ioutil"
 	"os"
 	"strings"
 	"time"
@@ -235,9 +236,20 @@ func getImage(participantID string) (string, string, error) {
 	envVar := envy.Get("GOOGLE_APPLICATION_CREDENTIALS_PATH", "")
 	err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", envVar)
 	if err != nil {
-		fmt.Println(err)
+		return "", "", err
 	}
-	fmt.Println("Env", os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"), "ENVY", envVar)
+
+	credentialFile, err := ioutil.ReadFile(envVar)
+	if err != nil {
+		return "", "", err
+	}
+
+	credentialContent := make(map[string]string)
+	if err := json.Unmarshal(credentialFile, &credentialContent); err != nil {
+		return "", "", err
+	}
+
+	// fmt.Printf("\n%#v\n", credentialContent)
 
 	pID := participantID
 	cleanPID := strings.Replace(pID, "-", "", -1)
@@ -246,6 +258,7 @@ func getImage(participantID string) (string, string, error) {
 	fileNames := make(map[string]string)
 	right := ""
 	left := ""
+
 	ctx := context.Background()
 
 	// Sets your Google Cloud Platform project ID.
@@ -263,30 +276,11 @@ func getImage(participantID string) (string, string, error) {
 	// Creates a Bucket instance.
 	bucket := client.Bucket(bucketName)
 
-	objs := bucket.Objects(ctx, &storage.Query{
-		Prefix:    pID,
-		Delimiter: "",
-	})
-
-	for {
-		attrs, err := objs.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			continue
-		}
-		name := strings.ToLower(attrs.Name)
-		if strings.Contains(name, "right") {
-			fileNames["right"] = attrs.Name
-		} else if strings.Contains(name, "left") {
-			fileNames["left"] = attrs.Name
-		}
-	}
-
-	if len(fileNames) == 0 {
+	idsToCheck := []string{strings.ToUpper(pID), strings.ToUpper(cleanPID), strings.ToLower(pID), strings.ToLower(cleanPID)}
+	for _, id := range idsToCheck {
+		// fmt.Println(id)
 		objs := bucket.Objects(ctx, &storage.Query{
-			Prefix:    cleanPID,
+			Prefix:    id,
 			Delimiter: "",
 		})
 
@@ -298,6 +292,7 @@ func getImage(participantID string) (string, string, error) {
 			if err != nil {
 				continue
 			}
+			// fmt.Println(attrs.Name)
 			name := strings.ToLower(attrs.Name)
 			if strings.Contains(name, "right") {
 				fileNames["right"] = attrs.Name
@@ -305,9 +300,17 @@ func getImage(participantID string) (string, string, error) {
 				fileNames["left"] = attrs.Name
 			}
 		}
+		if len(fileNames) != 0 {
+			break
+		}
 	}
 
-	fmt.Println(fileNames)
+	// fmt.Println(fileNames)
+
+	if len(fileNames) == 0 {
+		return right, left, errors.New("no file found for the participant id")
+	}
+
 	// // rc, err := bucket.Object(fileNames[0]). .NewReader(ctx)
 	// // if err != nil {
 	// // 	return "", "", err
@@ -321,10 +324,19 @@ func getImage(participantID string) (string, string, error) {
 	method := "GET"
 	expires := time.Now().Add(time.Second * 60 * 10)
 
+	// googleStorageEmail := envy.Get("GOOGLE_STORAGE_SERVICE_EMAIL", "")
+	// googleStoragePrivateKey := envy.Get("GOOGLE_STORAGE_SERVICE_PRIVATE_KEY", "")
+
+	googleStorageEmail := credentialContent["client_email"]
+	googleStoragePrivateKey := credentialContent["private_key"]
+
+	// fmt.Println(googleStorageEmail)
+	// fmt.Println(googleStoragePrivateKey)
+
 	for k, v := range fileNames {
 		url, err := storage.SignedURL(bucketName, v, &storage.SignedURLOptions{
-			GoogleAccessID: envy.Get("GOOGLE_STORAGE_SERVICE_EMAIL", ""),
-			PrivateKey:     []byte(envy.Get("GOOGLE_STORAGE_SERVICE_PRIVATE_KEY", "")),
+			GoogleAccessID: googleStorageEmail,
+			PrivateKey:     []byte(googleStoragePrivateKey),
 			Method:         method,
 			Expires:        expires,
 		})
