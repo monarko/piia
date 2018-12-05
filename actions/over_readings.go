@@ -232,8 +232,10 @@ func shouldBeReferred(overReading *models.OverReading) bool {
 
 func getImage(participantID string) (string, string, error) {
 	pID := participantID
+	cleanPID := strings.Replace(pID, "-", "", -1)
 
-	fileNames := map[string]string{"right": pID + "_RIGHT_1543476715_40971517.png", "left": pID + "_LEFT_1543476746_40971518.png"}
+	// fileNames := map[string]string{"right": pID + "_RIGHT_1543476715_40971517.png", "left": pID + "_LEFT_1543476746_40971518.png"}
+	fileNames := make(map[string]string)
 	right := ""
 	left := ""
 	ctx := context.Background()
@@ -248,7 +250,7 @@ func getImage(participantID string) (string, string, error) {
 	}
 
 	// // Sets the name for the new bucket.
-	bucketName := "dry-run-overread-bucket"
+	bucketName := envy.Get("GOOGLE_STORAGE_BUCKET_NAME", "piia_images")
 
 	// Creates a Bucket instance.
 	bucket := client.Bucket(bucketName)
@@ -266,10 +268,34 @@ func getImage(participantID string) (string, string, error) {
 		if err != nil {
 			continue
 		}
-		if strings.Contains(attrs.Name, "Right") {
+		name := strings.ToLower(attrs.Name)
+		if strings.Contains(name, "right") {
 			fileNames["right"] = attrs.Name
-		} else if strings.Contains(attrs.Name, "Left") {
+		} else if strings.Contains(name, "left") {
 			fileNames["left"] = attrs.Name
+		}
+	}
+
+	if len(fileNames) == 0 {
+		objs := bucket.Objects(ctx, &storage.Query{
+			Prefix:    cleanPID,
+			Delimiter: "",
+		})
+
+		for {
+			attrs, err := objs.Next()
+			if err == iterator.Done {
+				break
+			}
+			if err != nil {
+				continue
+			}
+			name := strings.ToLower(attrs.Name)
+			if strings.Contains(name, "right") {
+				fileNames["right"] = attrs.Name
+			} else if strings.Contains(name, "left") {
+				fileNames["left"] = attrs.Name
+			}
 		}
 	}
 
