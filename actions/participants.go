@@ -6,6 +6,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -75,6 +76,12 @@ func ParticipantsCreateGet(c buffalo.Context) error {
 	// user := c.Value("current_user").(*models.User)
 	// luhnID := helpers.GenerateLuhnIDWithGivenPrefix(user.Site)
 	// c.Set("luhnID", luhnID.ID)
+	user := c.Value("current_user").(*models.User)
+	prefix := "P"
+	if len(user.Site) > 0 {
+		prefix = prefix + user.Site
+	}
+	c.Set("participantIDPrefix", prefix)
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["page_participants_title"] = "/participants/index"
 	breadcrumbMap["breadcrumb_enrol_participant"] = "/participants/create"
@@ -87,6 +94,13 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	// Allocate an empty Post
 	participant := &models.Participant{}
 	user := c.Value("current_user").(*models.User)
+
+	prefix := "P"
+	if len(user.Site) > 0 {
+		prefix = prefix + user.Site
+	}
+	c.Set("participantIDPrefix", prefix)
+
 	// Bind participant to the html form elements
 	if err := c.Bind(participant); err != nil {
 		// return errors.WithStack(err)
@@ -99,8 +113,8 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("participants/create.html"))
 	}
 
-	if len(participant.ParticipantID) != 9 {
-		errStr := "Invalid Participant ID."
+	if len(participant.ParticipantID) != 9 || !helpers.Valid(participant.ParticipantID, false) || strings.Contains(participant.ParticipantID, "_") {
+		errStr := "Invalid Participant ID, please check your input again for valid checksum."
 		errs := map[string][]string{
 			"checksum_error": {errStr},
 		}
@@ -109,8 +123,8 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("participants/create.html"))
 	}
 
-	if len(participant.ParticipantID) == 9 && !strings.HasPrefix(participant.ParticipantID, "P") {
-		errStr := "Participant ID should start with letter \"P\"."
+	if len(participant.ParticipantID) == 9 && !strings.HasPrefix(participant.ParticipantID, prefix) {
+		errStr := "Participant ID should start with letter \"" + prefix + "\"."
 		errs := map[string][]string{
 			"checksum_error": {errStr},
 		}

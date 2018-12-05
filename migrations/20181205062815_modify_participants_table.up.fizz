@@ -1,0 +1,3 @@
+change_column("participants", "name", "string", {"null": true})
+change_column("participants", "id_type", "string", {"null": true})
+change_column("participants", "id_number", "string", {"null": true})

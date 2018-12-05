@@ -94,11 +94,6 @@
                                 <th>
                                     <%= t("th_participant_id") %>
                                 </th>
-                                <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
-                                <th>
-                                    <%= t("th_patient_id") %>
-                                </th>
-                                <% } %>
                                 <th>
                                     <%= t("th_demographics") %>
                                 </th>
@@ -124,15 +119,6 @@
                                 </td>-->
                                 <td class="text-center">
                                     <%= p.ParticipantID %>
-                                </td>
-                                <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
-                                <td class="text-center">
-                                    <%= if (p.IDType == "hospital_id") { %>
-                                    <strong>H</strong>:&nbsp;<%= p.IDNumber %>
-                                    <% } else if (p.IDType == "national_id") { %>
-                                    <strong>N</strong>:&nbsp;<%= p.IDNumber %>
-                                    <% } %>
-                                <% } %>
                                 </td>
                                 <td class="text-center">
                                     <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;

@@ -2,6 +2,7 @@ package actions
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -232,7 +233,7 @@ func shouldBeReferred(overReading *models.OverReading) bool {
 func getImage(participantID string) (string, string, error) {
 	pID := participantID
 
-	fileNames := map[string]string{"right": pID + "-Right.jpg", "left": pID + "-Left.jpg"}
+	fileNames := map[string]string{"right": pID + "_RIGHT_1543476715_40971517.png", "left": pID + "_LEFT_1543476746_40971518.png"}
 	right := ""
 	left := ""
 	ctx := context.Background()
@@ -247,7 +248,7 @@ func getImage(participantID string) (string, string, error) {
 	}
 
 	// // Sets the name for the new bucket.
-	bucketName := "piia_images"
+	bucketName := "dry-run-overread-bucket"
 
 	// Creates a Bucket instance.
 	bucket := client.Bucket(bucketName)
@@ -272,7 +273,7 @@ func getImage(participantID string) (string, string, error) {
 		}
 	}
 
-	// fmt.Println(fileNames)
+	fmt.Println(fileNames)
 	// // rc, err := bucket.Object(fileNames[0]). .NewReader(ctx)
 	// // if err != nil {
 	// // 	return "", "", err
