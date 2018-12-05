@@ -1,0 +1,3 @@
+change_column("participants", "name", "string", {})
+change_column("participants", "id_type", "string", {})
+change_column("participants", "id_number", "string", {})

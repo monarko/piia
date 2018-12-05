@@ -3,6 +3,8 @@ package models
 import (
 	"time"
 
+	"github.com/gobuffalo/pop/nulls"
+
 	"github.com/monarko/piia/helpers/types"
 
 	"github.com/gobuffalo/pop"
@@ -17,14 +19,14 @@ type Participant struct {
 	CreatedAt           time.Time        `json:"created_at" db:"created_at"`
 	UpdatedAt           time.Time        `json:"updated_at" db:"updated_at"`
 	ParticipantID       string           `json:"participant_id" db:"participant_id"`
-	Name                string           `json:"name" db:"name"`
+	Name                nulls.String     `json:"name" db:"name"`
 	Gender              string           `json:"gender" db:"gender"`
 	DOB                 types.CustomDate `json:"dob" db:"dob"`
-	ContactNumber       string           `json:"contact_number" db:"contact_number"`
+	ContactNumber       nulls.String     `json:"contact_number" db:"contact_number"`
 	IsEligible          bool             `json:"is_eligible" db:"is_eligible"`
 	Consented           bool             `json:"consented" db:"consented"`
-	IDType              string           `json:"id_type" db:"id_type"`
-	IDNumber            string           `json:"id_number" db:"id_number"`
+	IDType              nulls.String     `json:"id_type" db:"id_type"`
+	IDNumber            nulls.String     `json:"id_number" db:"id_number"`
 	User                User             `belongs_to:"user" json:"registrar"`
 	UserID              uuid.UUID        `json:"-" db:"author_id"`
 	Status              string           `json:"status" db:"status"`
@@ -45,7 +47,6 @@ func (p *Participant) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	}
 
 	return validate.Validate(
-		&validators.StringIsPresent{Field: p.Name, Name: "Name"},
 		&validators.StringIsPresent{Field: p.Gender, Name: "Gender"},
 		&validators.TimeIsPresent{Field: p.DOB.GivenDate, Name: "Date of birth"},
 	), nil

@@ -37,8 +37,8 @@ func GenerateLuhnIDWithGivenPrefix(prefix string) Luhn {
 }
 
 // Valid returns a boolean indicating if the argument was valid according to the Luhn algorithm.
-func Valid(luhnString string) bool {
-	checksumMod := calculateChecksum(luhnString, false) % 10
+func Valid(luhnString string, alpha bool) bool {
+	checksumMod := calculateChecksum(luhnString, false, alpha) % 10
 
 	return checksumMod == 0
 }
@@ -47,7 +47,7 @@ func Valid(luhnString string) bool {
 // The returned string is valid according to the Luhn algorithm.
 func Generate(size int) string {
 	random := randomString(size - 1)
-	controlDigit := strconv.Itoa(generateControlDigit(random))
+	controlDigit := strconv.Itoa(generateControlDigit(random, false))
 
 	return random + controlDigit
 }
@@ -59,7 +59,7 @@ func GenerateWithPrefix(size int, prefix string) string {
 	size = size - 1 - len(prefix)
 
 	random := prefix + "-" + randomString(size)
-	controlDigit := strconv.Itoa(generateControlDigit(random))
+	controlDigit := strconv.Itoa(generateControlDigit(random, false))
 
 	return random + "-" + controlDigit
 }
@@ -75,8 +75,8 @@ func randomString(size int) string {
 	return integersToString(source)
 }
 
-func generateControlDigit(luhnString string) int {
-	controlDigit := calculateChecksum(luhnString, true) % 10
+func generateControlDigit(luhnString string, alpha bool) int {
+	controlDigit := calculateChecksum(luhnString, true, alpha) % 10
 
 	if controlDigit != 0 {
 		controlDigit = 10 - controlDigit
@@ -85,12 +85,12 @@ func generateControlDigit(luhnString string) int {
 	return controlDigit
 }
 
-func calculateChecksum(luhnString string, double bool) int {
+func calculateChecksum(luhnString string, double bool, alpha bool) int {
 	theString := ""
 	for i := 0; i < len(luhnString); i++ {
 		num := fmt.Sprintf("%d", luhnString[i])
 		numS, _ := strconv.Atoi(num)
-		if (numS >= 65 && numS <= 90) || (numS >= 97 && numS <= 122) {
+		if alpha && ((numS >= 65 && numS <= 90) || (numS >= 97 && numS <= 122)) {
 			theString = theString + num
 		} else {
 			theString = theString + string(luhnString[i])

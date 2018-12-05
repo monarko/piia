@@ -14,8 +14,8 @@
                         </div>
                         <div class="col-sm-6">
                             <form class="form-inline justify-content-sm-end">
-                                <input class="form-control form-control-sm rounded bright" name="search" 
-                                placeholder="Search Participant ID" type="text" value="<%= search %>">
+                                <input class="form-control form-control-sm rounded bright" name="search" placeholder="Search Participant ID"
+                                    type="text" value="<%= search %>">
                                 <button type="submit" class="btn btn-info btn-rounded">Go</button>
                             </form>
                         </div>
@@ -43,6 +43,9 @@
                                 </th>
                                 <th>
                                     Over Reader Referred
+                                </th>
+                                <th>
+                                    Referral Reviewed?
                                 </th>
                                 <th>
                                     <%= t("th_actions") %>
@@ -76,9 +79,9 @@
                                 <td class="text-center">
                                     <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
                                     <%= if (p.Gender == "M") { %>
-                                        <span><i class="fa fa-venus fa-lg"></i></span>
+                                    <span><i class="fa fa-venus fa-lg"></i></span>
                                     <% } else { %>
-                                        <span><i class="fa fa-mars fa-lg"></i></span>
+                                    <span><i class="fa fa-mars fa-lg"></i></span>
                                     <% } %>
                                 </td>
                                 <td class="text-center">
@@ -92,26 +95,36 @@
                                     <% } %>
                                 </td>
                                 <td class="text-center">
-                                        <%= if (psc.Referral.Referred) { %>
-                                            <span class="badge badge-primary">Yes</span>
-                                        <% } else { %>
-                                            <span class="badge badge-danger">No</span>
-                                        <% } %>
+                                    <%= if (psc.Referral.Referred) { %>
+                                    <span class="badge badge-primary">Yes</span>
+                                    <% } else { %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
                                 </td>
                                 <td class="text-center">
-                                        <%= if (pov.Referral.Referred) { %>
-                                            <span class="badge badge-primary">Yes</span>
-                                        <% } else { %>
-                                            <span class="badge badge-danger">No</span>
-                                        <% } %>
+                                    <%= if (pov.Referral.Referred) { %>
+                                    <span class="badge badge-primary">Yes</span>
+                                    <% } else { %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
+                                </td>
+                                <td class="text-center">
+                                    <%= if (stringInSlice(p.ID.String(), finished)) { %>
+                                    <span class="badge badge-primary">Yes</span>
+                                    <% } else { %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
                                 </td>
                                 <td class="row-actions">
                                     <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
-                                    <a href="#" title="Mark" data-target=".<%= psc.ID %>-modal-sm" data-toggle="modal"><i class="fa fa-thumb-tack fa-lg"></i></a>
-                                
+                                    <%= if (!stringInSlice(p.ID.String(), finished)) { %>
+                                    
+                                    <a href="#" title="Mark" data-target=".<%= psc.ID %>-modal-sm" data-toggle="modal"><i
+                                            class="fa fa-thumb-tack fa-lg"></i></a>
+
                                     <div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade <%= psc.ID %>-modal-sm"
                                         role="dialog" tabindex="-1">
-                                        <div class="modal-dialog modal-sm">
+                                        <div class="modal-dialog modal-md">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLabel">
@@ -123,19 +136,113 @@
                                                 <form method="POST" action="<%= participantsAppointmentPath({pid: p.ID, sid: psc.ID}) %>">
                                                     <div class="modal-body">
                                                         <%= csrf() %>
-                                                        <div class="form-group">
-                                                            <label for=""> Message</label>
-                                                            <textarea name="Message" id="Message" cols="30" rows="10" class="form-control"></textarea>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>
+                                                                        Attended
+                                                                    </label>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-check">
+                                                                                <label class="form-check-label"><input
+                                                                                        class="form-check-input" name="Attended"
+                                                                                        type="radio" value="yes">Yes</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-check">
+                                                                                <label class="form-check-label"><input
+                                                                                        class="form-check-input" name="Attended"
+                                                                                        type="radio" value="no">No</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="">Referred for Treatment</label>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-check">
+                                                                                <label class="form-check-label"><input
+                                                                                        class="form-check-input" name="Treatment"
+                                                                                        type="radio" value="yes">Yes</label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-check">
+                                                                                <label class="form-check-label"><input
+                                                                                        class="form-check-input" name="Treatment"
+                                                                                        type="radio" value="no">No</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label for="">Select Co-Morbidities</label>
+                                                                    <select class="form-control select2" style="width: 100%;"
+                                                                        multiple="true" name="Plans">
+                                                                        <option value="Lifestyle Advice">
+                                                                            Lifestyle Advice
+                                                                        </option>
+                                                                        <option value="Laser">
+                                                                            Laser
+                                                                        </option>
+                                                                        <option value="Injection">
+                                                                            Injection
+                                                                        </option>
+                                                                        <option value="Surgery">
+                                                                            Surgery
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label for="">Follow Up</label>
+                                                                    <select class="form-control" style="width: 100%;"
+                                                                        name="FollowUp">
+                                                                        <option value="In Community">
+                                                                            In Community
+                                                                        </option>
+                                                                        <option value="At Local Referral Center">
+                                                                            At Local Referral Center
+                                                                        </option>
+                                                                        <option value="At Tertiary Center">
+                                                                            At Tertiary Center
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label for=""> Message</label>
+                                                                    <textarea name="Message" id="Message" cols="30"
+                                                                        rows="10" class="form-control"></textarea>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
+                                                        <button class="btn btn-secondary" data-dismiss="modal" type="button">
+                                                            Close</button>
                                                         <button class="btn btn-primary" type="submit"> Save changes</button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
+                                    <% } %>
                                 </td>
                             </tr>
                             <% } %>

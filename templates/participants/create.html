@@ -32,52 +32,16 @@
                         <p class="lead"><%= t("participant_ID_description") %></p>
                         <div class="row">
                             <div class="col-sm-4">
+                                <%= if (len(participant.ParticipantID) == 9) { %>
                                 <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participant.ParticipantID %>">
+                                <% } else { %>
+                                    <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participantIDPrefix %>">
+                                <% } %>
                             </div>
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
                         <legend><span><%= t("participant_personal_details") %></span></legend>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="">ID Type</label>
-                                    <select class="form-control" name="IDType">
-                                        <option value="hospital_id" <%= if (participant.IDType == "hospital_id") { %> selected <% } %>>
-                                            Hospital Id
-                                        </option>
-                                        <option value="national_id" <%= if (participant.IDType == "national_id") { %> selected <% } %>>
-                                            National Id
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="form-group">
-                                    <label for="">Patient ID</label><input class="form-control" placeholder="Id number"
-                                        type="text" name="IDNumber" value="<%= participant.IDNumber %>">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="">Name</label><input class="form-control" placeholder="Name" type="text"
-                                        name="Name" value="<%= participant.Name %>">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="">Contact Number</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">+66</span>
-                                        </div>
-                                        <input class="form-control" placeholder="Contact number" type="text" name="ContactNumber" value="<%= participant.ContactNumber %>">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">

@@ -22,6 +22,25 @@ func UpdateReferredMessage(c buffalo.Context) error {
 	refer.ScreeningID = participant.Screenings[0].ID
 	refer.Message = c.Request().FormValue("Message")
 
+	if c.Request().FormValue("Attended") == "yes" {
+		refer.ReferralData.Attended = true
+	} else {
+		refer.ReferralData.Attended = false
+	}
+
+	if c.Request().FormValue("Treatment") == "yes" {
+		refer.ReferralData.ReferredForTreatment = true
+	} else {
+		refer.ReferralData.ReferredForTreatment = false
+	}
+
+	err := c.Request().ParseForm()
+	if err != nil {
+		return c.Error(404, err)
+	}
+	refer.ReferralData.Plans = c.Request().Form["Plans"]
+	refer.ReferralData.FollowUpPlan = c.Request().FormValue("FollowUp")
+
 	verrs, err := tx.ValidateAndCreate(refer)
 	if err != nil {
 		return errors.WithStack(err)
