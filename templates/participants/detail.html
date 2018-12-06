@@ -23,36 +23,18 @@
                 </div>
                 <div class="up-main-info" style="padding-top: 10%;">
                     <h2 class="up-header">
-                        <%= participant.Name %>
-                    </h2>
-                    <h6 class="up-sub-header">
                         <%= ageHelper(participant.DOB.CalculatedDate) %> old
                         <%= genderHelper(participant.Gender) %>
-                    </h6>
+                    </h2>
                 </div>
             </div>
-            <div class="up-controls">
+            <div class="up-controls" style="padding: 6px;background-color:#66788a;padding: 6px;border-radius: 0 0 6px 6px;">
                 <div class="row">
                     <div class="col-sm-6">
-                        <div class="value-pair">
-                            <div class="label">
-                                <%= if (participant.IDType.String == "hospital_id") { %>
-                                <strong>Hospital ID</strong>
-                                <% } else if (participant.IDType.String == "national_id") { %>
-                                <strong>National ID</strong>
-                                <% } %>
-                            </div>
-                            <div class="value badge badge-pill badge-success">
-                                <%= participant.IDNumber %>
-                            </div>
-                        </div>
+                        
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a class="btn btn-primary btn-sm" href="tel:<%= participant.ContactNumber %>"><i class="fa fa-phone"></i>
-                            <span>
-                                <%= participant.ContactNumber %>
-                            </span>
-                        </a>
+                        
                     </div>
                 </div>
             </div>

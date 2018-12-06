@@ -233,9 +233,9 @@
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
                                                     <label for="">Date of Last Assessment</label>
-                                                    <%= if (Measurements && !Measurements.BloodPressure.AssessmentDate.GivenDate.IsZero()) { %>
+                                                    <%= if (screening.Measurements && !screening.Measurements.BloodPressure.AssessmentDate.GivenDate.IsZero()) { %>
                                                         <input class="form-control" placeholder="Select date" type="date"
-                                                        name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= Measurements.BloodPressure.AssessmentDate.GivenDate.Format("2006-01-02") %>">
+                                                        name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= screening.Measurements.BloodPressure.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                     <% } else { %>
                                                         <%= if (t("lang_calendar") == "thai") { %>
                                                             <input class="form-control" placeholder="Select date" type="date"
@@ -285,9 +285,9 @@
                                                 <div class="col-sm-6 ml-auto">
                                                     <div class="form-group">
                                                         <label for="">Date of Last Assessment</label>
-                                                        <%= if (Pathology.HbA1C && !Pathology.HbA1C.AssessmentDate.GivenDate.IsZero()) { %>
+                                                        <%= if (screening.Pathology.HbA1C && !screening.Pathology.HbA1C.AssessmentDate.GivenDate.IsZero()) { %>
                                                             <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
+                                                            name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= screening.Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                         <% } else { %>
                                                             <%= if (t("lang_calendar") == "thai") { %>
                                                                 <input class="form-control" placeholder="Select date" type="date"
@@ -369,9 +369,9 @@
                                                 <div class="col-sm-3 ml-auto">
                                                     <div class="form-group">
                                                         <label for="">Date of Last Assessment</label>
-                                                        <%= if (Pathology.Lipids && !Pathology.Lipids.AssessmentDate.GivenDate.IsZero()) { %>
+                                                        <%= if (screening.Pathology.Lipids && !screening.Pathology.Lipids.AssessmentDate.GivenDate.IsZero()) { %>
                                                             <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= Pathology.Lipids.AssessmentDate.GivenDate.Format("2006-01-02") %>">
+                                                            name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= screening.Pathology.Lipids.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                         <% } else { %>
                                                             <%= if (t("lang_calendar") == "thai") { %>
                                                                 <input class="form-control" placeholder="Select date" type="date"

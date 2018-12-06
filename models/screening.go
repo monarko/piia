@@ -26,9 +26,9 @@ type Screening struct {
 	Pathology      types.PathologyScreening      `json:"pathology" db:"pathology"`
 	Eyes           types.EyeScreening            `json:"eyes" db:"eye"`
 	Referral       types.ReferralScreening       `json:"referral" db:"referral"`
-	Screener       User                          `belongs_to:"user" json:"screener"`
+	Screener       User                          `belongs_to:"user" json:"-"`
 	ScreenerID     uuid.UUID                     `json:"-" db:"screener_id"`
-	Participant    Participant                   `belongs_to:"participant" json:"participant"`
+	Participant    Participant                   `belongs_to:"participant" json:"-"`
 	ParticipantID  uuid.UUID                     `json:"-" db:"participant_id"`
 	Notifications  Notifications                 `has_many:"notifications" json:"-"`
 }
@@ -95,7 +95,7 @@ func (s Screening) Statuses() Status {
 		measurements.Done = true
 	}
 
-	if s.Pathology.HbA1C.HbA1C.Valid && s.Pathology.Lipids.TotalCholesterol.Valid && s.Pathology.Lipids.HDL.Valid && s.Pathology.Lipids.TG.Valid {
+	if s.Pathology.HbA1C.HbA1C.Valid && s.Pathology.Lipids.TotalCholesterol.Valid {
 		pathology.Done = true
 	}
 

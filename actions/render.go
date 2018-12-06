@@ -63,6 +63,13 @@ func init() {
 				}
 				return currentTime.Format("2006-01-02")
 			},
+			"currentDateInFormat": func(calendar, format string) string {
+				currentTime := time.Now()
+				if calendar == "thai" {
+					currentTime = currentTime.AddDate(543, 0, 0)
+				}
+				return currentTime.Format(format)
+			},
 			"languageDate": func(gregorianDate time.Time, format, calendar string) string {
 				theDate := gregorianDate
 				if calendar == "thai" {

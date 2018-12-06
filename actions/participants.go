@@ -2,7 +2,9 @@ package actions
 
 import (
 	"sort"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
@@ -111,6 +113,13 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		c.Set("participant", participant)
 		c.Set("errors", errs)
 		return c.Render(422, r.HTML("participants/create.html"))
+	}
+
+	birthYear, err := strconv.Atoi(c.Request().FormValue("BirthYear"))
+	if err == nil && birthYear > 1900 {
+		today := time.Now().Year()
+		diff := birthYear - today
+		participant.DOB.GivenDate = time.Now().AddDate(diff, 0, 0)
 	}
 
 	if len(participant.ParticipantID) != 9 || !helpers.Valid(participant.ParticipantID, false) || strings.Contains(participant.ParticipantID, "_") {

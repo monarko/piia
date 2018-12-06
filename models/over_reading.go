@@ -17,11 +17,11 @@ type OverReading struct {
 	UpdatedAt     time.Time               `json:"updated_at" db:"updated_at"`
 	Eyes          types.EyeOverReading    `json:"eyes" db:"eye_assessment"`
 	Referral      types.ReferralScreening `json:"referral" db:"referral"`
-	OverReader    User                    `belongs_to:"user" json:"over_reader"`
+	OverReader    User                    `belongs_to:"user" json:"-"`
 	OverReaderID  uuid.UUID               `json:"-" db:"over_reader_id"`
-	Participant   Participant             `belongs_to:"participant" json:"participant"`
+	Participant   Participant             `belongs_to:"participant" json:"-"`
 	ParticipantID uuid.UUID               `json:"-" db:"participant_id"`
-	Screening     Screening               `belongs_to:"screening" json:"screening"`
+	Screening     Screening               `belongs_to:"screening" json:"-"`
 	ScreeningID   uuid.UUID               `json:"-" db:"screening_id"`
 }
 

@@ -45,18 +45,22 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for=""> Date of Birth</label>
+                                    <label for=""> Year of Birth</label>
                                     <div class="date-input">
                                         <%= if (!participant.DOB.GivenDate.IsZero()) { %>
-                                            <input class="single-daterange form-control" placeholder="Date of birth" type="date"
-                                            name="DOB.GivenDate" value="<%= participant.DOB.GivenDate.Format("2006-01-02") %>">
+                                            <input type="text" class="form-control birth_year_field" name="BirthYear" value="<%= participant.DOB.GivenDate.Format("2006") %>" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">                                            
+                                            <!-- <input class="single-daterange form-control" placeholder="Date of birth" type="date"
+                                            name="DOB.GivenDate" value="<%= participant.DOB.GivenDate.Format("2006-01-02") %>"> -->
                                         <% } else { %>
                                             <%= if (t("lang_calendar") == "thai") { %>
-                                                <input class="single-daterange form-control" placeholder="Date of birth" type="date"
-                                                name="DOB.GivenDate" value="<%= currentDate("thai") %>">
+                                                <input type="text" class="form-control birth_year_field" name="BirthYear" value="" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
+
+                                                <!-- <input class="single-daterange form-control" placeholder="Date of birth" type="date"
+                                                name="DOB.GivenDate" value="<%= currentDate("thai") %>"> -->
                                             <% } else { %>
-                                                <input class="single-daterange form-control" placeholder="Date of birth" type="date"
-                                                name="DOB.GivenDate" value="">
+                                                <input type="text" class="form-control birth_year_field" name="BirthYear" value="" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
+                                                <!-- <input class="single-daterange form-control" placeholder="Date of birth" type="date"
+                                                name="DOB.GivenDate" value=""> -->
                                             <% } %>
                                         <% } %>
                                     </div>
