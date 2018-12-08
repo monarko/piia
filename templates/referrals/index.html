@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-lg table-v2 table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
+                    <table class="table table-lg table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
                         <thead>
                             <tr>
                                 <th>
@@ -35,17 +35,11 @@
                                 <th>
                                     <%= t("th_screening_date") %>
                                 </th>
+                                <!--<th>
+                                    <%= t("th_overread") %>
+                                </th>-->
                                 <th>
-                                    <%= t("th_completed") %>
-                                </th>
-                                <th>
-                                    Screener Referred
-                                </th>
-                                <th>
-                                    Over Reader Referred
-                                </th>
-                                <th>
-                                    Referral Reviewed?
+                                    <%= t("th_attended_referral") %>
                                 </th>
                                 <th>
                                     <%= t("th_actions") %>
@@ -87,38 +81,24 @@
                                 <td class="text-center">
                                     <%= psc.UpdatedAt.Format("2006-01-02") %>
                                 </td>
-                                <td class="text-center">
+                                <!--<td class="text-center">
                                     <%= if (len(p.OverReadings) > 0) { %>
-                                    <span class="badge badge-primary">Yes</span>
+                                    <span><i class="fa fa-check"></i></span>
                                     <% } else { %>
-                                    <span class="badge badge-danger">No</span>
+                                    <span><i class="fa fa-times"></i></span>
                                     <% } %>
-                                </td>
-                                <td class="text-center">
-                                    <%= if (psc.Referral.Referred) { %>
-                                    <span class="badge badge-primary">Yes</span>
-                                    <% } else { %>
-                                    <span class="badge badge-danger">No</span>
-                                    <% } %>
-                                </td>
-                                <td class="text-center">
-                                    <%= if (pov.Referral.Referred) { %>
-                                    <span class="badge badge-primary">Yes</span>
-                                    <% } else { %>
-                                    <span class="badge badge-danger">No</span>
-                                    <% } %>
-                                </td>
+                                </td>-->
                                 <td class="text-center">
                                     <%= if (stringInSlice(p.ID.String(), finished)) { %>
-                                    <span class="badge badge-primary">Yes</span>
+                                    <span><i class="fa fa-check"></i></span>
                                     <% } else { %>
-                                    <span class="badge badge-danger">No</span>
+                                    <span><i class="fa fa-times"></i></span>
                                     <% } %>
                                 </td>
                                 <td class="row-actions">
                                     <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
                                     <%= if (!stringInSlice(p.ID.String(), finished)) { %>
-                                    
+
                                     <a href="#" title="Mark" data-target=".<%= psc.ID %>-modal-sm" data-toggle="modal"><i
                                             class="fa fa-thumb-tack fa-lg"></i></a>
 

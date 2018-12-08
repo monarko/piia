@@ -18,6 +18,8 @@
   translation: "Log me in"
 - id: button_submit
   translation: "Submit"
+- id: button_cancel
+  translation: "Cancel"
 - id: option_yes
   translation: "Yes"
 - id: option_no
@@ -65,6 +67,16 @@
   translation: "Enter in the assigned participant ID (from the sticker)"
 - id: participant_personal_details
   translation: "Personal Details"
+- id: label_year_birth
+  translation: "Enter year of birth"
+- id: label_gender
+  translation: "Gender"
+- id: gender_option_male
+  translation: "Male"
+- id: gender_option_female
+  translation: "Female"
+- id: gender_option_other
+  translation: "Other"
 - id: button_enroll
   translation: "Enroll New Participant"
 - id: filter_status_select
@@ -77,6 +89,17 @@
   translation: "Over-read"
 - id: button_filter_status
   translation: "Go"
+- id: eligibility_header
+  translation: "Eligibility & Consent"
+- id: eligibility_text
+  translation: "Confirm that all eligibility criteria are met and that"
+- id: eligibiligy_criteria_checkbox
+  translation: "By checking this box, you confirm that (i) the patient is eligible for the study and (ii) has provided informed consent to participate"
+- id: button_enroll
+  translation: "Enroll"
+- id: button_enroll_continue
+  translation: "Enroll and enter data"
+
 # participant table header labels
 - id: th_participant_id
   translation: "Participant Id"
@@ -122,6 +145,53 @@
   translation: "20"
 - id: pagination_options_50
   translation: "50"
+# screening encounter
+- id: screening_header
+  translation: "New Screeing Encounter"
+- id: screening_form_header
+  translation: "Record data for participant"
+- id: screening_medical_history
+  translation: "Medical History"
+- id: screening_diabetes_type
+  translation: "Diabetes Type"
+- id: label_duration
+  translation: "Duration"
+- id: label_years
+  translation: "years"
+- id: screening_co-morbidities
+  translation: "Co-morbidities"
+- id: label_smoker
+  translation: "Current smoker?"
+- id: screening_medication_history
+  translation: "Medications"
+- id: label_medications_oral
+  translation: "Oral Medications for Diabetes?"
+- id: label_medications_insulin
+  translation: "Insulin?"
+- id: screening_measurements
+  translation: "Measurements"
+- id: screening_measurements_bp
+  translation: "Blood Pressure"
+- id: label_date_of_assessment
+  translation: "Date of last assessment"
+- id: screening_pathology
+  translation: "Pathology"
+- id: screening_measurements_blood_sugar
+  translation: "Blood Sugar"
+- id: label_hba1c
+  translation: "HbA1c (%)"
+- id: screening_measurements_lipids
+  translation: "Lipids"
+- id: label_total_cholesterol
+  translation: "Total Cholesterol"
+- id: screening_dr_assessment
+  translation: "DR Assessment"
+- id: option_ungradeable
+  translation: "Ungradeable"
+- id: option_not_present
+  translation: "Not Present"
+- id: option_present
+  translation: "Present"
 # create new - enrollment
 - id: page_enroll_title
   translation: "Enroll into Study"
@@ -181,7 +251,7 @@
 
 #forms
 - id: form_select_any
-  translation: "Select any"
+  translation: "Select the option"
 - id: field_dr_grading
   translation: "DR Grading"
 - id: field_dme_assessment
@@ -189,11 +259,11 @@
 - id: field_visual_acuity
   translation: "Visual Acuity"
 - id: field_right_eye
-  translation: "Right Eye"
+  translation: "Right Eye (OD)"
 - id: field_left_eye
-  translation: "Left Eye"
+  translation: "Left Eye (OS)"
 - id: field_eye_assessment
-  translation: "Eye Assessment"
+  translation: "DR Assessment"
 - id: option_type_1
   translation: "Type 1"
 - id: option_type_2
@@ -202,6 +272,10 @@
   translation: "Pre-Diabetes"
 - id: option_gestational_diabetes
   translation: "Gestational Diabetes"
+- id: dr_referral_label
+  translation: "DR Referral Recommendation"
+- id: field_previous_visual_acuity
+  translation: "Last recorded visual acuity (if available)"
 
 #language
 - id: language_btn_txt

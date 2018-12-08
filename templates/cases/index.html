@@ -21,12 +21,9 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-lg table-v2 table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
+                    <table class="table table-lg table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
                         <thead>
                             <tr>
-                                <th class="text-center">
-                                    Flag
-                                </th>
                                 <th>
                                     <%= t("th_participant_id") %>
                                 </th>
@@ -38,6 +35,9 @@
                                 </th>
                                 <th>
                                     <%= t("th_completed") %>
+                                </th>
+                                <th>
+                                    <%= t("th_flag") %>
                                 </th>
                                 <th>
                                     <%= t("th_actions") %>
@@ -65,15 +65,10 @@
                             }
                             %>
                             <tr>
-                                <td class="text-center">
-                                    <%= if (len(colorCode) > 0) { %>
-                                    <i class="fa fa-flag" style="color: #<%= colorCode %>;"></i>
-                                    <% } %>
-                                </td>
-                                <td class="text-center">
+                                <td>
                                     <%= p.ParticipantID %>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
                                     <%= if (p.Gender == "M") { %>
                                         <span><i class="fa fa-venus fa-lg"></i></span>
@@ -81,20 +76,25 @@
                                         <span><i class="fa fa-mars fa-lg"></i></span>
                                     <% } %>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <%= psc.UpdatedAt.Format("2006-01-02") %>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <%= if (len(p.OverReadings) > 0) { %>
-                                    <span class="badge badge-primary">Yes</span>
+                                    <span><i class="fa fa-check"></i></span>
                                     <% } else { %>
-                                    <span class="badge badge-danger">No</span>
+                                    <span><i class="fa fa-times"></i></span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <%= if (len(colorCode) > 0) { %>
+                                    <i class="fa fa-flag" style="color: #<%= colorCode %>;"></i>
                                     <% } %>
                                 </td>
                                 <td class="row-actions">
                                     <%= if (p.Status == "11" && (current_user.Permission.OverRead || current_user.Admin)) { %>
                                         <% let s = p.Screenings[0] %>
-                                    <a href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over Read"><i class="fa fa-pencil fa-lg"></i></a>
+                                    <a class="button btn btn-info" href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over Read">Review</a>
                                     <% } %>
                                 </td>
                             </tr>

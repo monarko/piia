@@ -1,5 +1,5 @@
 <div class="row justify-content-lg-center">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <div class="element-wrapper">
             <h6 class="element-header">
                 Update Screening
@@ -44,7 +44,7 @@
                                     <div class="tasks-header-w" style="margin-top: 0;">
                                         <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
                                         <h5 class="tasks-header">
-                                            Medical History
+                                            <%= t("screening_medical_history") %>
                                         </h5>
                                         <%= if (statusMap["Diabetes"] && statusMap["Medical History"]) { %>
                                             <span class="badge badge-success-inverted">
@@ -56,7 +56,7 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="">Diabetes Type</label>
+                                                    <label for=""><%= t("screening_diabetes_type") %></label>
                                                     <select class="form-control" name="Diabetes.DiabetesType">
                                                         <option value="">
                                                             <%= t("form_select_any") %>
@@ -78,14 +78,14 @@
                                             </div>
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
-                                                    <label for="">Duration</label>
+                                                    <label for="Duration of diabetes"><%= t("label_duration") %></label>
                                                     <input type="hidden" name="Diabetes.DurationType" value="year">
                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                         <input class="form-control" placeholder="Duration in Years" min="0"
                                                             type="number" name="Diabetes.Duration" value="<%= if (screening.Diabetes.Duration.Valid) { %><%= screening.Diabetes.Duration.Int %><% } %>" />
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
-                                                                years
+                                                                <%= t("label_years") %>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -95,7 +95,7 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <label for="">Select Co-Morbidities</label>
+                                                    <label for="Co-morbidities"><%= t("screening_co-morbidities") %></label>
                                                     <select class="form-control select2" style="width: 100%;" multiple="true" name="MedicalHistory.Morbidities">
                                                         <option value="Hypertension" <%= if (stringInSlice("Hypertension", screening.MedicalHistory.Morbidities)) { %> selected <% } %>>
                                                             Hypertension
@@ -116,20 +116,18 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="">Smoker?</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
+                                                    <label for="smoking"><%= t("label_smoker") %></label>
+                                                    <div class="form-group">
+                                                        <div class="form-check-inline">
+                                                            <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="MedicalHistory.Smoker" type="radio"
-                                                                        value="true" <%= if (screening.MedicalHistory.Smoker.Bool) { %> checked <% } %>>Yes</label>
+                                                                        value="true" <%= if (screening.MedicalHistory.Smoker.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
+                                                            <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="MedicalHistory.Smoker" type="radio"
-                                                                        value="false" <%= if (screening.MedicalHistory.Smoker.Valid && !screening.MedicalHistory.Smoker.Bool) { %> checked <% } %>>No</label>
+                                                                        value="false" <%= if (screening.MedicalHistory.Smoker.Valid && !screening.MedicalHistory.Smoker.Bool) { %> checked <% } %>><%= t("option_no") %></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -142,7 +140,7 @@
                                     <div class="tasks-header-w">
                                         <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
                                         <h5 class="tasks-header">
-                                            Medications
+                                            <%= t("screening_medication_history") %>
                                         </h5>
                                         <%= if (statusMap["Medications"]) { %>
                                             <span class="badge badge-success-inverted">
@@ -154,20 +152,18 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="">Taking Medications?</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
+                                                    <label for="Oral diabetes medication"><%= t("label_medications_oral") %></label>
+                                                    <div class="form-group">
+                                                        <div class="form-check-inline">
+                                                            <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="Medications.TakingMedications" type="radio"
-                                                                        value="true" <%= if (screening.Medications.TakingMedications.Bool) { %> checked <% } %>>Yes</label>
+                                                                        value="true" <%= if (screening.Medications.TakingMedications.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
+                                                            <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="Medications.TakingMedications" type="radio"
-                                                                        value="false" <%= if (screening.Medications.TakingMedications.Valid && !screening.Medications.TakingMedications.Bool) { %> checked <% } %>>No</label>
+                                                                        value="false" <%= if (screening.Medications.TakingMedications.Valid && !screening.Medications.TakingMedications.Bool) { %> checked <% } %>><%= t("option_no") %></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -175,18 +171,16 @@
                                             </div>
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
-                                                    <label for="">On Insulin?</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
+                                                    <label for="Insulin"><%= t("label_medications_insulin") %></label>
+                                                    <div class="form-group">
+                                                        <div class="form-check-inline">
+                                                            <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
-                                                                        name="Medications.OnInsulin" type="radio" value="true" <%= if (screening.Medications.OnInsulin.Bool) { %> checked <% } %>>Yes</label>
+                                                                        name="Medications.OnInsulin" type="radio" value="true" <%= if (screening.Medications.OnInsulin.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
+                                                            <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
-                                                                        name="Medications.OnInsulin" type="radio" value="false" <%= if (screening.Medications.OnInsulin.Valid && !screening.Medications.OnInsulin.Bool) { %> checked <% } %>>No</label>
+                                                                        name="Medications.OnInsulin" type="radio" value="false" <%= if (screening.Medications.OnInsulin.Valid && !screening.Medications.OnInsulin.Bool) { %> checked <% } %>><%= t("option_no") %></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -199,7 +193,7 @@
                                     <div class="tasks-header-w">
                                         <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
                                         <h5 class="tasks-header">
-                                            Measurements
+                                           <%= t("screening_measurements") %>
                                         </h5>
                                         <%= if (statusMap["Measurements"]) { %>
                                             <span class="badge badge-success-inverted">
@@ -211,7 +205,7 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="">Blood Pressure</label>
+                                                    <label for="Blood Pressure"><%= t("screening_measurements_bp") %></label>
                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                         <input class="form-control" placeholder="SBP" type="number"
                                                             name="Measurements.BloodPressure.SBP" min="80" max="250" value="<%= if (screening.Measurements.BloodPressure.SBP.Valid) { %><%= screening.Measurements.BloodPressure.SBP.Int %><% } %>" />
@@ -232,7 +226,7 @@
                                             </div>
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
-                                                    <label for="">Date of Last Assessment</label>
+                                                    <label for=""><%= t("label_date_of_assessment") %></label>
                                                     <%= if (screening.Measurements && !screening.Measurements.BloodPressure.AssessmentDate.GivenDate.IsZero()) { %>
                                                         <input class="form-control" placeholder="Select date" type="date"
                                                         name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= screening.Measurements.BloodPressure.AssessmentDate.GivenDate.Format("2006-01-02") %>">
@@ -255,7 +249,7 @@
                                     <div class="tasks-header-w">
                                         <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
                                         <h5 class="tasks-header">
-                                            Pathology
+                                            <%= t("screening_pathology") %>
                                         </h5>
                                         <%= if (statusMap["Pathology"]) { %>
                                             <span class="badge badge-success-inverted">
@@ -263,129 +257,132 @@
                                             </span>
                                         <% } %>
                                     </div>
-                                    <div class="tasks-list-w" <%= if (statusMap["Pathology"]) { %>style="display: none;"<% } %>>
-                                        <fieldset class="form-group" style="margin-top: 0.5rem;">
-                                            <legend><span>HbA1C</span></legend>
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="">HbA1C (in %)</label>
-                                                        <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
-                                                        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                            <input class="form-control" placeholder="" type="number"
-                                                                name="Pathology.HbA1C.HbA1C" step="0.1" min="3.0" max="30.0" value="<%= if (screening.Pathology.HbA1C.HbA1C.Valid) { %><%= screening.Pathology.HbA1C.HbA1C.Float64 %><% } %>" />
-                                                            <div class="input-group-append">
-                                                                <div class="input-group-text">
-                                                                    %
+                                    <div class="row">
+                                        <div class="tasks-list-w col-md-6" <%= if (statusMap["Pathology"]) { %>style="display: none;"<% } %>>
+                                            <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                                <legend><span><%= t("screening_measurements_blood_sugar") %></span></legend>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="Hba!c"><%= t("label_hba1c") %></label>
+                                                            <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
+                                                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                <input class="form-control" placeholder="" type="number"
+                                                                    name="Pathology.HbA1C.HbA1C" step="0.1" min="3.0" max="30.0" value="<%= if (screening.Pathology.HbA1C.HbA1C.Valid) { %><%= screening.Pathology.HbA1C.HbA1C.Float64 %><% } %>" />
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text">
+                                                                        %
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-sm-6 ml-auto">
-                                                    <div class="form-group">
-                                                        <label for="">Date of Last Assessment</label>
-                                                        <%= if (screening.Pathology.HbA1C && !screening.Pathology.HbA1C.AssessmentDate.GivenDate.IsZero()) { %>
-                                                            <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= screening.Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
-                                                        <% } else { %>
-                                                            <%= if (t("lang_calendar") == "thai") { %>
+                                                    <div class="col-sm-6 ml-auto">
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("label_date_of_assessment") %></label>
+                                                            <%= if (screening.Pathology.HbA1C && !screening.Pathology.HbA1C.AssessmentDate.GivenDate.IsZero()) { %>
                                                                 <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
+                                                                name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= screening.Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                             <% } else { %>
-                                                                <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.HbA1C.AssessmentDate.GivenDate" value="">
+                                                                <%= if (t("lang_calendar") == "thai") { %>
+                                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                                    name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
+                                                                <% } else { %>
+                                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                                    name="Pathology.HbA1C.AssessmentDate.GivenDate" value="">
+                                                                <% } %>
                                                             <% } %>
-                                                        <% } %>
+                                                        </div>
+                                                        <input type="hidden" name="Pathology.HbA1C.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
                                                     </div>
-                                                    <input type="hidden" name="Pathology.HbA1C.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset class="form-group" style="margin-top: 0.5rem;">
-                                            <legend><span>Lipids</span></legend>
-                                            <div class="row">
-                                                <div class="col-sm-9">
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label for="">Total Cholesterol</label>
-                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="text"
-                                                                        name="Pathology.Lipids.TotalCholesterol" value="<%= if (screening.Pathology.Lipids.TotalCholesterol.Valid) { %><%= screening.Pathology.Lipids.TotalCholesterol.Float64 %><% } %>" />
-                                                                    <div class="input-group-append">
-                                                                        <div class="input-group-text">
-                                                                            mmol/L
+                                            </fieldset>
+                                        </div>
+                                        <div class="tasks-list-w col-md-6">
+                                            <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                                <legend><span><%= t("screening_measurements_lipids") %></span></legend>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label for="Total cholesterol"><%= t("label_total_cholesterol") %></label>
+                                                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                        <input class="form-control" placeholder="" type="text"
+                                                                            name="Pathology.Lipids.TotalCholesterol" value="<%= if (screening.Pathology.Lipids.TotalCholesterol.Valid) { %><%= screening.Pathology.Lipids.TotalCholesterol.Float64 %><% } %>" />
+                                                                        <div class="input-group-append">
+                                                                            <div class="input-group-text">
+                                                                                mmol/L
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--<div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label for="">HDL Cholesterol</label>
+                                                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                        <input class="form-control" placeholder="" type="text"
+                                                                            name="Pathology.Lipids.HDL" value="<%= if (screening.Pathology.Lipids.HDL.Valid) { %><%= screening.Pathology.Lipids.HDL.Float64 %><% } %>" />
+                                                                        <div class="input-group-append">
+                                                                            <div class="input-group-text">
+                                                                                mmol/L
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label for="">LDL Cholesterol</label>
+                                                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                        <input class="form-control" placeholder="" type="text"
+                                                                            name="Pathology.Lipids.LDL" value="<%= if (screening.Pathology.Lipids.LDL.Valid) { %><%= screening.Pathology.Lipids.LDL.Float64 %><% } %>" disabled />
+                                                                        <div class="input-group-append">
+                                                                            <div class="input-group-text">
+                                                                                mmol/L
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label for="">Triglyceride</label>
+                                                                    <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                                                                        <input class="form-control" placeholder="" type="text"
+                                                                            name="Pathology.Lipids.TG" value="<%= if (screening.Pathology.Lipids.TG.Valid) { %><%= screening.Pathology.Lipids.TG.Float64 %><% } %>" />
+                                                                        <div class="input-group-append">
+                                                                            <div class="input-group-text">
+                                                                                mmol/L
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label for="">HDL Cholesterol</label>
-                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="text"
-                                                                        name="Pathology.Lipids.HDL" value="<%= if (screening.Pathology.Lipids.HDL.Valid) { %><%= screening.Pathology.Lipids.HDL.Float64 %><% } %>" />
-                                                                    <div class="input-group-append">
-                                                                        <div class="input-group-text">
-                                                                            mmol/L
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label for="">LDL Cholesterol</label>
-                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="text"
-                                                                        name="Pathology.Lipids.LDL" value="<%= if (screening.Pathology.Lipids.LDL.Valid) { %><%= screening.Pathology.Lipids.LDL.Float64 %><% } %>" disabled />
-                                                                    <div class="input-group-append">
-                                                                        <div class="input-group-text">
-                                                                            mmol/L
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label for="">Triglyceride</label>
-                                                                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                    <input class="form-control" placeholder="" type="text"
-                                                                        name="Pathology.Lipids.TG" value="<%= if (screening.Pathology.Lipids.TG.Valid) { %><%= screening.Pathology.Lipids.TG.Float64 %><% } %>" />
-                                                                    <div class="input-group-append">
-                                                                        <div class="input-group-text">
-                                                                            mmol/L
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" name="Pathology.Lipids.Unit" value="mmol/L">
-                                                <div class="col-sm-3 ml-auto">
-                                                    <div class="form-group">
-                                                        <label for="">Date of Last Assessment</label>
-                                                        <%= if (screening.Pathology.Lipids && !screening.Pathology.Lipids.AssessmentDate.GivenDate.IsZero()) { %>
-                                                            <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= screening.Pathology.Lipids.AssessmentDate.GivenDate.Format("2006-01-02") %>">
-                                                        <% } else { %>
-                                                            <%= if (t("lang_calendar") == "thai") { %>
+                                                    </div>-->
+                                                    <input type="hidden" name="Pathology.Lipids.Unit" value="mmol/L">
+                                                    <div class="col-sm-6 ml-auto">
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("label_date_of_assessment") %></label>
+                                                            <%= if (screening.Pathology.Lipids && !screening.Pathology.Lipids.AssessmentDate.GivenDate.IsZero()) { %>
                                                                 <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
+                                                                name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= screening.Pathology.Lipids.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                             <% } else { %>
-                                                                <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.Lipids.AssessmentDate.GivenDate" value="">
+                                                                <%= if (t("lang_calendar") == "thai") { %>
+                                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                                    name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
+                                                                <% } else { %>
+                                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                                    name="Pathology.Lipids.AssessmentDate.GivenDate" value="">
+                                                                <% } %>
                                                             <% } %>
-                                                        <% } %>
+                                                        </div>
+                                                        <input type="hidden" name="Pathology.Lipids.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
                                                     </div>
-                                                    <input type="hidden" name="Pathology.Lipids.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
                                                 </div>
-                                            </div>
-                                        </fieldset>
+                                            </fieldset>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tasks-section">
@@ -403,148 +400,179 @@
                                     <div class="tasks-list-w" <%= if (statusMap["Eye Assessment"]) { %>style="display: none;"<% } %>>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <h6><%= t("field_right_eye") %></h6>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_visual_acuity") %></label>
-                                                    <select class="form-control" name="Eyes.RightEye.VisualAcuity">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="NLP" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
-                                                        <option value="LP" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
-                                                        <option value="HM" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
-                                                        <option value="CF" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
-                                                        <option value="20/200" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/200") { %> selected <% } %>>20/200</option>
-                                                        <option value="20/100" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/100") { %> selected <% } %>>20/100</option>
-                                                        <option value="20/70" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/70") { %> selected <% } %>>20/70</option>
-                                                        <option value="20/50" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/50") { %> selected <% } %>>20/50</option>
-                                                        <option value="20/40" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40</option>
-                                                        <option value="20/20" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_dr_grading") %></label>
-                                                    <select class="form-control" name="Eyes.RightEye.DRGrading">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="Ungradeable" <%= if (screening.Eyes.RightEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
-                                                            <%= t("option_ungradeable") %>
-                                                        </option>
-                                                        <option value="Normal" <%= if (screening.Eyes.RightEye.DRGrading.String == "Normal") { %> selected <% } %>>
-                                                            <%= t("option_normal") %>
-                                                        </option>
-                                                        <option value="Mild DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
-                                                            <%= t("option_mild_npdr") %>
-                                                        </option>
-                                                        <option value="Moderate DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
-                                                            <%= t("option_mod_npdr") %>
-                                                        </option>
-                                                        <option value="Severe DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
-                                                            <%= t("option_severe_npdr") %>
-                                                        </option>
-                                                        <option value="Proliferative DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
-                                                            <%= t("option_proliferative_dr") %>
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_dme_assessment") %></label>
-                                                    <select class="form-control" name="Eyes.RightEye.DMEAssessment">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="Present" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Present") { %> selected <% } %>>
-                                                            <%= t("option_dme_present") %>
-                                                        </option>
-                                                        <option value="Not Present" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Not Present") { %> selected <% } %>>
-                                                            <%= t("option_dme_notpresent") %>
-                                                        </option>
-                                                    </select>
+                                                <div class="element-wrapper">
+                                                    <div class="element-box">
+                                                        <h6><%= t("field_right_eye") %></h6>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_visual_acuity") %></label>
+                                                            <select class="form-control" name="Eyes.RightEye.VisualAcuity">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="NLP" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
+                                                                <option value="LP" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
+                                                                <option value="HM" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
+                                                                <option value="CF" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
+                                                                <option value="20/200" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/200") { %> selected <% } %>>20/200 (6/60)</option>
+                                                                <option value="20/100" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/100") { %> selected <% } %>>20/100 (6/30)</option>
+                                                                <option value="20/70" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/70") { %> selected <% } %>>20/70 (6/21)</option>
+                                                                <option value="20/50" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/50") { %> selected <% } %>>20/50 (6/15)</option>
+                                                                <option value="20/40" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
+                                                                <option value="20/30" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
+                                                                <option value="20/20" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_dr_grading") %></label>
+                                                            <select class="form-control" name="Eyes.RightEye.DRGrading">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="Ungradeable" <%= if (screening.Eyes.RightEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
+                                                                    <%= t("option_ungradeable") %>
+                                                                </option>
+                                                                <option value="Normal" <%= if (screening.Eyes.RightEye.DRGrading.String == "Normal") { %> selected <% } %>>
+                                                                    <%= t("option_normal") %>
+                                                                </option>
+                                                                <option value="Mild DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
+                                                                    <%= t("option_mild_npdr") %>
+                                                                </option>
+                                                                <option value="Moderate DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
+                                                                    <%= t("option_mod_npdr") %>
+                                                                </option>
+                                                                <option value="Severe DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
+                                                                    <%= t("option_severe_npdr") %>
+                                                                </option>
+                                                                <option value="Proliferative DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
+                                                                    <%= t("option_proliferative_dr") %>
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_dme_assessment") %></label>
+                                                            <div class="form-group">
+                                                                <div class="form-check-inline">
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                                                value="Ungradeable" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Ungradeable") { %> checked <% } %>><%= t("option_ungradeable") %></label>
+                                                                    </div>
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                                                value="Not Present" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Not Present") { %> checked <% } %>><%= t("option_not_present") %></label>
+                                                                    </div>
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                                                value="Present" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Present") { %> checked <% } %>><%= t("option_present") %></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 ml-auto">
-                                                <h6><%= t("field_left_eye") %></h6>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_visual_acuity") %></label>
-                                                    <select class="form-control" name="Eyes.LeftEye.VisualAcuity">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="NLP" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
-                                                        <option value="LP" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
-                                                        <option value="HM" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
-                                                        <option value="CF" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
-                                                        <option value="20/200" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/200") { %> selected <% } %>>20/200</option>
-                                                        <option value="20/100" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/100") { %> selected <% } %>>20/100</option>
-                                                        <option value="20/70" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/70") { %> selected <% } %>>20/70</option>
-                                                        <option value="20/50" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/50") { %> selected <% } %>>20/50</option>
-                                                        <option value="20/40" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40</option>
-                                                        <option value="20/20" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20</option>
-                                                    </select>
+                                                <div class="element-wrapper">
+                                                    <div class="element-box">
+                                                        <h6><%= t("field_left_eye") %></h6>
+                                                            <div class="form-group">
+                                                                <label for=""><%= t("field_visual_acuity") %></label>
+                                                                <select class="form-control" name="Eyes.LeftEye.VisualAcuity">
+                                                                    <option value="">
+                                                                        <%= t("form_select_any") %>
+                                                                    </option>
+                                                                    <option value="NLP" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
+                                                                    <option value="LP" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
+                                                                    <option value="HM" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
+                                                                    <option value="CF" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
+                                                                    <option value="20/200" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/200") { %> selected <% } %>>20/200 (6/60)</option>
+                                                                    <option value="20/100" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/100") { %> selected <% } %>>20/100 (6/30)</option>
+                                                                    <option value="20/70" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/70") { %> selected <% } %>>20/70 (6/21)</option>
+                                                                    <option value="20/50" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/50") { %> selected <% } %>>20/50 (6/15)</option>
+                                                                    <option value="20/40" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
+                                                                    <option value="20/30" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
+                                                                    <option value="20/20" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for=""><%= t("field_dr_grading") %></label>
+                                                                <select class="form-control" name="Eyes.LeftEye.DRGrading">
+                                                                    <option value="">
+                                                                        <%= t("form_select_any") %>
+                                                                    </option>
+                                                                    <option value="Ungradeable" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
+                                                                        <%= t("option_ungradeable") %>
+                                                                    </option>
+                                                                    <option value="Normal" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Normal") { %> selected <% } %>>
+                                                                        <%= t("option_normal") %>
+                                                                    </option>
+                                                                    <option value="Mild DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
+                                                                        <%= t("option_mild_npdr") %>
+                                                                    </option>
+                                                                    <option value="Moderate DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
+                                                                        <%= t("option_mod_npdr") %>
+                                                                    </option>
+                                                                    <option value="Severe DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
+                                                                        <%= t("option_severe_npdr") %>
+                                                                    </option>
+                                                                    <option value="Proliferative DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
+                                                                        <%= t("option_proliferative_dr") %>
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for=""><%= t("field_dme_assessment") %></label>
+                                                                <div class="form-group">
+                                                                    <div class="form-check-inline">
+                                                                        <div class="radio-button">
+                                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                                    name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                                                    value="Ungradeable" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Ungradeable") { %> checked <% } %>><%= t("option_ungradeable") %></label>
+                                                                        </div>
+                                                                        <div class="radio-button">
+                                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                                    name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                                                    value="Not Present" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %> checked <% } %>><%= t("option_not_present") %></label>
+                                                                        </div>
+                                                                        <div class="radio-button">
+                                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                                    name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                                                    value="Present" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Present") { %> checked <% } %>><%= t("option_present") %></label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> <!--/element-wrapper-->
+                                            </div> <!--/col-->
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                                    <legend><span><%= t("dr_referral_label") %></span></legend>
+                                                    </fieldset>
+                                                    <div class="form-check-inline">
+                                                        <div class="radio-button">
+                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                    name="referral" type="radio"
+                                                                    value="yes" <%= if (screening.Referral.Referred) { %> checked <% } %>><%= t("option_yes") %></label>
+                                                        </div>
+                                                        <div class="radio-button">
+                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                    name="referral" type="radio"
+                                                                    value="false" <%= if (!screening.Referral.Referred) { %> checked <% } %>><%= t("option_no") %></label>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_dr_grading") %></label>
-                                                    <select class="form-control" name="Eyes.LeftEye.DRGrading">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="Ungradeable" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
-                                                            <%= t("option_ungradeable") %>
-                                                        </option>
-                                                        <option value="Normal" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Normal") { %> selected <% } %>>
-                                                            <%= t("option_normal") %>
-                                                        </option>
-                                                        <option value="Mild DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
-                                                            <%= t("option_mild_npdr") %>
-                                                        </option>
-                                                        <option value="Moderate DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
-                                                            <%= t("option_mod_npdr") %>
-                                                        </option>
-                                                        <option value="Severe DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
-                                                            <%= t("option_severe_npdr") %>
-                                                        </option>
-                                                        <option value="Proliferative DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
-                                                            <%= t("option_proliferative_dr") %>
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_dme_assessment") %></label>
-                                                    <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="Present" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Present") { %> selected <% } %>>
-                                                            <%= t("option_dme_present") %>
-                                                        </option>
-                                                        <option value="Not Present" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %> selected <% } %>>
-                                                            <%= t("option_dme_notpresent") %>
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label for="">Referred</label>
-                                                <select class="form-control" name="referral">
-                                                    <option value="yes" <%= if (screening.Referral.Referred) { %> selected <% } %>>
-                                                        Yes
-                                                    </option>
-                                                    <option value="no" <%= if (!screening.Referral.Referred) { %> selected <% } %>>
-                                                        No
-                                                    </option>
-                                                </select>
-                                            </div>
+                                            </div> <!-- /referral row -->
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="form-buttons-w">
-                        <button class="btn btn-primary" type="submit"> Submit</button>
+                        <button class="btn btn-primary btn-lg" type="submit"> <%= t("button_submit") %></button>
+                        <button class="btn btn-grey btn-md" type="button"> <%= t("button_cancel") %></button>
                     </div>
                 </form>
             </div>

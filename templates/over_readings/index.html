@@ -10,7 +10,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <%= if (pagination.TotalEntriesSize < 1) { %>
-                            <a class="btn btn-primary btn" href="<%= participantOverreadingsCreatePath({pid: participant.ID}) %>" role="button">New Over Reading</a>
+                            Nothing to over read</a>
                             <% } %>
                         </div>
                         <div class="col-sm-6">
@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-lg table-v2 table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
+                    <table class="table table-lg table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
                         <thead>
                             <tr>
                                 <th class="text-center" rowspan="2">

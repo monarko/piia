@@ -21,11 +21,11 @@
             <form action="<%= participantsCreatePath() %>" method="POST">
                 <%= csrf() %>
                 <div class="element-box">
-                    <h5 class="form-header">
-                        <%= t("form_enroll_header") %>
-                    </h5>
                     <div class="form-desc">
-                        <%= t("form_enroll_desc") %>
+                        <h6 class="form-header">
+                        <%= t("form_enroll_header") %>
+                        </h6>
+                        <p class="lead"><%= t("form_enroll_desc") %></p>
                     </div>
                     <fieldset class="form-group">
                         <legend><span><%= t("participantID_field") %></span></legend>
@@ -45,10 +45,10 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for=""> Year of Birth</label>
+                                    <label for=""> <%= t("label_year_birth") %></label>
                                     <div class="date-input">
                                         <%= if (!participant.DOB.GivenDate.IsZero()) { %>
-                                            <input type="text" class="form-control birth_year_field" name="BirthYear" value="<%= participant.DOB.GivenDate.Format("2006") %>" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">                                            
+                                            <input type="text" class="form-control birth_year_field" name="BirthYear" value="<%= participant.DOB.GivenDate.Format("2006") %>" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
                                             <!-- <input class="single-daterange form-control" placeholder="Date of birth" type="date"
                                             name="DOB.GivenDate" value="<%= participant.DOB.GivenDate.Format("2006-01-02") %>"> -->
                                         <% } else { %>
@@ -69,16 +69,16 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for=""> Gender</label>
+                                    <label for="gender"> <%= t("label_gender") %></label>
                                     <select class="form-control" name="Gender">
                                         <option value="M" <%= if (participant.Gender == "M") { %> selected <% } %>>
-                                            Male
+                                            <%= t("gender_option_male") %>
                                         </option>
                                         <option value="F" <%= if (participant.Gender == "F") { %> selected <% } %>>
-                                            Female
+                                            <%= t("gender_option_female") %>
                                         </option>
                                         <option value="O" <%= if (participant.Gender == "O") { %> selected <% } %>>
-                                            Other
+                                            <%= t("gender_option_other") %>
                                         </option>
                                     </select>
                                 </div>
@@ -86,26 +86,20 @@
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
-                        <legend><span>Study Eligibility & Consent</span></legend>
+                        <legend><span><%= t("eligibility_header") %></span></legend>
                         <div class="form-group">
                             <div class="eligibility-criteria">
-                                <p>Ensure all eligibility criteria are met and that:</p>
-                                <ol>
-                                    <li>Patient does not have any pre-existing eye disease</li>
-                                    <li>Patient is able to give free and informed consent</li>
-                                </ol>
+                                <p class="lead"><%= t("eligibility_text") %></p>
                         </div>
                         <hr/>
                         <div class="form-check">
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="Consented">By checking this box, you confirm
-                                that (i) the patient is eligible for the study and (ii) has provided informed consent to participate</label>
+                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="Consented"><%= t("eligibiligy_criteria_checkbox") %></label>
                         </div>
                     </fieldset>
+                    <div class="form-buttons-w">
+                    <button name="submitBtn" value="enrollGoBack" class="btn btn-primary btn-md" type="submit"><%= t("button_enroll") %></button>
+                    <button name="submitBtn" value="enrollGoToScreening" class="btn btn-primary btn-md" type="submit"><%= t("button_enroll_continue") %></button>
                 </div>
-                <div class="form-buttons-w">
-                    <button name="submitBtn" value="enrollGoBack" class="btn btn-light btn-lg" type="submit">Enroll and Complete</button>
-                    <!--<button name="submitBtn" value="enrollAddAnother" class="btn btn-secondary btn-lg" type="submit">Enroll and Add Another</button>-->
-                    <button name="submitBtn" value="enrollGoToScreening" class="btn btn-grey btn-lg float-right" type="submit">Enroll and continue to Data Entry</button>
                 </div>
             </form>
         </div>

@@ -1,25 +1,23 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="element-wrapper">
-            <%= if (current_user.Admin) { %>
-            <!--<div class="element-actions">
-                <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button"><%= t("button_download_csv") %></a>
-            </div>-->
-            <% } %>
             <h6 class="element-header">
                 <%= t("page_participants_title") %>
             </h6>
             <div class="element-box">
+                <%= if (current_user.Admin || current_user.Permission.Screening) { %>
+                <div class="element-actions">
+                    <a class="btn btn-primary btn-md" href="<%= participantsCreatePath() %>" role="button"><%= t("button_enroll") %></a>
+                    <% } %>
+                    <!--<%= if (current_user.Admin) { %>
+                        <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button"><%= t("button_download_csv") %></a>-->
+                </div>
+                <% } %>
                 <!-- controls above table -->
                 <div class="controls-above-table">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <%= if (current_user.Admin || current_user.Permission.Screening) { %>
-                            <a class="btn btn-primary btn" href="<%= participantsCreatePath() %>" role="button"><%= t("button_enroll") %></a>
-                            <% } %>
-                        </div>
-                        <div class="col-sm-6">
-                            <form class="form-inline justify-content-sm-end">
+                        <div class="col-sm-12">
+                            <form class="form-inline">
                                 <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
                                 <%= if (current_user.Admin) { %>
                                 <select class="form-control form-control-sm rounded bright" name="status">
@@ -85,8 +83,8 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-v2 table-lg  table-striped" style="margin-bottom: 1.2rem; font-size: 0.8rem;">
-                        <thead>
+                    <table class="table table-lg table-striped" style="margin-bottom: 1.2rem; font-size: 0.8rem;">
+                        <thead style="text-align: center;">
                             <tr>
                                 <!--<th class="text-center">
                                     <input class="form-control" type="checkbox">
@@ -98,10 +96,10 @@
                                     <%= t("th_demographics") %>
                                 </th>
                                 <th>
-                                    <%= t("th_enrolled_date") %>
+                                    <%= t("th_consented") %>
                                 </th>
                                 <th>
-                                    <%= t("th_consented") %>
+                                    <%= t("th_enrolled_date") %>
                                 </th>
                                 <th>
                                     <%= t("th_workflow_status") %>
@@ -129,12 +127,14 @@
                                     <% } %>
                                 </td>
                                 <td class="text-center">
-                                    <%= languageDate(p.CreatedAt, "02-Jan-2006", t("lang_calendar")) %>
-                                </td>
-                                <td class="text-center">
                                     <%= if (p.Consented) { %>
-                                    <span class="badge badge-primary">Active</span>
+                                    <span><i class="fa fa-check"></i></span>
+                                    <% } else { %>
+                                    <span><i class="fa fa-times"></i></span>
                                     <% } %>
+                                </td>
+                                 <td class="text-center">
+                                    <%= languageDate(p.CreatedAt, "02-Jan-2006", t("lang_calendar")) %>
                                 </td>
                                 <td class="text-center">
                                     <%= if (len(p.Status) == 1 && p.Status == "1") { %>

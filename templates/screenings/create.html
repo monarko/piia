@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Add New Screening
+                <%= t("screening_header") %>
             </h6>
             <div class="element-box">
                 <div class="row" style="margin-bottom: 20px;">
@@ -22,11 +22,11 @@
                 <form action="<%= participantScreeningsCreatePath({pid: participant.ID}) %>" method="POST">
                     <%= csrf() %>
                     <div class="element-actions">
-                        <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button">
+                        <a class="btn btn-secondary btn-lg justify-content-sm-end" href="#" role="button">
                             <%= participant.ParticipantID %></a>
                     </div>
                     <div class="form-desc">
-                        <h6>Record results</h6>
+                        <h6><%= t("screening_form_header") %></h6>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -45,14 +45,14 @@
                                             <i class="os-icon os-icon-ui-23"></i>
                                         </a>
                                         <h5 class="tasks-header">
-                                            Medical History
+                                            <%= t("screening_medical_history") %>
                                         </h5>
                                     </div>
                                     <div class="tasks-list-w">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="">Diabetes Type</label>
+                                                    <label for="Diabetes Type"><%= t("screening_diabetes_type") %></label>
                                                     <select class="form-control" name="Diabetes.DiabetesType">
                                                         <option value="">
                                                             <%= t("form_select_any") %>
@@ -74,14 +74,14 @@
                                             </div>
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
-                                                    <label for="">Duration</label>
+                                                    <label for="Duration of diabetes"><%= t("label_duration") %></label>
                                                     <input type="hidden" name="Diabetes.DurationType" value="year">
                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                         <input class="form-control" placeholder="Duration in Years" min="0"
                                                             type="number" name="Diabetes.Duration" />
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
-                                                                years
+                                                                <%= t("label_years") %>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -91,7 +91,7 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <label for="">Select Co-Morbidities</label>
+                                                    <label for="Co-morbidities"><%= t("screening_co-morbidities") %></label>
                                                     <select class="form-control select2" style="width: 100%;" multiple="true" name="MedicalHistory.Morbidities">
                                                         <option value="Hypertension">
                                                             Hypertension
@@ -108,24 +108,19 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="">Smoker?</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
+                                            <div class="col-sm-12 ml-auto">
+                                                    <label for="smoking"><%= t("label_smoker") %></label>
+                                                    <div class="form-group">
+                                                        <div class="form-check-inline">
+                                                            <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="MedicalHistory.Smoker" type="radio"
-                                                                        value="true">Yes</label>
+                                                                        value="true"><%= t("option_yes") %></label>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
+                                                            <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="MedicalHistory.Smoker" type="radio"
-                                                                        value="false">No</label>
+                                                                        value="false"><%= t("option_no") %></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -133,52 +128,45 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 <div class="tasks-section">
                                     <div class="tasks-header-w">
                                         <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
                                         <h5 class="tasks-header">
-                                            Diabetes Medications
+                                            <%= t("screening_medication_history") %>
                                         </h5>
                                     </div>
                                     <div class="tasks-list-w">
                                         <div class="row">
                                             <div class="col-sm-6">
+                                                <label for="Oral diabetes medication"><%= t("label_medications_oral") %></label>
                                                 <div class="form-group">
-                                                    <label for="">Taking Oral Medications?</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
-                                                                <label class="form-check-label"><input class="form-check-input"
-                                                                        name="Medications.TakingMedications" type="radio"
-                                                                        value="true">Yes</label>
-                                                            </div>
+                                                    <div class="form-check-inline">
+                                                        <div class="radio-button">
+                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                    name="Medications.TakingMedications" type="radio"
+                                                                    value="true"><%= t("option_yes") %></label>
                                                         </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
-                                                                <label class="form-check-label"><input class="form-check-input"
-                                                                        name="Medications.TakingMedications" type="radio"
-                                                                        value="false">No</label>
-                                                            </div>
+                                                        <div class="radio-button">
+                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                    name="Medications.TakingMedications" type="radio"
+                                                                    value="false"><%= t("option_no") %></label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 ml-auto">
+                                                <label for="Insulin"><%= t("label_medications_insulin") %></label>
                                                 <div class="form-group">
-                                                    <label for="">On Insulin?</label>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
-                                                                <label class="form-check-label"><input class="form-check-input"
-                                                                        name="Medications.OnInsulin" type="radio" value="true">Yes</label>
-                                                            </div>
+                                                    <div class="form-check-inline">
+                                                        <div class="radio-button">
+                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                    name="Medications.OnInsulin" type="radio"
+                                                                    value="true"><%= t("option_yes") %></label>
                                                         </div>
-                                                        <div class="col-sm-3">
-                                                            <div class="form-check">
-                                                                <label class="form-check-label"><input class="form-check-input"
-                                                                        name="Medications.OnInsulin" type="radio" value="false">No</label>
-                                                            </div>
+                                                        <div class="radio-button">
+                                                            <label class="form-check-label"><input class="form-check-input"
+                                                                    name="Medications.OnInsulin" type="radio"
+                                                                    value="false"><%= t("option_no") %></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -190,14 +178,14 @@
                                     <div class="tasks-header-w">
                                         <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
                                         <h5 class="tasks-header">
-                                            Measurements
+                                            <%= t("screening_measurements") %>
                                         </h5>
                                     </div>
                                     <div class="tasks-list-w">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="">Blood Pressure</label>
+                                                    <label for="Blood Pressure"><%= t("screening_measurements_bp") %></label>
                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                         <input class="form-control" placeholder="SBP" type="number"
                                                             name="Measurements.BloodPressure.SBP" min="80" max="250" />
@@ -218,7 +206,7 @@
                                             </div>
                                             <div class="col-sm-6 ml-auto">
                                                 <div class="form-group">
-                                                    <label for="">Date of Last Assessment</label>
+                                                    <label for=""><%= t("label_date_of_assessment") %></label>
                                                     <%= if (Measurements && !Measurements.BloodPressure.AssessmentDate.GivenDate.IsZero()) { %>
                                                         <input class="form-control" placeholder="Select date" type="date"
                                                         name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= Measurements.BloodPressure.AssessmentDate.GivenDate.Format("2006-01-02") %>">
@@ -241,17 +229,17 @@
                                     <div class="tasks-header-w">
                                         <a class="tasks-header-toggler" href="#"><i class="os-icon os-icon-ui-23"></i></a>
                                         <h5 class="tasks-header">
-                                            Pathology
+                                            <%= t("screening_pathology") %>
                                         </h5>
                                     </div>
                                     <div class="row">
                                         <div class="tasks-list-w col-md-6">
                                             <fieldset class="form-group" style="margin-top: 0.5rem;">
-                                                <legend><span>HbA1C</span></legend>
+                                                <legend><span><%= t("screening_measurements_blood_sugar") %></span></legend>
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label for="">HbA1C (in %)</label>
+                                                            <label for="hba1c"><%= t("label_hba1c") %></label>
                                                             <input type="hidden" name="Pathology.HbA1C.Unit" value="%">
                                                             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                                 <input class="form-control" placeholder="" type="number"
@@ -266,7 +254,7 @@
                                                     </div>
                                                     <div class="col-sm-6 ml-auto">
                                                         <div class="form-group">
-                                                            <label for="">Date of Last Assessment</label>
+                                                            <label for=""><%= t("label_date_of_assessment") %></label>
                                                             <%= if (Pathology.HbA1C && !Pathology.HbA1C.AssessmentDate.GivenDate.IsZero()) { %>
                                                                 <input class="form-control" placeholder="Select date" type="date"
                                                                 name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
@@ -287,11 +275,11 @@
                                         </div>
                                         <div class="tasks-list-w col-md-6">
                                             <fieldset class="form-group" style="margin-top: 0.5rem;">
-                                                <legend><span>Lipids</span></legend>
+                                                <legend><span><%= t("screening_measurements_lipids") %></span></legend>
                                                 <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="form-group">
-                                                                <label for="">Total Cholesterol</label>
+                                                                <label for="total cholesterol"><%= t("label_total_cholesterol") %></label>
                                                                 <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                                                                     <input class="form-control" placeholder="" type="text"
                                                                         name="Pathology.Lipids.TotalCholesterol" />
@@ -350,7 +338,7 @@
                                                 <input type="hidden" name="Pathology.Lipids.Unit" value="mmol/L">
                                                 <div class="col-sm-6 ml-auto">
                                                     <div class="form-group">
-                                                        <label for="">Date of Last Assessment</label>
+                                                        <label for=""><%= t("label_date_of_assessment") %></label>
                                                         <%= if (Pathology.Lipids && !Pathology.Lipids.AssessmentDate.GivenDate.IsZero()) { %>
                                                             <input class="form-control" placeholder="Select date" type="date"
                                                             name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= Pathology.Lipids.AssessmentDate.GivenDate.Format("2006-01-02") %>">
@@ -380,148 +368,219 @@
                                     <div class="tasks-list-w">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <h6><%= t("field_right_eye") %></h6>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_visual_acuity") %></label>
-                                                    <select class="form-control" name="Eyes.RightEye.VisualAcuity">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="NLP">NLP</option>
-                                                        <option value="LP">LP</option>
-                                                        <option value="HM">HM</option>
-                                                        <option value="CF">CF</option>
-                                                        <option value="20/200">20/200</option>
-                                                        <option value="20/100">20/100</option>
-                                                        <option value="20/70">20/70</option>
-                                                        <option value="20/50">20/50</option>
-                                                        <option value="20/40">20/40</option>
-                                                        <option value="20/20">20/20</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_dr_grading") %></label>
-                                                    <select class="form-control" name="Eyes.RightEye.DRGrading">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="Ungradeable">
-                                                            <%= t("option_ungradeable") %>
-                                                        </option>
-                                                        <option value="Normal">
-                                                            <%= t("option_normal") %>
-                                                        </option>
-                                                        <option value="Mild DR">
-                                                            <%= t("option_mild_npdr") %>
-                                                        </option>
-                                                        <option value="Moderate DR">
-                                                            <%= t("option_mod_npdr") %>
-                                                        </option>
-                                                        <option value="Severe DR">
-                                                            <%= t("option_severe_npdr") %>
-                                                        </option>
-                                                        <option value="Proliferative DR">
-                                                            <%= t("option_proliferative_dr") %>
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_dme_assessment") %></label>
-                                                    <select class="form-control" name="Eyes.RightEye.DMEAssessment">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="Present">
-                                                            <%= t("option_dme_present") %>
-                                                        </option>
-                                                        <option value="Not Present">
-                                                            <%= t("option_dme_notpresent") %>
-                                                        </option>
-                                                    </select>
+                                                <div class="element-wrapper">
+                                                    <div class="element-box">
+                                                        <h6><%= t("field_right_eye") %></h6>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_visual_acuity") %></label>
+                                                            <select class="form-control" name="Eyes.RightEye.VisualAcuity">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="NLP">NLP</option>
+                                                                <option value="LP">LP</option>
+                                                                <option value="HM">HM</option>
+                                                                <option value="CF">CF</option>
+                                                                <option value="20/200">20/200 (6/60)</option>
+                                                                <option value="20/100">20/100 (6/30)</option>
+                                                                <option value="20/70">20/70 (6/21)</option>
+                                                                <option value="20/50">20/50 (6/15)</option>
+                                                                <option value="20/40">20/40 (6/12)</option>
+                                                                <option value="20/40">20/30 (6/9)</option>
+                                                                <option value="20/20">20/20 (6/6)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_previous_visual_acuity") %></label>
+                                                            <select class="form-control" name="Eyes.RightEye.LastVisualAcuity">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="NLP">NLP</option>
+                                                                <option value="LP">LP</option>
+                                                                <option value="HM">HM</option>
+                                                                <option value="CF">CF</option>
+                                                                <option value="20/200">20/200 (6/60)</option>
+                                                                <option value="20/100">20/100 (6/30)</option>
+                                                                <option value="20/70">20/70 (6/21)</option>
+                                                                <option value="20/50">20/50 (6/15)</option>
+                                                                <option value="20/40">20/40 (6/12)</option>
+                                                                <option value="20/40">20/30 (6/9)</option>
+                                                                <option value="20/20">20/20 (6/6)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_dr_grading") %></label>
+                                                            <select class="form-control" name="Eyes.RightEye.DRGrading">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="Ungradeable">
+                                                                    <%= t("option_ungradeable") %>
+                                                                </option>
+                                                                <option value="Normal">
+                                                                    <%= t("option_normal") %>
+                                                                </option>
+                                                                <option value="Mild DR">
+                                                                    <%= t("option_mild_npdr") %>
+                                                                </option>
+                                                                <option value="Moderate DR">
+                                                                    <%= t("option_mod_npdr") %>
+                                                                </option>
+                                                                <option value="Severe DR">
+                                                                    <%= t("option_severe_npdr") %>
+                                                                </option>
+                                                                <option value="Proliferative DR">
+                                                                    <%= t("option_proliferative_dr") %>
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_dme_assessment") %></label>
+                                                            <div class="form-group">
+                                                                <div class="form-check-inline">
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                                                value="Ungradeable"><%= t("option_ungradeable") %></label>
+                                                                    </div>
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                                                value="Not Present"><%= t("option_not_present") %></label>
+                                                                    </div>
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                                                value="Present"><%= t("option_present") %></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 ml-auto">
-                                                <h6><%= t("field_left_eye") %></h6>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_visual_acuity") %></label>
-                                                    <select class="form-control" name="Eyes.LeftEye.VisualAcuity">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="NLP">NLP</option>
-                                                        <option value="LP">LP</option>
-                                                        <option value="HM">HM</option>
-                                                        <option value="CF">CF</option>
-                                                        <option value="20/200">20/200</option>
-                                                        <option value="20/100">20/100</option>
-                                                        <option value="20/70">20/70</option>
-                                                        <option value="20/50">20/50</option>
-                                                        <option value="20/40">20/40</option>
-                                                        <option value="20/20">20/20</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_dr_grading") %></label>
-                                                    <select class="form-control" name="Eyes.LeftEye.DRGrading">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="Ungradeable">
-                                                            <%= t("option_ungradeable") %>
-                                                        </option>
-                                                        <option value="Normal">
-                                                            <%= t("option_normal") %>
-                                                        </option>
-                                                        <option value="Mild DR">
-                                                            <%= t("option_mild_npdr") %>
-                                                        </option>
-                                                        <option value="Moderate DR">
-                                                            <%= t("option_mod_npdr") %>
-                                                        </option>
-                                                        <option value="Severe DR">
-                                                            <%= t("option_severe_npdr") %>
-                                                        </option>
-                                                        <option value="Proliferative DR">
-                                                            <%= t("option_proliferative_dr") %>
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for=""><%= t("field_dme_assessment") %></label>
-                                                    <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
-                                                        <option value="">
-                                                            <%= t("form_select_any") %>
-                                                        </option>
-                                                        <option value="Present">
-                                                            <%= t("option_dme_present") %>
-                                                        </option>
-                                                        <option value="Not Present">
-                                                            <%= t("option_dme_notpresent") %>
-                                                        </option>
-                                                    </select>
+                                                <div class="element-wrapper">
+                                                    <div class="element-box">
+                                                        <h6><%= t("field_left_eye") %></h6>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_visual_acuity") %></label>
+                                                            <select class="form-control" name="Eyes.LeftEye.VisualAcuity">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="NLP">NLP</option>
+                                                                <option value="LP">LP</option>
+                                                                <option value="HM">HM</option>
+                                                                <option value="CF">CF</option>
+                                                                <option value="20/200">20/200 (6/60)</option>
+                                                                <option value="20/100">20/100 (6/30)</option>
+                                                                <option value="20/70">20/70 (6/21)</option>
+                                                                <option value="20/50">20/50 (6/15)</option>
+                                                                <option value="20/40">20/40 (6/12)</option>
+                                                                <option value="20/40">20/30 (6/9)</option>
+                                                                <option value="20/20">20/20 (6/6)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_previous_visual_acuity") %></label>
+                                                            <select class="form-control" name="Eyes.LeftEye.LastVisualAcuity">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="NLP">NLP</option>
+                                                                <option value="LP">LP</option>
+                                                                <option value="HM">HM</option>
+                                                                <option value="CF">CF</option>
+                                                                <option value="20/200">20/200 (6/60)</option>
+                                                                <option value="20/100">20/100 (6/30)</option>
+                                                                <option value="20/70">20/70 (6/21)</option>
+                                                                <option value="20/50">20/50 (6/15)</option>
+                                                                <option value="20/40">20/40 (6/12)</option>
+                                                                <option value="20/40">20/30 (6/9)</option>
+                                                                <option value="20/20">20/20 (6/6)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_dr_grading") %></label>
+                                                            <select class="form-control" name="Eyes.LeftEye.DRGrading">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="Ungradeable">
+                                                                    <%= t("option_ungradeable") %>
+                                                                </option>
+                                                                <option value="Normal">
+                                                                    <%= t("option_normal") %>
+                                                                </option>
+                                                                <option value="Mild DR">
+                                                                    <%= t("option_mild_npdr") %>
+                                                                </option>
+                                                                <option value="Moderate DR">
+                                                                    <%= t("option_mod_npdr") %>
+                                                                </option>
+                                                                <option value="Severe DR">
+                                                                    <%= t("option_severe_npdr") %>
+                                                                </option>
+                                                                <option value="Proliferative DR">
+                                                                    <%= t("option_proliferative_dr") %>
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_dme_assessment") %></label>
+                                                            <div class="form-group">
+                                                                <div class="form-check-inline">
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                                                value="Ungradeable" <%= if (Eyes.LeftEye.DMEAssessment.String == "Ungradeable") { %> selected <% } %>><%= t("option_ungradeable") %></label>
+                                                                    </div>
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                                                value="Not Present" <%= if (Eyes.LeftEye.DMEAssessment.String == "Not Present") { %> selected <% } %>><%= t("option_not_present") %></label>
+                                                                    </div>
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                                                value="Present" <%= if (Eyes.LeftEye.DMEAssessment.String == "Present") { %> selected <% } %>><%= t("option_present") %></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label for="">Referred</label>
-                                                <select class="form-control" name="referral">
-                                                    <option value="yes">
-                                                        Yes
-                                                    </option>
-                                                    <option value="no" selected>
-                                                        No
-                                                    </option>
-                                                </select>
+                                                <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                                <legend><span><%= t("dr_referral_label") %></span></legend>
+                                                </fieldset>
+                                                <div class="form-check-inline">
+                                                    <div class="radio-button">
+                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                name="referral" type="radio"
+                                                                value="yes"><%= t("option_yes") %></label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                name="referral" type="radio"
+                                                                value="false"><%= t("option_no") %></label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div> <!-- /section-->
+                                <div class="form-buttons-w">
+                                    <button class="btn btn-primary btn-lg" type="submit"> <%= t("button_submit") %></button>
+                                    <button class="btn btn-grey btn-md" type="button"> <%= t("button_cancel") %></button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-buttons-w">
-                        <button class="btn btn-primary btn-lg col-sm-3" type="submit"> Submit</button>
                     </div>
                 </form>
             </div>
