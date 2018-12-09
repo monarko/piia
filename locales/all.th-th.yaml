@@ -17,7 +17,9 @@
 - id: button_login
   translation: "เข้าสู่ระบบฉัน"
 - id: button_submit
-  translation: "เสนอ"
+  translation: "ส่ง"
+- id: button_cancel
+  translation: "ยกเลิก"
 - id: option_yes
   translation: "ใช่่"
 - id: option_no
@@ -59,6 +61,22 @@
   translation: "ผู้เข้าร่วมการศึกษา"
 - id: button_download_csv
   translation: "Download CSV"
+- id: participantID_field
+  translation: "Participant Study Id"
+- id: participant_ID_description
+  translation: "Enter in the assigned participant ID (from the sticker)"
+- id: participant_personal_details
+  translation: "Personal Details"
+- id: label_year_birth
+  translation: "ปีเกิด"
+- id: label_gender
+  translation: "เพศ "
+- id: gender_option_male
+  translation: "ชาย"
+- id: gender_option_female
+  translation: "หญิง"
+- id: gender_option_other
+  translation: "อื่นๆ"
 - id: button_enroll
   translation: "ลงทะเบียนผู้เข้าร่วมใหม่"
 - id: filter_status_select
@@ -71,11 +89,23 @@
   translation: "สอบทาน"
 - id: button_filter_status
   translation: "ไป"
+- id: eligibility_header
+  translation: "Eligibility & Consent"
+- id: eligibility_text
+  translation: "Confirm that all eligibility criteria are met and that"
+- id: eligibiligy_criteria_checkbox
+  translation: "ผู้ป่วยรายนี้ได้ยินยอมและเซ็นหนังสือแสดงความยินยอม"
+- id: button_enroll
+  translation: "Enroll"
+- id: button_enroll_continue
+  translation: "Enroll and enter data"
 # participant table header labels
 - id: th_participant_id
   translation: "หมายเลขผู้เข้าร่วม"
 - id: th_patient_id
   translation: "รหัสผู้ป่วย"
+- id: th_demographics
+  translation: "Demographics"
 - id: th_name
   translation: "ชื่อ"
 - id: th_gender
@@ -88,6 +118,8 @@
   translation: "วันที่ลงทะเบียน"
 - id: th_screening_date
   translation: "วันที่คัดเลือก"
+- id: th_dataentry
+  translation: "Data Entry"
 - id: th_overread_date
   translation: "วันที่สอบทาน"
 - id: th_workflow_status
@@ -112,6 +144,53 @@
   translation: "20"
 - id: pagination_options_50
   translation: "50"
+# screening encounter
+- id: screening_header
+  translation: "New Screeing Encounter"
+- id: screening_form_header
+  translation: "Record data for participant"
+- id: screening_medical_history
+  translation: "Medical History"
+- id: screening_diabetes_type
+  translation: "Diabetes Type"
+- id: label_duration
+  translation: "Duration"
+- id: label_years
+  translation: "years"
+- id: screening_co-morbidities
+  translation: "Co-morbidities"
+- id: label_smoker
+  translation: "Current smoker?"
+- id: screening_medication_history
+  translation: "Medications"
+- id: label_medications_oral
+  translation: "Oral Medications for Diabetes?"
+- id: label_medications_insulin
+  translation: "Insulin?"
+- id: screening_measurements
+  translation: "Measurements"
+- id: screening_measurements_bp
+  translation: "ความดันโลหิต (มม.ปรอท)"
+- id: label_date_of_assessment
+  translation: "Date of last assessment"
+- id: screening_pathology
+  translation: "Pathology"
+- id: screening_measurements_blood_sugar
+  translation: "Blood Sugar"
+- id: label_hba1c
+  translation: "HbA1c (%)"
+- id: screening_measurements_lipids
+  translation: "Lipids"
+- id: label_total_cholesterol
+  translation: "Total Cholesterol"
+- id: screening_dr_assessment
+  translation: "DR Assessment"
+- id: option_ungradeable
+  translation: "คุณภาพที่วัดระดับไม่ได้"
+- id: option_not_present
+  translation: "ไม่มี DME"
+- id: option_present
+  translation: "ตรวจพบ DME "
 # create new - enrollment
 - id: page_enroll_title
   translation: "ลงทะเบียนเข้าศึกษา"
@@ -124,7 +203,7 @@
 # over-reading index
 - id: page_overreading_title
   translation: "รายการตรวจสอบ"
-# over-readin case
+# over-reading case
 - id: page_overreadcase_title
   translation: "ตรวจสอบกรณี"
 - id: section_dr_assessment_header
@@ -149,19 +228,19 @@
 - id: option_ungradeable
   translation: "Ungradeable"
 - id: option_normal
-  translation: "ปกติ"
+  translation: "Normal"
 - id: option_mild_npdr
-  translation: "อ่อน NPDR"
+  translation: "NPDR ระดับเบื้องต้น"
 - id: option_mod_npdr
-  translation: "ปานกลาง NPDR"
+  translation: "NPDR ระดับปานกลาง"
 - id: option_severe_npdr
-  translation: "รุนแรง NPDR"
+  translation: "NPDR ระดับรุนแรง "
 - id: option_proliferative_dr
   translation: "PDR"
 - id: option_dme_present
-  translation: "ปัจจุบัน"
+  translation: "Present"
 - id: option_dme_notpresent
-  translation: "ไม่ใช่ปัจจุบัน"
+  translation: "Not Present"
 - id: option_suspected_glaucoma
   translation: "Glaucoma"
 - id: option_suspected_amd
@@ -170,19 +249,19 @@
   translation: "Other"
 #forms
 - id: form_select_any
-  translation: "Select any"
+  translation: "Select option"
 - id: field_dr_grading
   translation: "DR Grading"
 - id: field_dme_assessment
-  translation: "DME Assessment"
+  translation: "จุดภาพชัดบวมจากเบาหวาน"
 - id: field_visual_acuity
-  translation: "Visual Acuity"
+  translation: "ระดับการมอเห็นที่ได้รับการแก้ไข (BCVA)"
 - id: field_right_eye
-  translation: "Right Eye"
+  translation: "ตาขวา (OD)"
 - id: field_left_eye
-  translation: "Left Eye"  
+  translation: "ตาซ้าย (OS)"
 - id: field_eye_assessment
-  translation: "Eye Assessment" 
+  translation: "Eye Assessment"
 - id: option_type_1
   translation: "Type 1"
 - id: option_type_2
@@ -191,7 +270,11 @@
   translation: "Pre-Diabetes"
 - id: option_gestational_diabetes
   translation: "Gestational Diabetes"
-  # languages
+- id: dr_referral_label
+  translation: "DR Referral Recommendation"
+- id: field_previous_visual_acuity
+  translation: "Last recorded visual acuity (if available)"
+# languages
 - id: language_btn_txt
   translation: "Language"
 - id: language_th
@@ -202,3 +285,57 @@
   translation: "বাংলা"
 - id: lang_calendar
   translation: "thai"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
