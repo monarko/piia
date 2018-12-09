@@ -114,6 +114,7 @@ func App() *buffalo.App {
 		referrals.Use(LoginRequired)
 		referrals.Use(ReferralTrackerPermissionRequired)
 		referrals.GET("/index", ReferralsIndex)
+		referrals.GET("/participants/{pid}", ReferralsParticipantsGet)
 
 		// app.Resource("/system_logs", SystemLogsResource{})
 		logs := app.Group("/logs")

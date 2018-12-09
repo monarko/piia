@@ -423,6 +423,25 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
+                                                            <label for="Last visual acuity"><%= t("field_previous_visual_acuity") %></label>
+                                                            <select class="form-control" name="Eyes.RightEye.LastVisualAcuity">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="NLP" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
+                                                                <option value="LP" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
+                                                                <option value="HM" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
+                                                                <option value="CF" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
+                                                                <option value="20/200" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/200") { %> selected <% } %>>20/200 (6/60)</option>
+                                                                <option value="20/100" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/100") { %> selected <% } %>>20/100 (6/30)</option>
+                                                                <option value="20/70" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/70") { %> selected <% } %>>20/70 (6/21)</option>
+                                                                <option value="20/50" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/50") { %> selected <% } %>>20/50 (6/15)</option>
+                                                                <option value="20/40" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
+                                                                <option value="20/30" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
+                                                                <option value="20/20" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
                                                             <label for=""><%= t("field_dr_grading") %></label>
                                                             <select class="form-control" name="Eyes.RightEye.DRGrading">
                                                                 <option value="">
@@ -494,6 +513,25 @@
                                                                     <option value="20/40" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
                                                                     <option value="20/30" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
                                                                     <option value="20/20" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="Last visual acuity"><%= t("field_previous_visual_acuity") %></label>
+                                                                <select class="form-control" name="Eyes.LeftEye.LastVisualAcuity">
+                                                                    <option value="">
+                                                                        <%= t("form_select_any") %>
+                                                                    </option>
+                                                                    <option value="NLP" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
+                                                                    <option value="LP" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
+                                                                    <option value="HM" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
+                                                                    <option value="CF" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
+                                                                    <option value="20/200" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/200") { %> selected <% } %>>20/200 (6/60)</option>
+                                                                    <option value="20/100" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/100") { %> selected <% } %>>20/100 (6/30)</option>
+                                                                    <option value="20/70" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/70") { %> selected <% } %>>20/70 (6/21)</option>
+                                                                    <option value="20/50" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/50") { %> selected <% } %>>20/50 (6/15)</option>
+                                                                    <option value="20/40" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
+                                                                    <option value="20/30" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
+                                                                    <option value="20/20" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">

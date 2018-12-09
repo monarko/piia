@@ -265,11 +265,6 @@ func ParticipantsDetail(c buffalo.Context) error {
 	screeningCreatedPm := participant.Screenings[0].CreatedAt.Format("pm")
 	screeningCreatedMsg := participant.Screenings[0].Screener.Name + " screened the participant"
 
-	overReadCreatedDate := participant.OverReadings[0].CreatedAt.Format("2006-01-02")
-	overReadCreatedTime := participant.OverReadings[0].CreatedAt.Format("3:04")
-	overReadCreatedPm := participant.OverReadings[0].CreatedAt.Format("pm")
-	overReadCreatedMsg := participant.OverReadings[0].OverReader.Name + " over read the participant"
-
 	userActivities[participantCreatedDate] = append(userActivities[participantCreatedDate], map[string]string{
 		"time": participantCreatedTime,
 		"ampm": participantCreatedPm,
@@ -282,11 +277,18 @@ func ParticipantsDetail(c buffalo.Context) error {
 		"msg":  screeningCreatedMsg,
 	})
 
-	userActivities[overReadCreatedDate] = append(userActivities[overReadCreatedDate], map[string]string{
-		"time": overReadCreatedTime,
-		"ampm": overReadCreatedPm,
-		"msg":  overReadCreatedMsg,
-	})
+	if len(participant.OverReadings) > 0 {
+		overReadCreatedDate := participant.OverReadings[0].CreatedAt.Format("2006-01-02")
+		overReadCreatedTime := participant.OverReadings[0].CreatedAt.Format("3:04")
+		overReadCreatedPm := participant.OverReadings[0].CreatedAt.Format("pm")
+		overReadCreatedMsg := participant.OverReadings[0].OverReader.Name + " over read the participant"
+
+		userActivities[overReadCreatedDate] = append(userActivities[overReadCreatedDate], map[string]string{
+			"time": overReadCreatedTime,
+			"ampm": overReadCreatedPm,
+			"msg":  overReadCreatedMsg,
+		})
+	}
 
 	openNotifications := &models.Notifications{}
 	if err := tx.Eager().Where("participant_id = ?", participant.ID).Where("status != ?", "closed").All(openNotifications); err != nil {
@@ -360,7 +362,7 @@ func ParticipantsDetail(c buffalo.Context) error {
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["page_participants_title"] = "/participants/index"
-	breadcrumbMap["breadcrumb_enrol_participant"] = ""
+	breadcrumbMap["breadcrumb_enrol_participant_short"] = "/participants/" + participant.ID.String()
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/detail.html"))
 }

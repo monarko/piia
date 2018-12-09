@@ -201,6 +201,8 @@
   translation: "Complete the form to enroll a new participant in the study"
 - id: breadcrumb_enrol_participant
   translation: "Enroll Participant"
+- id: breadcrumb_enrol_participant_short
+  translation: "Participant"
 # over-reading index
 - id: page_overreading_title
   translation: "Overreading List"

@@ -44,6 +44,10 @@ func (r ReferredMessages) String() string {
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (r *ReferredMessage) Validate(tx *pop.Connection) (*validate.Errors, error) {
+	r.ReferralData.DateOfAttendance.CalculatedDate = r.ReferralData.DateOfAttendance.GivenDate
+	if r.ReferralData.DateOfAttendance.Calendar == "thai" {
+		r.ReferralData.DateOfAttendance.CalculatedDate = r.ReferralData.DateOfAttendance.CalculatedDate.AddDate(-543, 0, 0)
+	}
 	return validate.NewErrors(), nil
 }
 

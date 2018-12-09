@@ -99,7 +99,7 @@
                                     <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
                                     <%= if (!stringInSlice(p.ID.String(), finished)) { %>
 
-                                    <a href="#" title="Mark" data-target=".<%= psc.ID %>-modal-sm" data-toggle="modal"><i
+                                    <a href="<%= referralsParticipantPath({pid: p.ID}) %>" title="Mark"><i
                                             class="fa fa-thumb-tack fa-lg"></i></a>
 
                                     <div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade <%= psc.ID %>-modal-sm"

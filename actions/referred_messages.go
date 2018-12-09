@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"time"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/models"
@@ -40,6 +42,8 @@ func UpdateReferredMessage(c buffalo.Context) error {
 	}
 	refer.ReferralData.Plans = c.Request().Form["Plans"]
 	refer.ReferralData.FollowUpPlan = c.Request().FormValue("FollowUp")
+	refer.ReferralData.DateOfAttendance.Calendar = c.Request().FormValue("Calendar")
+	refer.ReferralData.DateOfAttendance.GivenDate, _ = time.Parse("2006-01-02", c.Request().FormValue("GivenDate"))
 
 	verrs, err := tx.ValidateAndCreate(refer)
 	if err != nil {
@@ -60,7 +64,5 @@ func UpdateReferredMessage(c buffalo.Context) error {
 		}
 	}
 
-	referrer := c.Request().Referer()
-
-	return c.Redirect(302, referrer)
+	return c.Redirect(302, "/referrals/index")
 }

@@ -1,0 +1,139 @@
+<div class="row justify-content-lg-center">
+    <div class="col-lg-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Follow Up
+            </h6>
+            <div class="element-box">
+                <%
+                let psc = participant.Screenings[0]
+                %>
+                <form method="POST" action="<%= participantsAppointmentPath({pid: participant.ID, sid: psc.ID}) %>">
+                    <div class="modal-body">
+                        <%= csrf() %>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="text-align: left;">
+                                    <label>
+                                        Attended
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                <label class="form-check-label"><input
+                                                        class="form-check-input" name="Attended"
+                                                        type="radio" value="yes">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                <label class="form-check-label"><input
+                                                        class="form-check-input" name="Attended"
+                                                        type="radio" value="no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="text-align: left;">
+                                    <label for="">Select Plans</label>
+                                    <select class="form-control select2" style="width: 100%;"
+                                        multiple="true" name="Plans">
+                                        <option value="Lifestyle Advice">
+                                            Lifestyle Advice
+                                        </option>
+                                        <option value="Laser">
+                                            Laser
+                                        </option>
+                                        <option value="Injection">
+                                            Injection
+                                        </option>
+                                        <option value="Surgery">
+                                            Surgery
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="text-align: left;">
+                                    <label for="">Referred for Treatment</label>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                <label class="form-check-label"><input
+                                                        class="form-check-input" name="Treatment"
+                                                        type="radio" value="yes">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                <label class="form-check-label"><input
+                                                        class="form-check-input" name="Treatment"
+                                                        type="radio" value="no">No</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="text-align: left;">
+                                    <label for="">Follow Up</label>
+                                    <select class="form-control" style="width: 100%;"
+                                        name="FollowUp">
+                                        <option value="In Community">
+                                            In Community
+                                        </option>
+                                        <option value="At Local Referral Center">
+                                            At Local Referral Center
+                                        </option>
+                                        <option value="At Tertiary Center">
+                                            At Tertiary Center
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="text-align: left;">
+                                    <label for=""> Note</label>
+                                    <textarea name="Message" id="Message" cols="30"
+                                        rows="5" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="text-align: left;">
+                                    <label for=""> Date of Attendace</label>
+                                    <%= if (t("lang_calendar") == "thai") { %>
+                                        <input class="form-control" placeholder="Select date" type="date"
+                                        name="GivenDate" value="<%= currentDate("thai") %>">
+                                    <% } else { %>
+                                        <input class="form-control" placeholder="Select date" type="date"
+                                        name="GivenDate" value="<%= currentDate("gregorion") %>">
+                                    <% } %>
+                                </div>
+                            </div>
+                            <input type="hidden" name="Calendar" value="<%= t("lang_calendar") %>">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit"> Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
