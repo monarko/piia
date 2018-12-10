@@ -1,0 +1,116 @@
+<div class="row justify-content-lg-center">
+    <div class="col-lg-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                <%= t("section_referral_tracking") %>
+            </h6>
+            <div class="element-actions">
+                <a class="btn btn-secondary btn-lg justify-content-sm-end" href="#" role="button">
+                <%= participant.ParticipantID %></a>
+            </div>
+            <div class="element-box">
+                <%
+                let psc = participant.Screenings[0]
+                %>
+                <form method="POST" action="<%= participantsAppointmentPath({pid: participant.ID, sid: psc.ID}) %>">
+                    <div class="modal-body">
+                        <%= csrf() %>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                 <fieldset class="form-group">
+                                    <legend><span><%= t("referral_attended") %></span></legend>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="attended referral"><%= t("label_attended") %></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-check-inline">
+                                                    <div class="radio-button">
+                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                name="Attended" type="radio"
+                                                                value="yes" checked><%= t("option_yes") %></label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                name="Attended" type="radio"
+                                                                value="no"><%= t("option_no") %></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="attended referral"><%= t("label_attended_date") %></label>
+                                                <div class="date-input">
+                                                    <%= if (t("lang_calendar") == "thai") { %>
+                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                    name="GivenDate" value="<%= currentDate("thai") %>">
+                                                <% } else { %>
+                                                    <input class="form-control" placeholder="Select date" type="date"
+                                                    name="GivenDate" value="<%= currentDate("gregorion") %>">
+                                                <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group" style="text-align: left;">
+                                    <label for="plan"><%= t("label_referral_plan") %></label>
+                                    <select class="form-control select2" style="width: 100%;"
+                                        multiple="true" name="Plans">
+                                        <option value="No management">
+                                            No change in management
+                                        </option>
+                                        <option value="Laser">
+                                            Laser at local hospital
+                                        </option>
+                                        <option value="Injection">
+                                            Referred for Injection
+                                        </option>
+                                        <option value="Surgery">
+                                            Referred for Surgery
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" style="text-align: left;">
+                                    <label for=""><%= t("label_referral_follow_up_plan") %></label>
+                                    <select class="form-control" style="width: 100%;"
+                                        name="FollowUp">
+                                        <option value="In Community">
+                                            In Community
+                                        </option>
+                                        <option value="At Local Referral Center">
+                                            At Local Referral Center
+                                        </option>
+                                        <option value="At Tertiary Center">
+                                            At Tertiary Center
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="text-align: left;">
+                                    <label for=""><%= t("label_additional_notes") %></label>
+                                    <textarea name="Message" id="Message" cols="30"
+                                        rows="5" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="form-buttons-w">
+                        <button class="btn btn-primary" type="submit"> <%= t("button_submit") %></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

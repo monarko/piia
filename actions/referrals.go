@@ -63,13 +63,13 @@ func ReferralsIndex(c buffalo.Context) error {
 	c.Set("search", "")
 	if len(ids) > 0 {
 		if len(c.Param("search")) > 0 {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status = ?", "111").Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at ASC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status LIKE ?", "1%").Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at ASC")
 			c.Set("search", c.Param("search"))
 		} else {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status = ?", "111").PaginateFromParams(c.Params()).Order("created_at ASC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at ASC")
 		}
 	} else {
-		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("status = ?", "111").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at ASC")
 	}
 
 	// Retrieve all Posts from the DB
@@ -158,4 +158,19 @@ func SliceContainsString(s []string, a string) (int, bool) {
 	}
 
 	return -1, false
+}
+
+// ReferralsParticipantsGet returns form
+func ReferralsParticipantsGet(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader", "Referrals").Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("participant", participant)
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Referrals"] = "/referrals/index"
+	breadcrumbMap["Referrals Update"] = "/referrals/participants/" + participant.ID.String()
+	c.Set("breadcrumbMap", breadcrumbMap)
+	return c.Render(200, r.HTML("referrals/create.html"))
 }

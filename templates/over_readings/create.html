@@ -15,171 +15,189 @@
                         </p>
                     </div>
                     <fieldset class="form-group">
-                        <legend><span><%= t("section_dr_assessment_header") %></span></legend>
                         <div class="row">
                             <div class="col-sm-6">
-                                <h5><%= t("header_right_eye") %></h5>
-                                <div class="img-thumbnail text-center">
-                                    <!-- <img class="fullscreen-image" src="<%= assetPath("images/right-thumb.jpg") %>" data-high-res-src="<%= assetPath("images/right.jpg") %>"> -->
-                                    <img class="fullscreen-image" src="<%= rightEyeLink %>" data-high-res-src="<%= rightEyeLink %>">
-                                </div>
-                                <div class="none" style="margin-top: 20px"></div>
-                                <div class="form-group">
-                                    <label for=""><%= t("field_visual_acuity") %></label>
-                                    <input class="form-control" type="text" value="<%= screening.Eyes.RightEye.VisualAcuity.String %>" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label for=""><%= t("label_drgrading") %></label>
-                                    <select class="form-control" name="Eyes.RightEye.DRGrading">
-                                        <option value="">
-                                            <%= t("form_select_any") %>
-                                        </option>
-                                        <option value="Ungradeable" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
-                                            <%= t("option_ungradeable") %>
-                                        </option>
-                                        <option value="Normal" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Normal") { %> selected <% } %>>
-                                            <%= t("option_normal") %>
-                                        </option>
-                                        <option value="Mild DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
-                                            <%= t("option_mild_npdr") %>
-                                        </option>
-                                        <option value="Moderate DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
-                                            <%= t("option_mod_npdr") %>
-                                        </option>
-                                        <option value="Severe DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
-                                            <%= t("option_severe_npdr") %>
-                                        </option>
-                                        <option value="Proliferative DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
-                                            <%= t("option_proliferative_dr") %>
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for=""><%= t("label_dme") %></label>
-                                    <select class="form-control" name="Eyes.RightEye.DMEAssessment">
-                                        <option value="">
-                                            <%= t("form_select_any") %>
-                                        </option>
-                                        <option value="Present" <%= if (overReading.Eyes.RightEye.DMEAssessment.String == "Present") { %> selected <% } %>>
-                                            <%= t("option_dme_present") %>
-                                        </option>
-                                        <option value="Not Present" <%= if (overReading.Eyes.RightEye.DMEAssessment.String == "Not Present") { %> selected <% } %>>
-                                            <%= t("option_dme_notpresent") %>
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                        <label for=""><%= t("label_suspected_pathology") %></label>
-                                        <select class="form-control select2" multiple="true" name="Eyes.RightEye.SuspectedPathologies">
-                                            <option value="Glaucoma" <%= if (stringInSlice("Glaucoma", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
-                                                <%= t("option_suspected_glaucoma") %>
-                                            </option>
-                                            <option value="AMD" <%= if (stringInSlice("AMD", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
-                                                <%= t("option_suspected_amd") %>
-                                            </option>
-                                            <option value="Other" <%= if (stringInSlice("Other", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
-                                                <%= t("option_suspected_other") %>
-                                            </option>
-                                        </select>
+                                <div class="element-wrapper">
+                                    <div class="element-box">
+                                        <h5><%= t("header_right_eye") %></h5>
+                                        <div class="img-thumbnail text-center">
+                                            <!-- <img class="fullscreen-image" src="<%= assetPath("images/right-thumb.jpg") %>" data-high-res-src="<%= assetPath("images/right.jpg") %>"> -->
+                                            <img class="fullscreen-image" src="<%= rightEyeLink %>" data-high-res-src="<%= rightEyeLink %>">
+                                        </div>
+                                        <div class="none" style="margin-top: 20px"></div>
+                                        <div class="form-group">
+                                            <label for=""><%= t("field_visual_acuity") %></label>
+                                            <input class="form-control" type="text" value="<%= screening.Eyes.RightEye.VisualAcuity.String %>" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for=""><%= t("label_drgrading") %></label>
+                                            <select class="form-control" name="Eyes.RightEye.DRGrading">
+                                                <option value="">
+                                                    <%= t("form_select_any") %>
+                                                </option>
+                                                <option value="Ungradeable" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
+                                                    <%= t("option_ungradeable") %>
+                                                </option>
+                                                <option value="Normal" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Normal") { %> selected <% } %>>
+                                                    <%= t("option_normal") %>
+                                                </option>
+                                                <option value="Mild DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
+                                                    <%= t("option_mild_npdr") %>
+                                                </option>
+                                                <option value="Moderate DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
+                                                    <%= t("option_mod_npdr") %>
+                                                </option>
+                                                <option value="Severe DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
+                                                    <%= t("option_severe_npdr") %>
+                                                </option>
+                                                <option value="Proliferative DR" <%= if (overReading.Eyes.RightEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
+                                                    <%= t("option_proliferative_dr") %>
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for=""><%= t("field_dme_assessment") %></label>
+                                            <div class="form-check-inline">
+                                                <div class="radio-button">
+                                                    <label class="form-check-label"><input class="form-check-input"
+                                                            name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                            value="Ungradeable" <%= if (overReading.Eyes.RightEye.DMEAssessment.String == "Ungradeable") { %> checked <% } %>><%= t("option_ungradeable") %></label>
+                                                </div>
+                                                <div class="radio-button">
+                                                    <label class="form-check-label"><input class="form-check-input"
+                                                            name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                            value="Not Present" <%= if (overReading.Eyes.RightEye.DMEAssessment.String == "Not Present") { %> checked <% } %>><%= t("option_not_present") %></label>
+                                                </div>
+                                                <div class="radio-button">
+                                                    <label class="form-check-label"><input class="form-check-input"
+                                                            name="Eyes.RightEye.DMEAssessment" type="radio"
+                                                            value="Present" <%= if (overReading.Eyes.RightEye.DMEAssessment.String == "Present") { %> checked <% } %>><%= t("option_present") %></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for=""><%= t("label_suspected_pathology") %></label>
+                                                <select class="form-control select2" multiple="true" name="Eyes.RightEye.SuspectedPathologies">
+                                                    <option value="Glaucoma" <%= if (stringInSlice("Glaucoma", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
+                                                        <%= t("option_suspected_glaucoma") %>
+                                                    </option>
+                                                    <option value="AMD" <%= if (stringInSlice("AMD", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
+                                                        <%= t("option_suspected_amd") %>
+                                                    </option>
+                                                    <option value="Other" <%= if (stringInSlice("Other", overReading.Eyes.RightEye.SuspectedPathologies)) { %> selected <% } %>>
+                                                        <%= t("option_suspected_other") %>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                             </div>
-
                             <div class="col-sm-6 ml-auto">
-                                <h5><%= t("header_left_eye") %></h5>
-                                <div class="img-thumbnail text-center">
-                                    <!-- <img class="fullscreen-image" src="<%= assetPath("images/left-thumb.jpg") %>" data-high-res-src="<%= assetPath("images/left.jpg") %>"> -->
-                                    <img class="fullscreen-image" src="<%= leftEyeLink %>" data-high-res-src="<%= leftEyeLink %>">
-                                </div>
-                                <div class="none" style="margin-top: 20px"></div>
-                                <div class="form-group">
-                                    <label for=""><%= t("field_visual_acuity") %></label>
-                                    <input class="form-control" type="text" value="<%= screening.Eyes.LeftEye.VisualAcuity.String %>" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label for=""><%= t("label_drgrading") %></label>
-                                    <select class="form-control" name="Eyes.LeftEye.DRGrading">
-                                        <option value="">
-                                            <%= t("form_select_any") %>
-                                        </option>
-                                        <option value="Ungradeable" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
-                                            <%= t("option_ungradeable") %>
-                                        </option>
-                                        <option value="Normal" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Normal") { %> selected <% } %>>
-                                            <%= t("option_normal") %>
-                                        </option>
-                                        <option value="Mild DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
-                                            <%= t("option_mild_npdr") %>
-                                        </option>
-                                        <option value="Moderate DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
-                                            <%= t("option_mod_npdr") %>
-                                        </option>
-                                        <option value="Severe DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
-                                            <%= t("option_severe_npdr") %>
-                                        </option>
-                                        <option value="Proliferative DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
-                                            <%= t("option_proliferative_dr") %>
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for=""><%= t("label_dme") %></label>
-                                    <select class="form-control" name="Eyes.LeftEye.DMEAssessment">
-                                        <option value="">
-                                            <%= t("form_select_any") %>
-                                        </option>
-                                        <option value="Present" <%= if (overReading.Eyes.LeftEye.DMEAssessment.String == "Present") { %> selected <% } %>>
-                                            <%= t("option_dme_present") %>
-                                        </option>
-                                        <option value="Not Present" <%= if (overReading.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %> selected <% } %>>
-                                            <%= t("option_dme_notpresent") %>
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                        <label for=""><%= t("label_suspected_pathology") %></label>
-                                        <select class="form-control select2" multiple="true" name="Eyes.LeftEye.SuspectedPathologies">
-                                            <option value="Glaucoma" <%= if (stringInSlice("Glaucoma", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
-                                                <%= t("option_suspected_glaucoma") %>
-                                            </option>
-                                            <option value="AMD" <%= if (stringInSlice("AMD", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
-                                                <%= t("option_suspected_amd") %>
-                                            </option>
-                                            <option value="Other" <%= if (stringInSlice("Other", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
-                                                <%= t("option_suspected_other") %>
-                                            </option>
-                                        </select>
+                                <div class="element-wrapper">
+                                    <div class="element-box">
+                                        <h5><%= t("header_left_eye") %></h5>
+                                        <div class="img-thumbnail text-center">
+                                            <!-- <img class="fullscreen-image" src="<%= assetPath("images/left-thumb.jpg") %>" data-high-res-src="<%= assetPath("images/left.jpg") %>"> -->
+                                            <img class="fullscreen-image" src="<%= leftEyeLink %>" data-high-res-src="<%= leftEyeLink %>">
+                                        </div>
+                                        <div class="none" style="margin-top: 20px"></div>
+                                        <div class="form-group">
+                                            <label for=""><%= t("field_visual_acuity") %></label>
+                                            <input class="form-control" type="text" value="<%= screening.Eyes.LeftEye.VisualAcuity.String %>" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for=""><%= t("label_drgrading") %></label>
+                                            <select class="form-control" name="Eyes.LeftEye.DRGrading">
+                                                <option value="">
+                                                    <%= t("form_select_any") %>
+                                                </option>
+                                                <option value="Ungradeable" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
+                                                    <%= t("option_ungradeable") %>
+                                                </option>
+                                                <option value="Normal" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Normal") { %> selected <% } %>>
+                                                    <%= t("option_normal") %>
+                                                </option>
+                                                <option value="Mild DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
+                                                    <%= t("option_mild_npdr") %>
+                                                </option>
+                                                <option value="Moderate DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
+                                                    <%= t("option_mod_npdr") %>
+                                                </option>
+                                                <option value="Severe DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
+                                                    <%= t("option_severe_npdr") %>
+                                                </option>
+                                                <option value="Proliferative DR" <%= if (overReading.Eyes.LeftEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
+                                                    <%= t("option_proliferative_dr") %>
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for=""><%= t("field_dme_assessment") %></label>
+                                            <div class="form-check-inline">
+                                                <div class="radio-button">
+                                                    <label class="form-check-label"><input class="form-check-input"
+                                                            name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                            value="Ungradeable" <%= if (overReading.Eyes.LeftEye.DMEAssessment.String == "Ungradeable") { %> checked <% } %>><%= t("option_ungradeable") %></label>
+                                                </div>
+                                                <div class="radio-button">
+                                                    <label class="form-check-label"><input class="form-check-input"
+                                                            name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                            value="Not Present" <%= if (overReading.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %> checked <% } %>><%= t("option_not_present") %></label>
+                                                </div>
+                                                <div class="radio-button">
+                                                    <label class="form-check-label"><input class="form-check-input"
+                                                            name="Eyes.LeftEye.DMEAssessment" type="radio"
+                                                            value="Present" <%= if (overReading.Eyes.LeftEye.DMEAssessment.String == "Present") { %> checked <% } %>><%= t("option_present") %></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                                <label for=""><%= t("label_suspected_pathology") %></label>
+                                                <select class="form-control select2" multiple="true" name="Eyes.LeftEye.SuspectedPathologies">
+                                                    <option value="Glaucoma" <%= if (stringInSlice("Glaucoma", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
+                                                        <%= t("option_suspected_glaucoma") %>
+                                                    </option>
+                                                    <option value="AMD" <%= if (stringInSlice("AMD", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
+                                                        <%= t("option_suspected_amd") %>
+                                                    </option>
+                                                    <option value="Other" <%= if (stringInSlice("Other", overReading.Eyes.LeftEye.SuspectedPathologies)) { %> selected <% } %>>
+                                                        <%= t("option_suspected_other") %>
+                                                    </option>
+                                                </select>
+                                            </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </fieldset>
-                    <div class="row">
-                        <div class="col">
-                            <%= if (errors) { %>
-                            <%= for (key, val) in errors { %>
-                            <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+
+                    <fieldset class="form-group">
+                        <legend><span><%= t("section_referral_header") %></span></legend>
+                        <%= if (errors) { %>
+                        <%= for (key, val) in errors { %>
+                        <div class="form-group">
+                            <div class="alert alert-info alert-dismissible fade show m-1" role="alert">
                                 <%= val %>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <% } %>
-                            <% } %>
                         </div>
-                    </div>
-                    <fieldset class="form-group">
-                        <legend><span><%= t("section_referral_header") %></span></legend>
+                        <% } %>
+                        <% } %>
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for=""><%= t("label_refer") %></label>
-                                    <select class="form-control" name="referral">
-                                        <option value="yes" <%= if (overReading.Referral.Referred) { %> selected <% } %>>
-                                            <%= t("option_yes") %>
-                                        </option>
-                                        <option value="no" <%= if (!overReading.Referral.Referred) { %> selected <% } %>>
-                                            <%= t("option_no") %>
-                                        </option>
-                                    </select>
+                                <div class="form-check-inline">
+                                    <div class="radio-button">
+                                        <label class="form-check-label"><input class="form-check-input"
+                                                name="referral" type="radio"
+                                                value="yes" <%= if (overReading.Referral.Referred) { %> checked <% } %>><%= t("option_yes") %></label>
+                                    </div>
+                                    <div class="radio-button">
+                                        <label class="form-check-label"><input class="form-check-input"
+                                                name="referral" type="radio"
+                                                value="no" <%= if (!overReading.Referral.Referred) { %> checked <% } %>><%= t("option_no") %></label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

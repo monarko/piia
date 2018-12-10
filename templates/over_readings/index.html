@@ -10,12 +10,23 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <%= if (pagination.TotalEntriesSize < 1) { %>
-                            <a class="btn btn-primary btn" href="<%= participantOverreadingsCreatePath({pid: participant.ID}) %>" role="button">New Over Reading</a>
+                            Nothing to over read</a>
                             <% } %>
                         </div>
                         <div class="col-sm-6">
                             <form class="form-inline justify-content-sm-end">
                                 <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
+                                <select class="form-control form-control-sm rounded bright" name="status">
+                                    <option value="all" selected>
+                                        <%= t("option_overreading_all") %>
+                                    </option>
+                                    <option value="open">
+                                        <%= t("option_overeading_open") %>
+                                    </option>
+                                    <option value="completed">
+                                        <%= t("option_overreading_completed") %>
+                                    </option>
+                                </select>
                                 <button type="submit" class="btn btn-info btn-rounded">Go</button>
                             </form>
                         </div>
@@ -23,7 +34,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-lg table-v2 table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
+                    <table class="table table-lg table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
                         <thead>
                             <tr>
                                 <th class="text-center" rowspan="2">

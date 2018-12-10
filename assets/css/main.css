@@ -2357,11 +2357,13 @@ pre code {
   padding: 0.75rem;
   vertical-align: top;
   border-top: 1px solid rgba(83, 101, 140, 0.33);
+  text-align:  center;
 }
 
 .table thead th {
   vertical-align: bottom;
   border-bottom: 2px solid rgba(83, 101, 140, 0.33);
+  text-align:  center;
 }
 
 .table tbody + tbody {
@@ -10219,7 +10221,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 .table tfoot th,
 .table thead th {
-  font-size: 0.63rem;
+  /*font-size: 0.63rem;*/
   text-transform: uppercase;
   border-top: none;
 }
@@ -10620,7 +10622,7 @@ label.smaller {
 }
 
 fieldset {
-  margin-top: 2rem;
+  margin-top: 0.2rem;
 }
 
 legend {
@@ -15654,7 +15656,7 @@ body.menu-side-right .layout-w {
  #1. Element Wrapper Styles
 */
 .element-wrapper {
-  padding-bottom: 3rem;
+  padding-bottom: 1rem;
 }
 
 .element-wrapper .btn + .btn, .element-wrapper .all-wrapper .fc-button + .btn, .all-wrapper .element-wrapper .fc-button + .btn, .element-wrapper .all-wrapper .btn + .fc-button, .all-wrapper .element-wrapper .btn + .fc-button, .element-wrapper .all-wrapper .fc-button + .fc-button, .all-wrapper .element-wrapper .fc-button + .fc-button {
@@ -15778,7 +15780,7 @@ body.menu-side-right .layout-w {
 .element-wrapper .element-header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   padding-bottom: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   position: relative;
   z-index: 1;
 }
@@ -15871,7 +15873,7 @@ body.menu-side-right .layout-w {
 
 .element-box, .invoice-w, .big-error-w {
   padding: 1.5rem 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .element-box.less-padding, .less-padding.invoice-w, .less-padding.big-error-w {
@@ -28987,3 +28989,19 @@ Contents:
   display: block;
   width: 100%;
 } */
+
+/* additions */
+.radio-button {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 7px 15px;
+    margin-right: 10px;
+    text-align: center;
+    font-size:  1.0em;
+}
+
+.radio-button:hover {
+    color:  #fff;
+    background:  #047bf8;
+}
+

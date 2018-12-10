@@ -139,9 +139,9 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		c.Set("breadcrumbMap", breadcrumbMap)
 
 		errs := make(map[string][]string)
-		errs["a"] = []string{"You should REFER the participant as he/she fall into the follwoing criteria:"}
-		errs["b"] = []string{"DR is Ungradable, Moderate or Severe"}
-		errs["c"] = []string{"DME is Present"}
+		errs["a"] = []string{"Participant meets the referral criteria. Please consider for referral"}
+		//errs["b"] = []string{"DR is Ungradable, Moderate or Severe"}
+		//errs["c"] = []string{"DME is Present"}
 
 		c.Set("errors", errs)
 
@@ -183,7 +183,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("over_readings/create.html"))
 	}
 
-	logErr := InsertLog("create", "User did an over read", "", overReading.ID.String(), "overReading", user.ID, c)
+	logErr := InsertLog("create", "Case overread", "", overReading.ID.String(), "overReading", user.ID, c)
 	if logErr != nil {
 		return errors.WithStack(logErr)
 	}
@@ -191,8 +191,8 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	checkReferral := checkScreeningAndOverReading(&screening, overReading)
 	if checkReferral {
 		notifErr := InsertNotification(
-			"Referral",
-			"This participant needs to be referred",
+			"Referral Notification",
+			"This participant should be referred. Please contact to arrange.",
 			"open",
 			string(participant.ParticipantID[0]),
 			user.ID,
@@ -221,7 +221,7 @@ func checkScreeningAndOverReading(screening *models.Screening, overReading *mode
 func shouldBeReferred(overReading *models.OverReading) bool {
 	refer := false
 
-	if overReading.Eyes.LeftEye.DRGrading.String == "Ungradeable" || overReading.Eyes.LeftEye.DRGrading.String == "Moderate DR" || overReading.Eyes.LeftEye.DRGrading.String == "Severe DR" || overReading.Eyes.RightEye.DRGrading.String == "Ungradeable" || overReading.Eyes.RightEye.DRGrading.String == "Moderate DR" || overReading.Eyes.RightEye.DRGrading.String == "Severe DR" {
+	if overReading.Eyes.LeftEye.DRGrading.String == "Ungradeable" || overReading.Eyes.LeftEye.DRGrading.String == "Severe DR" || overReading.Eyes.RightEye.DRGrading.String == "Ungradeable" || overReading.Eyes.RightEye.DRGrading.String == "Severe DR" {
 		refer = true
 	}
 

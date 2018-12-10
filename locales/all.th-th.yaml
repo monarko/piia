@@ -4,6 +4,8 @@
 # login specific
 - id: login_greeting
   translation: "Piia <peer> Login"
+- id: login_with_google
+  translation: "เข้าระบบด้วย Google"
 - id: label_username
   translation: "ชื่อผู้ใช้"
 - id: label_email
@@ -17,7 +19,9 @@
 - id: button_login
   translation: "เข้าสู่ระบบฉัน"
 - id: button_submit
-  translation: "เสนอ"
+  translation: "ส่ง"
+- id: button_cancel
+  translation: "ยกเลิก"
 - id: option_yes
   translation: "ใช่่"
 - id: option_no
@@ -59,6 +63,22 @@
   translation: "ผู้เข้าร่วมการศึกษา"
 - id: button_download_csv
   translation: "Download CSV"
+- id: participantID_field
+  translation: "รหัสประจำตัวอาสาสมัคร"
+- id: participant_ID_description
+  translation: "กรุณาใส่รหัสอาสาสมัครที่อยู่บนสติกเกิ"
+- id: participant_personal_details
+  translation: "ข้อมูลส่วนบุคคล"
+- id: label_year_birth
+  translation: "ปีเกิด"
+- id: label_gender
+  translation: "เพศ "
+- id: gender_option_male
+  translation: "ชาย"
+- id: gender_option_female
+  translation: "หญิง"
+- id: gender_option_other
+  translation: "อื่นๆ"
 - id: button_enroll
   translation: "ลงทะเบียนผู้เข้าร่วมใหม่"
 - id: filter_status_select
@@ -71,11 +91,23 @@
   translation: "สอบทาน"
 - id: button_filter_status
   translation: "ไป"
+- id: eligibility_header
+  translation: "เกณฑ์การเข้าร่วมวิจัยและความยินยอม"
+- id: eligibility_text
+  translation: "ยืนยันว่าเข้าเกณฑ์การร่วมวิจัย"
+- id: eligibiligy_criteria_checkbox
+  translation: "ผู้ป่วยรายนี้ได้ยินยอมและเซ็นหนังสือแสดงความยินยอม"
+- id: button_enroll
+  translation: "Enroll"
+- id: button_enroll_continue
+  translation: "Enroll and enter data"
 # participant table header labels
 - id: th_participant_id
   translation: "หมายเลขผู้เข้าร่วม"
 - id: th_patient_id
   translation: "รหัสผู้ป่วย"
+- id: th_demographics
+  translation: "Demographics"
 - id: th_name
   translation: "ชื่อ"
 - id: th_gender
@@ -88,6 +120,8 @@
   translation: "วันที่ลงทะเบียน"
 - id: th_screening_date
   translation: "วันที่คัดเลือก"
+- id: th_dataentry
+  translation: "Data Entry"
 - id: th_overread_date
   translation: "วันที่สอบทาน"
 - id: th_workflow_status
@@ -112,6 +146,53 @@
   translation: "20"
 - id: pagination_options_50
   translation: "50"
+# screening encounter
+- id: screening_header
+  translation: "เริ่มการคัดกรอง"
+- id: screening_form_header
+  translation: "บันทึกข้อมูลอาสาม"
+- id: screening_medical_history
+  translation: "ข้อมูลการรักษา"
+- id: screening_diabetes_type
+  translation: "ชนิดของเยาหวาน"
+- id: label_duration
+  translation: "ระยะเวลา"
+- id: label_years
+  translation: "ปี"
+- id: screening_co-morbidities
+  translation: "โรคร่วม"
+- id: label_smoker
+  translation: "สูบบุหรี่"
+- id: screening_medication_history
+  translation: "ยา"
+- id: label_medications_oral
+  translation: "ยาเบาหวานชนิดรับประทา"
+- id: label_medications_insulin
+  translation: "อินซูลิน"
+- id: screening_measurements
+  translation: "การวัด"
+- id: screening_measurements_bp
+  translation: "ความดันโลหิต (มม.ปรอท)"
+- id: label_date_of_assessment
+  translation: "Dวันที่ประเมินล่าสุด"
+- id: screening_pathology
+  translation: "รอยโรค"
+- id: screening_measurements_blood_sugar
+  translation: "ระดับน้ำตาล"
+- id: label_hba1c
+  translation: "ระดับน้ำตาลสะสม"
+- id: screening_measurements_lipids
+  translation: "ไขมัน"
+- id: label_total_cholesterol
+  translation: "คอเลสเตอรอล"
+- id: screening_dr_assessment
+  translation: "DR Assessment"
+- id: option_ungradeable
+  translation: "คุณภาพที่วัดระดับไม่ได้"
+- id: option_not_present
+  translation: "ไม่มี DME"
+- id: option_present
+  translation: "ตรวจพบ DME "
 # create new - enrollment
 - id: page_enroll_title
   translation: "ลงทะเบียนเข้าศึกษา"
@@ -124,7 +205,7 @@
 # over-reading index
 - id: page_overreading_title
   translation: "รายการตรวจสอบ"
-# over-readin case
+# over-reading case
 - id: page_overreadcase_title
   translation: "ตรวจสอบกรณี"
 - id: section_dr_assessment_header
@@ -138,30 +219,30 @@
 - id: label_drgrading
   translation: "เกรด DR"
 - id: label_dme
-  translation: "DME Assessment"
+  translation: "การประเมินจุดภาพชัดบวมจากเบาหวาน"
 - id: label_other_pathology
-  translation: "Other Pathology Present"
+  translation: "โรคอื่นๆ"
 - id: label_refer
-  translation: "Refer for assessment"
+  translation: "ส่งตัวไปรักษา"
 - id: label_suspected_pathology
-  translation: "Suspected Pathologies"
+  translation: "โรคที่สงสัย"
 # grading scales
 - id: option_ungradeable
-  translation: "Ungradeable"
+  translation: "คุณภาพที่วัดระดับไม่ได้"
 - id: option_normal
   translation: "ปกติ"
 - id: option_mild_npdr
-  translation: "อ่อน NPDR"
+  translation: "NPDR ระดับเบื้องต้น"
 - id: option_mod_npdr
-  translation: "ปานกลาง NPDR"
+  translation: "NPDR ระดับปานกลาง"
 - id: option_severe_npdr
-  translation: "รุนแรง NPDR"
+  translation: "NPDR ระดับรุนแรง "
 - id: option_proliferative_dr
   translation: "PDR"
 - id: option_dme_present
-  translation: "ปัจจุบัน"
+  translation: "ปรากฏ"
 - id: option_dme_notpresent
-  translation: "ไม่ใช่ปัจจุบัน"
+  translation: "ไม่ปรากฏ"
 - id: option_suspected_glaucoma
   translation: "Glaucoma"
 - id: option_suspected_amd
@@ -170,19 +251,19 @@
   translation: "Other"
 #forms
 - id: form_select_any
-  translation: "Select any"
+  translation: "เลือก"
 - id: field_dr_grading
-  translation: "DR Grading"
+  translation: "ประเมินระยะโรคของภาวะเบาหวานเข้าจอตา"
 - id: field_dme_assessment
-  translation: "DME Assessment"
+  translation: "จุดภาพชัดบวมจากเบาหวาน"
 - id: field_visual_acuity
-  translation: "Visual Acuity"
+  translation: "ระดับการมอเห็นที่ได้รับการแก้ไข (BCVA)"
 - id: field_right_eye
-  translation: "Right Eye"
+  translation: "ตาขวา (OD)"
 - id: field_left_eye
-  translation: "Left Eye"  
+  translation: "ตาซ้าย (OS)"
 - id: field_eye_assessment
-  translation: "Eye Assessment" 
+  translation: "Eye Assessment"
 - id: option_type_1
   translation: "Type 1"
 - id: option_type_2
@@ -191,7 +272,38 @@
   translation: "Pre-Diabetes"
 - id: option_gestational_diabetes
   translation: "Gestational Diabetes"
-  # languages
+- id: dr_referral_label
+  translation: "แนะนำให้ส่งตัว"
+- id: field_previous_visual_acuity
+  translation: "ค่าสายตาล่าสุด(หากมี)"
+# Referral tracking section
+- id: section_referral_tracking
+  translation: "ติดตามการส่งตัวไปรักษาต่อ"
+- id: referral_attended
+  translation: "ส่งตัวไปรักษาต่อ"
+- id: label_attended
+  translation: "เข้าร่วม"
+- id: label_attended_date
+  translation: "วันที่เจ้าร่วม"
+- id: label_referral_plan
+  translation: "แนวทางการรัก"
+- id: label_referral_follow_up_plan
+  translation: "แนวทางการติดตามการรักษา"
+- id: label_additional_notes
+  translation: "ข้อมูลเพิ่มเติม"
+- id: option_referrals_all
+  translation: "All referrals"
+- id: option_referrals_open
+  translation: "Open referrals"
+- id: option_referrals_completed
+  translation: "Completed referrals"
+- id: option_overreading_all
+  translation: "All cases"
+- id: option_overreading_open
+  translation: "Open cases"
+- id: option_overreading_completed
+  translation: "Completed cases"
+# languages
 - id: language_btn_txt
   translation: "Language"
 - id: language_th
@@ -202,3 +314,57 @@
   translation: "বাংলা"
 - id: lang_calendar
   translation: "thai"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
