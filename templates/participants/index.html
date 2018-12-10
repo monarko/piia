@@ -9,8 +9,6 @@
                 <div class="element-actions">
                     <a class="btn btn-primary btn-md" href="<%= participantsCreatePath() %>" role="button"><%= t("button_enroll") %></a>
                     <% } %>
-                    <!--<%= if (current_user.Admin) { %>
-                        <a class="btn btn-secondary btn justify-content-sm-end" href="#" role="button"><%= t("button_download_csv") %></a>-->
                 </div>
                 <% } %>
                 <!-- controls above table -->
@@ -104,7 +102,7 @@
                                 <th>
                                     <%= t("th_workflow_status") %>
                                 </th>
-                                <th>
+                                <th style="width: 20%;">
                                     <%= t("th_actions") %>
                                 </th>
                             </tr>
@@ -151,21 +149,29 @@
                                     <div class="status-pill green" data-title="Overread" data-toggle="tooltip"></div>
                                     <% } %>
                                 </td>
-                                <td class="row-actions">
+                                <td class="row-actions" style="text-align: center;">
+                                    <div class="row">
                                     <%= if (current_user.Permission.Screening || current_user.Admin) { %>
                                         <%= if (len(p.Screenings) > 0) { %>
                                             <% let psc = p.Screenings[0] %>
                                             <% let statuses = psc.Statuses() %>
                                             <%= if (!statuses.Completed) { %>
-                                            <a href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil fa-lg"></i></a>
+                                            <div class="action-item col-md-auto">
+                                                <a class="btn btn-sm btn-gray" href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil fa-sm"></i> <span>Edit Data</span></a>
+                                            </div>
                                             <% } %>
                                         <% } else { %>
-                                            <a href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="fa fa-pencil fa-lg"></i></a>
+                                        <div class="action-item col-md-auto">
+                                            <a class="btn btn-sm btn-info" href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="fa fa-eye fa-sm"></i> <span>Data Entry</span></a>
+                                        </div>
                                         <% } %>
                                     <% } %>
                                     <%= if (p.Status == "111" && (current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.Screening)) { %>
-                                    <a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>
+                                        <div class="action-item col-md-auto">
+                                            <a class="btn btn-sm btn-warning" href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-sm"></i> <span>View Details</span></a>
+                                        </div>
                                     <% } %>
+                                </div>
                                 </td>
                             </tr>
                             <% } %>

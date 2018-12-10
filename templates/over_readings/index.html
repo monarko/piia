@@ -16,6 +16,17 @@
                         <div class="col-sm-6">
                             <form class="form-inline justify-content-sm-end">
                                 <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
+                                <select class="form-control form-control-sm rounded bright" name="status">
+                                    <option value="all" selected>
+                                        <%= t("option_overreading_all") %>
+                                    </option>
+                                    <option value="open">
+                                        <%= t("option_overeading_open") %>
+                                    </option>
+                                    <option value="completed">
+                                        <%= t("option_overreading_completed") %>
+                                    </option>
+                                </select>
                                 <button type="submit" class="btn btn-info btn-rounded">Go</button>
                             </form>
                         </div>

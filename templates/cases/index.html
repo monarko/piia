@@ -14,6 +14,17 @@
                         <div class="col-sm-6">
                             <form class="form-inline justify-content-sm-end">
                                 <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
+                                <select class="form-control form-control-sm rounded bright" name="status">
+                                    <option value="all" selected>
+                                        <%= t("option_overreading_all") %>
+                                    </option>
+                                    <option value="open">
+                                        <%= t("option_overreading_open") %>
+                                    </option>
+                                    <option value="completed">
+                                        <%= t("option_overreading_completed") %>
+                                    </option>
+                                </select>
                                 <button type="submit" class="btn btn-info btn-rounded">Go</button>
                             </form>
                         </div>
@@ -24,7 +35,7 @@
                     <table class="table table-lg table-striped" style="margin-bottom: 1rem; font-size: 0.75rem;">
                         <thead>
                             <tr>
-                                <th>
+                                <th style="text-align:left;">
                                     <%= t("th_participant_id") %>
                                 </th>
                                 <th>
@@ -36,7 +47,7 @@
                                 <th>
                                     <%= t("th_status") %>
                                 </th>
-                                <th>
+                                <th style="width: 20%;">
                                     <%= t("th_actions") %>
                                 </th>
                             </tr>
@@ -62,11 +73,11 @@
                             }
                             %>
                             <tr>
-                                <td>
-                                    <%= if (len(colorCode) > 0) { %>
-                                    <div class="status-pill <%= colorCode %>" style="color: #<%= colorCode %>;" data-title="Registered" data-toggle="tooltip"></div>
-                                    <% } %>&nbsp;
+                                <td style="text-align: left;">
                                     <%= p.ParticipantID %>
+                                    <%= if (len(colorCode) > 0) { %>
+                                    <div class="status-pill <%= colorCode %>" style="color: #<%= colorCode %>; margin-left: 5px" data-title="Registered" data-toggle="tooltip"></div>
+                                    <% } %>
                                 </td>
                                 <td>
                                     <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
@@ -89,7 +100,7 @@
                                 <td class="row-actions">
                                     <%= if (p.Status == "11" && (current_user.Permission.OverRead || current_user.Admin)) { %>
                                         <% let s = p.Screenings[0] %>
-                                    <a class="button btn btn-info" href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over Read">Review</a>
+                                    <a class="btn btn-sm btn-warning" href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> Review Case</a>
                                     <% } %>
                                 </td>
                             </tr>

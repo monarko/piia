@@ -4,6 +4,8 @@
 # login specific
 - id: login_greeting
   translation: "Piia <peer> Login"
+- id: login_with_google
+  translation: "เข้าระบบด้วย Google"
 - id: label_username
   translation: "ชื่อผู้ใช้"
 - id: label_email
@@ -62,11 +64,11 @@
 - id: button_download_csv
   translation: "Download CSV"
 - id: participantID_field
-  translation: "Participant Study Id"
+  translation: "รหัสประจำตัวอาสาสมัคร"
 - id: participant_ID_description
-  translation: "Enter in the assigned participant ID (from the sticker)"
+  translation: "กรุณาใส่รหัสอาสาสมัครที่อยู่บนสติกเกิ"
 - id: participant_personal_details
-  translation: "Personal Details"
+  translation: "ข้อมูลส่วนบุคคล"
 - id: label_year_birth
   translation: "ปีเกิด"
 - id: label_gender
@@ -90,9 +92,9 @@
 - id: button_filter_status
   translation: "ไป"
 - id: eligibility_header
-  translation: "Eligibility & Consent"
+  translation: "เกณฑ์การเข้าร่วมวิจัยและความยินยอม"
 - id: eligibility_text
-  translation: "Confirm that all eligibility criteria are met and that"
+  translation: "ยืนยันว่าเข้าเกณฑ์การร่วมวิจัย"
 - id: eligibiligy_criteria_checkbox
   translation: "ผู้ป่วยรายนี้ได้ยินยอมและเซ็นหนังสือแสดงความยินยอม"
 - id: button_enroll
@@ -146,43 +148,43 @@
   translation: "50"
 # screening encounter
 - id: screening_header
-  translation: "New Screeing Encounter"
+  translation: "เริ่มการคัดกรอง"
 - id: screening_form_header
-  translation: "Record data for participant"
+  translation: "บันทึกข้อมูลอาสาม"
 - id: screening_medical_history
-  translation: "Medical History"
+  translation: "ข้อมูลการรักษา"
 - id: screening_diabetes_type
-  translation: "Diabetes Type"
+  translation: "ชนิดของเยาหวาน"
 - id: label_duration
-  translation: "Duration"
+  translation: "ระยะเวลา"
 - id: label_years
-  translation: "years"
+  translation: "ปี"
 - id: screening_co-morbidities
-  translation: "Co-morbidities"
+  translation: "โรคร่วม"
 - id: label_smoker
-  translation: "Current smoker?"
+  translation: "สูบบุหรี่"
 - id: screening_medication_history
-  translation: "Medications"
+  translation: "ยา"
 - id: label_medications_oral
-  translation: "Oral Medications for Diabetes?"
+  translation: "ยาเบาหวานชนิดรับประทา"
 - id: label_medications_insulin
-  translation: "Insulin?"
+  translation: "อินซูลิน"
 - id: screening_measurements
-  translation: "Measurements"
+  translation: "การวัด"
 - id: screening_measurements_bp
   translation: "ความดันโลหิต (มม.ปรอท)"
 - id: label_date_of_assessment
-  translation: "Date of last assessment"
+  translation: "Dวันที่ประเมินล่าสุด"
 - id: screening_pathology
-  translation: "Pathology"
+  translation: "รอยโรค"
 - id: screening_measurements_blood_sugar
-  translation: "Blood Sugar"
+  translation: "ระดับน้ำตาล"
 - id: label_hba1c
-  translation: "HbA1c (%)"
+  translation: "ระดับน้ำตาลสะสม"
 - id: screening_measurements_lipids
-  translation: "Lipids"
+  translation: "ไขมัน"
 - id: label_total_cholesterol
-  translation: "Total Cholesterol"
+  translation: "คอเลสเตอรอล"
 - id: screening_dr_assessment
   translation: "DR Assessment"
 - id: option_ungradeable
@@ -217,18 +219,18 @@
 - id: label_drgrading
   translation: "เกรด DR"
 - id: label_dme
-  translation: "DME Assessment"
+  translation: "การประเมินจุดภาพชัดบวมจากเบาหวาน"
 - id: label_other_pathology
-  translation: "Other Pathology Present"
+  translation: "โรคอื่นๆ"
 - id: label_refer
-  translation: "Refer for assessment"
+  translation: "ส่งตัวไปรักษา"
 - id: label_suspected_pathology
-  translation: "Suspected Pathologies"
+  translation: "โรคที่สงสัย"
 # grading scales
 - id: option_ungradeable
-  translation: "Ungradeable"
+  translation: "คุณภาพที่วัดระดับไม่ได้"
 - id: option_normal
-  translation: "Normal"
+  translation: "ปกติ"
 - id: option_mild_npdr
   translation: "NPDR ระดับเบื้องต้น"
 - id: option_mod_npdr
@@ -238,9 +240,9 @@
 - id: option_proliferative_dr
   translation: "PDR"
 - id: option_dme_present
-  translation: "Present"
+  translation: "ปรากฏ"
 - id: option_dme_notpresent
-  translation: "Not Present"
+  translation: "ไม่ปรากฏ"
 - id: option_suspected_glaucoma
   translation: "Glaucoma"
 - id: option_suspected_amd
@@ -249,9 +251,9 @@
   translation: "Other"
 #forms
 - id: form_select_any
-  translation: "Select option"
+  translation: "เลือก"
 - id: field_dr_grading
-  translation: "DR Grading"
+  translation: "ประเมินระยะโรคของภาวะเบาหวานเข้าจอตา"
 - id: field_dme_assessment
   translation: "จุดภาพชัดบวมจากเบาหวาน"
 - id: field_visual_acuity
@@ -271,9 +273,36 @@
 - id: option_gestational_diabetes
   translation: "Gestational Diabetes"
 - id: dr_referral_label
-  translation: "DR Referral Recommendation"
+  translation: "แนะนำให้ส่งตัว"
 - id: field_previous_visual_acuity
-  translation: "Last recorded visual acuity (if available)"
+  translation: "ค่าสายตาล่าสุด(หากมี)"
+# Referral tracking section
+- id: section_referral_tracking
+  translation: "ติดตามการส่งตัวไปรักษาต่อ"
+- id: referral_attended
+  translation: "ส่งตัวไปรักษาต่อ"
+- id: label_attended
+  translation: "เข้าร่วม"
+- id: label_attended_date
+  translation: "วันที่เจ้าร่วม"
+- id: label_referral_plan
+  translation: "แนวทางการรัก"
+- id: label_referral_follow_up_plan
+  translation: "แนวทางการติดตามการรักษา"
+- id: label_additional_notes
+  translation: "ข้อมูลเพิ่มเติม"
+- id: option_referrals_all
+  translation: "All referrals"
+- id: option_referrals_open
+  translation: "Open referrals"
+- id: option_referrals_completed
+  translation: "Completed referrals"
+- id: option_overreading_all
+  translation: "All cases"
+- id: option_overreading_open
+  translation: "Open cases"
+- id: option_overreading_completed
+  translation: "Completed cases"
 # languages
 - id: language_btn_txt
   translation: "Language"

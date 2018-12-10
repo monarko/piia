@@ -4,6 +4,8 @@
 # login specific
 - id: login_greeting
   translation: "Piia <peer> Login"
+- id: login_with_google
+  translation: "Login with Google"
 - id: label_username
   translation: "Username"
 - id: label_email
@@ -292,6 +294,18 @@
   translation: "Follow-up plan"
 - id: label_additional_notes
   translation: "Additional notes"
+- id: option_referrals_all
+  translation: "All referrals"
+- id: option_referrals_open
+  translation: "Open referrals"
+- id: option_referrals_completed
+  translation: "Completed referrals"
+- id: option_overreading_all
+  translation: "All cases"
+- id: option_overreading_open
+  translation: "Open cases"
+- id: option_overreading_completed
+  translation: "Completed cases"
 #language
 - id: language_btn_txt
   translation: "Language"
