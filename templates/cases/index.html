@@ -34,10 +34,7 @@
                                     <%= t("th_screening_date") %>
                                 </th>
                                 <th>
-                                    <%= t("th_completed") %>
-                                </th>
-                                <th>
-                                    <%= t("th_flag") %>
+                                    <%= t("th_status") %>
                                 </th>
                                 <th>
                                     <%= t("th_actions") %>
@@ -52,11 +49,11 @@
                             let pov = ""
                             let flag = psc.DaysAgo()
                             if (flag < 5) {
-                                colorCode = "1E8449"
+                                colorCode = "green"
                             } else if (flag < 7) {
-                                colorCode = "FF5733"
+                                colorCode = "amber"
                             } else {
-                                colorCode = "FF0000"
+                                colorCode = "red"
                             }
 
                             if (len(p.OverReadings) > 0) {
@@ -66,6 +63,9 @@
                             %>
                             <tr>
                                 <td>
+                                    <%= if (len(colorCode) > 0) { %>
+                                    <div class="status-pill <%= colorCode %>" style="color: #<%= colorCode %>;" data-title="Registered" data-toggle="tooltip"></div>
+                                    <% } %>&nbsp;
                                     <%= p.ParticipantID %>
                                 </td>
                                 <td>
@@ -84,11 +84,6 @@
                                     <span><i class="fa fa-check"></i></span>
                                     <% } else { %>
                                     <span><i class="fa fa-times"></i></span>
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <%= if (len(colorCode) > 0) { %>
-                                    <i class="fa fa-flag" style="color: #<%= colorCode %>;"></i>
                                     <% } %>
                                 </td>
                                 <td class="row-actions">

@@ -131,8 +131,8 @@
   translation: "Screening"
 - id: th_overreading
   translation: "Over Reading"
-- id: th_completed
-  translation: "Completed"
+- id: th_status
+  translation: "Status"
 - id: pagination_title
   translation: "Showing"
 - id: pagination_view_label
@@ -206,7 +206,7 @@
 # over-reading index
 - id: page_overreading_title
   translation: "Overreading List"
-# over-readin case
+# over-reading case
 - id: page_overreadcase_title
   translation: "Overread Case"
 - id: section_dr_assessment_header
@@ -250,7 +250,6 @@
   translation: "AMD"
 - id: option_suspected_other
   translation: "Other"
-
 #forms
 - id: form_select_any
   translation: "Select the option"
@@ -278,7 +277,21 @@
   translation: "DR Referral Recommendation"
 - id: field_previous_visual_acuity
   translation: "Last recorded visual acuity (if available)"
-
+# referral tracking
+- id: section_referral_tracking
+  translation: "Track Referral Attendance"
+- id: referral_attended
+  translation: "Referral Attendance"
+- id: label_attended
+  translation: "Attended?"
+- id: label_attended_date
+  translation: "Date attended"
+- id: label_referral_plan
+  translation: "Management Plan"
+- id: label_referral_follow_up_plan
+  translation: "Follow-up plan"
+- id: label_additional_notes
+  translation: "Additional notes"
 #language
 - id: language_btn_txt
   translation: "Language"
