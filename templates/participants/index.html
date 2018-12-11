@@ -156,7 +156,7 @@
                                     <% } %>
                                     </div>
                                 </td>
-                                <td class="row-actions" style="text-align: left;">
+                                <td class="row-actions" style="text-align: left; padding-left: .8rem; padding-right: .8rem;">
                                     <div class="row">
                                     <%= if (current_user.Permission.Screening || current_user.Admin) { %>
                                         <%= if (len(p.Screenings) > 0) { %>
@@ -173,7 +173,7 @@
                                         </div>
                                         <% } %>
                                     <% } %>
-                                    <%= if (p.Status == "111" && (current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.Screening)) { %>
+                                    <%= if (current_user.Admin || (p.Status == "111" && (current_user.Permission.StudyCoordinator || current_user.Permission.Screening))) { %>
                                         <div class="action-item col-md-auto">
                                             <a class="btn btn-sm item-btn" href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-sm"></i> <span>View Details</span></a>
                                         </div>

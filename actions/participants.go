@@ -260,22 +260,24 @@ func ParticipantsDetail(c buffalo.Context) error {
 	participantCreatedPm := participant.CreatedAt.Format("pm")
 	participantCreatedMsg := participant.User.Name + " registered the participant"
 
-	screeningCreatedDate := participant.Screenings[0].CreatedAt.Format("2006-01-02")
-	screeningCreatedTime := participant.Screenings[0].CreatedAt.Format("3:04")
-	screeningCreatedPm := participant.Screenings[0].CreatedAt.Format("pm")
-	screeningCreatedMsg := participant.Screenings[0].Screener.Name + " screened the participant"
-
 	userActivities[participantCreatedDate] = append(userActivities[participantCreatedDate], map[string]string{
 		"time": participantCreatedTime,
 		"ampm": participantCreatedPm,
 		"msg":  participantCreatedMsg,
 	})
 
-	userActivities[screeningCreatedDate] = append(userActivities[screeningCreatedDate], map[string]string{
-		"time": screeningCreatedTime,
-		"ampm": screeningCreatedPm,
-		"msg":  screeningCreatedMsg,
-	})
+	if len(participant.Screenings) > 0 {
+		screeningCreatedDate := participant.Screenings[0].CreatedAt.Format("2006-01-02")
+		screeningCreatedTime := participant.Screenings[0].CreatedAt.Format("3:04")
+		screeningCreatedPm := participant.Screenings[0].CreatedAt.Format("pm")
+		screeningCreatedMsg := participant.Screenings[0].Screener.Name + " screened the participant"
+
+		userActivities[screeningCreatedDate] = append(userActivities[screeningCreatedDate], map[string]string{
+			"time": screeningCreatedTime,
+			"ampm": screeningCreatedPm,
+			"msg":  screeningCreatedMsg,
+		})
+	}
 
 	if len(participant.OverReadings) > 0 {
 		overReadCreatedDate := participant.OverReadings[0].CreatedAt.Format("2006-01-02")
@@ -346,13 +348,17 @@ func ParticipantsDetail(c buffalo.Context) error {
 	sort.Strings(keys)
 
 	audits := &models.Audits{}
-	if err := tx.Eager().Where("model_type = ?", "Screening").Where("model_id = ?", participant.Screenings[0].ID).All(audits); err != nil {
-		return c.Error(404, err)
+	if len(participant.Screenings) > 0 {
+		if err := tx.Eager().Where("model_type = ?", "Screening").Where("model_id = ?", participant.Screenings[0].ID).All(audits); err != nil {
+			return c.Error(404, err)
+		}
 	}
 
 	allLogs := &models.SystemLogs{}
-	if err := tx.Eager().Where("resource_id = ?", participant.Screenings[0].ID).Where("resource_type = ?", "screening").All(allLogs); err != nil {
-		return c.Error(404, err)
+	if len(participant.Screenings) > 0 {
+		if err := tx.Eager().Where("resource_id = ?", participant.Screenings[0].ID).Where("resource_type = ?", "screening").All(allLogs); err != nil {
+			return c.Error(404, err)
+		}
 	}
 
 	c.Set("user_activities", userActivities)
