@@ -194,7 +194,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 			"Referral Notification",
 			"This participant should be referred. Please contact to arrange.",
 			"open",
-			string(participant.ParticipantID[0]),
+			string(participant.ParticipantID[1]),
 			user.ID,
 			participant.ID,
 			screening.ID,

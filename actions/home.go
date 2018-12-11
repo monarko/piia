@@ -45,6 +45,7 @@ func HomeHandler(c buffalo.Context) error {
 	}
 	c.Set("users", u)
 
+	// Notifications
 	notifications := &models.Notifications{}
 	var q *pop.Query
 
