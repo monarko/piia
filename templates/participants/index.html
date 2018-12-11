@@ -93,7 +93,7 @@
                                 <th>
                                     <%= t("th_demographics") %>
                                 </th>
-                                <th>
+                                <th style="width: 7%;">
                                     <%= t("th_consented") %>
                                 </th>
                                 <th>
@@ -102,7 +102,7 @@
                                 <th>
                                     <%= t("th_workflow_status") %>
                                 </th>
-                                <th style="width: 20%;">
+                                <th style="width: 25%; text-align: left;">
                                     <%= t("th_actions") %>
                                 </th>
                             </tr>
@@ -156,7 +156,7 @@
                                     <% } %>
                                     </div>
                                 </td>
-                                <td class="row-actions" style="text-align: center;">
+                                <td class="row-actions" style="text-align: left;">
                                     <div class="row">
                                     <%= if (current_user.Permission.Screening || current_user.Admin) { %>
                                         <%= if (len(p.Screenings) > 0) { %>
@@ -164,18 +164,18 @@
                                             <% let statuses = psc.Statuses() %>
                                             <%= if (!statuses.Completed) { %>
                                             <div class="action-item col-md-auto">
-                                                <a class="btn btn-sm btn-gray" href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil fa-sm"></i> <span>Edit Data</span></a>
+                                                <a class="btn btn-sm item-btn" href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil fa-sm"></i> <span>Edit Data</span></a>
                                             </div>
                                             <% } %>
                                         <% } else { %>
                                         <div class="action-item col-md-auto">
-                                            <a class="btn btn-sm btn-info" href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="fa fa-eye fa-sm"></i> <span>Record Data</span></a>
+                                            <a class="btn btn-sm item-btn" href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="fa fa-eye fa-sm"></i> <span>Record Data</span></a>
                                         </div>
                                         <% } %>
                                     <% } %>
                                     <%= if (p.Status == "111" && (current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.Screening)) { %>
                                         <div class="action-item col-md-auto">
-                                            <a class="btn btn-sm btn-warning" href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-sm"></i> <span>View Details</span></a>
+                                            <a class="btn btn-sm item-btn" href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-sm"></i> <span>View Details</span></a>
                                         </div>
                                     <% } %>
                                 </div>

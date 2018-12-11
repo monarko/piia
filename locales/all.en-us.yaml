@@ -97,9 +97,9 @@
   translation: "Confirm that all eligibility criteria are met and that"
 - id: eligibiligy_criteria_checkbox
   translation: "By checking this box, you confirm that (i) the patient is eligible for the study and (ii) has provided informed consent to participate"
-- id: button_enroll
+- id: form_button_enroll
   translation: "Enroll"
-- id: button_enroll_continue
+- id: form_button_enroll_continue
   translation: "Enroll and enter data"
 
 # participant table header labels
