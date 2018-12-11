@@ -33,9 +33,9 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <%= if (len(participant.ParticipantID) == 9) { %>
-                                <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participant.ParticipantID %>">
+                                <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participant.ParticipantID %>" required>
                                 <% } else { %>
-                                    <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participantIDPrefix %>">
+                                    <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participantIDPrefix %>" required>
                                 <% } %>
                             </div>
                         </div>
@@ -48,17 +48,17 @@
                                     <label for=""> <%= t("label_year_birth") %></label>
                                     <div class="date-input">
                                         <%= if (!participant.DOB.GivenDate.IsZero()) { %>
-                                            <input type="text" class="form-control birth_year_field" name="BirthYear" value="<%= participant.DOB.GivenDate.Format("2006") %>" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
+                                            <input required type="text" class="form-control birth_year_field" name="BirthYear" value="<%= participant.DOB.GivenDate.Format("2006") %>" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
                                             <!-- <input class="single-daterange form-control" placeholder="Date of birth" type="date"
                                             name="DOB.GivenDate" value="<%= participant.DOB.GivenDate.Format("2006-01-02") %>"> -->
                                         <% } else { %>
                                             <%= if (t("lang_calendar") == "thai") { %>
-                                                <input type="text" class="form-control birth_year_field" name="BirthYear" value="" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
+                                                <input required type="text" class="form-control birth_year_field" name="BirthYear" value="" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
 
                                                 <!-- <input class="single-daterange form-control" placeholder="Date of birth" type="date"
                                                 name="DOB.GivenDate" value="<%= currentDate("thai") %>"> -->
                                             <% } else { %>
-                                                <input type="text" class="form-control birth_year_field" name="BirthYear" value="" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
+                                                <input required type="text" class="form-control birth_year_field" name="BirthYear" value="" data-inputmask-min="1900" data-inputmask-max="<%= currentDateInFormat(t("lang_calendar"), "2006") %>">
                                                 <!-- <input class="single-daterange form-control" placeholder="Date of birth" type="date"
                                                 name="DOB.GivenDate" value=""> -->
                                             <% } %>
@@ -70,7 +70,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="gender"> <%= t("label_gender") %></label>
-                                    <select class="form-control" name="Gender">
+                                    <select class="form-control" name="Gender" required>
                                         <option value="M" <%= if (participant.Gender == "M") { %> selected <% } %>>
                                             <%= t("gender_option_male") %>
                                         </option>
@@ -93,7 +93,7 @@
                         </div>
                         <hr/>
                         <div class="form-check">
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="Consented"><%= t("eligibiligy_criteria_checkbox") %></label>
+                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="Consented" required><%= t("eligibiligy_criteria_checkbox") %></label>
                         </div>
                     </fieldset>
                     <div class="form-buttons-w">
