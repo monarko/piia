@@ -97,10 +97,10 @@
   translation: "ยืนยันว่าเข้าเกณฑ์การร่วมวิจัย"
 - id: eligibiligy_criteria_checkbox
   translation: "ผู้ป่วยรายนี้ได้ยินยอมและเซ็นหนังสือแสดงความยินยอม"
-- id: button_enroll
-  translation: "Enroll"
-- id: button_enroll_continue
-  translation: "Enroll and enter data"
+- id: form_button_enroll
+  translation: "ลงทะเบียน"
+- id: form_button_enroll_continue
+  translation: "ลงทะเบียน and enter data"
 # participant table header labels
 - id: th_participant_id
   translation: "หมายเลขผู้เข้าร่วม"
@@ -230,13 +230,13 @@
 - id: option_ungradeable
   translation: "คุณภาพที่วัดระดับไม่ได้"
 - id: option_normal
-  translation: "ปกติ"
+  translation: "Normal"
 - id: option_mild_npdr
-  translation: "NPDR ระดับเบื้องต้น"
+  translation: "Mild NPDR"
 - id: option_mod_npdr
-  translation: "NPDR ระดับปานกลาง"
+  translation: "Moderate NPDR"
 - id: option_severe_npdr
-  translation: "NPDR ระดับรุนแรง "
+  translation: "Severe NPDR"
 - id: option_proliferative_dr
   translation: "PDR"
 - id: option_dme_present
