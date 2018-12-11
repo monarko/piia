@@ -149,7 +149,7 @@
   translation: "50"
 # screening encounter
 - id: screening_header
-  translation: "New Screeing Encounter"
+  translation: "New Screening Encounter"
 - id: screening_form_header
   translation: "Record data for participant"
 - id: screening_medical_history

@@ -214,13 +214,8 @@
                                                         <input class="form-control" placeholder="Select date" type="date"
                                                         name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= Measurements.BloodPressure.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                     <% } else { %>
-                                                        <%= if (t("lang_calendar") == "thai") { %>
-                                                            <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
-                                                        <% } else { %>
-                                                            <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="">
-                                                        <% } %>
+                                                        <input class="form-control" placeholder="Select date" type="date"
+                                                        name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= currentDate(t("lang_calendar")) %>">
                                                     <% } %>
                                                 </div>
                                                 <input type="hidden" name="Measurements.BloodPressure.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
@@ -262,13 +257,8 @@
                                                                 <input class="form-control" placeholder="Select date" type="date"
                                                                 name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                             <% } else { %>
-                                                                <%= if (t("lang_calendar") == "thai") { %>
-                                                                    <input class="form-control" placeholder="Select date" type="date"
-                                                                    name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
-                                                                <% } else { %>
-                                                                    <input class="form-control" placeholder="Select date" type="date"
-                                                                    name="Pathology.HbA1C.AssessmentDate.GivenDate" value="">
-                                                                <% } %>
+                                                                <input class="form-control" placeholder="Select date" type="date"
+                                                                name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= currentDate(t("lang_calendar")) %>">
                                                             <% } %>
                                                         </div>
                                                         <input type="hidden" name="Pathology.HbA1C.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
@@ -346,13 +336,8 @@
                                                             <input class="form-control" placeholder="Select date" type="date"
                                                             name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= Pathology.Lipids.AssessmentDate.GivenDate.Format("2006-01-02") %>">
                                                         <% } else { %>
-                                                            <%= if (t("lang_calendar") == "thai") { %>
-                                                                <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= currentDate("thai") %>">
-                                                            <% } else { %>
-                                                                <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.Lipids.AssessmentDate.GivenDate" value="">
-                                                            <% } %>
+                                                            <input class="form-control" placeholder="Select date" type="date"
+                                                            name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= currentDate(t("lang_calendar")) %>">
                                                         <% } %>
                                                     </div>
                                                     <input type="hidden" name="Pathology.Lipids.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
