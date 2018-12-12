@@ -308,11 +308,11 @@
                                                                 <div class="form-group">
                                                                     <label for="Total cholesterol"><%= t("label_total_cholesterol") %></label>
                                                                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                                                                        <input class="form-control" placeholder="" type="text"
-                                                                            name="Pathology.Lipids.TotalCholesterol" value="<%= if (screening.Pathology.Lipids.TotalCholesterol.Valid) { %><%= screening.Pathology.Lipids.TotalCholesterol.Float64 %><% } %>" />
+                                                                        <input class="form-control" placeholder="" type="number"
+                                                                            name="Pathology.Lipids.TotalCholesterol" step="1.0" min="30.0" max="600.0" value="<%= if (screening.Pathology.Lipids.TotalCholesterol.Valid) { %><%= screening.Pathology.Lipids.TotalCholesterol.Float64 %><% } %>" />
                                                                         <div class="input-group-append">
                                                                             <div class="input-group-text">
-                                                                                mmol/L
+                                                                                mg/dL
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -362,7 +362,7 @@
                                                             </div>
                                                         </div>
                                                     </div>-->
-                                                    <input type="hidden" name="Pathology.Lipids.Unit" value="mmol/L">
+                                                    <input type="hidden" name="Pathology.Lipids.Unit" value="mg/dL">
                                                     <div class="col-sm-6 ml-auto">
                                                         <div class="form-group">
                                                             <label for=""><%= t("label_date_of_assessment") %></label>
@@ -607,6 +607,14 @@
                                                     </div>
                                                 </div>
                                             </div> <!-- /referral row -->
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group" style="margin-top: 1rem;">
+                                                        <label for="referral-notes"><%= t("label_additional_notes") %></label>
+                                                        <textarea name="Referral.Notes" id="referral-notes" rows="6" class="form-control"><%= screening.Referral.Notes %></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                     </div>
