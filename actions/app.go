@@ -103,6 +103,7 @@ func App() *buffalo.App {
 		screenings.POST("/edit/{sid}", ScreeningsEditPost).Name("participantScreeningsEditPath")
 
 		overReadings := screenings.Group("/{sid}/overreadings")
+		overReadings.Middleware.Skip(ScreeningPermissionRequired, OverReadingsCreateGet, OverReadingsCreatePost)
 		overReadings.Use(OverReadingPermissionRequired)
 		// overReadings.GET("/index", OverReadingsIndex)
 		overReadings.GET("/create", OverReadingsCreateGet)
