@@ -8,10 +8,9 @@
                 <%= if (current_user.Admin || current_user.Permission.Screening) { %>
                 <div class="element-actions">
                     <a class="btn btn-primary btn-md" href="<%= participantsCreatePath() %>" role="button"><%= t("button_enroll") %></a>
-                    <% } %>
                 </div>
                 <% } %>
-                <!-- controls above table -->
+                
                 <div class="controls-above-table">
                     <div class="row">
                         <div class="col-sm-12">
@@ -102,9 +101,18 @@
                                 <th>
                                     <%= t("th_workflow_status") %>
                                 </th>
+                                <%= if (current_user.Permission.StudyCoordinator) { %>
+                                <th>
+                                    Screener Referral
+                                </th>
+                                <th>
+                                    Over Reader Referral
+                                </th>
+                                <% } else { %>
                                 <th style="width: 25%; text-align: left;">
                                     <%= t("th_actions") %>
                                 </th>
+                                <% } %>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,7 +122,11 @@
                                     <input class="form-control" type="checkbox">
                                 </td>-->
                                 <td class="text-center">
+                                    <%= if (current_user.Permission.StudyCoordinator) { %>
+                                    <a href="<%= participantPath({pid: p.ID}) %>" title="<%= p.ParticipantID %>"><%= p.ParticipantID %></a>
+                                    <% } else { %>
                                     <%= p.ParticipantID %>
+                                    <% } %>
                                 </td>
                                 <td class="text-center">
                                     <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
@@ -156,6 +168,28 @@
                                     <% } %>
                                     </div>
                                 </td>
+                                <%= if (current_user.Permission.StudyCoordinator) { %>
+                                <th>
+                                    <%= if (len(p.Screenings) > 0) { %>
+                                        <% let psc = p.Screenings[0] %>
+                                        <%= if (psc.Referral.Referred) { %>
+                                            <span class="badge badge-success">Yes</span>
+                                        <% } else { %>
+                                            <span class="badge badge-danger">No</span>
+                                        <% } %>
+                                    <% } %>
+                                </th>
+                                <th>
+                                    <%= if (len(p.OverReadings) > 0) { %>
+                                        <% let pov = p.OverReadings[0] %>
+                                        <%= if (pov.Referral.Referred) { %>
+                                            <span class="badge badge-success">Yes</span>
+                                        <% } else { %>
+                                            <span class="badge badge-danger">No</span>
+                                        <% } %>
+                                    <% } %>
+                                </th>
+                                <% } else { %>
                                 <td class="row-actions" style="text-align: left; padding-left: .8rem; padding-right: .8rem;">
                                     <div class="row">
                                     <%= if (current_user.Permission.Screening || current_user.Admin) { %>
@@ -180,6 +214,7 @@
                                     <% } %>
                                 </div>
                                 </td>
+                                <% } %>
                             </tr>
                             <% } %>
                         </tbody>

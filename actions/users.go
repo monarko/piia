@@ -16,7 +16,7 @@ func UsersIndex(c buffalo.Context) error {
 	users := &models.Users{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
-	q := tx.PaginateFromParams(c.Params())
+	q := tx.PaginateFromParams(c.Params()).Order("created_at DESC")
 	// Retrieve all Posts from the DB
 	if err := q.All(users); err != nil {
 		return errors.WithStack(err)

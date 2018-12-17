@@ -63,13 +63,13 @@ func ReferralsIndex(c buffalo.Context) error {
 	c.Set("search", "")
 	if len(ids) > 0 {
 		if len(c.Param("search")) > 0 {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status LIKE ?", "1%").Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at ASC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status LIKE ?", "1%").Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at DESC")
 			c.Set("search", c.Param("search"))
 		} else {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at ASC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
 		}
 	} else {
-		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at ASC")
+		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
 	}
 
 	// Retrieve all Posts from the DB

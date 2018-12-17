@@ -31,6 +31,7 @@ type Screening struct {
 	Participant    Participant                   `belongs_to:"participant" json:"-"`
 	ParticipantID  uuid.UUID                     `json:"-" db:"participant_id"`
 	Notifications  Notifications                 `has_many:"notifications" json:"-"`
+	OverReadings   OverReadings                  `has_many:"over_readings" json:"-"`
 }
 
 // String is not required by pop and may be deleted

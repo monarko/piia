@@ -17,7 +17,7 @@ func ScreeningsIndex(c buffalo.Context) error {
 	c.Set("participant", participant)
 
 	screenings := &models.Screenings{}
-	q := tx.Eager("Screener").Where("participant_id = ?", c.Param("pid")).PaginateFromParams(c.Params()).Order("created_at ASC")
+	q := tx.Eager("Screener").Where("participant_id = ?", c.Param("pid")).PaginateFromParams(c.Params()).Order("created_at DESC")
 	// Retrieve all Screenings from the DB
 	if err := q.All(screenings); err != nil {
 		return errors.WithStack(err)

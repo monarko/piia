@@ -28,7 +28,7 @@ func OverReadingsIndex(c buffalo.Context) error {
 	c.Set("participant", participant)
 
 	overReadings := &models.OverReadings{}
-	q := tx.Eager("OverReader").Where("participant_id = ?", c.Param("pid")).PaginateFromParams(c.Params()).Order("created_at ASC")
+	q := tx.Eager("OverReader").Where("participant_id = ?", c.Param("pid")).PaginateFromParams(c.Params()).Order("created_at DESC")
 	// Retrieve all OverReadings from the DB
 	if err := q.All(overReadings); err != nil {
 		return errors.WithStack(err)
@@ -126,27 +126,27 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	c.Set("leftEyeLink", left)
 	c.Set("rightEyeLink", right)
 
-	shouldBeRefer := shouldBeReferred(overReading)
-	if shouldBeRefer && !overReading.Referral.Referred {
-		c.Set("participant", participant)
-		c.Set("screening", screening)
-		c.Set("overReading", overReading)
+	// shouldBeRefer := shouldBeReferred(overReading)
+	// if shouldBeRefer && !overReading.Referral.Referred {
+	// 	c.Set("participant", participant)
+	// 	c.Set("screening", screening)
+	// 	c.Set("overReading", overReading)
 
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Cases"] = "/cases/index"
-		// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-		breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
-		c.Set("breadcrumbMap", breadcrumbMap)
+	// 	breadcrumbMap := make(map[string]interface{})
+	// 	breadcrumbMap["Cases"] = "/cases/index"
+	// 	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
+	// 	breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
+	// 	c.Set("breadcrumbMap", breadcrumbMap)
 
-		errs := make(map[string][]string)
-		errs["a"] = []string{"Participant meets the referral criteria. Please consider for referral"}
-		//errs["b"] = []string{"DR is Ungradable, Moderate or Severe"}
-		//errs["c"] = []string{"DME is Present"}
+	// 	errs := make(map[string][]string)
+	// 	errs["a"] = []string{"Participant meets the referral criteria. Please consider for referral"}
+	// 	//errs["b"] = []string{"DR is Ungradable, Moderate or Severe"}
+	// 	//errs["c"] = []string{"DME is Present"}
 
-		c.Set("errors", errs)
+	// 	c.Set("errors", errs)
 
-		return c.Render(422, r.HTML("over_readings/create.html"))
-	}
+	// 	return c.Render(422, r.HTML("over_readings/create.html"))
+	// }
 
 	verrs, err := tx.ValidateAndCreate(overReading)
 	if err != nil {

@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for=""><%= t("label_drgrading") %></label>
-                                            <select class="form-control" name="Eyes.RightEye.DRGrading">
+                                            <select class="form-control" name="Eyes.RightEye.DRGrading" required>
                                                 <option value="">
                                                     <%= t("form_select_any") %>
                                                 </option>
@@ -107,7 +107,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for=""><%= t("label_drgrading") %></label>
-                                            <select class="form-control" name="Eyes.LeftEye.DRGrading">
+                                            <select class="form-control" name="Eyes.LeftEye.DRGrading" required>
                                                 <option value="">
                                                     <%= t("form_select_any") %>
                                                 </option>
@@ -191,13 +191,21 @@
                                     <div class="radio-button">
                                         <label class="form-check-label"><input class="form-check-input"
                                                 name="referral" type="radio"
-                                                value="yes" <%= if (overReading.Referral.Referred) { %> checked <% } %>><%= t("option_yes") %></label>
+                                                value="yes"><%= t("option_yes") %></label>
                                     </div>
                                     <div class="radio-button">
                                         <label class="form-check-label"><input class="form-check-input"
                                                 name="referral" type="radio"
-                                                value="no" <%= if (!overReading.Referral.Referred) { %> checked <% } %>><%= t("option_no") %></label>
+                                                value="no"><%= t("option_no") %></label>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="margin-top: 1rem;">
+                                    <label for="referral-notes"><%= t("label_additional_notes") %></label>
+                                    <textarea name="Referral.Notes" id="referral-notes" rows="6" class="form-control"><%= overReading.Referral.Notes %></textarea>
                                 </div>
                             </div>
                         </div>
