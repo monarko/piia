@@ -162,10 +162,27 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>JSON Data</label>
-                    <textarea class="form-control" rows="15" id="screening-json-data" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'>
-                        <%= participant.Screenings %>
-                    </textarea>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Attribute</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= if (len(participant.Screenings) > 0) { %>
+                                <% let psc = participant.Screenings[0] %>
+                                <tr>
+                                    <td>ID</td>
+                                    <td><%= psc.ID %></td>
+                                </tr>
+                            <% } else { %>
+                            <tr>
+                                <td colspan="2" class="text-center">No data found</td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -188,10 +205,27 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>JSON Data</label>
-                    <textarea class="form-control" rows="15" id="overread-json-data" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'>
-                        <%= participant.OverReadings %>
-                    </textarea>
+                        <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Attribute</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%= if (len(participant.OverReadings) > 0) { %>
+                                        <% let pov = participant.OverReadings[0] %>
+                                        <tr>
+                                            <td>ID</td>
+                                            <td><%= pov.ID %></td>
+                                        </tr>
+                                    <% } else { %>
+                                    <tr>
+                                        <td colspan="2" class="text-center">No data found</td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
                 </div>
             </div>
         </div>
@@ -214,10 +248,27 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>JSON Data</label>
-                    <textarea class="form-control" rows="15" id="referrals-json-data" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'>
-                        <%= participant.Referrals %>
-                    </textarea>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%= if (len(participant.Referrals) > 0) { %>
+                                    <% let prf = participant.Referrals[0] %>
+                                    <tr>
+                                        <td>ID</td>
+                                        <td><%= prf.ID %></td>
+                                    </tr>
+                                <% } else { %>
+                                <tr>
+                                    <td colspan="2" class="text-center">No data found</td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
                 </div>
             </div>
         </div>
