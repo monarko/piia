@@ -352,3 +352,55 @@ func getImage(participantID string) (string, string, error) {
 
 	return right, left, nil
 }
+
+// OverReadingsDetails renders the form for creating a new OverReading.
+func OverReadingsDetails(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Eager("Screenings").Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	screening := participant.Screenings[0]
+	c.Set("participant", participant)
+	c.Set("screening", screening)
+	overReadings := &models.OverReading{}
+	if err := tx.Eager().Find(overReadings, c.Param("oid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("overReading", overReadings)
+
+	// images
+	// response, err := http.Get("http://localhost:8080/" + participant.ParticipantID)
+	// if err != nil {
+	// 	// If there are no errors set a success message
+	// 	c.Flash().Add("danger", "Error from the image server")
+
+	// 	return c.Redirect(302, "/cases/index")
+	// }
+	// defer response.Body.Close()
+	// data, _ := ioutil.ReadAll(response.Body)
+	// respData := map[string]string{}
+	// uerr := json.Unmarshal(data, &respData)
+	// if uerr != nil {
+	// 	// If there are no errors set a success message
+	// 	c.Flash().Add("danger", "Error from the image server")
+
+	// 	return c.Redirect(302, "/cases/index")
+	// }
+
+	right, left, err := getImage(participant.ParticipantID)
+	if err != nil {
+		left = ""
+		right = ""
+	}
+
+	c.Set("leftEyeLink", left)
+	c.Set("rightEyeLink", right)
+
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Cases"] = "/cases/index"
+	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
+	breadcrumbMap["Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/" + c.Param("oid")
+	c.Set("breadcrumbMap", breadcrumbMap)
+	return c.Render(200, r.HTML("over_readings/details.html"))
+}

@@ -116,7 +116,6 @@ func UsersLogout(c buffalo.Context) error {
 		return errors.WithStack(logErr)
 	}
 	c.Session().Clear()
-	c.Flash().Add("success", "Goodbye!")
 	return c.Redirect(302, "/")
 }
 

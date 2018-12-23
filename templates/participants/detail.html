@@ -176,6 +176,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th style="text-align: left;">Right Eye</th>
                                 <th style="text-align: left;">Left Eye</th>
                             </tr>
@@ -184,23 +185,37 @@
                             <%= if (len(participant.Screenings) > 0) { %>
                                 <%= for (psc) in participant.Screenings { %>
                                 <tr>
-                                    <td style="text-align: left;">
-                                        <%= t("field_visual_acuity") %>: <%= psc.Eyes.RightEye.VisualAcuity %> <br>
-                                        <%= t("field_last_visual_acuity") %>: <%= psc.Eyes.RightEye.LastVisualAcuity %> <br>
-                                        <%= t("field_dr_grading") %>: <%= psc.Eyes.RightEye.DRGrading %> <br>
-                                        <%= t("field_dme_assessment") %>: <%= psc.Eyes.RightEye.DMEAssessment %>
-                                    </td>
-                                    <td style="text-align: left;">
-                                        <%= t("field_visual_acuity") %>: <%= psc.Eyes.LeftEye.VisualAcuity %> <br>
-                                        <%= t("field_last_visual_acuity") %>: <%= psc.Eyes.LeftEye.LastVisualAcuity %> <br>
-                                        <%= t("field_dr_grading") %>: <%= psc.Eyes.LeftEye.DRGrading %> <br>
-                                        <%= t("field_dme_assessment") %>: <%= psc.Eyes.LeftEye.DMEAssessment %>
-                                    </td>
+                                    <td style="text-align: left;"><%= t("field_visual_acuity") %></td>
+                                    <td style="text-align: left;"><%= psc.Eyes.RightEye.VisualAcuity %></td>
+                                    <td style="text-align: left;"><%= psc.Eyes.LeftEye.VisualAcuity %></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;"><%= t("field_last_visual_acuity") %></td>
+                                    <td style="text-align: left;"><%= psc.Eyes.RightEye.LastVisualAcuity %></td>
+                                    <td style="text-align: left;"><%= psc.Eyes.LeftEye.LastVisualAcuity %></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;"><%= t("field_dr_grading") %></td>
+                                    <td style="text-align: left;"><%= psc.Eyes.RightEye.DRGrading %></td>
+                                    <td style="text-align: left;"><%= psc.Eyes.LeftEye.DRGrading %></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;"><%= t("field_dme_assessment") %></td>
+                                    <td style="text-align: left;"><%= psc.Eyes.RightEye.DMEAssessment %></td>
+                                    <td style="text-align: left;"><%= psc.Eyes.LeftEye.DMEAssessment %></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;"><%= t("section_referral_header") %></td>
+                                    <td style="text-align: left;" colspan="2"><%= if (psc.Referral.Referred) { %>Yes <% } else { %>No <% } %></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;"><%= t("label_additional_notes") %></td>
+                                    <td style="text-align: left;" colspan="2"><%= psc.Referral.Notes %></td>
                                 </tr>
                                 <% } %>
                             <% } else { %>
                             <tr>
-                                <td colspan="2" class="text-center">No data found</td>
+                                <td colspan="3" class="text-center">No data found</td>
                             </tr>
                             <% } %>
                         </tbody>
@@ -230,6 +245,7 @@
                         <table class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th style="text-align: left;">Right Eye</th>
                                         <th style="text-align: left;">Left Eye</th>
                                     </tr>
@@ -238,19 +254,32 @@
                                     <%= if (len(participant.OverReadings) > 0) { %>
                                         <%= for (pov) in participant.OverReadings { %>
                                         <tr>
-                                            <td style="text-align: left;">
-                                                <%= t("field_dr_grading") %>: <%= pov.Eyes.RightEye.DRGrading %> <br>
-                                                <%= t("field_dme_assessment") %>: <%= pov.Eyes.RightEye.DMEAssessment %>
-                                            </td>
-                                            <td style="text-align: left;">
-                                                <%= t("field_dr_grading") %>: <%= pov.Eyes.LeftEye.DRGrading %> <br>
-                                                <%= t("field_dme_assessment") %>: <%= pov.Eyes.LeftEye.DMEAssessment %>
-                                            </td>
+                                            <td style="text-align: left;"><%= t("field_dr_grading") %></td>
+                                            <td style="text-align: left;"><%= pov.Eyes.RightEye.DRGrading %></td>
+                                            <td style="text-align: left;"><%= pov.Eyes.LeftEye.DRGrading %></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left;"><%= t("field_dme_assessment") %></td>
+                                            <td style="text-align: left;"><%= pov.Eyes.RightEye.DMEAssessment %></td>
+                                            <td style="text-align: left;"><%= pov.Eyes.LeftEye.DMEAssessment %></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left;"><%= t("label_suspected_pathology") %></td>
+                                            <td style="text-align: left;"><%= if (len(pov.Eyes.RightEye.SuspectedPathologies) > 0) { json(pov.Eyes.RightEye.SuspectedPathologies) } %></td>
+                                            <td style="text-align: left;"><%= if (len(pov.Eyes.LeftEye.SuspectedPathologies) > 0) { json(pov.Eyes.LeftEye.SuspectedPathologies) } %></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left;"><%= t("section_referral_header") %></td>
+                                            <td style="text-align: left;" colspan="2"><%= if (pov.Referral.Referred) { %>Yes <% } else { %>No <% } %></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: left;"><%= t("label_additional_notes") %></td>
+                                            <td style="text-align: left;" colspan="2"><%= pov.Referral.Notes %></td>
                                         </tr>
                                         <% } %>
                                     <% } else { %>
                                     <tr>
-                                        <td colspan="2" class="text-center">No data found</td>
+                                        <td colspan="3" class="text-center">No data found</td>
                                     </tr>
                                     <% } %>
                                 </tbody>
@@ -296,7 +325,8 @@
                                             Attended: <%= prf.ReferralData.Attended %><br>
                                             Plans: <%= json(prf.ReferralData.Plans) %><br><br>
                                             Referred for Treatment: <%= prf.ReferralData.ReferredForTreatment %><br>
-                                            Follow Up Plan: <%= prf.ReferralData.FollowUpPlan %>
+                                            Follow Up Plan: <%= prf.ReferralData.FollowUpPlan %><br>
+                                            Message: <%= prf.Message %>
                                         </td>
                                     </tr>
                                     <% } %>

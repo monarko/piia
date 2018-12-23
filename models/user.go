@@ -97,7 +97,7 @@ func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 	valids = append(valids, &validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirm, Message: "Passwords do not match."})
 	valids = append(valids, &EmailNotTaken{Name: "Email", Field: u.Email, tx: tx})
 
-	if u.Permission.Screening {
+	if u.Permission.Screening && !u.Permission.StudyCoordinator && !u.Admin && !u.Permission.ReferralTracker && !u.Permission.OverRead {
 		valids = append(valids, &validators.StringIsPresent{Field: u.Site, Name: "Site"})
 	}
 
@@ -113,7 +113,7 @@ func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	valids = append(valids, &validators.EmailIsPresent{Name: "Email", Field: u.Email})
 	valids = append(valids, &validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirm, Message: "Passwords do not match."})
 
-	if u.Permission.Screening {
+	if u.Permission.Screening && !u.Permission.StudyCoordinator && !u.Admin && !u.Permission.ReferralTracker && !u.Permission.OverRead {
 		valids = append(valids, &validators.StringIsPresent{Field: u.Site, Name: "Site"})
 	}
 

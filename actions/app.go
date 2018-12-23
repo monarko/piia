@@ -91,7 +91,7 @@ func App() *buffalo.App {
 
 		cases := app.Group("/cases")
 		cases.Use(LoginRequired)
-		cases.Use(OverReadingPermissionRequired)
+		// cases.Use(OverReadingPermissionRequired)
 		cases.GET("/index", CasesIndex)
 
 		screenings := participants.Group("/{pid}/screenings")
@@ -105,9 +105,9 @@ func App() *buffalo.App {
 		overReadings := screenings.Group("/{sid}/overreadings")
 		overReadings.Middleware.Skip(ScreeningPermissionRequired, OverReadingsCreateGet, OverReadingsCreatePost)
 		overReadings.Use(OverReadingPermissionRequired)
-		// overReadings.GET("/index", OverReadingsIndex)
 		overReadings.GET("/create", OverReadingsCreateGet)
 		overReadings.POST("/create", OverReadingsCreatePost)
+		overReadings.GET("/{oid}", OverReadingsDetails)
 
 		screenings.POST("/{sid}/appointmentdone", UpdateReferredMessage).Name("participantsAppointmentPath")
 

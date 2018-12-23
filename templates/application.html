@@ -54,7 +54,7 @@
                         </li>
                         <% } %>
 
-                        <%= if (current_user.Admin || current_user.Permission.OverRead || current_user.Permission.StudyCoordinator) { %>
+                        <%= if (!current_user.Permission.Screening || current_user.Admin || current_user.Permission.ReferralTracker || current_user.Permission.StudyCoordinator || current_user.Permission.OverRead) { %>
                         <li class="">
                             <a href="<%= casesIndexPath() %>">
                                 <div class="icon-w">

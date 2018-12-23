@@ -76,7 +76,7 @@
                                 <td style="text-align: left;">
                                     <%= p.ParticipantID %>
                                     <%= if (len(colorCode) > 0) { %>
-                                    <div class="status-pill <%= colorCode %>" style="color: #<%= colorCode %>; margin-left: 5px" data-title="Registered" data-toggle="tooltip"></div>
+                                    <div class="status-pill <%= colorCode %>" style="color: #<%= colorCode %>; margin-left: 5px;" data-title="Registered" data-toggle="tooltip"></div>
                                     <% } %>
                                 </td>
                                 <td>
@@ -101,6 +101,12 @@
                                     <%= if (p.Status == "11" && (current_user.Permission.OverRead || current_user.Admin)) { %>
                                         <% let s = p.Screenings[0] %>
                                     <a class="btn btn-sm btn-warning" href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> Review Case</a>
+                                    <% } else { %>
+                                        <%= if (len(p.OverReadings) > 0) { %>
+                                        <% let s = p.Screenings[0] %>
+                                        <% let o = p.OverReadings[0] %>
+                                        <a class="btn btn-sm btn-warning" href="<%= participantScreeningOverreadingPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> View</a>
+                                        <% } %>
                                     <% } %>
                                 </td>
                             </tr>
