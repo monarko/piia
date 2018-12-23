@@ -12,9 +12,9 @@ import (
 
 // DiabetesScreening model
 type DiabetesScreening struct {
-	DiabetesType nulls.String `json:"diabetes_type"`
-	Duration     nulls.Int    `json:"duration"`
-	DurationType nulls.String `json:"duration_type"`
+	DiabetesType nulls.String  `json:"diabetes_type"`
+	Duration     nulls.Float64 `json:"duration"`
+	DurationType nulls.String  `json:"duration_type"`
 }
 
 // Value returns database driver compatible type

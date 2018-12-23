@@ -279,6 +279,8 @@
   translation: "DR Referral Recommendation"
 - id: field_previous_visual_acuity
   translation: "Last recorded visual acuity (if available)"
+- id: field_last_visual_acuity
+  translation: "Last visual acuity"
 # referral tracking
 - id: section_referral_tracking
   translation: "Track Referral Attendance"
@@ -317,3 +319,29 @@
   translation: "বাংলা"
 - id: lang_calendar
   translation: "gregorian"
+#notification
+- id: label_notification_modal
+  translation: "Change status"
+- id: notification_status_open
+  translation: "Open"
+- id: notification_status_nurse_notified
+  translation: "Nurse notified"
+- id: notification_status_patient_contacted
+  translation: "Patient contacted"
+- id: notification_status_referral_arranged
+  translation: "Referral arranged"
+- id: notification_status_closed
+  translation: "Closed"
+- id: label_status
+  translation: "Status"
+- id: label_event_date
+  translation: "Date of Event"
+# Reports Page
+- id: page_reports_title
+  translation: "Reports"
+- id: nav_reports
+  translation: "Reports"
+- id: table_header_screener_referral
+  translation: "Screener Referral"
+- id: table_header_overreader_referral
+  translation: "Over Reader Referral"

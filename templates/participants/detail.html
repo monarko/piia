@@ -90,7 +90,7 @@
                 </div>
                 <div class="todo-list">
                     <%= for (notification) in open_notifications { %>
-                    <a class="todo-item" href="#" data-target=".<%= notification.ID %>-modal-sm" data-toggle="modal">
+                    <a class="todo-item" href="#" data-target=".<%= notification.ID %>-modal-lg" data-toggle="modal">
                         <div class="ti-info">
                             <div class="ti-header">
                                 <%= notification.Type %> (
@@ -105,13 +105,13 @@
                             <i class="os-icon os-icon-arrow-right7"></i>
                         </div>
                     </a>
-                    <div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade <%= notification.ID %>-modal-sm"
+                    <div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade <%= notification.ID %>-modal-lg"
                         role="dialog" tabindex="-1">
-                        <div class="modal-dialog modal-sm">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">
-                                        Change Status
+                                        <%= t("label_notification_modal") %>
                                     </h5>
                                     <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
                                             aria-hidden="true"> &times;</span></button>
@@ -120,19 +120,30 @@
                                     <div class="modal-body">
                                         <%= csrf() %>
                                         <div class="form-group">
-                                            <label for=""> Status</label>
+                                            <label for="status"><%= t("label_status") %></label>
                                             <select name="status" class="form-control">
-                                                <option value="open">Open</option>
-                                                <option value="contacted">Will get back</option>
-                                                <option value="no-reach">Couldn't reach</option>
-                                                <option value="closed">Closed</option>
+                                                <option value="open"><%= t("notification_status_open") %></option>
+                                                <option value="nurse-notified"><%= t("notification_status_nurse_notified") %></option>
+                                                <option value="patient-contacted"><%= t("notification_status_patient_contacted") %></option>
+                                                <option value="referral-arranged"><%= t("notification_status_referral_arranged") %></option>
+                                                <option value="closed"><%= t("notification_status_closed") %></option>
                                             </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="eventDate"><%= t("label_event_date") %></label>
+                                            <input class="form-control" placeholder="Select date" type="date"
+                                                name="eventDate" value="<%= currentDate(t("lang_calendar")) %>">
+                                            <input type="hidden" name="eventDateLanguage" value="<%= t("lang_calendar") %>">
+                                        </div>
+                                        <div class="form-group" style="margin-top: 1rem;">
+                                            <label for="notes"><%= t("label_additional_notes") %></label>
+                                            <textarea name="notes" id="notes" rows="6" class="form-control"></textarea>
                                         </div>
                                         <input type="hidden" name="notificationId" value="<%= notification.ID %>">
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" data-dismiss="modal" type="button"> Close</button>
-                                        <button class="btn btn-primary" type="submit"> Save changes</button>
+                                        <button class="btn btn-secondary" data-dismiss="modal" type="button"><%= t("button_cancel") %></button>
+                                        <button class="btn btn-primary" type="submit"><%= t("button_submit") %></button>
                                     </div>
                                 </form>
                             </div>
@@ -165,17 +176,28 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Attribute</th>
-                                <th>Value</th>
+                                <th style="text-align: left;">Right Eye</th>
+                                <th style="text-align: left;">Left Eye</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%= if (len(participant.Screenings) > 0) { %>
-                                <% let psc = participant.Screenings[0] %>
+                                <%= for (psc) in participant.Screenings { %>
                                 <tr>
-                                    <td>ID</td>
-                                    <td><%= psc.ID %></td>
+                                    <td style="text-align: left;">
+                                        <%= t("field_visual_acuity") %>: <%= psc.Eyes.RightEye.VisualAcuity %> <br>
+                                        <%= t("field_last_visual_acuity") %>: <%= psc.Eyes.RightEye.LastVisualAcuity %> <br>
+                                        <%= t("field_dr_grading") %>: <%= psc.Eyes.RightEye.DRGrading %> <br>
+                                        <%= t("field_dme_assessment") %>: <%= psc.Eyes.RightEye.DMEAssessment %>
+                                    </td>
+                                    <td style="text-align: left;">
+                                        <%= t("field_visual_acuity") %>: <%= psc.Eyes.LeftEye.VisualAcuity %> <br>
+                                        <%= t("field_last_visual_acuity") %>: <%= psc.Eyes.LeftEye.LastVisualAcuity %> <br>
+                                        <%= t("field_dr_grading") %>: <%= psc.Eyes.LeftEye.DRGrading %> <br>
+                                        <%= t("field_dme_assessment") %>: <%= psc.Eyes.LeftEye.DMEAssessment %>
+                                    </td>
                                 </tr>
+                                <% } %>
                             <% } else { %>
                             <tr>
                                 <td colspan="2" class="text-center">No data found</td>
@@ -208,17 +230,24 @@
                         <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Attribute</th>
-                                        <th>Value</th>
+                                        <th style="text-align: left;">Right Eye</th>
+                                        <th style="text-align: left;">Left Eye</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <%= if (len(participant.OverReadings) > 0) { %>
-                                        <% let pov = participant.OverReadings[0] %>
+                                        <%= for (pov) in participant.OverReadings { %>
                                         <tr>
-                                            <td>ID</td>
-                                            <td><%= pov.ID %></td>
+                                            <td style="text-align: left;">
+                                                <%= t("field_dr_grading") %>: <%= pov.Eyes.RightEye.DRGrading %> <br>
+                                                <%= t("field_dme_assessment") %>: <%= pov.Eyes.RightEye.DMEAssessment %>
+                                            </td>
+                                            <td style="text-align: left;">
+                                                <%= t("field_dr_grading") %>: <%= pov.Eyes.LeftEye.DRGrading %> <br>
+                                                <%= t("field_dme_assessment") %>: <%= pov.Eyes.LeftEye.DMEAssessment %>
+                                            </td>
                                         </tr>
+                                        <% } %>
                                     <% } else { %>
                                     <tr>
                                         <td colspan="2" class="text-center">No data found</td>
@@ -251,17 +280,26 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Attribute</th>
-                                    <th>Value</th>
+                                    <th style="text-align: left;">Time</th>
+                                    <th style="text-align: left;">Message</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <%= if (len(participant.Referrals) > 0) { %>
-                                    <% let prf = participant.Referrals[0] %>
+                                    <%= for (prf) in participant.Referrals { %>
                                     <tr>
-                                        <td>ID</td>
-                                        <td><%= prf.ID %></td>
+                                        <td style="text-align: left;">
+                                            Entry: <%= prf.CreatedAt.Format("2006-01-02") %><br><br>
+                                            Date of attendance: <%= prf.ReferralData.DateOfAttendance.CalculatedDate.Format("2006-01-02") %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            Attended: <%= prf.ReferralData.Attended %><br>
+                                            Plans: <%= json(prf.ReferralData.Plans) %><br><br>
+                                            Referred for Treatment: <%= prf.ReferralData.ReferredForTreatment %><br>
+                                            Follow Up Plan: <%= prf.ReferralData.FollowUpPlan %>
+                                        </td>
                                     </tr>
+                                    <% } %>
                                 <% } else { %>
                                 <tr>
                                     <td colspan="2" class="text-center">No data found</td>

@@ -1,0 +1,1 @@
+drop_column("notifications", "event_date")

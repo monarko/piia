@@ -61,7 +61,7 @@
     </h6>
     <div class="element-box-tp">
         <div class="table-responsive">
-            <table class="table table-padded" id="audit-table">
+            <table class="table table-striped" id="audit-table">
                 <thead>
                     <tr>
                         <th>
@@ -86,6 +86,7 @@
                 </thead>
                 <tbody>
                     <%= for (i, log) in logs { %>
+                    <%= if (downcase(log.Action) != "create") { %> 
                     <tr>
                         <td class="text-center">
                             <a class="badge badge-success-inverted" href="" style="text-transform: uppercase;"><%= log.Action %></a>
@@ -101,12 +102,12 @@
                                 <span class="badge badge-inverted badge-info">
                                     <%= if (log.User.Admin) { %>
                                             <%= t("role_admin") %>
+                                            <% } else if (log.User.Permission.StudyCoordinator) { %>
+                                            <%= t("role_study_coordinator") %>
                                             <% } else if (log.User.Permission.Screening) { %>
                                             <%= t("role_screener") %>
                                             <% } else if (log.User.Permission.OverRead) { %>
                                             <%= t("role_reader") %>
-                                            <% } else if (log.User.Permission.StudyCoordinator) { %>
-                                            <%= t("role_study_coordinator") %>
                                             <% } else if (log.User.Permission.ReferralTracker) { %>
                                             <%= t("role_referral_tracker") %>
                                             <% } else { %>
@@ -135,12 +136,45 @@
                                 <%= for (j, audit) in audits { %>
                                     <%= if (i == j) { %>
                                         <div id="expandable-row-<%= i %>-content" class="expandable-content">
-                                            <textarea class="form-control" rows="15" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'><%= audit %></textarea>
+                                            <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="text-align: left;">
+                                                                        Attribiute
+                                                                    </th>
+                                                                    <th>
+                                                                        Old Value
+                                                                    </th>
+                                                                    <th>
+                                                                        New Value
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <%= for (k, v) in audit.Changes { %>
+                                                                <%= if ((lastElement(k, "->") != "assessment_date") && (lastElement(k, "->") != "id") && (lastElement(k, "->") != "unit")) { %>
+                                                                    <tr>
+                                                                        <td style="text-align: left;" class="text-uppercase">
+                                                                            <%= k %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= v["from"] %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= v["to"] %>
+                                                                        </td>
+                                                                    </tr>
+                                                                <% } %>
+                                                              <% } %>
+                                                            </tbody>
+                                            </table>
+                                            <!-- <textarea class="form-control" rows="15" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'><%= audit %></textarea> -->
                                         </div>
                                     <% } %>
                                 <% } %>
                         </td>
                     </tr>
+                    <% } %>
                     <% } %>
                 </tbody>
             </table>

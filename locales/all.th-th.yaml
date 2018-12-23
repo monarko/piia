@@ -276,6 +276,8 @@
   translation: "แนะนำให้ส่งตัว"
 - id: field_previous_visual_acuity
   translation: "ค่าสายตาล่าสุด(หากมี)"
+- id: field_last_visual_acuity
+  translation: "ค่าสายตาล่าสุด"
 # Referral tracking section
 - id: section_referral_tracking
   translation: "ติดตามการส่งตัวไปรักษาต่อ"
@@ -314,57 +316,29 @@
   translation: "বাংলা"
 - id: lang_calendar
   translation: "thai"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#notification
+- id: label_notification_modal
+  translation: "Change status"
+- id: notification_status_open
+  translation: "Open"
+- id: notification_status_nurse_notified
+  translation: "Nurse notified"
+- id: notification_status_patient_contacted
+  translation: "Patient contacted"
+- id: notification_status_referral_arranged
+  translation: "Referral arranged"
+- id: notification_status_closed
+  translation: "Closed"
+- id: label_status
+  translation: "Status"
+- id: label_event_date
+  translation: "Date of Event"
+# Reports Page
+- id: page_reports_title
+  translation: "รายงาน"
+- id: nav_reports
+  translation: "รายงาน"
+- id: table_header_screener_referral
+  translation: "สมาชิก Referral"
+- id: table_header_overreader_referral
+  translation: "ผู้วิจารณ์ Referral"

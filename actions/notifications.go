@@ -2,6 +2,7 @@ package actions
 
 import (
 	"strings"
+	"time"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
@@ -44,9 +45,21 @@ func ChangeNotificationStatus(c buffalo.Context) error {
 	if err := tx.Find(notification, string(c.Request().FormValue("notificationId"))); err != nil {
 		return c.Error(404, err)
 	}
+	oldNotification := notification.Maps()
 	user := c.Value("current_user").(*models.User)
 
 	notification.Status = c.Request().FormValue("status")
+	notification.Message = c.Request().FormValue("notes")
+
+	eventDate := c.Request().FormValue("eventDate")
+	eventDateLaguage := c.Request().FormValue("eventDateLanguage")
+
+	notification.EventDate.Calendar = eventDateLaguage
+	notification.EventDate.GivenDate, _ = time.Parse("2006-01-02", eventDate)
+	notification.EventDate.CalculatedDate = notification.EventDate.GivenDate
+	if notification.EventDate.Calendar == "thai" {
+		notification.EventDate.CalculatedDate = notification.EventDate.CalculatedDate.AddDate(-543, 0, 0)
+	}
 
 	verrs, err := tx.ValidateAndUpdate(notification)
 	if err != nil {
@@ -60,6 +73,12 @@ func ChangeNotificationStatus(c buffalo.Context) error {
 		if logErr != nil {
 			return errors.WithStack(logErr)
 		}
+	}
+
+	newNotification := notification.Maps()
+	auditErr := MakeAudit("Notification", notification.ID, oldNotification, newNotification, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
 	}
 
 	referrer := c.Request().Referer()

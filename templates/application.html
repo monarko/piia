@@ -78,6 +78,18 @@
                             </li>
                         <% } %>
 
+                        <%= if (current_user.Admin || current_user.Permission.StudyCoordinator) { %>
+                            <li class="">
+                                <a href="<%= reportsIndexPath() %>">
+                                    <div class="icon-w">
+                                        <div class="fa fa-book"></div>
+                                    </div>
+                                    <span>
+                                        <%= t("nav_reports") %></span>
+                                </a>
+                            </li>
+                        <% } %>
+
                         <%= if (current_user.Admin) { %>
                         <li class="">
                             <a href="<%= usersIndexPath() %>">
@@ -171,12 +183,12 @@
                                 <div class="logged-user-role">
                                     <%= if (current_user.Admin) { %>
                                     <%= t("role_admin") %>
+                                    <% } else if (current_user.Permission.StudyCoordinator) { %>
+                                    <%= t("role_study_coordinator") %>
                                     <% } else if (current_user.Permission.Screening) { %>
                                     <%= t("role_screener") %>
                                     <% } else if (current_user.Permission.OverRead) { %>
                                     <%= t("role_reader") %>
-                                    <% } else if (current_user.Permission.StudyCoordinator) { %>
-                                    <%= t("role_study_coordinator") %>
                                     <% } else if (current_user.Permission.ReferralTracker) { %>
                                     <%= t("role_referral_tracker") %>
                                     <% } else { %>

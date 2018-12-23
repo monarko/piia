@@ -111,6 +111,11 @@ func App() *buffalo.App {
 
 		screenings.POST("/{sid}/appointmentdone", UpdateReferredMessage).Name("participantsAppointmentPath")
 
+		reports := app.Group("/reports")
+		reports.Use(LoginRequired)
+		reports.Use(StudyCoordinatorPermissionRequired)
+		reports.GET("/index", ReportsIndex)
+
 		referrals := app.Group("/referrals")
 		referrals.Use(LoginRequired)
 		referrals.Use(ReferralTrackerPermissionRequired)
