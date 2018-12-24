@@ -10,7 +10,7 @@
                     <a class="btn btn-primary btn-md" href="<%= participantsCreatePath() %>" role="button"><%= t("button_enroll") %></a>
                 </div>
                 <% } %>
-                
+
                 <div class="controls-above-table">
                     <div class="row">
                         <div class="col-sm-12">
@@ -117,7 +117,7 @@
                                 </td>
                                 <td class="text-center">
                                     <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
-                                    <%= if (p.Gender == "M") { %>
+                                    <%= if (p.Gender == "F") { %>
                                         <span><i class="fa fa-venus fa-lg"></i></span>
                                     <% } else { %>
                                         <span><i class="fa fa-mars fa-lg"></i></span>
