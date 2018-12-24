@@ -229,7 +229,7 @@
                                                     <label for=""><%= t("label_date_of_assessment") %></label>
                                                     <%= if (screening.Measurements && !screening.Measurements.BloodPressure.AssessmentDate.GivenDate.IsZero()) { %>
                                                         <input class="form-control" placeholder="Select date" type="date"
-                                                        name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= screening.Measurements.BloodPressure.AssessmentDate.GivenDate.Format("2006-01-02") %>">
+                                                        name="Measurements.BloodPressure.AssessmentDate.GivenDate" value="<%= changeDate(screening.Measurements.BloodPressure.AssessmentDate.GivenDate, "2006-01-02", screening.Measurements.BloodPressure.AssessmentDate.Calendar, t("lang_calendar"))  %>">
                                                     <% } else { %>
                                                         <%= if (t("lang_calendar") == "thai") { %>
                                                             <input class="form-control" placeholder="Select date" type="date"
@@ -283,7 +283,7 @@
                                                                 <label for=""><%= t("label_date_of_assessment") %></label>
                                                                 <%= if (screening.Pathology.HbA1C && !screening.Pathology.HbA1C.AssessmentDate.GivenDate.IsZero()) { %>
                                                                 <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= screening.Pathology.HbA1C.AssessmentDate.GivenDate.Format("2006-01-02") %>">
+                                                            name="Pathology.HbA1C.AssessmentDate.GivenDate" value="<%= changeDate(screening.Pathology.HbA1C.AssessmentDate.GivenDate, "2006-01-02", screening.Pathology.HbA1C.AssessmentDate.Calendar, t("lang_calendar")) %>">
                                                             <% } else { %>
                                                                 <%= if (t("lang_calendar") == "thai") { %>
                                                                     <input class="form-control" placeholder="Select date" type="date"
@@ -368,7 +368,7 @@
                                                             <label for=""><%= t("label_date_of_assessment") %></label>
                                                             <%= if (screening.Pathology.Lipids && !screening.Pathology.Lipids.AssessmentDate.GivenDate.IsZero()) { %>
                                                                 <input class="form-control" placeholder="Select date" type="date"
-                                                                name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= screening.Pathology.Lipids.AssessmentDate.GivenDate.Format("2006-01-02") %>">
+                                                                name="Pathology.Lipids.AssessmentDate.GivenDate" value="<%= changeDate(screening.Pathology.Lipids.AssessmentDate.GivenDate, "2006-01-02", screening.Pathology.Lipids.AssessmentDate.Calendar, t("lang_calendar")) %>">
                                                             <% } else { %>
                                                                 <%= if (t("lang_calendar") == "thai") { %>
                                                                     <input class="form-control" placeholder="Select date" type="date"

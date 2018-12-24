@@ -77,6 +77,19 @@ func init() {
 				}
 				return theDate.Format(format)
 			},
+			"changeDate": func(givenDate time.Time, format, fromCalendar, toCalendar string) string {
+				gregorionDate := givenDate
+				if fromCalendar == "thai" {
+					gregorionDate = gregorionDate.AddDate(-543, 0, 0)
+				}
+
+				theDate := gregorionDate
+				if toCalendar == "thai" {
+					theDate = gregorionDate.AddDate(543, 0, 0)
+				}
+
+				return theDate.Format(format)
+			},
 		},
 	})
 }
