@@ -117,7 +117,18 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 
 	currentDate := time.Now()
 	birthYear, err := strconv.Atoi(c.Request().FormValue("BirthYear"))
-	if err == nil && birthYear > (currentDate.Year()-100) && birthYear < (currentDate.Year()-10) {
+	maxYear := currentDate.Year() - 10
+	minYear := currentDate.Year() - 100
+	currentLang := "en"
+	if lang := c.Session().Get("lang"); lang != nil {
+		currentLang = lang.(string)
+	}
+
+	if currentLang == "th" {
+		maxYear += 543
+		minYear += 543
+	}
+	if err == nil && birthYear > minYear && birthYear < maxYear {
 		today := time.Now().Year()
 		diff := birthYear - today
 		participant.DOB.GivenDate = time.Now().AddDate(diff, 0, 0)
