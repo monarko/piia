@@ -115,11 +115,20 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("participants/create.html"))
 	}
 
+	currentDate := time.Now()
 	birthYear, err := strconv.Atoi(c.Request().FormValue("BirthYear"))
-	if err == nil && birthYear > 1900 {
+	if err == nil && birthYear > (currentDate.Year()-100) && birthYear < (currentDate.Year()-10) {
 		today := time.Now().Year()
 		diff := birthYear - today
 		participant.DOB.GivenDate = time.Now().AddDate(diff, 0, 0)
+	} else {
+		errStr := "Invalid birth year given, please re-check your input."
+		errs := map[string][]string{
+			"checksum_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/create.html"))
 	}
 
 	if len(participant.ParticipantID) != 9 || !helpers.Valid(participant.ParticipantID, false) || strings.Contains(participant.ParticipantID, "_") {
