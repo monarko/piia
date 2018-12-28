@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -120,6 +121,7 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	maxYear := currentDate.Year() - 10
 	minYear := currentDate.Year() - 100
 	currentLang := "en"
+	currentCalendar := "Gregorian"
 	if lang := c.Session().Get("lang"); lang != nil {
 		currentLang = lang.(string)
 	}
@@ -127,13 +129,14 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	if currentLang == "th" {
 		maxYear += 543
 		minYear += 543
+		currentCalendar = "Thai"
 	}
-	if err == nil && birthYear > minYear && birthYear < maxYear {
+	if err == nil && birthYear >= minYear && birthYear <= maxYear {
 		today := time.Now().Year()
 		diff := birthYear - today
 		participant.DOB.GivenDate = time.Now().AddDate(diff, 0, 0)
 	} else {
-		errStr := "Invalid birth year given, please re-check your input."
+		errStr := fmt.Sprintf("Invalid birth year given, please re-check your input. For %s calendar, valid year of birth is between %d and %d.", currentCalendar, minYear, maxYear)
 		errs := map[string][]string{
 			"checksum_error": {errStr},
 		}
