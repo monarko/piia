@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"strings"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/models"
@@ -13,8 +15,33 @@ func CasesIndex(c buffalo.Context) error {
 	participants := &models.Participants{}
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
+	where := make([]string, 0)
+	wheres := make([]interface{}, 0)
+
+	status := "11%"
+	modifier := "LIKE"
+	if len(c.Param("status")) > 0 {
+		if c.Param("status") == "completed" {
+			status = "111"
+			modifier = "="
+		} else if c.Param("status") == "open" {
+			status = "11"
+			modifier = "="
+		}
+	}
+	where = append(where, "status "+modifier+" ?")
+	wheres = append(wheres, status)
+
+	if len(c.Param("search")) > 0 {
+		where = append(where, "participant_id LIKE ?")
+		wheres = append(wheres, "%"+strings.ToUpper(c.Param("search"))+"%")
+	}
+
+	whereStmt := strings.Join(where, " AND ")
+
 	user := c.Value("current_user").(*models.User)
-	q := tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at ASC")
+	q := tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
+
 	// Retrieve all Posts from the DB
 	if err := q.All(participants); err != nil {
 		return errors.WithStack(err)
@@ -26,6 +53,8 @@ func CasesIndex(c buffalo.Context) error {
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Cases"] = "/cases/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
+	c.Set("filterStatus", c.Params().Get("status"))
+	c.Set("filterSearch", c.Params().Get("search"))
 	logErr := InsertLog("view", "User viewed cases", "", "", "", user.ID, c)
 	if logErr != nil {
 		return errors.WithStack(logErr)

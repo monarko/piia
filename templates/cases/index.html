@@ -13,15 +13,15 @@
                         </div>
                         <div class="col-sm-6">
                             <form class="form-inline justify-content-sm-end">
-                                <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
+                                <input class="form-control form-control-sm rounded bright" placeholder="Search Participant ID" type="text" name="search" value="<%= filterSearch %>">
                                 <select class="form-control form-control-sm rounded bright" name="status">
-                                    <option value="all" selected>
+                                    <option value="">
                                         <%= t("option_overreading_all") %>
                                     </option>
-                                    <option value="open">
+                                    <option value="open" <%= if (filterStatus == "open") { %>selected <% } %>>
                                         <%= t("option_overreading_open") %>
                                     </option>
-                                    <option value="completed">
+                                    <option value="completed" <%= if (filterStatus == "completed") { %>selected <% } %>>
                                         <%= t("option_overreading_completed") %>
                                     </option>
                                 </select>

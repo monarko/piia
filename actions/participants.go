@@ -22,19 +22,27 @@ func ParticipantsIndex(c buffalo.Context) error {
 	// Default values are "page=1" and "per_page=20".
 	var q *pop.Query
 
+	where := make([]string, 0)
+	wheres := make([]interface{}, 0)
+	if len(c.Param("status")) > 0 {
+		where = append(where, "status = ?")
+		wheres = append(wheres, c.Param("status"))
+	}
+
+	if len(c.Param("search")) > 0 {
+		where = append(where, "participant_id LIKE ?")
+		wheres = append(wheres, "%"+strings.ToUpper(c.Param("search"))+"%")
+	}
+
+	whereStmt := strings.Join(where, " AND ")
+
 	user := c.Value("current_user").(*models.User)
-	if user.Admin || user.Permission.StudyCoordinator {
-		if len(c.Param("status")) > 0 {
-			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at DESC")
+	if user.Admin || user.Permission.StudyCoordinator || user.Permission.Screening {
+		if len(whereStmt) > 0 {
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
 		} else {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at DESC")
 		}
-	} else if user.Permission.Screening && user.Permission.OverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at DESC")
-	} else if user.Permission.Screening {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at DESC")
-	} else if user.Permission.OverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at DESC")
 	} else {
 		// If there are no errors set a success message
 		c.Flash().Add("danger", "You don't have sufficient permission.")
@@ -60,6 +68,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 	breadcrumbMap["page_participants_title"] = "/participants/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	c.Set("filterStatus", c.Params().Get("status"))
+	c.Set("filterSearch", c.Params().Get("search"))
 	logErr := InsertLog("view", "User viewed participants", "", "", "", user.ID, c)
 	if logErr != nil {
 		// return errors.WithStack(logErr)
@@ -120,13 +129,8 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	birthYear, err := strconv.Atoi(c.Request().FormValue("BirthYear"))
 	maxYear := currentDate.Year() - 10
 	minYear := currentDate.Year() - 100
-	currentLang := "en"
 	currentCalendar := "Gregorian"
-	if lang := c.Session().Get("lang"); lang != nil {
-		currentLang = lang.(string)
-	}
-
-	if currentLang == "th" {
+	if participant.DOB.Calendar == "thai" {
 		maxYear += 543
 		minYear += 543
 		currentCalendar = "Thai"

@@ -40,7 +40,6 @@ func ReferralsIndex(c buffalo.Context) error {
 
 	refers := &models.ReferredMessages{}
 	rq := tx.PaginateFromParams(c.Params())
-	// Retrieve all Posts from the DB
 	if err := rq.All(refers); err != nil {
 		return errors.WithStack(err)
 	}
@@ -59,14 +58,45 @@ func ReferralsIndex(c buffalo.Context) error {
 	ids = SliceStringUnique(ids, true)
 	rIds = SliceStringUnique(rIds, true)
 
-	var q *pop.Query
-	c.Set("search", "")
-	if len(ids) > 0 {
-		if len(c.Param("search")) > 0 {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status LIKE ?", "1%").Where("participant_id = ?", strings.ToUpper(c.Param("search"))).PaginateFromParams(c.Params()).Order("created_at DESC")
-			c.Set("search", c.Param("search"))
+	where := make([]string, 0)
+	wheres := make([]interface{}, 0)
+
+	var idsToSearch []string
+
+	if len(c.Param("status")) > 0 {
+		if c.Param("status") == "completed" {
+			idsToSearch = make([]string, len(rIds))
+			copy(idsToSearch, rIds)
+		} else if c.Param("status") == "open" {
+			idsToSearch = make([]string, 0)
+			for _, id := range ids {
+				_, found := SliceContainsString(rIds, id)
+				if !found {
+					idsToSearch = append(idsToSearch, id)
+				}
+			}
 		} else {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", ids).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
+			idsToSearch = make([]string, len(ids))
+			copy(idsToSearch, ids)
+		}
+	} else {
+		idsToSearch = make([]string, len(ids))
+		copy(idsToSearch, ids)
+	}
+
+	if len(c.Param("search")) > 0 {
+		where = append(where, "participant_id LIKE ?")
+		wheres = append(wheres, "%"+strings.ToUpper(c.Param("search"))+"%")
+	}
+
+	whereStmt := strings.Join(where, " AND ")
+
+	var q *pop.Query
+	if len(idsToSearch) > 0 {
+		if len(c.Param("search")) > 0 {
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
+		} else {
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
 		}
 	} else {
 		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
@@ -84,6 +114,8 @@ func ReferralsIndex(c buffalo.Context) error {
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Referrals"] = "/referrals/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
+	c.Set("filterStatus", c.Params().Get("status"))
+	c.Set("filterSearch", c.Params().Get("search"))
 	logErr := InsertLog("view", "User viewed referrals", "", "", "", user.ID, c)
 	if logErr != nil {
 		return errors.WithStack(logErr)

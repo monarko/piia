@@ -15,8 +15,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <form class="form-inline">
-                                <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text">
-                                <%= if (current_user.Admin) { %>
+                                <input class="form-control form-control-sm rounded bright" placeholder="Search Participant ID" type="text" name="search" value="<%= filterSearch %>">
                                 <select class="form-control form-control-sm rounded bright" name="status">
                                     <%= if (filterStatus == "1") { %>
                                     <option value="">
@@ -72,7 +71,6 @@
                                     </option>
                                     <% } %>
                                 </select>
-                                <% } %>
                                 <button type="submit" class="btn btn-info btn-rounded"><%= t("button_filter_status") %></button>
                             </form>
                         </div>
@@ -160,12 +158,9 @@
                                     <%= if (current_user.Permission.Screening || current_user.Admin) { %>
                                         <%= if (len(p.Screenings) > 0) { %>
                                             <% let psc = p.Screenings[0] %>
-                                            <% let statuses = psc.Statuses() %>
-                                            <%= if (!statuses.Completed) { %>
                                             <div class="action-item col-md-auto">
                                                 <a class="btn btn-sm item-btn" href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil fa-sm"></i> <span>Edit Data</span></a>
                                             </div>
-                                            <% } %>
                                         <% } else { %>
                                         <div class="action-item col-md-auto">
                                             <a class="btn btn-sm item-btn" href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="fa fa-eye fa-sm"></i> <span>Record Data</span></a>
