@@ -46,6 +46,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 	} else {
 		// If there are no errors set a success message
 		c.Flash().Add("danger", "You don't have sufficient permission.")
+		InsertLog("error", "User viewed participants error", "Insufficient permission", "", "", user.ID, c)
 		// and redirect to the index page
 		return c.Redirect(302, "/")
 	}
@@ -58,6 +59,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 			"index_error": {errStr},
 		}
 		c.Set("errors", errs)
+		InsertLog("error", "User viewed participants error", err.Error(), "", "", user.ID, c)
 		return c.Redirect(302, "/")
 	}
 	// Make posts available inside the html template
@@ -77,6 +79,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 			"index_error": {errStr},
 		}
 		c.Set("errors", errs)
+		InsertLog("error", "User viewed participants error", logErr.Error(), "", "", user.ID, c)
 		return c.Render(422, r.HTML("participants/index.html"))
 	}
 	return c.Render(200, r.HTML("participants/index.html"))

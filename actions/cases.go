@@ -44,6 +44,7 @@ func CasesIndex(c buffalo.Context) error {
 
 	// Retrieve all Posts from the DB
 	if err := q.All(participants); err != nil {
+		InsertLog("error", "User viewed cases error", err.Error(), "", "", user.ID, c)
 		return errors.WithStack(err)
 	}
 	// Make posts available inside the html template
@@ -57,6 +58,7 @@ func CasesIndex(c buffalo.Context) error {
 	c.Set("filterSearch", c.Params().Get("search"))
 	logErr := InsertLog("view", "User viewed cases", "", "", "", user.ID, c)
 	if logErr != nil {
+		InsertLog("error", "User viewed cases error", logErr.Error(), "", "", user.ID, c)
 		return errors.WithStack(logErr)
 	}
 	return c.Render(200, r.HTML("cases/index.html"))

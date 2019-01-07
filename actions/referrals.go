@@ -20,12 +20,14 @@ func ReferralsIndex(c buffalo.Context) error {
 	screenings := &models.Screenings{}
 	sq := tx.Where("referral->>'referred' = ?", "true")
 	if err := sq.All(screenings); err != nil {
+		InsertLog("error", "User viewed referrals error", err.Error(), "", "", user.ID, c)
 		return errors.WithStack(err)
 	}
 
 	overs := &models.OverReadings{}
 	oq := tx.Where("referral->>'referred' = ?", "true")
 	if err := oq.All(overs); err != nil {
+		InsertLog("error", "User viewed referrals error", err.Error(), "", "", user.ID, c)
 		return errors.WithStack(err)
 	}
 
@@ -41,6 +43,7 @@ func ReferralsIndex(c buffalo.Context) error {
 	refers := &models.ReferredMessages{}
 	rq := tx.PaginateFromParams(c.Params())
 	if err := rq.All(refers); err != nil {
+		InsertLog("error", "User viewed referrals error", err.Error(), "", "", user.ID, c)
 		return errors.WithStack(err)
 	}
 
@@ -104,6 +107,7 @@ func ReferralsIndex(c buffalo.Context) error {
 
 	// Retrieve all Posts from the DB
 	if err := q.All(participants); err != nil {
+		InsertLog("error", "User viewed referrals error", err.Error(), "", "", user.ID, c)
 		return errors.WithStack(err)
 	}
 	// Make posts available inside the html template
@@ -118,6 +122,7 @@ func ReferralsIndex(c buffalo.Context) error {
 	c.Set("filterSearch", c.Params().Get("search"))
 	logErr := InsertLog("view", "User viewed referrals", "", "", "", user.ID, c)
 	if logErr != nil {
+		InsertLog("error", "User viewed referrals error", logErr.Error(), "", "", user.ID, c)
 		return errors.WithStack(logErr)
 	}
 	return c.Render(200, r.HTML("referrals/index.html"))
