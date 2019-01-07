@@ -41,6 +41,12 @@
   translation: "Study Co-ordinator"
 - id: role_referral_tracker
   translation: "Referral Tracker"
+- id: section_header_notifications
+  translation: "Notifications"
+- id: section_header_summarystats
+  translation: "Summary Statistics"
+- id: th_notifications_message
+  translation: "Notification"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "Dashboard"

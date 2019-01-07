@@ -62,8 +62,12 @@ func HomeHandler(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
+	notis := make([]models.Notification, len(*notifications))
+	copy(notis, *notifications)
+
 	// Make posts available inside the html template
-	c.Set("notifications", notifications)
+	c.Set("notifications", notis[0:2])
+	c.Set("total_notifications", len(notis))
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 
