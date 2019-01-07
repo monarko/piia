@@ -1,29 +1,102 @@
-<div class="page-header">
-  <h1>Notifications</h1>
-</div>
-<ul class="list-unstyled list-inline">
-  <li><a href="<%= newNotificationsPath() %>" class="btn btn-primary">Create New Notification</a></li>
-</ul>
+<div class="row">
+    <div class="col-sm-12">
+        <!-- Notifications table -->
+        <div class="element-wrapper">
+            <div class="element-actions">
 
-<table class="table table-striped">
-  <thead>
-  <th>&nbsp;</th>
-  </thead>
-  <tbody>
-    <%= for (notification) in notifications { %>
-      <tr>
-      <td>
-          <div class="pull-right">
-            <a href="<%= notificationPath({ notification_id: notification.ID }) %>" class="btn btn-info">View</a>
-            <a href="<%= editNotificationPath({ notification_id: notification.ID }) %>" class="btn btn-warning">Edit</a>
-            <a href="<%= notificationPath({ notification_id: notification.ID }) %>" data-method="DELETE" data-confirm="Are you sure?" class="btn btn-danger">Destroy</a>
-          </div>
-        </td>
-      </tr>
-    <% } %>
-  </tbody>
-</table>
+            </div>
+            <h6 class="element-header">
+                <%= t("section_header_notifications") %>
+            </h6>
+            <div class="element-content">
+                <table class="table table-lg table-striped" style="margin-bottom: 1.2rem; font-size: 0.8rem;">
+                    <thead style="text-align: center;">
+                        <tr>
+                            <th>
+                                <%= t("th_participant_id") %>
+                            </th>
+                            <th>
+                                <%= t("th_site") %>
+                            </th>
+                            <th style="width: 7%;">
+                                <%= t("th_status") %>
+                            </th>
+                            <th>
+                                <%= t("th_notifications_type") %>
+                            </th>
+                            <th>
+                                <%= t("th_notifications_message") %>
+                            </th>
+                            <th>
+                                <%= t("th_workflow_date") %>
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%= if (len(notifications) > 0) { %>
+                        <%= for (notification) in notifications { %>
+                        <tr>
+                            <td class="text-center">
+                                <a class="value with-avatar" href="<%= participantPath({pid: notification.Participant.ID}) %>">
+                                    <span>
+                                        <%= notification.Participant.ParticipantID %>
+                                    </span>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <%= notification.Site %>
+                            </td>
+                            <td class="text-center">
+                                <%= upcase(notification.Status) %>
+                            </td>
+                            <td class="text-center">
+                                <%= notification.Type %>
+                            </td>
+                            <td class="text-center">
+                                <%= notification.Message %>
+                            </td>
+                            <td class="text-center">
+                                <%= notification.UpdatedAt.Format("02 Jan 2006 03:04:05pm") %>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <% } %>
+                        <% } else { %>
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                No Notifications
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
 
-<div class="text-center">
-  <%= paginator(pagination) %>
+            <div class="controls-below-table">
+                    <div class="table-records-info">
+                        <%= t("pagination_title") %>
+                        <%= pagination.Offset + 1 %> -
+                        <%= pagination.Offset + pagination.CurrentEntriesSize %> of
+                        <%= pagination.TotalEntriesSize %>
+                        |
+                        <%= t("pagination_view_label") %>
+                        <a href="?per_page=10"><%= t("pagination_options_10") %></a> /
+                        <a href="?per_page=20"><%= t("pagination_options_20") %></a> /
+                        <a href="?per_page=50"><%= t("pagination_options_50") %></a>
+                        <%= t("pagination_perpage_label") %>
+                    </div>
+                    <div class="table-records-pages">
+                        <style>
+                            .page-link {
+                                border: none;
+                                padding: 0 2px;
+                            }
+                        </style>
+                        <%= paginator(pagination, {"class":"", "previousContent": "Previous", "nextContent": "Next"}) %>
+                    </div>
+                </div>
+        </div>
+    </div>
 </div>

@@ -13,7 +13,37 @@ import (
 
 // NotificationsIndex returns the logs list
 func NotificationsIndex(c buffalo.Context) error {
-	return nil
+	loggedInUser, ok := c.Value("current_user").(*models.User)
+	if !ok {
+		return c.Redirect(302, "/users/login")
+		// return c.Render(200, r.HTML("index-non-logged-in.html", "application-non-logged-in.html"))
+	}
+	tx := c.Value("tx").(*pop.Connection)
+	// Notifications
+	notifications := &models.Notifications{}
+	var q *pop.Query
+
+	if len(strings.TrimSpace(loggedInUser.Site)) > 0 {
+		q = tx.Eager().Where("site = ?", loggedInUser.Site).Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
+	} else if loggedInUser.Admin || loggedInUser.Permission.StudyCoordinator {
+		q = tx.Eager().Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
+	} else {
+		q = tx.Eager().Where("status != ?", "unknown").PaginateFromParams(c.Params()).Order("created_at DESC")
+	}
+
+	// Retrieve all Notifications from the DB
+	if err := q.All(notifications); err != nil {
+		return errors.WithStack(err)
+	}
+
+	// Make posts available inside the html template
+	c.Set("notifications", notifications)
+	// Add the paginator to the context so it can be used in the template.
+	c.Set("pagination", q.Paginator)
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["section_header_notifications"] = "/notifications/index"
+	c.Set("breadcrumbMap", breadcrumbMap)
+	return c.Render(200, r.HTML("notifications/index.html"))
 }
 
 // InsertNotification inserts a notification into db

@@ -41,6 +41,30 @@
   translation: "ผู้ประสานงาน"
 - id: role_referral_tracker
   translation: "การอ้างอิงติดตาม"
+- id: section_header_notifications
+  translation: "การแจ้งเตือน"
+- id: section_header_summarystats
+  translation: "สถิติสรุป"
+- id: th_notifications_message
+  translation: "ข้อความแจ้งเตือน"
+- id: th_site
+  translation: "สถาน"
+- id: th_notifications_type
+  translation: "ประเภทการแจ้งเตือน"
+- id: th_workflow_date
+  translation: "แก้ไขล่าสุดเมื่อ"
+- id: button_go_to_notifications
+  translation: "ไปที่หน้าการแจ้งเตือน"
+- id: button_remaining_notifications
+  translation: "ดูการแจ้งเตือนเพิ่มเติม"
+- id: text_no_notifications
+  translation: "ไม่มีการแจ้งเตือน"
+- id: card_title_registered
+  translation: "ผู้เข้าร่วมที่ลงทะเบียน"
+- id: card_title_screened
+  translation: "การตรวจคัดกรอง"
+- id: card_title_overead
+  translation: "ที่เหลือจากการอ่าน"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "แผงควบคุม"
@@ -134,6 +158,8 @@
   translation: "สำหรับการตรวจสอบ"
 - id: th_completed
   translation: "เสร็จ"
+- id: th_status
+  translation: "สถานะ"
 - id: pagination_title
   translation: "การแสดง"
 - id: pagination_view_label

@@ -46,7 +46,25 @@
 - id: section_header_summarystats
   translation: "Summary Statistics"
 - id: th_notifications_message
-  translation: "Notification"
+  translation: "Notification Message"
+- id: th_site
+  translation: "Site"
+- id: th_notifications_type
+  translation: "Notification Type"
+- id: th_workflow_date
+  translation: "Last Updated At"
+- id: button_go_to_notifications
+  translation: "Visit Notifications Page"
+- id: button_remaining_notifications
+  translation: "View More Notifications"
+- id: text_no_notifications
+  translation: "No Notification"
+- id: card_title_registered
+  translation: "Registered Participants"
+- id: card_title_screened
+  translation: "Screened"
+- id: card_title_overead
+  translation: "Remaining Over Reading"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "Dashboard"

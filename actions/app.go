@@ -71,6 +71,7 @@ func App() *buffalo.App {
 		auth.POST("/login", UsersLoginPost)
 		auth.GET("/logout", UsersLogout)
 
+		auth.GET("/", AdminRequired(UsersIndex))
 		auth.GET("/index", AdminRequired(UsersIndex))
 		auth.GET("/create", AdminRequired(UsersCreateGet))
 		auth.POST("/create", AdminRequired(UsersCreatePost))
@@ -80,6 +81,7 @@ func App() *buffalo.App {
 		participants := app.Group("/participants")
 		participants.Use(LoginRequired)
 		participants.Use(ScreeningPermissionRequired)
+		participants.GET("/", ParticipantsIndex)
 		participants.GET("/index", ParticipantsIndex)
 		participants.GET("/create", ParticipantsCreateGet)
 		participants.POST("/create", ParticipantsCreatePost)
@@ -92,6 +94,7 @@ func App() *buffalo.App {
 		cases := app.Group("/cases")
 		cases.Use(LoginRequired)
 		// cases.Use(OverReadingPermissionRequired)
+		cases.GET("/", CasesIndex)
 		cases.GET("/index", CasesIndex)
 
 		screenings := participants.Group("/{pid}/screenings")
@@ -114,17 +117,25 @@ func App() *buffalo.App {
 		reports := app.Group("/reports")
 		reports.Use(LoginRequired)
 		reports.Use(StudyCoordinatorPermissionRequired)
+		reports.GET("/", ReportsIndex)
 		reports.GET("/index", ReportsIndex)
 
 		referrals := app.Group("/referrals")
 		referrals.Use(LoginRequired)
 		referrals.Use(ReferralTrackerPermissionRequired)
+		referrals.GET("/", ReferralsIndex)
 		referrals.GET("/index", ReferralsIndex)
 		referrals.GET("/participants/{pid}", ReferralsParticipantsGet)
+
+		notifications := app.Group("/notifications")
+		notifications.Use(LoginRequired)
+		notifications.GET("/", NotificationsIndex)
+		notifications.GET("/index", NotificationsIndex)
 
 		// app.Resource("/system_logs", SystemLogsResource{})
 		logs := app.Group("/logs")
 		logs.Use(AdminRequired)
+		logs.GET("/", SystemLogsIndex)
 		logs.GET("/index", SystemLogsIndex)
 
 		app.GET("/errors/{status}", ErrorsDefault)
