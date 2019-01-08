@@ -46,7 +46,7 @@ func HomeHandler(c buffalo.Context) error {
 	c.Set("users", u)
 
 	participants := &models.Participants{}
-	qov := tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at DESC")
+	qov := tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("status LIKE ?", "11%").Order("created_at DESC")
 	// Retrieve all Posts from the DB
 	if err := qov.All(participants); err != nil {
 		return errors.WithStack(err)
