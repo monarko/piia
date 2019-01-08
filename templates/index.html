@@ -1,5 +1,52 @@
 <div class="row">
     <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-actions"></div>
+            <h6 class="element-header">
+                <%= t("section_header_summarystats") %>
+            </h6>
+            <!-- summary stats -->
+            <div class="row">
+                <div class="col-sm-4">
+                    <a class="element-box el-tablo" href="#" style="text-align: center;">
+                        <div class="label">
+                            <%= t("card_title_registered") %>
+                        </div>
+                        <div class="value">
+                            <%= participants %>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a class="element-box el-tablo" href="#" style="text-align: center;">
+                        <div class="label">
+                            <%= t("card_title_screened") %>
+                        </div>
+                        <div class="value">
+                            <%= screenings %>
+                        </div>
+                        <div class="trending trending-down-basic">
+
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-4">
+                    <a class="element-box el-tablo" href="#" style="text-align: center;">
+                        <div class="label">
+                            <%= t("card_title_overead") %>
+                        </div>
+                        <div class="value">
+                            <%= overreadings %> /
+                            <%= screenings %>
+                        </div>
+                        <div class="trending trending-up-basic">
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
         <!-- Notifications table -->
         <div class="element-wrapper">
             <div class="element-actions">
@@ -83,52 +130,6 @@
                     </tbody>
                 </table>
                 
-            </div>
-        </div>
-        <div class="element-wrapper">
-            <div class="element-actions"></div>
-            <h6 class="element-header">
-                <%= t("section_header_summarystats") %>
-            </h6>
-            <!-- summary stats -->
-            <div class="row">
-                <div class="col-sm-4">
-                    <a class="element-box el-tablo" href="#" style="text-align: center;">
-                        <div class="label">
-                            <%= t("card_title_registered") %>
-                        </div>
-                        <div class="value">
-                            <%= participants %>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-4">
-                    <a class="element-box el-tablo" href="#" style="text-align: center;">
-                        <div class="label">
-                            <%= t("card_title_screened") %>
-                        </div>
-                        <div class="value">
-                            <%= screenings %>
-                        </div>
-                        <div class="trending trending-down-basic">
-
-                        </div>
-                    </a>
-                </div>
-                <div class="col-sm-4">
-                    <a class="element-box el-tablo" href="#" style="text-align: center;">
-                        <div class="label">
-                            <%= t("card_title_overead") %>
-                        </div>
-                        <div class="value">
-                            <%= overreadings %> /
-                            <%= screenings %>
-                        </div>
-                        <div class="trending trending-up-basic">
-
-                        </div>
-                    </a>
-                </div>
             </div>
         </div>
     </div>

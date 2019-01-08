@@ -64,7 +64,7 @@
 - id: card_title_screened
   translation: "การตรวจคัดกรอง"
 - id: card_title_overead
-  translation: "ที่เหลือจากการอ่าน"
+  translation: "เปิดเคสการอ่าน"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "แผงควบคุม"
@@ -368,3 +368,9 @@
   translation: "สมาชิก Referral"
 - id: table_header_overreader_referral
   translation: "ผู้วิจารณ์ Referral"
+- id: card_title_screening_referred
+  translation: "เรียกจากการคัดกรอง"
+- id: card_title_overead_referred
+  translation: "อ้างจากการอ่านมากกว่า"
+- id: card_title_disagreement_referred
+  translation: "ความไม่เห็นด้วย"

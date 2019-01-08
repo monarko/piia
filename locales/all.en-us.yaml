@@ -64,7 +64,7 @@
 - id: card_title_screened
   translation: "Screened"
 - id: card_title_overead
-  translation: "Remaining Over Reading"
+  translation: "Open Over Reading Cases"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "Dashboard"
@@ -369,3 +369,9 @@
   translation: "Screener Referral"
 - id: table_header_overreader_referral
   translation: "Over Reader Referral"
+- id: card_title_screening_referred
+  translation: "Referred From Screening"
+- id: card_title_overead_referred
+  translation: "Referred From Over Reading"
+- id: card_title_disagreement_referred
+  translation: "Disagreement"
