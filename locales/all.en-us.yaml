@@ -54,7 +54,7 @@
 - id: th_workflow_date
   translation: "Last Updated At"
 - id: button_go_to_notifications
-  translation: "Visit Notifications Page"
+  translation: "View all notifications"
 - id: button_remaining_notifications
   translation: "View More Notifications"
 - id: text_no_notifications
