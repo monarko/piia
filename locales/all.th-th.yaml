@@ -374,3 +374,8 @@
   translation: "อ้างจากการอ่านมากกว่า"
 - id: card_title_disagreement_referred
   translation: "ความไม่เห็นด้วย"
+# Analytics Page
+- id: page_analytics_title
+  translation: "Analytics"
+- id: nav_analytics
+  translation: "Analytics"

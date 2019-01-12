@@ -73,7 +73,7 @@ func ReportsIndex(c buffalo.Context) error {
 	overs := &models.OverReadings{}
 	oq := tx.Eager().Where("referral->>'referred' = ?", "true")
 	if err := oq.All(overs); err != nil {
-		InsertLog("error", "User viewed referrals error", err.Error(), "", "", user.ID, c)
+		InsertLog("error", "User viewed reports error", err.Error(), "", "", user.ID, c)
 	}
 
 	stat := make(map[string]interface{})

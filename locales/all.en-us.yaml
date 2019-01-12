@@ -375,3 +375,8 @@
   translation: "Referred From Over Reading"
 - id: card_title_disagreement_referred
   translation: "Disagreement"
+# Analytics Page
+- id: page_analytics_title
+  translation: "Analytics"
+- id: nav_analytics
+  translation: "Analytics"

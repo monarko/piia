@@ -91,6 +91,16 @@
                         <% } %>
 
                         <%= if (current_user.Admin) { %>
+                            <li class="">
+                                <a href="<%= analyticsIndexPath() %>">
+                                    <div class="icon-w">
+                                        <div class="fa fa-pie-chart"></div>
+                                    </div>
+                                    <span>
+                                        <%= t("nav_analytics") %></span>
+                                </a>
+                            </li>
+                        
                         <li class="">
                             <a href="<%= usersIndexPath() %>">
                                 <div class="icon-w">
