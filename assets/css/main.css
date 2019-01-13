@@ -29014,3 +29014,10 @@ Contents:
   border:  1px solid #666;
   background:  #dedede;
 }
+
+.table.analytics thead th {
+  vertical-align:  middle !important;
+  font-size:  0.8em;
+  text-transform:  uppercase;
+  font-weight:  bold;
+}
