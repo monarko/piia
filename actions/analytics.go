@@ -45,10 +45,22 @@ func AnalyticsIndex(c buffalo.Context) error {
             WHEN ((s.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
             ELSE 'No'::text
         END AS "DrReferral",
-	(s.referral->>'additional_notes'::text) AS "ReferralNotes"
+	(s.referral->>'additional_notes'::text) AS "ReferralNotes",
+	((o.eye_assessment->'left'::text)->>'dr'::text) AS "DRGradeOVLeft",
+	((o.eye_assessment->'left'::text)->>'dme'::text) AS "DMEOVLeft",
+	((o.eye_assessment->'left'::text)->>'suspected_pathologies'::text) AS "SuspectedLeft",
+	((o.eye_assessment->'right'::text)->>'dr'::text) AS "DRGradeOVRight",
+	((o.eye_assessment->'right'::text)->>'dme'::text) AS "DMEOVRight",
+	((o.eye_assessment->'right'::text)->>'suspected_pathologies'::text) AS "SuspectedRight",
+        CASE
+            WHEN ((o.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
+            ELSE 'No'::text
+        END AS "OVReferral",
+	(o.referral->>'additional_notes'::text) AS "OVReferralNotes"
 FROM (
 	participants p
-	LEFT JOIN screenings s ON ((p.id = s.participant_id))
+	LEFT JOIN screenings s ON (p.id = s.participant_id)
+	LEFT JOIN over_readings o ON (o.screening_id = s.id)
 )
 WHERE (
 	s.id IS NOT NULL
@@ -164,6 +176,14 @@ func downloadAnalytics(analytics []models.AnalyticsScreening) (*bytes.Buffer, er
 		"DME (OS)",
 		"DrReferral",
 		"ReferralNotes",
+		"DRGrade (Right) (Over Reader)",
+		"DME (Right) (Over Reader)",
+		"Suspected Pathologies (Right) (Over Reader)",
+		"DRGrade (Left) (Over Reader)",
+		"DME (Left) (Over Reader)",
+		"Suspected Pathologies (Left) (Over Reader)",
+		"Over Reader Referral",
+		"Over Reader Notes",
 	}
 
 	if err := w.Write(headers); err != nil {
@@ -186,6 +206,22 @@ func downloadAnalytics(analytics []models.AnalyticsScreening) (*bytes.Buffer, er
 		record = append(record, a.DMEOS.String)
 		record = append(record, a.DrReferral.String)
 		record = append(record, a.ReferralNotes.String)
+		record = append(record, a.DRGradeOVRight.String)
+		record = append(record, a.DMEOVRight.String)
+		sr := ""
+		if len(a.SuspectedRight.String) > 0 {
+			sr = a.SuspectedRight.String
+		}
+		record = append(record, SliceStringToCommaSeparatedValue(sr))
+		record = append(record, a.DRGradeOVLeft.String)
+		record = append(record, a.DMEOVLeft.String)
+		sl := ""
+		if len(a.SuspectedLeft.String) > 0 {
+			sl = a.SuspectedLeft.String
+		}
+		record = append(record, SliceStringToCommaSeparatedValue(sl))
+		record = append(record, a.OVReferral.String)
+		record = append(record, a.OVReferralNotes.String)
 
 		if err := w.Write(record); err != nil {
 			return nil, err

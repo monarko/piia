@@ -90,6 +90,12 @@ func init() {
 
 				return theDate.Format(format)
 			},
+			"arrayStringView": func(s string) string {
+				if len(s) > 0 {
+					return SliceStringToCommaSeparatedValue(s)
+				}
+				return ""
+			},
 		},
 	})
 }
@@ -177,4 +183,17 @@ func Age(a time.Time) string {
 	ageText := strings.Join([]string{yearText, remainingText}, " ")
 
 	return ageText
+}
+
+// SliceStringToCommaSeparatedValue function
+func SliceStringToCommaSeparatedValue(s string) string {
+	temp := strings.Replace(s, "[", "", -1)
+	temp = strings.Replace(temp, "]", "", -1)
+	temp = strings.Replace(temp, "\"", "", -1)
+	sl := strings.Split(temp, ",")
+	for i, slt := range sl {
+		sl[i] = strings.TrimSpace(slt)
+	}
+
+	return strings.Join(sl, ", ")
 }

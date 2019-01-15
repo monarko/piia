@@ -30,6 +30,7 @@
                                 <th colspan="4">Left Eye (OS)</th>
                                 <th rowspan="2">Referral</th>
                                 <th rowspan="2">Notes</th>
+                                <th colspan="8">Over Readings</th>
                             </tr>
                             <tr>
                                 <th scope="colgroup">V/A</th>
@@ -40,6 +41,14 @@
                                 <th scope="colgroup">Previous V/A</th>
                                 <th scope="colgroup">DR Grade</th>
                                 <th scope="colgroup">DME</th>
+                                <th scope="colgroup">DR Grade (Right)</th>
+                                <th scope="colgroup">DME (Right)</th>
+                                <th scope="colgroup">Suspected (Right)</th>
+                                <th scope="colgroup">DR Grade (Left)</th>
+                                <th scope="colgroup">DME (Left)</th>
+                                <th scope="colgroup">Suspected (Left)</th>
+                                <th scope="colgroup">Referral</th>
+                                <th scope="colgroup">Notes</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,6 +68,14 @@
                                 <th><%= p.DMEOS %></th>
                                 <th><%= p.DrReferral %></th>
                                 <th><%= p.ReferralNotes %></th>
+                                <th><%= p.DRGradeOVRight %></th>
+                                <th><%= p.DMEOVRight %></th>
+                                <th><%= arrayStringView(p.SuspectedRight.String) %></th>
+                                <th><%= p.DRGradeOVLeft %></th>
+                                <th><%= p.DMEOVLeft %></th>
+                                <th><%= arrayStringView(p.SuspectedLeft.String) %></th>
+                                <th><%= p.OVReferral %></th>
+                                <th><%= p.OVReferralNotes %></th>
                             </tr>
                             <% } %>
                         </tbody>
