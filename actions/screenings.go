@@ -37,8 +37,13 @@ func ScreeningsIndex(c buffalo.Context) error {
 func ScreeningsCreateGet(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	participant := &models.Participant{}
-	if err := tx.Find(participant, c.Param("pid")); err != nil {
+	if err := tx.Eager().Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
+	}
+	if len(participant.Screenings) > 0 {
+		scr := participant.Screenings[0]
+		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
+		c.Redirect(302, red)
 	}
 	c.Set("participant", participant)
 	c.Set("screening", &models.Screening{})
@@ -54,8 +59,13 @@ func ScreeningsCreateGet(c buffalo.Context) error {
 func ScreeningsCreatePost(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	participant := &models.Participant{}
-	if err := tx.Find(participant, c.Param("pid")); err != nil {
+	if err := tx.Eager().Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
+	}
+	if len(participant.Screenings) > 0 {
+		scr := participant.Screenings[0]
+		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
+		c.Redirect(302, red)
 	}
 	user := c.Value("current_user").(*models.User)
 	screening := &models.Screening{}
