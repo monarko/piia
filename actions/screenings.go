@@ -43,7 +43,7 @@ func ScreeningsCreateGet(c buffalo.Context) error {
 	if len(participant.Screenings) > 0 {
 		scr := participant.Screenings[0]
 		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
-		c.Redirect(302, red)
+		return c.Redirect(302, red)
 	}
 	c.Set("participant", participant)
 	c.Set("screening", &models.Screening{})
@@ -65,7 +65,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	if len(participant.Screenings) > 0 {
 		scr := participant.Screenings[0]
 		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
-		c.Redirect(302, red)
+		return c.Redirect(302, red)
 	}
 	user := c.Value("current_user").(*models.User)
 	screening := &models.Screening{}

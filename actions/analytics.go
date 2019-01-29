@@ -16,9 +16,13 @@ import (
 // AnalyticsIndex default implementation.
 func AnalyticsIndex(c buffalo.Context) error {
 	download := false
+	downloadType := "csv"
 	dlValue := c.Params().Get("download")
 	if dlValue == "Download CSV" {
 		download = true
+	} else if dlValue == "Download CSV for Veil" {
+		download = true
+		downloadType = "veil"
 	}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -76,32 +80,6 @@ ORDER BY s.created_at DESC`
 	} else {
 		q = tx.RawQuery(query).PaginateFromParams(c.Params())
 	}
-	// participants := &models.Participants{}
-	// // Paginate results. Params "page" and "per_page" control pagination.
-	// // Default values are "page=1" and "per_page=20".
-
-	//
-	// var err error
-
-	// if user.Admin || user.Permission.StudyCoordinator {
-	// 	if len(c.Param("status")) > 0 {
-	// 		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at DESC")
-	// 	} else {
-	// 		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at DESC")
-	// 	}
-	// } else if user.Permission.Screening && user.Permission.OverRead {
-	// 	q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at DESC")
-	// } else if user.Permission.Screening {
-	// 	q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at DESC")
-	// } else if user.Permission.OverRead {
-	// 	q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at DESC")
-	// } else {
-	// 	// If there are no errors set a success message
-	// 	c.Flash().Add("danger", "You don't have sufficient permission.")
-	// 	InsertLog("error", "User viewed analytics error", "Insufficient permission", "", "", user.ID, c)
-	// 	// and redirect to the index page
-	// 	return c.Redirect(302, "/")
-	// }
 
 	// Retrieve all Posts from the DB
 	if err := q.All(analyticsScreenings); err != nil {
@@ -120,8 +98,23 @@ ORDER BY s.created_at DESC`
 	}
 
 	if download {
-		b, err := downloadAnalytics(*analyticsScreenings)
+		var b *bytes.Buffer
+		var err error
+		filenamePart := "-analytics-"
+
+		if downloadType == "veil" {
+			b, err = downloadVeil(*analyticsScreenings)
+			filenamePart = "-veil-"
+		} else {
+			b, err = downloadAnalytics(*analyticsScreenings)
+		}
+
 		if err != nil {
+			errStr := err.Error()
+			errs := map[string][]string{
+				"index_error": {errStr},
+			}
+			c.Set("errors", errs)
 			InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
 			return c.Redirect(302, "/")
 		}
@@ -129,7 +122,7 @@ ORDER BY s.created_at DESC`
 		InsertLog("error", "User download analytics", "", "", "", user.ID, c)
 		appHost := envy.Get("APP_HOST", "http://127.0.0.1")
 		hosts := strings.Split(strings.TrimSpace(strings.Replace(appHost, "/", "", -1)), ":")
-		filename := hosts[1] + "-analytics-" + time.Now().Format("2006-01-02T15-04-05-0700") + ".csv"
+		filename := hosts[1] + filenamePart + time.Now().Format("2006-01-02T15-04-05-0700") + ".csv"
 
 		return c.Render(200, r.Download(c, filename, b))
 	}
@@ -222,6 +215,106 @@ func downloadAnalytics(analytics []models.AnalyticsScreening) (*bytes.Buffer, er
 		record = append(record, SliceStringToCommaSeparatedValue(sl))
 		record = append(record, a.OVReferral.String)
 		record = append(record, a.OVReferralNotes.String)
+
+		if err := w.Write(record); err != nil {
+			return nil, err
+		}
+	}
+	w.Flush()
+
+	if err := w.Error(); err != nil {
+		return nil, err
+	}
+
+	return b, nil
+}
+
+func downloadVeil(analytics []models.AnalyticsScreening) (*bytes.Buffer, error) {
+	b := &bytes.Buffer{}
+	w := csv.NewWriter(b)
+
+	headers := []string{
+		"StudyId",
+		"Status",
+		"LeftGradable",
+		"RightGradable",
+		"LeftDrGrade",
+		"LeftDmeGrade",
+		"RightDrGrade",
+		"RightDmeGrade",
+		"Referrable",
+	}
+
+	if err := w.Write(headers); err != nil {
+		return nil, err
+	}
+
+	for _, a := range analytics {
+		var record []string
+		// StudyId / ParticipantId
+		record = append(record, strings.Replace(a.ParticipantID, "-", "", -1))
+
+		// Status
+		if len(a.DRGradeOS.String) > 0 && len(a.DRGradeOD.String) > 0 {
+			record = append(record, "COMPLETED")
+		} else {
+			record = append(record, "INCOMPLETE")
+		}
+
+		// LeftGradable
+		if a.DRGradeOS.String == "Ungradeable" || a.DMEOS.String == "Ungradeable" {
+			record = append(record, "FALSE")
+		} else {
+			record = append(record, "TRUE")
+		}
+
+		// RightGradable
+		if a.DRGradeOD.String == "Ungradeable" || a.DMEOD.String == "Ungradeable" {
+			record = append(record, "FALSE")
+		} else {
+			record = append(record, "TRUE")
+		}
+
+		// LeftDrGrade
+		if a.DRGradeOS.String == "Normal" {
+			record = append(record, "NO")
+		} else {
+			temp := strings.ToUpper(strings.TrimSuffix(a.DRGradeOS.String, " DR"))
+			record = append(record, temp)
+		}
+
+		// LeftDmeGrade
+		if a.DMEOS.String == "Not Present" {
+			record = append(record, "NO")
+		} else if a.DMEOS.String == "Present" {
+			record = append(record, "YES")
+		} else {
+			record = append(record, strings.ToUpper(a.DMEOS.String))
+		}
+
+		// RightDrGrade
+		if a.DRGradeOD.String == "Normal" {
+			record = append(record, "NO")
+		} else {
+			temp := strings.ToUpper(strings.TrimSuffix(a.DRGradeOD.String, " DR"))
+			record = append(record, temp)
+		}
+
+		// RightDmeGrade
+		if a.DMEOD.String == "Not Present" {
+			record = append(record, "NO")
+		} else if a.DMEOD.String == "Present" {
+			record = append(record, "YES")
+		} else {
+			record = append(record, strings.ToUpper(a.DMEOD.String))
+		}
+
+		// Referrable
+		if a.DrReferral.String == "Yes" {
+			record = append(record, "TRUE")
+		} else {
+			record = append(record, "FALSE")
+		}
 
 		if err := w.Write(record); err != nil {
 			return nil, err
