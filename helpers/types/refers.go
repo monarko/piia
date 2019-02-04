@@ -4,15 +4,18 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+
+	"github.com/gobuffalo/pop/nulls"
 )
 
 // ReferredMessageElement model
 type ReferredMessageElement struct {
-	Attended             bool       `json:"attended"`
-	Plans                []string   `json:"plans"`
-	ReferredForTreatment bool       `json:"referred_for_treatment"`
-	FollowUpPlan         string     `json:"follow_up_plan"`
-	DateOfAttendance     CustomDate `json:"date_of_attendance"`
+	Attended             bool         `json:"attended"`
+	Plans                []string     `json:"plans"`
+	ReferredForTreatment bool         `json:"referred_for_treatment"`
+	FollowUpPlan         string       `json:"follow_up_plan"`
+	DateOfAttendance     CustomDate   `json:"date_of_attendance"`
+	HospitalName         nulls.String `json:"hospital_name"`
 }
 
 // Value returns database driver compatible type

@@ -99,6 +99,25 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group" style="text-align: left;">
+                                    <label for="hospital"><%= t("label_referral_hospital_name") %></label>
+                                    <select class="form-control select2" style="width: 100%;" name="HospoitalName">
+                                        <option value="">
+                                            None
+                                        </option>
+                                        <%= if (len(hospitals) > 0) { %>
+                                            <%= for (h) in hospitals { %>
+                                            <option value="<%= trimText(h) %>">
+                                                <%= trimText(h) %>
+                                            </option>
+                                            <% } %>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group" style="text-align: left;">
                                     <label for=""><%= t("label_additional_notes") %></label>
                                     <textarea name="Message" id="Message" cols="30"
                                         rows="5" class="form-control"></textarea>

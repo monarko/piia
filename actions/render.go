@@ -96,6 +96,9 @@ func init() {
 				}
 				return ""
 			},
+			"trimText": func(s string) string {
+				return strings.TrimSpace(s)
+			},
 		},
 	})
 }

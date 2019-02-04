@@ -317,6 +317,8 @@
   translation: "แนวทางการรัก"
 - id: label_referral_follow_up_plan
   translation: "แนวทางการติดตามการรักษา"
+- id: label_referral_hospital_name
+  translation: "Hospital Name (If referred to hospital)"
 - id: label_additional_notes
   translation: "ข้อมูลเพิ่มเติม"
 - id: option_referrals_all
