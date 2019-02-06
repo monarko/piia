@@ -19,7 +19,7 @@
                         <% } %>
                     </div>
                 </div>
-                <form data-toggle="validator" action="<%= participantScreeningsCreatePath({pid: participant.ID}) %>" method="POST">
+                <form data-toggle="validator" action="<%= participantScreeningsCreatePath({pid: participant.ID}) %>" method="POST" id="screeningForm">
                     <%= csrf() %>
                     <div class="element-actions">
                         <button class="btn btn-secondary btn-lg justify-content-sm-end" >
