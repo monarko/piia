@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/gobuffalo/buffalo"
@@ -44,6 +45,12 @@ func UpdateReferredMessage(c buffalo.Context) error {
 	refer.ReferralData.FollowUpPlan = c.Request().FormValue("FollowUp")
 	refer.ReferralData.DateOfAttendance.Calendar = c.Request().FormValue("Calendar")
 	refer.ReferralData.DateOfAttendance.GivenDate, _ = time.Parse("2006-01-02", c.Request().FormValue("GivenDate"))
+	if len(c.Request().FormValue("HospitalName")) > 0 {
+		refer.ReferralData.HospitalName.String = c.Request().FormValue("HospitalName")
+		refer.ReferralData.HospitalName.Valid = true
+	}
+
+	fmt.Printf("\n\n%#v\n\n", c.Request().FormValue("HospitalName"))
 
 	verrs, err := tx.ValidateAndCreate(refer)
 	if err != nil {

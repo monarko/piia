@@ -3,6 +3,8 @@ package actions
 import (
 	"strings"
 
+	"github.com/gobuffalo/envy"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/models"
@@ -205,6 +207,12 @@ func ReferralsParticipantsGet(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	c.Set("participant", participant)
+
+	hospitals := envy.Get("HOSPITALS", "")
+	listHospitals := strings.Split(hospitals, ",")
+
+	c.Set("hospitals", listHospitals)
+
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Referrals"] = "/referrals/index"
 	breadcrumbMap["Referrals Update"] = "/referrals/participants/" + participant.ID.String()

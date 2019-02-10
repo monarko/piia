@@ -482,6 +482,64 @@
                     }
                 });
             }
+        
+            $("#screeningForm").on("submit", function (e) {
+                // e.preventDefault();
+                shouldRefer = false;
+
+                var rva = $("select[name='Eyes.RightEye.VisualAcuity']").val();
+                var rlva = $("select[name='Eyes.RightEye.LastVisualAcuity']").val();
+                var rdr = $("select[name='Eyes.RightEye.DRGrading']").val();
+                var rdme = $("input[name='Eyes.RightEye.DMEAssessment']:checked").val();
+                var lva = $("select[name='Eyes.LeftEye.VisualAcuity']").val();
+                var llva = $("select[name='Eyes.LeftEye.LastVisualAcuity']").val();
+                var ldr = $("select[name='Eyes.LeftEye.DRGrading']").val();
+                var ldme = $("input[name='Eyes.LeftEye.DMEAssessment']:checked").val();
+                
+                var referralNotes = $('#referral-notes').val();
+                var referral = $("input[name=referral]:checked").val();
+
+                // console.log("rva=", rva, "rlva=", rlva, "rdr=", rdr, "rdme=", rdme, "lva=", lva, "llva=", llva, "ldr=", ldr, "ldme=", ldme);
+                // console.log("referralNotes=", referralNotes, "referral=", referral)
+
+                /*
+                    - Ungradeable image in either eye (for DR or DME)
+                    - Severe NPDR or above in either eye
+                    - DME present in either eye
+                    - V/A 20/70 or worse
+                    - Worsening vision defined as reduced visual acuity by 2 or more lines over repeat visits
+                */
+
+                var vaValues = ["20/20", "20/30", "20/40", "20/50", "20/70", "20/100", "20/200", "CF", "HM", "LP", "NLP"]
+                var rvaIndex = vaValues.indexOf(rva)
+                var rlvaIndex = vaValues.indexOf(rlva)
+                var lvaIndex = vaValues.indexOf(lva)
+                var llvaIndex = vaValues.indexOf(llva)
+
+                // console.log("rvaIndex=", rvaIndex, "rlvaIndex=", rlvaIndex, "lvaIndex=", lvaIndex, "llvaIndex=", llvaIndex)
+
+                if (rdr == "Ungradeable" || rdme == "Ungradeable" || ldr == "Ungradeable" || ldme == "Ungradeable") {
+                    shouldRefer = true
+                } else if (rdr == "Severe DR" || rdr == "Proliferative DR" || ldr == "Severe DR" || ldr == "Proliferative DR") {
+                    shouldRefer = true
+                } else if (rdme == "Present" || ldme == "Present") {
+                    shouldRefer = true
+                } else if (rvaIndex >= 4 || lvaIndex >= 4) {
+                    shouldRefer = true                    
+                } else if (rvaIndex < 4 && (rvaIndex-rlvaIndex) >= 2) {
+                    shouldRefer = true 
+                } else if (lvaIndex < 4 && (lvaIndex-llvaIndex) >= 2) {
+                    shouldRefer = true 
+                }
+
+                // console.log("SHOULD REFER =", shouldRefer);
+
+                if (shouldRefer && $.trim(referralNotes).length == 0 && referral != "yes") {
+                    e.preventDefault();
+                    alert("According to the eye conditions, this participant should be referred. Please write your note if you want to save anyway.");
+                    $('#referral-notes').focus();
+                }
+            });
         });
     </script>
 </body>
