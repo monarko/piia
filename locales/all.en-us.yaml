@@ -29,6 +29,12 @@
 # admin dashboard
 - id: header_title
   translation: "Piia Admin"
+- id: site_all
+  translation: "All Sites"
+- id: site_K
+  translation: "K: Khlong Luang"
+- id: site_N
+  translation: "N: Nongseau"
 - id: role_admin
   translation: "Administrator"
 - id: role_general

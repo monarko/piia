@@ -34,9 +34,15 @@ func ParticipantsIndex(c buffalo.Context) error {
 		wheres = append(wheres, "%"+strings.ToUpper(c.Param("search"))+"%")
 	}
 
+	user := c.Value("current_user").(*models.User)
+
+	if len(user.Site) > 0 {
+		where = append(where, "SUBSTRING(participant_id,2,1) = ?")
+		wheres = append(wheres, user.Site)
+	}
+
 	whereStmt := strings.Join(where, " AND ")
 
-	user := c.Value("current_user").(*models.User)
 	if user.Admin || user.Permission.StudyCoordinator || user.Permission.Screening {
 		if len(whereStmt) > 0 {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")

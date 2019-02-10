@@ -33,13 +33,23 @@
                 </div>
                 <div class="menu-actions">
                     <ul class="main-menu">
+                        <li class="sub-header">
+                                <span style="padding-bottom: 0;font-size: 1rem;text-align: center;font-weight: bold;">
+                                        <%= if (len(current_user.Site) > 0) { %>
+                                            <%= t("site_" + current_user.Site) %>
+                                        <% } else { %>
+                                            <%= t("site_all") %>
+                                        <% } %>
+                                    </span>
+                        </li>
                         <li class="">
                             <a href="/">
                                 <div class="icon-w">
                                     <div class="fa fa-home"></div>
                                 </div>
                                 <span>
-                                    <%= t("nav_home") %></span>
+                                    <%= t("nav_home") %>
+                                </span>
                             </a>
                         </li>
                         <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
