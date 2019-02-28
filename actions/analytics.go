@@ -3,9 +3,12 @@ package actions
 import (
 	"bytes"
 	"encoding/csv"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gobuffalo/pop/nulls"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
@@ -317,6 +320,285 @@ func downloadVeil(analytics []models.AnalyticsScreening) (*bytes.Buffer, error) 
 		}
 
 		if err := w.Write(record); err != nil {
+			return nil, err
+		}
+	}
+	w.Flush()
+
+	if err := w.Error(); err != nil {
+		return nil, err
+	}
+
+	return b, nil
+}
+
+type fullRecord struct {
+	CreatedDate                     time.Time    `json:"created_date" db:"created_date"`
+	ParticipantID                   string       `json:"participant_id" db:"participant_id"`
+	Age                             int          `json:"age" db:"age"`
+	Gender                          string       `json:"gender" db:"gender"`
+	DiabetesType                    nulls.String `json:"diabetes_type" db:"diabetes_type"`
+	DiabetesDuration                nulls.String `json:"diabetes_duration" db:"diabetes_duration"`
+	DiabetesDurationType            nulls.String `json:"diabetes_duration_type" db:"diabetes_duration_type"`
+	MedicalHistorySmoker            nulls.String `json:"medical_history_smoker" db:"medical_history_smoker"`
+	MedicalHistoryMorbidities       nulls.String `json:"medical_history_morbidities" db:"medical_history_morbidities"`
+	MedicationsOnInsulin            nulls.String `json:"medications_on_insulin" db:"medications_on_insulin"`
+	MedicationsTakingMedications    nulls.String `json:"medications_taking_medications" db:"medications_taking_medications"`
+	MeasurementsBPSBP               nulls.String `json:"measurements_bp_sbp" db:"measurements_bp_sbp"`
+	MeasurementsBPDBP               nulls.String `json:"measurements_bp_dbp" db:"measurements_bp_dbp"`
+	MeasurementsBPAssessmentSate    nulls.String `json:"measurements_bp_assessment_date" db:"measurements_bp_assessment_date"`
+	PathologyHba1cValue             nulls.String `json:"pathology_hba1c_value" db:"pathology_hba1c_value"`
+	PathologyHba1cUnit              nulls.String `json:"pathology_hba1c_unit" db:"pathology_hba1c_unit"`
+	PathologyHba1cAssessmentDate    nulls.String `json:"pathology_hba1c_assessment_date" db:"pathology_hba1c_assessment_date"`
+	PathologyLipidsTotalCholesterol nulls.String `json:"pathology_lipids_total_cholesterol" db:"pathology_lipids_total_cholesterol"`
+	PathologyLipidsUnit             nulls.String `json:"pathology_lipids_unit" db:"pathology_lipids_unit"`
+	PathologyLipidsAssessmentDate   nulls.String `json:"pathology_lipids_assessment_date" db:"pathology_lipids_assessment_date"`
+	RightVisualAcuity               nulls.String `json:"right_visual_acuity" db:"right_visual_acuity"`
+	RightPreviousVisualAcuity       nulls.String `json:"right_previous_visual_acuity" db:"right_previous_visual_acuity"`
+	RightDRGrade                    nulls.String `json:"right_dr_grade" db:"right_dr_grade"`
+	RightDME                        nulls.String `json:"right_dme" db:"right_dme"`
+	LeftVisualAcuity                nulls.String `json:"left_visual_acuity" db:"left_visual_acuity"`
+	LeftPreviousVisualAcuity        nulls.String `json:"left_previous_visual_acuity" db:"left_previous_visual_acuity"`
+	LeftDRGrade                     nulls.String `json:"left_dr_grade" db:"left_dr_grade"`
+	LeftDME                         nulls.String `json:"left_dme" db:"left_dme"`
+	DrReferral                      nulls.String `json:"dr_referral" db:"dr_referral"`
+	DrReferralNotes                 nulls.String `json:"dr_referral_notes" db:"dr_referral_notes"`
+	RightDRGradeOver                nulls.String `json:"right_dr_grade_over" db:"right_dr_grade_over"`
+	RightDMEOver                    nulls.String `json:"right_dme_over" db:"right_dme_over"`
+	RightSuspectedOver              nulls.String `json:"right_suspected_over" db:"right_suspected_over"`
+	LeftDRGradeOver                 nulls.String `json:"left_dr_grade_over" db:"left_dr_grade_over"`
+	LeftDMEOver                     nulls.String `json:"left_dme_over" db:"left_dme_over"`
+	LeftSuspectedOver               nulls.String `json:"left_suspected_over" db:"left_suspected_over"`
+	OverReferral                    nulls.String `json:"over_referral" db:"over_referral"`
+	OverReferralNotes               nulls.String `json:"over_referral_notes" db:"over_referral_notes"`
+}
+
+// DownloadFull function
+func DownloadFull(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	user := c.Value("current_user").(*models.User)
+
+	fullRecords := make([]fullRecord, 0)
+
+	query := `SELECT
+	s.created_at AS "created_date",
+	p.participant_id AS "participant_id",
+	date_part('year', age(((p.dob->>'calculated_date'::text)::date)::timestamp with time zone)) AS "age",
+        CASE
+            WHEN ((p.gender)::text = 'M'::text) THEN 'Male'::text
+            ELSE 'Female'::text
+        END AS "gender",
+
+	(s.diabetes->>'diabetes_type'::text) AS "diabetes_type",
+	(s.diabetes->>'duration'::text) AS "diabetes_duration",
+	(s.diabetes->>'duration_type'::text) AS "diabetes_duration_type",
+
+	CASE
+            WHEN ((s.medical_history->>'smoker'::text) = 'true'::text) THEN 'Yes'::text
+            ELSE 'No'::text
+        END AS "medical_history_smoker",
+	(s.medical_history->>'morbidities'::text) AS "medical_history_morbidities",
+
+	CASE
+            WHEN ((s.medications->>'on_insulin'::text) = 'true'::text) THEN 'Yes'::text
+            ELSE 'No'::text
+        END AS "medications_on_insulin",
+	CASE
+            WHEN ((s.medications->>'taking_medications'::text) = 'true'::text) THEN 'Yes'::text
+            ELSE 'No'::text
+        END AS "medications_taking_medications",
+
+	((s.measurements->'blood_pressure'::text)->>'sbp'::text) AS measurements_bp_sbp,
+	((s.measurements->'blood_pressure'::text)->>'dbp'::text) AS measurements_bp_dbp,
+	CASE 
+	    WHEN (LEFT((((s.measurements->'blood_pressure'::text)->'assessment_date'::text)->>'calculated_date'::text), 10) = '0001-01-01'::text) THEN NULL
+	    ELSE LEFT((((s.measurements->'blood_pressure'::text)->'assessment_date'::text)->>'calculated_date'::text), 10)
+	END AS measurements_bp_assessment_date,
+
+	((s.pathology->'hba1c'::text)->>'value'::text) AS pathology_hba1c_value,
+	((s.pathology->'hba1c'::text)->>'unit'::text) AS pathology_hba1c_unit,
+	CASE 
+	    WHEN (LEFT((((s.pathology->'hba1c'::text)->'assessment_date'::text)->>'calculated_date'::text), 10) = '0001-01-01'::text) THEN NULL
+	    ELSE LEFT((((s.pathology->'hba1c'::text)->'assessment_date'::text)->>'calculated_date'::text), 10)
+	END AS pathology_hba1c_assessment_date,
+
+	((s.pathology->'lipids'::text)->>'total_cholesterol'::text) AS pathology_lipids_total_cholesterol,
+	((s.pathology->'lipids'::text)->>'unit'::text) AS pathology_lipids_unit,
+	CASE 
+	    WHEN (LEFT((((s.pathology->'lipids'::text)->'assessment_date'::text)->>'calculated_date'::text), 10) = '0001-01-01'::text) THEN NULL
+	    ELSE LEFT((((s.pathology->'lipids'::text)->'assessment_date'::text)->>'calculated_date'::text), 10)
+	END AS pathology_lipids_assessment_date,
+
+	((s.eye->'right'::text)->>'visual_acuity'::text) AS "right_visual_acuity",
+	((s.eye->'right'::text)->>'last_visual_acuity'::text) AS "right_previous_visual_acuity",
+	((s.eye->'right'::text)->>'dr'::text) AS "right_dr_grade",
+	((s.eye->'right'::text)->>'dme'::text) AS "right_dme",
+	((s.eye->'left'::text)->>'visual_acuity'::text) AS "left_visual_acuity",
+	((s.eye->'left'::text)->>'last_visual_acuity'::text) AS "left_previous_visual_acuity",
+	((s.eye->'left'::text)->>'dr'::text) AS "left_dr_grade",
+	((s.eye->'left'::text)->>'dme'::text) AS "left_dme",
+        CASE
+            WHEN ((s.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
+            ELSE 'No'::text
+        END AS "dr_referral",
+	(s.referral->>'additional_notes'::text) AS "dr_referral_notes",
+	((o.eye_assessment->'right'::text)->>'dr'::text) AS "right_dr_grade_over",
+	((o.eye_assessment->'right'::text)->>'dme'::text) AS "right_dme_over",
+	((o.eye_assessment->'right'::text)->>'suspected_pathologies'::text) AS "right_suspected_over",
+	((o.eye_assessment->'left'::text)->>'dr'::text) AS "left_dr_grade_over",
+	((o.eye_assessment->'left'::text)->>'dme'::text) AS "left_dme_over",
+	((o.eye_assessment->'left'::text)->>'suspected_pathologies'::text) AS "left_suspected_over",
+        CASE
+            WHEN ((o.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
+            ELSE 'No'::text
+        END AS "over_referral",
+	(o.referral->>'additional_notes'::text) AS "over_referral_notes"
+FROM (
+	participants p
+	LEFT JOIN screenings s ON (p.id = s.participant_id)
+	LEFT JOIN over_readings o ON (o.screening_id = s.id)
+)
+WHERE (
+	s.id IS NOT NULL
+)
+ORDER BY s.created_at`
+
+	q := tx.RawQuery(query)
+
+	if err := q.All(&fullRecords); err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
+		return c.Redirect(302, "/analytics/index")
+	}
+
+	fmt.Println(fullRecords)
+
+	appHost := envy.Get("APP_HOST", "http://127.0.0.1")
+	hosts := strings.Split(strings.TrimSpace(strings.Replace(appHost, "/", "", -1)), ":")
+	filename := hosts[1] + "-full-record-" + time.Now().Format("2006-01-02T15-04-05-0700") + ".csv"
+
+	b, err := downloadAllRecords(fullRecords)
+	if err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
+		return c.Redirect(302, "/analytics/index")
+	}
+
+	return c.Render(200, r.Download(c, filename, b))
+}
+
+func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
+	b := &bytes.Buffer{}
+	w := csv.NewWriter(b)
+
+	headers := []string{
+		"created_date",
+		"participant_id",
+		"age",
+		"gender",
+		"diabetes_type",
+		"diabetes_duration",
+		"diabetes_duration_type",
+		"medical_history_smoker",
+		"medical_history_morbidities",
+		"medications_on_insulin",
+		"medications_taking_medications",
+		"measurements_bp_sbp",
+		"measurements_bp_dbp",
+		"measurements_bp_assessment_date",
+		"pathology_hba1c_value",
+		"pathology_hba1c_unit",
+		"pathology_hba1c_assessment_date",
+		"pathology_lipids_total_cholesterol",
+		"pathology_lipids_unit",
+		"pathology_lipids_assessment_date",
+		"right_visual_acuity",
+		"right_previous_visual_acuity",
+		"right_dr_grade",
+		"right_dme",
+		"left_visual_acuity",
+		"left_previous_visual_acuity",
+		"left_dr_grade",
+		"left_dme",
+		"dr_referral",
+		"dr_referral_notes",
+		"right_dr_grade_over",
+		"right_dme_over",
+		"right_suspected_over",
+		"left_dr_grade_over",
+		"left_dme_over",
+		"left_suspected_over",
+		"over_referral",
+		"over_referral_notes",
+	}
+
+	if err := w.Write(headers); err != nil {
+		return nil, err
+	}
+
+	for _, a := range records {
+		var rc []string
+
+		rc = append(rc, a.CreatedDate.Format(time.RFC3339))
+		rc = append(rc, a.ParticipantID)
+		rc = append(rc, strconv.FormatInt(int64(a.Age), 10))
+		rc = append(rc, a.Gender)
+		rc = append(rc, a.DiabetesType.String)
+		rc = append(rc, a.DiabetesDuration.String)
+		rc = append(rc, a.DiabetesDurationType.String)
+		rc = append(rc, a.MedicalHistorySmoker.String)
+		sr := ""
+		if len(a.MedicalHistoryMorbidities.String) > 0 {
+			sr = a.MedicalHistoryMorbidities.String
+		}
+		rc = append(rc, SliceStringToCommaSeparatedValue(sr))
+		rc = append(rc, a.MedicationsOnInsulin.String)
+		rc = append(rc, a.MedicationsTakingMedications.String)
+		rc = append(rc, a.MeasurementsBPSBP.String)
+		rc = append(rc, a.MeasurementsBPDBP.String)
+		rc = append(rc, a.MeasurementsBPAssessmentSate.String)
+		rc = append(rc, a.PathologyHba1cValue.String)
+		rc = append(rc, a.PathologyHba1cUnit.String)
+		rc = append(rc, a.PathologyHba1cAssessmentDate.String)
+		rc = append(rc, a.PathologyLipidsTotalCholesterol.String)
+		rc = append(rc, a.PathologyLipidsUnit.String)
+		rc = append(rc, a.PathologyLipidsAssessmentDate.String)
+		rc = append(rc, a.RightVisualAcuity.String)
+		rc = append(rc, a.RightPreviousVisualAcuity.String)
+		rc = append(rc, a.RightDRGrade.String)
+		rc = append(rc, a.RightDME.String)
+		rc = append(rc, a.LeftVisualAcuity.String)
+		rc = append(rc, a.LeftPreviousVisualAcuity.String)
+		rc = append(rc, a.LeftDRGrade.String)
+		rc = append(rc, a.LeftDME.String)
+		rc = append(rc, a.DrReferral.String)
+		rc = append(rc, a.DrReferralNotes.String)
+		rc = append(rc, a.RightDRGradeOver.String)
+		rc = append(rc, a.RightDMEOver.String)
+		sr = ""
+		if len(a.RightSuspectedOver.String) > 0 {
+			sr = a.RightSuspectedOver.String
+		}
+		rc = append(rc, SliceStringToCommaSeparatedValue(sr))
+		rc = append(rc, a.LeftDRGradeOver.String)
+		rc = append(rc, a.LeftDMEOver.String)
+		sr = ""
+		if len(a.LeftSuspectedOver.String) > 0 {
+			sr = a.LeftSuspectedOver.String
+		}
+		rc = append(rc, SliceStringToCommaSeparatedValue(sr))
+		rc = append(rc, a.OverReferral.String)
+		rc = append(rc, a.OverReferralNotes.String)
+
+		if err := w.Write(rc); err != nil {
 			return nil, err
 		}
 	}
