@@ -547,6 +547,9 @@
                                                 <fieldset class="form-group" style="margin-top: 0.5rem;">
                                                 <legend><span><%= t("dr_referral_label") %></span></legend>
                                                 </fieldset>
+
+                                                <div id="referral-error" style="margin-top: -1.5rem;margin-bottom: 1rem;"></div>
+
                                                 <div class="form-check-inline">
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
@@ -557,6 +560,11 @@
                                                         <label class="form-check-label"><input class="form-check-input"
                                                                 name="referral" type="radio"
                                                                 value="false"><%= t("option_no") %></label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                name="referral_refused" type="checkbox"
+                                                                value="refused"><%= t("label_referral_refused") %></label>
                                                     </div>
                                                 </div>
                                             </div>

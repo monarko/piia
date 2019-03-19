@@ -498,9 +498,11 @@
                 
                 var referralNotes = $('#referral-notes').val();
                 var referral = $("input[name=referral]:checked").val();
+                var referralRefused = $("input[name=referral_refused]:checked").val(); 
 
                 // console.log("rva=", rva, "rlva=", rlva, "rdr=", rdr, "rdme=", rdme, "lva=", lva, "llva=", llva, "ldr=", ldr, "ldme=", ldme);
                 // console.log("referralNotes=", referralNotes, "referral=", referral)
+                console.log("referral refused=", referralRefused)
 
                 /*
                     - Ungradeable image in either eye (for DR or DME)
@@ -534,9 +536,10 @@
 
                 // console.log("SHOULD REFER =", shouldRefer);
 
-                if (shouldRefer && $.trim(referralNotes).length == 0 && referral != "yes") {
+                if (referralRefused != "refused" && shouldRefer && $.trim(referralNotes).length == 0 && referral != "yes") {
                     e.preventDefault();
-                    alert("According to the eye conditions, this participant should be referred. Please write your note if you want to save anyway.");
+                    $('#referral-error').html("<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\"><%= t("label_referral_refused_error") %><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div>");
+                    // alert("According to the eye conditions, this participant should be referred. Please write your note if you want to save anyway.");
                     $('#referral-notes').focus();
                 }
             });

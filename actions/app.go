@@ -204,7 +204,8 @@ func setErrorHandler(app *buffalo.App) {
 func customErrorHandler() buffalo.ErrorHandler {
 	return func(status int, err error, c buffalo.Context) error {
 		ct := c.Request().Header.Get("Content-Type")
-
+		user := c.Value("current_user").(*models.User)
+		InsertLog("error", "Error", err.Error(), "", "", user.ID, c)
 		switch strings.ToLower(ct) {
 		case "application/json", "text/json", "json":
 			c.Logger().Error(err)

@@ -12,8 +12,9 @@ import (
 
 // ReferralScreening model
 type ReferralScreening struct {
-	Referred bool         `json:"referred"`
-	Notes    nulls.String `json:"additional_notes"`
+	Referred        bool         `json:"referred"`
+	ReferralRefused bool         `json:"referral_refused"`
+	Notes           nulls.String `json:"additional_notes"`
 }
 
 // Value returns database driver compatible type

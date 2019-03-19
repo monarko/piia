@@ -3,7 +3,6 @@ package actions
 import (
 	"bytes"
 	"encoding/csv"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -474,8 +473,6 @@ ORDER BY s.created_at`
 		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
 		return c.Redirect(302, "/analytics/index")
 	}
-
-	fmt.Println(fullRecords)
 
 	appHost := envy.Get("APP_HOST", "http://127.0.0.1")
 	hosts := strings.Split(strings.TrimSpace(strings.Replace(appHost, "/", "", -1)), ":")

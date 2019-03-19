@@ -80,6 +80,11 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	if referral == "yes" {
 		screening.Referral.Referred = true
 	}
+	screening.Referral.ReferralRefused = false
+	referralRefused := c.Request().FormValue("referral_refused")
+	if referralRefused == "refused" {
+		screening.Referral.ReferralRefused = true
+	}
 
 	verrs, err := tx.ValidateAndCreate(screening)
 	if err != nil {
@@ -176,6 +181,11 @@ func ScreeningsEditPost(c buffalo.Context) error {
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
 		screening.Referral.Referred = true
+	}
+	screening.Referral.ReferralRefused = false
+	referralRefused := c.Request().FormValue("referral_refused")
+	if referralRefused == "refused" {
+		screening.Referral.ReferralRefused = true
 	}
 
 	verrs, err := tx.ValidateAndUpdate(screening)

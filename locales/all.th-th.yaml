@@ -225,6 +225,10 @@
   translation: "ไม่มี DME"
 - id: option_present
   translation: "ตรวจพบ DME "
+- id: label_referral_refused
+  translation: "ผู้อ้างอิงถูกปฏิเสธโดยผู้เข้าร่วม"
+- id: label_referral_refused_error
+  translation: "ตามเงื่อนไขของสายตาผู้เข้าร่วมนี้ควรได้รับการอ้างอิง โปรดเขียนบันทึกย่อของคุณหากคุณต้องการบันทึกต่อไปหรือเลือกช่องปฏิเสธการอ้างอิงหากผู้ป่วยไม่ต้องการถูกส่งต่อ"
 # create new - enrollment
 - id: page_enroll_title
   translation: "ลงทะเบียนเข้าศึกษา"

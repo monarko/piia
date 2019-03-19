@@ -224,6 +224,10 @@
   translation: "Not Present"
 - id: option_present
   translation: "Present"
+- id: label_referral_refused
+  translation: "Referral Refused by Participant"
+- id: label_referral_refused_error
+  translation: "According to the eye conditions, this participant should be referred. Please write your note if you want to save anyway or select referral refused box if the patient don't want to be referred."
 # create new - enrollment
 - id: page_enroll_title
   translation: "Enroll into Study"
