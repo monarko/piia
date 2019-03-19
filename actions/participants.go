@@ -30,8 +30,8 @@ func ParticipantsIndex(c buffalo.Context) error {
 	}
 
 	if len(c.Param("search")) > 0 {
-		where = append(where, "participant_id LIKE ?")
-		wheres = append(wheres, "%"+strings.ToUpper(c.Param("search"))+"%")
+		where = append(where, "replace(participants.participant_id, '-', '') LIKE ?")
+		wheres = append(wheres, "%"+strings.Replace(strings.ToUpper(c.Param("search")), "-", "", -1)+"%")
 	}
 
 	user := c.Value("current_user").(*models.User)

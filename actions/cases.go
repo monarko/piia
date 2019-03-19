@@ -33,8 +33,8 @@ func CasesIndex(c buffalo.Context) error {
 	wheres = append(wheres, status)
 
 	if len(c.Param("search")) > 0 {
-		where = append(where, "participant_id LIKE ?")
-		wheres = append(wheres, "%"+strings.ToUpper(c.Param("search"))+"%")
+		where = append(where, "replace(participants.participant_id, '-', '') LIKE ?")
+		wheres = append(wheres, "%"+strings.Replace(strings.ToUpper(c.Param("search")), "-", "", -1)+"%")
 	}
 
 	whereStmt := strings.Join(where, " AND ")
