@@ -129,6 +129,8 @@
   translation: "ผู้ป่วยรายนี้ได้ยินยอมและเซ็นหนังสือแสดงความยินยอม"
 - id: form_button_enroll
   translation: "ลงทะเบียน"
+- id: form_button_enroll_update
+  translation: "อัพเดทผู้เข้าร่วม"
 - id: form_button_enroll_continue
   translation: "ลงทะเบียน and enter data"
 # participant table header labels
@@ -238,6 +240,15 @@
   translation: "กรอกแบบฟอร์มเพื่อลงทะเบียน"
 - id: breadcrumb_enrol_participant
   translation: "ลงทะเบียนผู้เข้าร่วม"
+# update enrollment
+- id: page_enroll_update_title
+  translation: "อัปเดตการลงทะเบียน"
+- id: form_enroll_update_header
+  translation: "อัพเดทผู้เข้าร่วม"
+- id: form_enroll_update_desc
+  translation: "กรอกแบบฟอร์มเพื่ออัพเดตผู้เข้าร่วมในการศึกษา"
+- id: breadcrumb_enrol_update_participant
+  translation: "อัพเดทผู้เข้าร่วม"
 # over-reading index
 - id: page_overreading_title
   translation: "รายการตรวจสอบ"

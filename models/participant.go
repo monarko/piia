@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/gobuffalo/pop/nulls"
@@ -35,6 +36,20 @@ type Participant struct {
 	Notifications       Notifications    `has_many:"notifications" json:"-"`
 	Referrals           ReferredMessages `has_many:"referred_messages" json:"-"`
 	ReferralAppointment bool             `json:"referral_appointment" db:"referral_appointment"`
+}
+
+// Maps will return a map
+func (p Participant) Maps() map[string]interface{} {
+	bt, _ := json.Marshal(p)
+	m := make(map[string]interface{})
+	json.Unmarshal(bt, &m)
+	delete(m, "screenings")
+	delete(m, "over_readings")
+	delete(m, "notifications")
+	delete(m, "referred_messages")
+	delete(m, "created_at")
+	delete(m, "updated_at")
+	return m
 }
 
 // Participants holds the list of Participant

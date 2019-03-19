@@ -114,6 +114,7 @@ func ParticipantsCreateGet(c buffalo.Context) error {
 func ParticipantsCreatePost(c buffalo.Context) error {
 	// Allocate an empty Post
 	participant := &models.Participant{}
+	oldParticipant := participant.Maps()
 	user := c.Value("current_user").(*models.User)
 
 	prefix := "P"
@@ -204,6 +205,13 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		return c.Render(422, r.HTML("participants/create.html"))
 	}
+
+	newParticipant := participant.Maps()
+	auditErr := MakeAudit("Participant", participant.ID, oldParticipant, newParticipant, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
+	}
+
 	logErr := InsertLog("create", "User created a participant", "", participant.ID.String(), "participant", user.ID, c)
 	if logErr != nil {
 		// return errors.WithStack(logErr)
@@ -243,7 +251,7 @@ func ParticipantsEditGet(c buffalo.Context) error {
 	c.Set("participant", participant)
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["page_participants_title"] = "/participants/index"
-	breadcrumbMap["breadcrumb_enrol_participant"] = "/participants/edit"
+	breadcrumbMap["breadcrumb_enrol_update_participant"] = "/participants/edit/" + participant.ID.String()
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("participants/edit.html"))
 }
@@ -252,13 +260,71 @@ func ParticipantsEditGet(c buffalo.Context) error {
 func ParticipantsEditPost(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	participant := &models.Participant{}
+	user := c.Value("current_user").(*models.User)
+
+	prefix := "P"
+	if len(user.Site) > 0 {
+		prefix = prefix + user.Site
+	}
+	c.Set("participantIDPrefix", prefix)
+
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["page_participants_title"] = "/participants/index"
+	breadcrumbMap["breadcrumb_enrol_update_participant"] = "/participants/edit/" + participant.ID.String()
+	c.Set("breadcrumbMap", breadcrumbMap)
+
 	if err := tx.Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
-	participant.Consented = false
+	oldParticipant := participant.Maps()
+
 	if err := c.Bind(participant); err != nil {
 		return errors.WithStack(err)
 	}
+	currentDate := time.Now()
+	birthYear, err := strconv.Atoi(c.Request().FormValue("BirthYear"))
+	maxYear := currentDate.Year() - 10
+	minYear := currentDate.Year() - 100
+	currentCalendar := "Gregorian"
+	if participant.DOB.Calendar == "thai" {
+		maxYear += 543
+		minYear += 543
+		currentCalendar = "Thai"
+	}
+	if err == nil && birthYear >= minYear && birthYear <= maxYear {
+		today := time.Now().Year()
+		diff := birthYear - today
+		participant.DOB.GivenDate = time.Now().AddDate(diff, 0, 0)
+	} else {
+		errStr := fmt.Sprintf("Invalid birth year given, please re-check your input. For %s calendar, valid year of birth is between %d and %d.", currentCalendar, minYear, maxYear)
+		errs := map[string][]string{
+			"checksum_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/edit.html"))
+	}
+
+	if len(participant.ParticipantID) != 9 || !helpers.Valid(participant.ParticipantID, false) || strings.Contains(participant.ParticipantID, "_") {
+		errStr := "Invalid Participant ID, please check your input again for valid checksum."
+		errs := map[string][]string{
+			"checksum_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/edit.html"))
+	}
+
+	if len(participant.ParticipantID) == 9 && !strings.HasPrefix(participant.ParticipantID, prefix) {
+		errStr := "Participant ID should start with letter \"" + prefix + "\"."
+		errs := map[string][]string{
+			"checksum_error": {errStr},
+		}
+		c.Set("participant", participant)
+		c.Set("errors", errs)
+		return c.Render(422, r.HTML("participants/edit.html"))
+	}
+
 	verrs, err := tx.ValidateAndUpdate(participant)
 	if err != nil {
 		return errors.WithStack(err)
@@ -266,17 +332,20 @@ func ParticipantsEditPost(c buffalo.Context) error {
 	if verrs.HasAny() {
 		c.Set("participant", participant)
 		c.Set("errors", verrs.Errors)
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["page_participants_title"] = "/participants/index"
-		breadcrumbMap["breadcrumb_enrol_participant"] = "/participants/edit"
-		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("participants/edit.html"))
 	}
-	user := c.Value("current_user").(*models.User)
+
+	newParticipant := participant.Maps()
+	auditErr := MakeAudit("Participant", participant.ID, oldParticipant, newParticipant, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
+	}
+
 	logErr := InsertLog("update", "User updated a participant", "", participant.ID.String(), "participant", user.ID, c)
 	if logErr != nil {
 		return errors.WithStack(logErr)
 	}
+
 	c.Flash().Add("success", "Participant was updated successfully.")
 	return c.Redirect(302, "/participants/index")
 }

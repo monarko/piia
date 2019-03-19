@@ -129,6 +129,8 @@
   translation: "By checking this box, you confirm that (i) the patient is eligible for the study and (ii) has provided informed consent to participate"
 - id: form_button_enroll
   translation: "Enroll"
+- id: form_button_enroll_update
+  translation: "Update Participant"
 - id: form_button_enroll_continue
   translation: "Enroll and enter data"
 
@@ -239,6 +241,15 @@
   translation: "Enroll Participant"
 - id: breadcrumb_enrol_participant_short
   translation: "Participant"
+# update enrollment
+- id: page_enroll_update_title
+  translation: "Update Enrollment"
+- id: form_enroll_update_header
+  translation: "Update participant"
+- id: form_enroll_update_desc
+  translation: "Complete the form to update a participant in the study"
+- id: breadcrumb_enrol_update_participant
+  translation: "Update Participant"
 # over-reading index
 - id: page_overreading_title
   translation: "Overreading List"
