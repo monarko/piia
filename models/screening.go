@@ -158,6 +158,11 @@ func (s *Screening) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		s.Pathology.Lipids.AssessmentDate.CalculatedDate = s.Pathology.Lipids.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
 	}
 
+	s.Eyes.AssessmentDate.CalculatedDate = s.Eyes.AssessmentDate.GivenDate
+	if s.Eyes.AssessmentDate.Calendar == "thai" {
+		s.Eyes.AssessmentDate.CalculatedDate = s.Eyes.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
+	}
+
 	valids = append(valids, &InRangeFloat64{Field: s.Pathology.HbA1C.HbA1C, Name: "HbA1C", Start: 3.0, End: 30.0})
 	valids = append(valids, &InRangeInt{Field: s.Measurements.BloodPressure.SBP, Name: "SBP", Start: 80, End: 250})
 	valids = append(valids, &InRangeInt{Field: s.Measurements.BloodPressure.DBP, Name: "DBP", Start: 50, End: 180})

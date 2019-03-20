@@ -20,8 +20,9 @@ type EyeAssessment struct {
 
 // EyeScreening model
 type EyeScreening struct {
-	RightEye EyeAssessment `json:"right"`
-	LeftEye  EyeAssessment `json:"left"`
+	RightEye       EyeAssessment `json:"right"`
+	LeftEye        EyeAssessment `json:"left"`
+	AssessmentDate CustomDate    `json:"assessment_date"`
 }
 
 // Value returns database driver compatible type

@@ -541,6 +541,19 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-12 ml-auto">
+                                                <div class="form-group">
+                                                    <label for=""><%= t("label_date_of_assessment") %></label>
+                                                    <%= if (!screening.Eyes.AssessmentDate.GivenDate.IsZero()) { %>
+                                                        <input class="form-control" placeholder="Select date" type="date"
+                                                        name="Eyes.AssessmentDate.GivenDate" value="<%= changeDate(screening.Eyes.AssessmentDate.GivenDate, "2006-01-02", Eyes.AssessmentDate.Calendar, t("lang_calendar")) %>">
+                                                    <% } else { %>
+                                                        <input class="form-control" placeholder="Select date" type="date"
+                                                        name="Eyes.AssessmentDate.GivenDate" value="<%= currentDate(t("lang_calendar")) %>">
+                                                    <% } %>
+                                                </div>
+                                                <input type="hidden" name="Eyes.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12">
