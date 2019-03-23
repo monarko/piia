@@ -543,7 +543,7 @@
                                             </div>
                                             <div class="col-sm-12 ml-auto">
                                                 <div class="form-group">
-                                                    <label for=""><%= t("label_date_of_assessment") %></label>
+                                                    <label for=""><%= t("label_date_of_dr_assessment") %></label>
                                                     <%= if (!screening.Eyes.AssessmentDate.GivenDate.IsZero()) { %>
                                                         <input class="form-control" placeholder="Select date" type="date"
                                                         name="Eyes.AssessmentDate.GivenDate" value="<%= changeDate(screening.Eyes.AssessmentDate.GivenDate, "2006-01-02", Eyes.AssessmentDate.Calendar, t("lang_calendar")) %>">
@@ -566,17 +566,23 @@
                                                 <div class="form-check-inline">
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
-                                                                name="referral" type="radio"
+                                                                name="referral" type="radio" id="referral_yes"
                                                                 value="yes"><%= t("option_yes") %></label>
                                                     </div>
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
-                                                                name="referral" type="radio"
+                                                                name="referral" type="radio" id="referral_no"
                                                                 value="false"><%= t("option_no") %></label>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" id="referral-refused-box" style="margin-top: 10px;">
+                                            <div class="col-sm-12">
+                                                <div class="form-check-inline">
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
-                                                                name="referral_refused" type="checkbox"
+                                                                name="referral_refused" type="checkbox" id="referral_refused" 
                                                                 value="refused"><%= t("label_referral_refused") %></label>
                                                     </div>
                                                 </div>

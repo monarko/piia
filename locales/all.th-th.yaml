@@ -209,6 +209,8 @@
   translation: "ความดันโลหิต (มม.ปรอท)"
 - id: label_date_of_assessment
   translation: "Dวันที่ประเมินล่าสุด"
+- id: label_date_of_dr_assessment
+  translation: "วันที่ประเมิน DR"
 - id: screening_pathology
   translation: "รอยโรค"
 - id: screening_measurements_blood_sugar
@@ -230,7 +232,7 @@
 - id: label_referral_refused
   translation: "ผู้อ้างอิงถูกปฏิเสธโดยผู้เข้าร่วม"
 - id: label_referral_refused_error
-  translation: "ตามเงื่อนไขของสายตาผู้เข้าร่วมนี้ควรได้รับการอ้างอิง โปรดเขียนบันทึกย่อของคุณหากคุณต้องการบันทึกต่อไปหรือเลือกช่องปฏิเสธการอ้างอิงหากผู้ป่วยไม่ต้องการถูกส่งต่อ"
+  translation: "ตามเงื่อนไขของสายตาผู้เข้าร่วมนี้ควรได้รับการอ้างอิง โปรดเขียนบันทึกย่อของคุณหากคุณต้องการบันทึกต่อไป"
 # create new - enrollment
 - id: page_enroll_title
   translation: "ลงทะเบียนเข้าศึกษา"

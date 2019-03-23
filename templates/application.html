@@ -278,6 +278,8 @@
 <%= javascriptTag("Chart.js") %>
     <script>
         $(function () {
+            toogleReferralRefusalBox();
+
             $(".select2").select2();
             $('.tasks-header-toggler').on('click', function () {
                 $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
@@ -300,21 +302,6 @@
                     accordionRow.hide();
                 }
             });
-
-            if ($("#screening-json-data").length) {
-                var screeningJson = JSON.stringify(JSON.parse($("#screening-json-data").val()), undefined, 4);
-                $("#screening-json-data").text(screeningJson);
-            }
-
-            if ($("#overread-json-data").length) {
-                var overReadJson = JSON.stringify(JSON.parse($("#overread-json-data").val()), undefined, 4);
-                $("#overread-json-data").text(overReadJson);
-            }
-
-            if ($("#referrals-json-data").length) {
-                var referralsJson = JSON.stringify(JSON.parse($("#referrals-json-data").val()), undefined, 4);
-                $("#referrals-json-data").text(referralsJson);
-            }
 
             var viewer = ImageViewer();
             $('.fullscreen-image').click(function () {
@@ -498,11 +485,9 @@
                 
                 var referralNotes = $('#referral-notes').val();
                 var referral = $("input[name=referral]:checked").val();
-                var referralRefused = $("input[name=referral_refused]:checked").val(); 
 
                 // console.log("rva=", rva, "rlva=", rlva, "rdr=", rdr, "rdme=", rdme, "lva=", lva, "llva=", llva, "ldr=", ldr, "ldme=", ldme);
                 // console.log("referralNotes=", referralNotes, "referral=", referral)
-                console.log("referral refused=", referralRefused)
 
                 /*
                     - Ungradeable image in either eye (for DR or DME)
@@ -536,14 +521,31 @@
 
                 // console.log("SHOULD REFER =", shouldRefer);
 
-                if (referralRefused != "refused" && shouldRefer && $.trim(referralNotes).length == 0 && referral != "yes") {
+                if (shouldRefer && $.trim(referralNotes).length == 0 && referral != "yes") {
                     e.preventDefault();
                     $('#referral-error').html("<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\"><%= t("label_referral_refused_error") %><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div>");
-                    // alert("According to the eye conditions, this participant should be referred. Please write your note if you want to save anyway.");
                     $('#referral-notes').focus();
                 }
             });
+            
+            $("#referral_yes").on("change", function () {
+                toogleReferralRefusalBox();
+            });
+
+            $("#referral_no").on("change", function () {
+                toogleReferralRefusalBox();
+            });
         });
+
+        function toogleReferralRefusalBox() {
+            var referral = $("input[name=referral]:checked").val();
+            if (referral == "yes") {
+                $("#referral-refused-box").show();
+            } else {
+                $("#referral_refused").prop("checked", false);
+                $("#referral-refused-box").hide();
+            }
+        }
     </script>
 </body>
 

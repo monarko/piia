@@ -208,6 +208,8 @@
   translation: "Blood Pressure"
 - id: label_date_of_assessment
   translation: "Date of last assessment"
+- id: label_date_of_dr_assessment
+  translation: "Date of DR Assessment"
 - id: screening_pathology
   translation: "Pathology"
 - id: screening_measurements_blood_sugar
@@ -229,7 +231,7 @@
 - id: label_referral_refused
   translation: "Referral Refused by Participant"
 - id: label_referral_refused_error
-  translation: "According to the eye conditions, this participant should be referred. Please write your note if you want to save anyway or select referral refused box if the patient don't want to be referred."
+  translation: "According to the eye conditions, this participant should be referred. Please write your note if you want to save anyway."
 # create new - enrollment
 - id: page_enroll_title
   translation: "Enroll into Study"
