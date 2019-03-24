@@ -1,301 +1,227 @@
-<div class="row">
-    <div class="col">
-        <%= if (errors) { %>
-        <%= for (key, val) in errors { %>
-        <div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
-            <%= val %>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <% } %>
-        <% } %>
+<!-- Demographics -->
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-sm-12">
+        <span>
+            <i class="fa fa-user-circle" aria-hidden="true" style="font-size: 30px; color: #0073ff;"></i>
+        </span>
+        <span style="margin-left: 8px; line-height: 30px; vertical-align: middle;">
+            <%= participant.ParticipantID %>
+            |
+            <%= genderHelper(participant.Gender) %>
+            |
+            <%= ageHelper(participant.DOB.CalculatedDate) %>
+        </span>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-5">
-        <div class="user-profile compact">
-            <div class="up-head-w" style="background-color:#fff;">
-                <div class="up-main-info" style="padding-top: 10px;">
-                    <h2>
-                        <%= participant.ParticipantID %>
-                    </h2>
-                    <h2 class="up-header">
-                        <%= ageHelper(participant.DOB.CalculatedDate) %> old
-                        <%= genderHelper(participant.Gender) %>
-                    </h2>
+
+<!-- Notifications -->
+<%= if (len(open_notifications) > 0) { %>
+<div class="element-wrapper" style="padding-bottom: 1rem;">
+    <div class="element-box" style="background-color: #f9f0cf;">
+        <div class="element-info">
+            <div class="element-info-with-icon">
+                <div class="element-info-icon">
+                    <div class="os-icon os-icon-others-43"></div>
                 </div>
-            </div>
-            <div class="up-controls" style="padding: 6px;background-color:#66788a;padding: 6px;border-radius: 0 0 6px 6px;">
-                <div class="row">
-                    <div class="col-sm-6">
-
-                    </div>
-                    <div class="col-sm-6 text-right">
-
+                <div class="element-info-text">
+                    <h5 class="element-inner-header">
+                        Notifications
+                    </h5>
+                    <div class="element-inner-desc">
+                        Check the notifications for this participant
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="element-wrapper">
-            <div class="element-box">
-                <h6 class="element-header">
-                    Timeline
-                </h6>
-                <div class="timed-activities compact">
-                    <%= for (val) in activities_keys { %>
-                    <div class="timed-activity">
-                        <div class="ta-date">
-                            <span>
-                                <%= val %></span>
+        <div class="todo-list">
+            <%= for (notification) in open_notifications { %>
+            <a class="todo-item" href="#" data-target=".<%= notification.ID %>-modal-lg" data-toggle="modal">
+                <div class="ti-info">
+                    <div class="ti-header">
+                        <%= notification.Type %> (
+                        <%= notification.UpdatedAt.Format("02 Jan 2006 03:04:05pm") %>)
+                    </div>
+                    <div class="ti-sub-header">
+                        From Over Reader:
+                        <%= notification.Message %>
+                    </div>
+                </div>
+                <div class="ti-icon">
+                    <i class="os-icon os-icon-arrow-right7"></i>
+                </div>
+            </a>
+            <div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade <%= notification.ID %>-modal-lg"
+                role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                <%= t("label_notification_modal") %>
+                            </h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                                    aria-hidden="true"> &times;</span></button>
                         </div>
-                        <div class="ta-record-w">
-                            <%= for (v) in user_activities[val] { %>
-                            <div class="ta-record">
-                                <div class="ta-timestamp">
-                                    <strong>
-                                        <%= v["time"] %></strong>
-                                    <%= v["ampm"] %>
+                        <form method="POST" action="<%= notificationsPath() %>">
+                            <div class="modal-body">
+                                <%= csrf() %>
+                                <div class="form-group">
+                                    <label for="status">
+                                        <%= t("label_status") %></label>
+                                    <select name="status" class="form-control">
+                                        <option value="open">
+                                            <%= t("notification_status_open") %>
+                                        </option>
+                                        <option value="nurse-notified">
+                                            <%= t("notification_status_nurse_notified") %>
+                                        </option>
+                                        <option value="patient-contacted">
+                                            <%= t("notification_status_patient_contacted") %>
+                                        </option>
+                                        <option value="referral-arranged">
+                                            <%= t("notification_status_referral_arranged") %>
+                                        </option>
+                                        <option value="closed">
+                                            <%= t("notification_status_closed") %>
+                                        </option>
+                                    </select>
                                 </div>
-                                <div class="ta-activity">
-                                    <%= v["msg"] %>
+                                <div class="form-group">
+                                    <label for="eventDate">
+                                        <%= t("label_event_date") %></label>
+                                    <input class="form-control" placeholder="Select date" type="date" name="eventDate"
+                                        value="<%= currentDate(t(" lang_calendar")) %>">
+                                    <input type="hidden" name="eventDateLanguage" value="<%= t(" lang_calendar") %>">
+                                </div>
+                                <div class="form-group" style="margin-top: 1rem;">
+                                    <label for="notes">
+                                        <%= t("label_additional_notes") %></label>
+                                    <textarea name="notes" id="notes" rows="6" class="form-control"></textarea>
+                                </div>
+                                <input type="hidden" name="notificationId" value="<%= notification.ID %>">
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal" type="button">
+                                    <%= t("button_cancel") %></button>
+                                <button class="btn btn-primary" type="submit">
+                                    <%= t("button_submit") %></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<% } %>
+
+<!-- Timeline -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-box" style="padding: 1rem;">
+                <div class="todo-app-w">
+                    <div class="todo-content" style="padding: 0;">
+                        <div class="all-tasks-w" style="padding-top: 0;">
+                            <div class="tasks-section">
+                                <div class="tasks-header-w" style="margin-top: 0;">
+                                    <a class="tasks-header-toggler" href="#">
+                                        <i class="os-icon os-icon-ui-23"></i>
+                                    </a>
+                                    <h5 class="tasks-header">
+                                        Timeline
+                                    </h5>
+                                </div>
+                                <div class="tasks-list-w" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="timed-activities compact">
+                                                <%= for (val) in activities_keys { %>
+                                                <div class="timed-activity">
+                                                    <div class="ta-date">
+                                                        <span>
+                                                            <%= val %></span>
+                                                    </div>
+                                                    <div class="ta-record-w">
+                                                        <%= for (v) in user_activities[val] { %>
+                                                        <div class="ta-record">
+                                                            <div class="ta-timestamp">
+                                                                <strong>
+                                                                    <%= v["time"] %></strong>
+                                                                <%= v["ampm"] %>
+                                                            </div>
+                                                            <div class="ta-activity">
+                                                                <%= v["msg"] %>
+                                                            </div>
+                                                        </div>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <% } %>
                         </div>
                     </div>
-                    <% } %>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="col-sm-7">
-        <%= if (len(open_notifications) > 0) { %>
-        <div class="element-wrapper" style="padding-bottom: 1rem;">
-            <div class="element-box" style="background-color: #f9f0cf;">
-                <div class="element-info">
-                    <div class="element-info-with-icon">
-                        <div class="element-info-icon">
-                            <div class="os-icon os-icon-others-43"></div>
-                        </div>
-                        <div class="element-info-text">
-                            <h5 class="element-inner-header">
-                                Notifications
-                            </h5>
-                            <div class="element-inner-desc">
-                                Check the notifications for this participant
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="todo-list">
-                    <%= for (notification) in open_notifications { %>
-                    <a class="todo-item" href="#" data-target=".<%= notification.ID %>-modal-lg" data-toggle="modal">
-                        <div class="ti-info">
-                            <div class="ti-header">
-                                <%= notification.Type %> (
-                                <%= notification.UpdatedAt.Format("02 Jan 2006 03:04:05pm") %>)
-                            </div>
-                            <div class="ti-sub-header">
-                                From Over Reader:
-                                <%= notification.Message %>
-                            </div>
-                        </div>
-                        <div class="ti-icon">
-                            <i class="os-icon os-icon-arrow-right7"></i>
-                        </div>
-                    </a>
-                    <div aria-hidden="true" aria-labelledby="mySmallModalLabel" class="modal fade <%= notification.ID %>-modal-lg"
-                        role="dialog" tabindex="-1">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">
-                                        <%= t("label_notification_modal") %>
-                                    </h5>
-                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
-                                            aria-hidden="true"> &times;</span></button>
-                                </div>
-                                <form method="POST" action="<%= notificationsPath() %>">
-                                    <div class="modal-body">
-                                        <%= csrf() %>
-                                        <div class="form-group">
-                                            <label for="status">
-                                                <%= t("label_status") %></label>
-                                            <select name="status" class="form-control">
-                                                <option value="open">
-                                                    <%= t("notification_status_open") %>
-                                                </option>
-                                                <option value="nurse-notified">
-                                                    <%= t("notification_status_nurse_notified") %>
-                                                </option>
-                                                <option value="patient-contacted">
-                                                    <%= t("notification_status_patient_contacted") %>
-                                                </option>
-                                                <option value="referral-arranged">
-                                                    <%= t("notification_status_referral_arranged") %>
-                                                </option>
-                                                <option value="closed">
-                                                    <%= t("notification_status_closed") %>
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="eventDate">
-                                                <%= t("label_event_date") %></label>
-                                            <input class="form-control" placeholder="Select date" type="date" name="eventDate"
-                                                value="<%= currentDate(t(" lang_calendar")) %>">
-                                            <input type="hidden" name="eventDateLanguage" value="<%= t("
-                                                lang_calendar") %>">
-                                        </div>
-                                        <div class="form-group" style="margin-top: 1rem;">
-                                            <label for="notes">
-                                                <%= t("label_additional_notes") %></label>
-                                            <textarea name="notes" id="notes" rows="6" class="form-control"></textarea>
-                                        </div>
-                                        <input type="hidden" name="notificationId" value="<%= notification.ID %>">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" data-dismiss="modal" type="button">
-                                            <%= t("button_cancel") %></button>
-                                        <button class="btn btn-primary" type="submit">
-                                            <%= t("button_submit") %></button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+<!-- History -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <table class="table table-lightborder">
+                <tbody>
+                    <%= if (len(participant.Screenings) > 0) { %>
+                    <% let psc = participant.Screenings[0] %>
+                    <tr>
+                        <td style="width: 200px; font-weight: bold; text-align: left;">
+                            Medical History
+                        </td>
+                        <td style="text-align: left;">
+                            <%= psc.Diabetes.DiabetesType %> for
+                            <%= psc.Diabetes.Duration %>
+                            <%= if(psc.Diabetes.Duration.Valid) { %>
+                            <%= psc.Diabetes.DurationType %>
+                            <% } %>
+                            |
+                            <%= json(psc.MedicalHistory.Morbidities) %>
+                            |
+                            <%= if (psc.MedicalHistory.Smoker.Valid && psc.MedicalHistory.Smoker.Bool) { %>Smoker
+                            <% } else { %>Non-Smoker
+                            <% } %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px; font-weight: bold; text-align: left;">
+                            Medications
+                        </td>
+                        <td style="text-align: left;">
+                            <%= if (psc.Medications.TakingMedications.Valid && psc.Medications.TakingMedications.Bool) { %>Taking
+                            oral medications
+                            <% } else { %>Not taking oral medications
+                            <% } %>
+                            |
+                            <%= if (psc.Medications.OnInsulin.Valid && psc.Medications.OnInsulin.Bool) { %>On Insulin
+                            <% } else { %>Not on Insulin
+                            <% } %>
+                        </td>
+                    </tr>
                     <% } %>
-                </div>
-            </div>
+                </tbody>
+            </table>
         </div>
-        <% } %>
+    </div>
+</div>
 
-        <div class="element-wrapper" style="padding-bottom: 1rem;">
-            <div class="element-box">
-                <div class="element-info">
-                    <div class="element-info-with-icon">
-                        <div class="element-info-icon">
-                            <div class="os-icon os-icon-wallet-loaded"></div>
-                        </div>
-                        <div class="element-info-text">
-                            <h5 class="element-inner-header">
-                                Screening
-                            </h5>
-                            <div class="element-inner-desc">
-                                Check the detail screening information for this participant
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th style="text-align: left;">Right Eye</th>
-                                <th style="text-align: left;">Left Eye</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%= if (len(participant.Screenings) > 0) { %>
-                            <%= for (psc) in participant.Screenings { %>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("field_visual_acuity") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Eyes.RightEye.VisualAcuity %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Eyes.LeftEye.VisualAcuity %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("field_last_visual_acuity") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Eyes.RightEye.LastVisualAcuity %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Eyes.LeftEye.LastVisualAcuity %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("field_dr_grading") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Eyes.RightEye.DRGrading %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Eyes.LeftEye.DRGrading %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("field_dme_assessment") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Eyes.RightEye.DMEAssessment %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Eyes.LeftEye.DMEAssessment %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_date_of_dr_assessment") %>
-                                </td>
-                                <td style="text-align: left;" colspan="2">
-                                    <%= if (!psc.Eyes.AssessmentDate.CalculatedDate.IsZero()) { %>
-                                        <%= languageDate(psc.Eyes.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("section_referral_header") %>
-                                </td>
-                                <td style="text-align: left;" colspan="2">
-                                    <%= if (psc.Referral.Referred) { %>Yes
-                                    <% } else { %>No
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_referral_refused") %>
-                                </td>
-                                <td style="text-align: left;" colspan="2">
-                                    <%= if (psc.Referral.ReferralRefused) { %>Yes
-                                    <% } else { %>No
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_additional_notes") %>
-                                </td>
-                                <td style="text-align: left;" colspan="2">
-                                    <%= psc.Referral.Notes %>
-                                </td>
-                            </tr>
-                            <% } %>
-                            <% } else { %>
-                            <tr>
-                                <td colspan="3" class="text-center">No data found</td>
-                            </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
+<!-- Measurements and Pathology -->
+<div class="row">
+    <div class="col-sm-6">
         <div class="element-wrapper" style="padding-bottom: 1rem;">
             <div class="element-box">
                 <div class="element-info">
@@ -305,81 +231,41 @@
                         </div>
                         <div class="element-info-text">
                             <h5 class="element-inner-header">
-                                Over Reading
+                                Measurements
                             </h5>
-                            <div class="element-inner-desc">
-                                Check the over reading information for this participant's eyes
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th style="text-align: left;">Right Eye</th>
-                                <th style="text-align: left;">Left Eye</th>
-                            </tr>
-                        </thead>
                         <tbody>
-                            <%= if (len(participant.OverReadings) > 0) { %>
-                            <%= for (pov) in participant.OverReadings { %>
+                            <%= if (len(participant.Screenings) > 0) { %>
+                            <%= for (psc) in participant.Screenings { %>
                             <tr>
                                 <td style="text-align: left;">
-                                    <%= t("field_dr_grading") %>
+                                    <%= t("screening_measurements_bp") %>
                                 </td>
                                 <td style="text-align: left;">
-                                    <%= pov.Eyes.RightEye.DRGrading %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= pov.Eyes.LeftEye.DRGrading %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("field_dme_assessment") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= pov.Eyes.RightEye.DMEAssessment %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= pov.Eyes.LeftEye.DMEAssessment %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_suspected_pathology") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (len(pov.Eyes.RightEye.SuspectedPathologies) > 0) { json(pov.Eyes.RightEye.SuspectedPathologies) } %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (len(pov.Eyes.LeftEye.SuspectedPathologies) > 0) { json(pov.Eyes.LeftEye.SuspectedPathologies) } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("section_referral_header") %>
-                                </td>
-                                <td style="text-align: left;" colspan="2">
-                                    <%= if (pov.Referral.Referred) { %>Yes
-                                    <% } else { %>No
+                                    <%= if (psc.Measurements.BloodPressure.SBP.Valid && psc.Measurements.BloodPressure.DBP.Valid) { %>
+                                    <%= psc.Measurements.BloodPressure.SBP %>/
+                                    <%= psc.Measurements.BloodPressure.DBP %> mmHg
                                     <% } %>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="text-align: left;">
-                                    <%= t("label_additional_notes") %>
+                                    <%= t("label_date_of_assessment") %>
                                 </td>
-                                <td style="text-align: left;" colspan="2">
-                                    <%= pov.Referral.Notes %>
+                                <td style="text-align: left;">
+                                    <%= if (psc.Measurements.BloodPressure.SBP.Valid && psc.Measurements.BloodPressure.DBP.Valid) { %>
+                                    <%= languageDate(psc.Measurements.BloodPressure.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
+                                    <% } %>
                                 </td>
                             </tr>
                             <% } %>
                             <% } else { %>
                             <tr>
-                                <td colspan="3" class="text-center">No data found</td>
+                                <td colspan="2" class="text-center">No data found</td>
                             </tr>
                             <% } %>
                         </tbody>
@@ -387,7 +273,282 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="element-wrapper" style="padding-bottom: 1rem;">
+            <div class="element-box">
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-delivery-box-2"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header">
+                                Pathology
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <table class="table table-striped">
+                        <tbody>
+                            <%= if (len(participant.Screenings) > 0) { %>
+                            <%= for (psc) in participant.Screenings { %>
+                            <tr>
+                                <td colspan="2" style="text-align: left;"><strong>
+                                        <%= t("screening_measurements_blood_sugar") %> (
+                                        <%= if (psc.Pathology.HbA1C.HbA1C.Valid) { %>
+                                        <%= languageDate(psc.Pathology.HbA1C.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
+                                        <% } %>)</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">
+                                    <%= t("label_hba1c") %>
+                                </td>
+                                <td style="text-align: left;">
+                                    <%= if (psc.Pathology.HbA1C.HbA1C.Valid) { %>
+                                    <%= psc.Pathology.HbA1C.HbA1C %>
+                                    <%= psc.Pathology.HbA1C.Unit %>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: left;"><strong>
+                                        <%= t("screening_measurements_lipids") %> (
+                                        <%= if (psc.Pathology.Lipids.TotalCholesterol.Valid) { %>
+                                        <%= languageDate(psc.Pathology.Lipids.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
+                                        <% } %>)</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">
+                                    <%= t("label_total_cholesterol") %>
+                                </td>
+                                <td style="text-align: left;">
+                                    <%= if (psc.Pathology.Lipids.TotalCholesterol.Valid) { %>
+                                    <%= psc.Pathology.Lipids.TotalCholesterol %>
+                                    <%= psc.Pathology.Lipids.Unit %>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <% } %>
+                            <% } else { %>
+                            <tr>
+                                <td colspan="2" class="text-center">No data found</td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Eye Assessments -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="element-wrapper" style="padding-bottom: 1rem;">
+            <div class="element-box">
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-wallet-loaded"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header">
+                                Eye Assessments
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h5>Screening</h5>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th style="text-align: left;">Right Eye</th>
+                                        <th style="text-align: left;">Left Eye</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%= if (len(participant.Screenings) > 0) { %>
+                                    <%= for (psc) in participant.Screenings { %>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("field_visual_acuity") %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= psc.Eyes.RightEye.VisualAcuity %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= psc.Eyes.LeftEye.VisualAcuity %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("field_last_visual_acuity") %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= psc.Eyes.RightEye.LastVisualAcuity %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= psc.Eyes.LeftEye.LastVisualAcuity %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("field_dr_grading") %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= psc.Eyes.RightEye.DRGrading %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= psc.Eyes.LeftEye.DRGrading %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("field_dme_assessment") %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= psc.Eyes.RightEye.DMEAssessment %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= psc.Eyes.LeftEye.DMEAssessment %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("label_date_of_dr_assessment") %>
+                                        </td>
+                                        <td style="text-align: left;" colspan="2">
+                                            <%= if (!psc.Eyes.AssessmentDate.CalculatedDate.IsZero()) { %>
+                                            <%= languageDate(psc.Eyes.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("section_referral_header") %>
+                                        </td>
+                                        <td style="text-align: left;" colspan="2">
+                                            <%= if (psc.Referral.Referred) { %>Yes
+                                            <% } else { %>No
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("label_referral_refused") %>
+                                        </td>
+                                        <td style="text-align: left;" colspan="2">
+                                            <%= if (psc.Referral.ReferralRefused) { %>Yes
+                                            <% } else { %>No
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("label_additional_notes") %>
+                                        </td>
+                                        <td style="text-align: left;" colspan="2">
+                                            <%= psc.Referral.Notes %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                    <% } else { %>
+                                    <tr>
+                                        <td colspan="3" class="text-center">No data found</td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-6">
+                            <h5>Over Reading</h5>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th style="text-align: left;">Right Eye</th>
+                                        <th style="text-align: left;">Left Eye</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%= if (len(participant.OverReadings) > 0) { %>
+                                    <%= for (pov) in participant.OverReadings { %>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("field_dr_grading") %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= pov.Eyes.RightEye.DRGrading %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= pov.Eyes.LeftEye.DRGrading %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("field_dme_assessment") %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= pov.Eyes.RightEye.DMEAssessment %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= pov.Eyes.LeftEye.DMEAssessment %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("label_suspected_pathology") %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= if (len(pov.Eyes.RightEye.SuspectedPathologies) > 0) { json(pov.Eyes.RightEye.SuspectedPathologies) } %>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            <%= if (len(pov.Eyes.LeftEye.SuspectedPathologies) > 0) { json(pov.Eyes.LeftEye.SuspectedPathologies) } %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("section_referral_header") %>
+                                        </td>
+                                        <td style="text-align: left;" colspan="2">
+                                            <%= if (pov.Referral.Referred) { %>Yes
+                                            <% } else { %>No
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <%= t("label_additional_notes") %>
+                                        </td>
+                                        <td style="text-align: left;" colspan="2">
+                                            <%= pov.Referral.Notes %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                    <% } else { %>
+                                    <tr>
+                                        <td colspan="3" class="text-center">No data found</td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
         <div class="element-wrapper" style="padding-bottom: 1rem;">
             <div class="element-box">
                 <div class="element-info">
@@ -444,262 +605,6 @@
                                 </td>
                             </tr>
                             <% } %>
-                            <% } %>
-                            <% } else { %>
-                            <tr>
-                                <td colspan="2" class="text-center">No data found</td>
-                            </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
-        <div class="element-wrapper" style="padding-bottom: 1rem;">
-            <div class="element-box">
-                <div class="element-info">
-                    <div class="element-info-with-icon">
-                        <div class="element-info-icon">
-                            <div class="os-icon os-icon-delivery-box-2"></div>
-                        </div>
-                        <div class="element-info-text">
-                            <h5 class="element-inner-header">
-                                Medical History
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <table class="table table-striped">
-                        <tbody>
-                            <%= if (len(participant.Screenings) > 0) { %>
-                            <%= for (psc) in participant.Screenings { %>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("screening_diabetes_type") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Diabetes.DiabetesType %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_duration") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= psc.Diabetes.Duration %>
-                                    <%= if(psc.Diabetes.Duration.Valid) { %>
-                                    <%= psc.Diabetes.DurationType %>
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("screening_co-morbidities") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= json(psc.MedicalHistory.Morbidities) %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_smoker") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.MedicalHistory.Smoker.Valid && psc.MedicalHistory.Smoker) { %>Yes
-                                    <% } else { %>No
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <% } %>
-                            <% } else { %>
-                            <tr>
-                                <td colspan="2" class="text-center">No data found</td>
-                            </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="element-wrapper" style="padding-bottom: 1rem;">
-            <div class="element-box">
-                <div class="element-info">
-                    <div class="element-info-with-icon">
-                        <div class="element-info-icon">
-                            <div class="os-icon os-icon-delivery-box-2"></div>
-                        </div>
-                        <div class="element-info-text">
-                            <h5 class="element-inner-header">
-                                Medications
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <table class="table table-striped">
-                        <tbody>
-                            <%= if (len(participant.Screenings) > 0) { %>
-                            <%= for (psc) in participant.Screenings { %>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_medications_oral") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.Medications.TakingMedications.Valid && psc.Medications.TakingMedications) { %>Yes
-                                    <% } else { %>No
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_medications_insulin") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.Medications.OnInsulin.Valid && psc.Medications.OnInsulin) { %>Yes
-                                    <% } else { %>No
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <% } %>
-                            <% } else { %>
-                            <tr>
-                                <td colspan="2" class="text-center">No data found</td>
-                            </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6">
-        <div class="element-wrapper" style="padding-bottom: 1rem;">
-            <div class="element-box">
-                <div class="element-info">
-                    <div class="element-info-with-icon">
-                        <div class="element-info-icon">
-                            <div class="os-icon os-icon-delivery-box-2"></div>
-                        </div>
-                        <div class="element-info-text">
-                            <h5 class="element-inner-header">
-                                Measurements
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <table class="table table-striped">
-                        <tbody>
-                            <%= if (len(participant.Screenings) > 0) { %>
-                            <%= for (psc) in participant.Screenings { %>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("screening_measurements_bp") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.Measurements.BloodPressure.SBP.Valid && psc.Measurements.BloodPressure.DBP.Valid) { %>
-                                    <%= psc.Measurements.BloodPressure.SBP %>/
-                                    <%= psc.Measurements.BloodPressure.DBP %> mmHg
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_date_of_assessment") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.Measurements.BloodPressure.SBP.Valid && psc.Measurements.BloodPressure.DBP.Valid) { %>
-                                    <%= languageDate(psc.Measurements.BloodPressure.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <% } %>
-                            <% } else { %>
-                            <tr>
-                                <td colspan="2" class="text-center">No data found</td>
-                            </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="element-wrapper" style="padding-bottom: 1rem;">
-            <div class="element-box">
-                <div class="element-info">
-                    <div class="element-info-with-icon">
-                        <div class="element-info-icon">
-                            <div class="os-icon os-icon-delivery-box-2"></div>
-                        </div>
-                        <div class="element-info-text">
-                            <h5 class="element-inner-header">
-                                Pathology
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <table class="table table-striped">
-                        <tbody>
-                            <%= if (len(participant.Screenings) > 0) { %>
-                            <%= for (psc) in participant.Screenings { %>
-                            <tr>
-                                <td colspan="2" style="text-align: left;"><strong>
-                                        <%= t("screening_measurements_blood_sugar") %></strong></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_hba1c") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.Pathology.HbA1C.HbA1C.Valid) { %>
-                                        <%= psc.Pathology.HbA1C.HbA1C %> <%= psc.Pathology.HbA1C.Unit %>
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_date_of_assessment") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.Pathology.HbA1C.HbA1C.Valid) { %>
-                                    <%= languageDate(psc.Pathology.HbA1C.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left;"><strong>
-                                        <%= t("screening_measurements_lipids") %></strong></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_total_cholesterol") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.Pathology.Lipids.TotalCholesterol.Valid) { %>
-                                    <%= psc.Pathology.Lipids.TotalCholesterol %> <%= psc.Pathology.Lipids.Unit %>
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;">
-                                    <%= t("label_date_of_assessment") %>
-                                </td>
-                                <td style="text-align: left;">
-                                    <%= if (psc.Pathology.Lipids.TotalCholesterol.Valid) { %>
-                                    <%= languageDate(psc.Pathology.Lipids.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
-                                    <% } %>
-                                </td>
-                            </tr>
                             <% } %>
                             <% } else { %>
                             <tr>
