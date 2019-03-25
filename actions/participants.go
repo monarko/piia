@@ -452,19 +452,33 @@ func ParticipantsDetail(c buffalo.Context) error {
 	}
 	sort.Strings(keys)
 
-	audits := &models.Audits{}
+	audits := []models.Audit{}
+	screeningAudits := &models.Audits{}
+	participantAudits := &models.Audits{}
+	if err := tx.Eager().Where("model_type = ?", "Participant").Where("model_id = ?", participant.ID).All(participantAudits); err != nil {
+		return c.Error(404, err)
+	}
 	if len(participant.Screenings) > 0 {
-		if err := tx.Eager().Where("model_type = ?", "Screening").Where("model_id = ?", participant.Screenings[0].ID).All(audits); err != nil {
+		if err := tx.Eager().Where("model_type = ?", "Screening").Where("model_id = ?", participant.Screenings[0].ID).All(screeningAudits); err != nil {
 			return c.Error(404, err)
 		}
 	}
+	audits = append(audits, *participantAudits...)
+	audits = append(audits, *screeningAudits...)
 
-	allLogs := &models.SystemLogs{}
+	allLogs := []models.SystemLog{}
+	screeningLogs := &models.SystemLogs{}
+	participantLogs := &models.SystemLogs{}
+	if err := tx.Eager().Where("resource_id = ?", participant.ID).Where("resource_type = ?", "participant").All(participantLogs); err != nil {
+		return c.Error(404, err)
+	}
 	if len(participant.Screenings) > 0 {
-		if err := tx.Eager().Where("resource_id = ?", participant.Screenings[0].ID).Where("resource_type = ?", "screening").All(allLogs); err != nil {
+		if err := tx.Eager().Where("resource_id = ?", participant.Screenings[0].ID).Where("resource_type = ?", "screening").All(screeningLogs); err != nil {
 			return c.Error(404, err)
 		}
 	}
+	allLogs = append(allLogs, *participantLogs...)
+	allLogs = append(allLogs, *screeningLogs...)
 
 	c.Set("user_activities", userActivities)
 	c.Set("activities_keys", keys)

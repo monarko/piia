@@ -99,6 +99,12 @@ func init() {
 			"trimText": func(s string) string {
 				return strings.TrimSpace(s)
 			},
+			"appendIfNotFound": func(s, toAdd string) string {
+				if strings.Contains(s, toAdd) {
+					return s
+				}
+				return strings.Join([]string{s, toAdd}, " ")
+			},
 		},
 	})
 }

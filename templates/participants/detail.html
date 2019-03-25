@@ -1,16 +1,92 @@
 <!-- Demographics -->
 <div class="row" style="margin-bottom: 10px;">
-    <div class="col-sm-12">
+    <div class="col-sm-1" style="margin-right: -36px;">
         <span>
             <i class="fa fa-user-circle" aria-hidden="true" style="font-size: 30px; color: #0073ff;"></i>
         </span>
-        <span style="margin-left: 8px; line-height: 30px; vertical-align: middle;">
-            <%= participant.ParticipantID %>
-            |
-            <%= genderHelper(participant.Gender) %>
-            |
-            <%= ageHelper(participant.DOB.CalculatedDate) %>
-        </span>
+    </div>
+    <div class="col-sm-11">
+        <div class="value-pair">
+            <div class="value" style="font-size: 20px;">
+                <%= participant.ParticipantID %>
+            </div>
+        </div>
+        <div class="value-pair">
+            <div class="value" style="font-size: 20px;">
+                <%= genderHelper(participant.Gender) %>
+            </div>
+        </div>
+        <div class="value-pair">
+            <div class="value" style="font-size: 20px;">
+                <%= ageHelper(participant.DOB.CalculatedDate) %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- History -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <table class="table table-lightborder">
+                <tbody>
+                    <%= if (len(participant.Screenings) > 0) { %>
+                    <% let psc = participant.Screenings[0] %>
+                    <tr>
+                        <td colspan="2" style="font-weight: bold; text-align: left;">
+                            Screening Encounter
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left;">
+                            <%= if (!psc.Eyes.AssessmentDate.CalculatedDate.IsZero()) { %>
+                                <%= languageDate(psc.Eyes.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
+                            <% } else { %>
+                                <%= languageDate(psc.CreatedAt, "02-Jan-2006", t("lang_calendar")) %>
+                            <% } %>
+                            <span class="separator">|</span>
+                            DR Screening
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px; font-weight: bold; text-align: left;">
+                            Medical History
+                        </td>
+                        <td style="text-align: left;">
+                            <%= if (psc.Diabetes.DiabetesType.Valid && psc.Diabetes.Duration.Valid && len(psc.Diabetes.DiabetesType.String)>0) { %>
+                            <%= appendIfNotFound(psc.Diabetes.DiabetesType.String, "Diabetes") %> for
+                            <%= psc.Diabetes.Duration %>
+                            <%= psc.Diabetes.DurationType %>
+                            <span class="separator">|</span>
+                            <% } %>
+                            <%= for (m) in psc.MedicalHistory.Morbidities { %>
+                            <%= m %>
+                            <span class="separator">|</span>
+                            <% } %>
+                            <%= if (psc.MedicalHistory.Smoker.Valid && psc.MedicalHistory.Smoker.Bool) { %>Smoker
+                            <% } else { %>Non-Smoker
+                            <% } %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px; font-weight: bold; text-align: left;">
+                            Medications
+                        </td>
+                        <td style="text-align: left;">
+                            <%= if (psc.Medications.TakingMedications.Valid && psc.Medications.TakingMedications.Bool) { %>Taking
+                            oral medications
+                            <% } else { %>Not taking oral medications
+                            <% } %>
+                            <span class="separator">|</span>
+                            <%= if (psc.Medications.OnInsulin.Valid && psc.Medications.OnInsulin.Bool) { %>On Insulin
+                            <% } else { %>Not on Insulin
+                            <% } %>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -135,7 +211,7 @@
                                 <div class="tasks-list-w" style="display: none;">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div class="timed-activities compact">
+                                            <div class="timed-activities padded">
                                                 <%= for (val) in activities_keys { %>
                                                 <div class="timed-activity">
                                                     <div class="ta-date">
@@ -167,54 +243,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- History -->
-<div class="row">
-    <div class="col-sm-12">
-        <div class="table-responsive">
-            <table class="table table-lightborder">
-                <tbody>
-                    <%= if (len(participant.Screenings) > 0) { %>
-                    <% let psc = participant.Screenings[0] %>
-                    <tr>
-                        <td style="width: 200px; font-weight: bold; text-align: left;">
-                            Medical History
-                        </td>
-                        <td style="text-align: left;">
-                            <%= psc.Diabetes.DiabetesType %> for
-                            <%= psc.Diabetes.Duration %>
-                            <%= if(psc.Diabetes.Duration.Valid) { %>
-                            <%= psc.Diabetes.DurationType %>
-                            <% } %>
-                            |
-                            <%= json(psc.MedicalHistory.Morbidities) %>
-                            |
-                            <%= if (psc.MedicalHistory.Smoker.Valid && psc.MedicalHistory.Smoker.Bool) { %>Smoker
-                            <% } else { %>Non-Smoker
-                            <% } %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 200px; font-weight: bold; text-align: left;">
-                            Medications
-                        </td>
-                        <td style="text-align: left;">
-                            <%= if (psc.Medications.TakingMedications.Valid && psc.Medications.TakingMedications.Bool) { %>Taking
-                            oral medications
-                            <% } else { %>Not taking oral medications
-                            <% } %>
-                            |
-                            <%= if (psc.Medications.OnInsulin.Valid && psc.Medications.OnInsulin.Bool) { %>On Insulin
-                            <% } else { %>Not on Insulin
-                            <% } %>
-                        </td>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
@@ -344,7 +372,7 @@
     </div>
 </div>
 
-<!-- Eye Assessments -->
+<!-- DR Assessments -->
 <div class="row">
     <div class="col-sm-12">
         <div class="element-wrapper" style="padding-bottom: 1rem;">
@@ -356,15 +384,16 @@
                         </div>
                         <div class="element-info-text">
                             <h5 class="element-inner-header">
-                                Eye Assessments
+                                DR Assessments
                             </h5>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <h5>Screening</h5>
+                        <div class="col-sm-12">
+                            <%= if (len(participant.Screenings) > 0) { %>
+                            <%= for (psc) in participant.Screenings { %>
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -374,8 +403,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%= if (len(participant.Screenings) > 0) { %>
-                                    <%= for (psc) in participant.Screenings { %>
                                     <tr>
                                         <td style="text-align: left;">
                                             <%= t("field_visual_acuity") %>
@@ -420,55 +447,83 @@
                                             <%= psc.Eyes.LeftEye.DMEAssessment %>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td style="text-align: left;">
-                                            <%= t("label_date_of_dr_assessment") %>
-                                        </td>
-                                        <td style="text-align: left;" colspan="2">
-                                            <%= if (!psc.Eyes.AssessmentDate.CalculatedDate.IsZero()) { %>
-                                            <%= languageDate(psc.Eyes.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
-                                            <% } %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left;">
-                                            <%= t("section_referral_header") %>
-                                        </td>
-                                        <td style="text-align: left;" colspan="2">
-                                            <%= if (psc.Referral.Referred) { %>Yes
-                                            <% } else { %>No
-                                            <% } %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left;">
-                                            <%= t("label_referral_refused") %>
-                                        </td>
-                                        <td style="text-align: left;" colspan="2">
-                                            <%= if (psc.Referral.ReferralRefused) { %>Yes
-                                            <% } else { %>No
-                                            <% } %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left;">
-                                            <%= t("label_additional_notes") %>
-                                        </td>
-                                        <td style="text-align: left;" colspan="2">
-                                            <%= psc.Referral.Notes %>
-                                        </td>
-                                    </tr>
-                                    <% } %>
-                                    <% } else { %>
-                                    <tr>
-                                        <td colspan="3" class="text-center">No data found</td>
-                                    </tr>
-                                    <% } %>
                                 </tbody>
                             </table>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">
+                                    <%= t("label_date_of_dr_assessment") %></label>
+                                <label class="col-form-label col-sm-9">
+                                    <%= if (!psc.Eyes.AssessmentDate.CalculatedDate.IsZero()) { %>
+                                    <%= languageDate(psc.Eyes.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
+                                    <% } %>
+                                </label>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3" for="">
+                                    <%= t("section_referral_header") %></label>
+                                <div class="col-form-label col-sm-9">
+                                    <%= if (psc.Referral.Referred) { %>Yes
+                                    <% } else { %>No
+                                    <% } %>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">
+                                    <%= t("label_referral_refused") %></label>
+                                <label class="col-form-label col-sm-9">
+                                    <%= if (psc.Referral.ReferralRefused) { %>Yes
+                                    <% } else { %>No
+                                    <% } %>
+                                </label>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3" for="">
+                                    <%= t("label_additional_notes") %></label>
+                                <div class="col-form-label col-sm-9">
+                                    <%= psc.Referral.Notes %>
+                                </div>
+                            </div>
+
+                            <% } %>
+                            <% } else { %>
+                            <div style="width: 100%; text-align: center; font-size: 18px;">
+                                No Data Found
+                            </div>
+                            <% } %>
                         </div>
-                        <div class="col-sm-6">
-                            <h5>Over Reading</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Over Reading Assessment -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="element-wrapper" style="padding-bottom: 1rem;">
+            <div class="element-box">
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-wallet-loaded"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header">
+                                Over Reading Assessments
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <%= if (len(participant.OverReadings) > 0) { %>
+                            <%= for (pov) in participant.OverReadings { %>
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -478,8 +533,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%= if (len(participant.OverReadings) > 0) { %>
-                                    <%= for (pov) in participant.OverReadings { %>
                                     <tr>
                                         <td style="text-align: left;">
                                             <%= t("field_dr_grading") %>
@@ -507,38 +560,49 @@
                                             <%= t("label_suspected_pathology") %>
                                         </td>
                                         <td style="text-align: left;">
-                                            <%= if (len(pov.Eyes.RightEye.SuspectedPathologies) > 0) { json(pov.Eyes.RightEye.SuspectedPathologies) } %>
-                                        </td>
-                                        <td style="text-align: left;">
-                                            <%= if (len(pov.Eyes.LeftEye.SuspectedPathologies) > 0) { json(pov.Eyes.LeftEye.SuspectedPathologies) } %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left;">
-                                            <%= t("section_referral_header") %>
-                                        </td>
-                                        <td style="text-align: left;" colspan="2">
-                                            <%= if (pov.Referral.Referred) { %>Yes
-                                            <% } else { %>No
+                                            <%= for (i, m) in pov.Eyes.RightEye.SuspectedPathologies { %>
+                                                <%= m %> 
+                                                <%= if (i < len(pov.Eyes.RightEye.SuspectedPathologies)-1) { %>
+                                                <span class="separator">|</span>
+                                                <% } %>
                                             <% } %>
                                         </td>
-                                    </tr>
-                                    <tr>
                                         <td style="text-align: left;">
-                                            <%= t("label_additional_notes") %>
-                                        </td>
-                                        <td style="text-align: left;" colspan="2">
-                                            <%= pov.Referral.Notes %>
+                                                <%= for (i, m) in pov.Eyes.LeftEye.SuspectedPathologies { %>
+                                                    <%= m %> 
+                                                    <%= if (i < len(pov.Eyes.LeftEye.SuspectedPathologies)-1) { %>
+                                                        <span class="separator">|</span>
+                                                    <% } %>
+                                                <% } %>
                                         </td>
                                     </tr>
-                                    <% } %>
-                                    <% } else { %>
-                                    <tr>
-                                        <td colspan="3" class="text-center">No data found</td>
-                                    </tr>
-                                    <% } %>
                                 </tbody>
                             </table>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3">
+                                    <%= t("section_referral_header") %></label>
+                                <label class="col-form-label col-sm-9">
+                                    <%= if (pov.Referral.Referred) { %>Yes
+                                    <% } else { %>No
+                                    <% } %>
+                                </label>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3" for="">
+                                    <%= t("label_additional_notes") %></label>
+                                <div class="col-form-label col-sm-9">
+                                    <%= pov.Referral.Notes %>
+                                </div>
+                            </div>
+
+                            <% } %>
+                            <% } else { %>
+                            <div style="width: 100%; text-align: center; font-size: 18px;">
+                                No Data Found
+                            </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -547,6 +611,7 @@
     </div>
 </div>
 
+<!-- Referral -->
 <div class="row">
     <div class="col-sm-12">
         <div class="element-wrapper" style="padding-bottom: 1rem;">
@@ -588,7 +653,12 @@
                                     Attended:
                                     <%= prf.ReferralData.Attended %><br>
                                     Plans:
-                                    <%= json(prf.ReferralData.Plans) %><br><br>
+                                    <%= for (i, m) in prf.ReferralData.Plans { %>
+                                        <%= m %> 
+                                        <%= if (i < len(prf.ReferralData.Plans)-1) { %>
+                                            <span class="separator">|</span>
+                                        <% } %>
+                                    <% } %><br><br>
                                     Referred for Treatment:
                                     <%= prf.ReferralData.ReferredForTreatment %><br>
                                     Follow Up Plan:
