@@ -34,13 +34,26 @@
                 <div class="menu-actions">
                     <ul class="main-menu">
                         <li class="sub-header">
-                                <span style="padding-bottom: 0;font-size: 1rem;text-align: center;font-weight: bold;">
-                                        <%= if (len(current_user.Site) > 0) { %>
-                                            <%= t("site_" + current_user.Site) %>
-                                        <% } else { %>
-                                            <%= t("site_all") %>
-                                        <% } %>
-                                    </span>
+                            <div class="menu-actions">
+                                    <div class="btn-group" style="width: 100%;">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%; text-align: left;font-size: 1rem;font-weight: bold;">
+                                            <%= if (len(current_site) > 0) { %>
+                                                <%= t("site_" + current_site) %>
+                                            <% } else { %>
+                                                <%= t("site_all") %>
+                                            <% } %>
+                                        </button>
+                                        <div class="dropdown-menu" style="width: 100%;">
+                                            <%= if (current_user.Permission.Screening) { %>
+                                                <a class="dropdown-item active" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=<%= current_site %>"><%= t("site_" + current_site) %></a>
+                                            <% } else { %>
+                                                <a class="dropdown-item <%= if (len(current_site) == 0) { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>"><%= t("site_all") %></a>
+                                                <a class="dropdown-item <%= if (current_site == "N") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=N"><%= t("site_N") %></a>
+                                                <a class="dropdown-item <%= if (current_site == "K") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=K"><%= t("site_K") %></a>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
                         </li>
                         <li class="">
                             <a href="/">
@@ -89,6 +102,9 @@
                         <% } %>
 
                         <%= if (current_user.Admin || current_user.Permission.StudyCoordinator) { %>
+                            <li>
+                                <div class="menu-actions"></div>
+                            </li>
                             <li class="">
                                 <a href="<%= reportsIndexPath() %>">
                                     <div class="icon-w">
@@ -166,7 +182,6 @@
                     <div class="menu-actions">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
                                 <%= if (current_lang && current_lang == "th") { %>
                                 <img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %>
                                 <% } else { %>

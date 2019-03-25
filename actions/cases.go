@@ -37,6 +37,16 @@ func CasesIndex(c buffalo.Context) error {
 		wheres = append(wheres, "%"+strings.Replace(strings.ToUpper(c.Param("search")), "-", "", -1)+"%")
 	}
 
+	site := ""
+	if c.Value("current_site") != nil {
+		site = c.Value("current_site").(string)
+	}
+
+	if len(site) > 0 {
+		where = append(where, "SUBSTRING(participant_id,2,1) = ?")
+		wheres = append(wheres, site)
+	}
+
 	whereStmt := strings.Join(where, " AND ")
 
 	user := c.Value("current_user").(*models.User)

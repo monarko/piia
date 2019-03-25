@@ -35,10 +35,14 @@ func ParticipantsIndex(c buffalo.Context) error {
 	}
 
 	user := c.Value("current_user").(*models.User)
+	site := ""
+	if c.Value("current_site") != nil {
+		site = c.Value("current_site").(string)
+	}
 
-	if len(user.Site) > 0 {
+	if len(site) > 0 {
 		where = append(where, "SUBSTRING(participant_id,2,1) = ?")
-		wheres = append(wheres, user.Site)
+		wheres = append(wheres, site)
 	}
 
 	whereStmt := strings.Join(where, " AND ")

@@ -94,11 +94,21 @@ func ReferralsIndex(c buffalo.Context) error {
 		wheres = append(wheres, "%"+strings.Replace(strings.ToUpper(c.Param("search")), "-", "", -1)+"%")
 	}
 
+	site := ""
+	if c.Value("current_site") != nil {
+		site = c.Value("current_site").(string)
+	}
+
+	if len(site) > 0 {
+		where = append(where, "SUBSTRING(participants.participant_id,2,1) = ?")
+		wheres = append(wheres, site)
+	}
+
 	whereStmt := strings.Join(where, " AND ")
 
 	var q *pop.Query
 	if len(idsToSearch) > 0 {
-		if len(c.Param("search")) > 0 {
+		if len(where) > 0 {
 			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
 		} else {
 			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")

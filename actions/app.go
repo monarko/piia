@@ -60,6 +60,7 @@ func App() *buffalo.App {
 		app.Use(translations())
 		app.Use(SetCurrentUser)
 		app.Use(SetCurrentLang)
+		app.Use(SetCurrentSite)
 
 		app.GET("/", HomeHandler)
 
@@ -148,6 +149,7 @@ func App() *buffalo.App {
 		app.GET("/errors/{status}", ErrorsDefault)
 
 		app.GET("/switch", ChangeLanguage)
+		app.GET("/switch-site", ChangeSite)
 		app.POST("/notifications", ScreeningPermissionRequired(ChangeNotificationStatus))
 
 		authGoth := app.Group("/auth")
