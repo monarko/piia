@@ -2,11 +2,15 @@ package actions
 
 import (
 	"bytes"
+	"context"
 	"encoding/csv"
+	"io"
+	"os"
 	"strconv"
 	"strings"
 	"time"
 
+	"cloud.google.com/go/storage"
 	"github.com/gobuffalo/pop/nulls"
 
 	"github.com/gobuffalo/buffalo"
@@ -476,7 +480,7 @@ ORDER BY s.created_at`
 
 	appHost := envy.Get("APP_HOST", "http://127.0.0.1")
 	hosts := strings.Split(strings.TrimSpace(strings.Replace(appHost, "/", "", -1)), ":")
-	filename := hosts[1] + "-full-record-" + time.Now().Format("2006-01-02T15-04-05-0700") + ".csv"
+	filename := hosts[1] + "-full-record-" + time.Now().Format("2006-01-02T15-04-05") + ".csv"
 
 	b, err := downloadAllRecords(fullRecords)
 	if err != nil {
@@ -489,7 +493,19 @@ ORDER BY s.created_at`
 		return c.Redirect(302, "/analytics/index")
 	}
 
-	return c.Render(200, r.Download(c, filename, b))
+	err = storeToGoogleCloudStorage(filename, b)
+	if err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
+	} else {
+		c.Flash().Add("success", "Successfully saved to your storage bucket")
+	}
+
+	return c.Redirect(302, "/analytics/index")
 }
 
 func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
@@ -606,4 +622,44 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 	}
 
 	return b, nil
+}
+
+func storeToGoogleCloudStorage(filename string, bytesBuffer *bytes.Buffer) error {
+	envVar := envy.Get("GOOGLE_APPLICATION_CREDENTIALS_PATH_FOR_EXPORT", "")
+	err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", envVar)
+	if err != nil {
+		return err
+	}
+
+	ctx := context.Background()
+
+	// Creates a client.
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return err
+	}
+
+	// Sets the name for the new bucket.
+	bucketName := envy.Get("GOOGLE_STORAGE_EXPORT_BUCKET_NAME", "piia_project_exports")
+
+	wc := client.Bucket(bucketName).Object(filename).NewWriter(ctx)
+	wc.ContentType = "text/csv"
+	if _, err = io.Copy(wc, bytesBuffer); err != nil {
+		return err
+	}
+
+	if err := wc.Close(); err != nil {
+		return err
+	}
+
+	// googleStorageEmail := envy.Get("GOOGLE_STORAGE_SERVICE_EMAIL", "")
+	// googleStoragePrivateKey := envy.Get("GOOGLE_STORAGE_SERVICE_PRIVATE_KEY", "")
+
+	// googleStorageEmail := credentialContent["client_email"]
+	// googleStoragePrivateKey := credentialContent["private_key"]
+
+	// fmt.Println(googleStorageEmail)
+	// fmt.Println(googleStoragePrivateKey)
+
+	return nil
 }
