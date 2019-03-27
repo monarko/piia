@@ -480,7 +480,8 @@ ORDER BY s.created_at`
 
 	appHost := envy.Get("APP_HOST", "http://127.0.0.1")
 	hosts := strings.Split(strings.TrimSpace(strings.Replace(appHost, "/", "", -1)), ":")
-	filename := hosts[1] + "-full-record-" + time.Now().Format("2006-01-02T15-04-05") + ".csv"
+	// filename := hosts[1] + "-full-record-" + time.Now().Format("2006-01-02T15-04-05") + ".csv"
+	filename := hosts[1] + "-full-record" + ".csv"
 
 	b, err := downloadAllRecords(fullRecords)
 	if err != nil {
@@ -500,6 +501,7 @@ ORDER BY s.created_at`
 			"index_error": {errStr},
 		}
 		c.Set("errors", errs)
+		c.Flash().Add("danger", "Error from GCS: "+errStr)
 		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
 	} else {
 		c.Flash().Add("success", "Successfully saved to your storage bucket")
