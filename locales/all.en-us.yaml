@@ -33,8 +33,12 @@
   translation: "All Sites"
 - id: site_K
   translation: "Khlong Luang"
+- id: site_L
+  translation: "Lamlukka"
 - id: site_N
   translation: "Nongseau"
+- id: site_T
+  translation: "Thankybouri"
 - id: role_admin
   translation: "Administrator"
 - id: role_general
