@@ -364,7 +364,9 @@ type fullRecord struct {
 	LeftPreviousVisualAcuity        nulls.String `json:"left_previous_visual_acuity" db:"left_previous_visual_acuity"`
 	LeftDRGrade                     nulls.String `json:"left_dr_grade" db:"left_dr_grade"`
 	LeftDME                         nulls.String `json:"left_dme" db:"left_dme"`
+	ScreeningAssessmentDate         nulls.String `json:"screening_assessment_date" db:"screening_assessment_date"`
 	DrReferral                      nulls.String `json:"dr_referral" db:"dr_referral"`
+	DrReferralRefused               nulls.String `json:"dr_referral_refused" db:"dr_referral_refused"`
 	DrReferralNotes                 nulls.String `json:"dr_referral_notes" db:"dr_referral_notes"`
 	RightDRGradeOver                nulls.String `json:"right_dr_grade_over" db:"right_dr_grade_over"`
 	RightDMEOver                    nulls.String `json:"right_dme_over" db:"right_dme_over"`
@@ -440,11 +442,20 @@ func DownloadFull(c buffalo.Context) error {
 	((s.eye->'left'::text)->>'last_visual_acuity'::text) AS "left_previous_visual_acuity",
 	((s.eye->'left'::text)->>'dr'::text) AS "left_dr_grade",
 	((s.eye->'left'::text)->>'dme'::text) AS "left_dme",
-        CASE
-            WHEN ((s.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
-            ELSE 'No'::text
-        END AS "dr_referral",
+	CASE 
+	    WHEN (LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10) = '0001-01-01'::text) THEN NULL
+	    ELSE LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10)
+	END AS screening_assessment_date,
+    CASE
+        WHEN ((s.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
+        ELSE 'No'::text
+    END AS "dr_referral",
+	CASE
+        WHEN ((s.referral->>'referral_refused'::text) = 'true'::text) THEN 'Yes'::text
+        ELSE 'No'::text
+    END AS "dr_referral_refused",
 	(s.referral->>'additional_notes'::text) AS "dr_referral_notes",
+
 	((o.eye_assessment->'right'::text)->>'dr'::text) AS "right_dr_grade_over",
 	((o.eye_assessment->'right'::text)->>'dme'::text) AS "right_dme_over",
 	((o.eye_assessment->'right'::text)->>'suspected_pathologies'::text) AS "right_suspected_over",
@@ -535,24 +546,28 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"pathology_lipids_total_cholesterol",
 		"pathology_lipids_unit",
 		"pathology_lipids_assessment_date",
-		"right_visual_acuity",
-		"right_previous_visual_acuity",
-		"right_dr_grade",
-		"right_dme",
-		"left_visual_acuity",
-		"left_previous_visual_acuity",
-		"left_dr_grade",
-		"left_dme",
-		"dr_referral",
-		"dr_referral_notes",
-		"right_dr_grade_over",
-		"right_dme_over",
-		"right_suspected_over",
-		"left_dr_grade_over",
-		"left_dme_over",
-		"left_suspected_over",
-		"over_referral",
-		"over_referral_notes",
+		"screening_right_visual_acuity",
+		"screening_right_previous_visual_acuity",
+		"screening_right_dr_grade",
+		"screening_right_dme",
+		"screening_left_visual_acuity",
+		"screening_left_previous_visual_acuity",
+		"screening_left_dr_grade",
+		"screening_left_dme",
+		"screening_assessment_date",
+		"screening_referral",
+		"screening_referral_refused",
+		"screening_referral_notes",
+		"screening_referral_details",
+		"overreading_right_dr_grade",
+		"overreading_right_dme",
+		"overreading_right_suspected_pathology",
+		"overreading_left_dr_grade",
+		"overreading_left_dme",
+		"overreading_left_suspected_pathology",
+		"overreading_referral",
+		"overreading_referral_notes",
+		"overreading_referral_details",
 	}
 
 	if err := w.Write(headers); err != nil {
@@ -594,24 +609,53 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		rc = append(rc, a.LeftPreviousVisualAcuity.String)
 		rc = append(rc, a.LeftDRGrade.String)
 		rc = append(rc, a.LeftDME.String)
+		rc = append(rc, a.ScreeningAssessmentDate.String)
 		rc = append(rc, a.DrReferral.String)
+		rc = append(rc, a.DrReferralRefused.String)
 		rc = append(rc, a.DrReferralNotes.String)
+		screeningReasons := ""
+		if a.DrReferral.String == "Yes" {
+			screeningReasons = screeningDetails(
+				a.RightVisualAcuity.String,
+				a.RightPreviousVisualAcuity.String,
+				a.RightDRGrade.String,
+				a.RightDME.String,
+				a.LeftVisualAcuity.String,
+				a.LeftPreviousVisualAcuity.String,
+				a.LeftDRGrade.String,
+				a.LeftDME.String,
+			)
+		}
+		rc = append(rc, screeningReasons)
+
 		rc = append(rc, a.RightDRGradeOver.String)
 		rc = append(rc, a.RightDMEOver.String)
-		sr = ""
+		srs := ""
 		if len(a.RightSuspectedOver.String) > 0 {
-			sr = a.RightSuspectedOver.String
+			srs = a.RightSuspectedOver.String
 		}
-		rc = append(rc, SliceStringToCommaSeparatedValue(sr))
+		rc = append(rc, SliceStringToCommaSeparatedValue(srs))
 		rc = append(rc, a.LeftDRGradeOver.String)
 		rc = append(rc, a.LeftDMEOver.String)
-		sr = ""
+		sls := ""
 		if len(a.LeftSuspectedOver.String) > 0 {
-			sr = a.LeftSuspectedOver.String
+			sls = a.LeftSuspectedOver.String
 		}
-		rc = append(rc, SliceStringToCommaSeparatedValue(sr))
+		rc = append(rc, SliceStringToCommaSeparatedValue(sls))
 		rc = append(rc, a.OverReferral.String)
 		rc = append(rc, a.OverReferralNotes.String)
+		overreadingReasons := ""
+		if a.OverReferral.String == "Yes" {
+			overreadingReasons = overreadingDetails(
+				a.RightDRGrade.String,
+				a.RightDME.String,
+				SliceStringToCommaSeparatedValue(srs),
+				a.LeftDRGrade.String,
+				a.LeftDME.String,
+				SliceStringToCommaSeparatedValue(sls),
+			)
+		}
+		rc = append(rc, overreadingReasons)
 
 		if err := w.Write(rc); err != nil {
 			return nil, err
@@ -664,4 +708,98 @@ func storeToGoogleCloudStorage(filename string, bytesBuffer *bytes.Buffer) error
 	// fmt.Println(googleStoragePrivateKey)
 
 	return nil
+}
+
+func screeningDetails(rightVA, rightLastVA, rightDR, rightDME, leftVA, leftLastVA, leftDR, leftDME string) string {
+	reasons := make([]string, 0)
+
+	right := screeningDetailsForEye(rightVA, rightLastVA, rightDR, rightDME, "R")
+	if len(right) > 0 {
+		reasons = append(reasons, right...)
+	}
+
+	left := screeningDetailsForEye(leftVA, leftLastVA, leftDR, leftDME, "L")
+	if len(left) > 0 {
+		reasons = append(reasons, left...)
+	}
+
+	return strings.Join(reasons, ", ")
+}
+
+func screeningDetailsForEye(va, lastVA, dr, dme, eye string) []string {
+	reasons := make([]string, 0)
+
+	vaValues := []string{"20/20", "20/30", "20/40", "20/50", "20/70", "20/100", "20/200", "CF", "HM", "LP", "NLP"}
+	vaIndex := indexInSlice(vaValues, va)
+	lastVAIndex := indexInSlice(vaValues, lastVA)
+
+	if dr == "Ungradeable" {
+		reasons = append(reasons, "Ungradeable for DR ("+eye+")")
+	} else if dr == "Severe DR" || dr == "Proliferative DR" {
+		reasons = append(reasons, dr+" ("+eye+")")
+	}
+
+	if dme == "Ungradeable" {
+		reasons = append(reasons, "Ungradeable for DME ("+eye+")")
+	} else if dme == "Present" {
+		reasons = append(reasons, "DME Present ("+eye+")")
+	}
+
+	if vaIndex >= 4 {
+		reasons = append(reasons, "V/A is "+va+" ("+eye+")")
+	} else if vaIndex < 4 && (lastVAIndex-vaIndex) >= 2 {
+		reasons = append(reasons, "V/A from "+va+" to "+lastVA+" ("+eye+")")
+	}
+
+	return reasons
+}
+
+func overreadingDetails(rightDR, rightDME, rightSuspected, leftDR, leftDME, leftSuspected string) string {
+	reasons := make([]string, 0)
+
+	right := overreadingDetailsForEye(rightDR, rightDME, rightSuspected, "R")
+	if len(right) > 0 {
+		reasons = append(reasons, right...)
+	}
+
+	left := overreadingDetailsForEye(leftDR, leftDME, leftSuspected, "L")
+	if len(left) > 0 {
+		reasons = append(reasons, left...)
+	}
+
+	return strings.Join(reasons, ", ")
+}
+
+func overreadingDetailsForEye(dr, dme, suspected, eye string) []string {
+	reasons := make([]string, 0)
+
+	if dr == "Ungradeable" {
+		reasons = append(reasons, "Ungradeable for DR ("+eye+")")
+	} else if dr == "Severe DR" || dr == "Proliferative DR" {
+		reasons = append(reasons, dr+" ("+eye+")")
+	}
+
+	if dme == "Ungradeable" {
+		reasons = append(reasons, "Ungradeable for DME ("+eye+")")
+	} else if dme == "Present" {
+		reasons = append(reasons, "DME Present ("+eye+")")
+	}
+
+	if len(suspected) > 0 {
+		sv := strings.Split(suspected, ", ")
+		for _, s := range sv {
+			reasons = append(reasons, s+" ("+eye+")")
+		}
+	}
+
+	return reasons
+}
+
+func indexInSlice(a []string, b string) int {
+	for k, v := range a {
+		if b == v {
+			return k
+		}
+	}
+	return -1
 }
