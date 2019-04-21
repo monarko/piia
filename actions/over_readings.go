@@ -48,10 +48,13 @@ func OverReadingsIndex(c buffalo.Context) error {
 func OverReadingsCreateGet(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	participant := &models.Participant{}
-	if err := tx.Eager("Screenings").Find(participant, c.Param("pid")); err != nil {
+	if err := tx.Eager("Screenings", "OverReadings").Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
 	screening := participant.Screenings[0]
+	if len(participant.OverReadings) > 0 {
+		return c.Redirect(302, "/cases/index")
+	}
 	c.Set("participant", participant)
 	c.Set("screening", screening)
 	c.Set("overReading", &models.OverReading{})
@@ -96,10 +99,13 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 func OverReadingsCreatePost(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	participant := &models.Participant{}
-	if err := tx.Eager("Screenings").Find(participant, c.Param("pid")); err != nil {
+	if err := tx.Eager("Screenings", "OverReadings").Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
 	screening := participant.Screenings[0]
+	if len(participant.OverReadings) > 0 {
+		return c.Redirect(302, "/cases/index")
+	}
 	user := c.Value("current_user").(*models.User)
 	overReading := &models.OverReading{}
 
@@ -233,6 +239,7 @@ func shouldBeReferred(overReading *models.OverReading) bool {
 }
 
 func getImage(participantID string) (string, string, error) {
+	return "", "", nil
 	envVar := envy.Get("GOOGLE_APPLICATION_CREDENTIALS_PATH", "")
 	err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", envVar)
 	if err != nil {

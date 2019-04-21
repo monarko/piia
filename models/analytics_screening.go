@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/gobuffalo/pop/nulls"
+	"github.com/gobuffalo/nulls"
 )
 
 // AnalyticsScreening object

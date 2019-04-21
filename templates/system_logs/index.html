@@ -173,8 +173,8 @@
                                 <% } %>                            
                             <span><%= log.User.Name %></span>
                         </td>
-                        <td class="nowrap">
-                            <%= upcase(log.Action) %>
+                        <td class="nowrap text-uppercase">
+                            <%= log.Action %>
                         </td>
                         <td>
                             <%= log.Activity %>
@@ -187,8 +187,8 @@
                         <td class="text-center">
                             <%= log.ClientIP %>
                         </td>
-                        <td class="text-center">
-                            <%= upcase(log.ResourceType) %>
+                        <td class="text-center text-uppercase">
+                            <%= log.ResourceType %>
                         </td>
                         <td class="text-right bolder nowrap">
                             <%= log.CreatedAt.Format("2006-01-02 03:04:05") %>
