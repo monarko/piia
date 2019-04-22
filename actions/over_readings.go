@@ -239,22 +239,27 @@ func shouldBeReferred(overReading *models.OverReading) bool {
 }
 
 func getImage(participantID string) (string, string, error) {
-	return "", "", nil
+	// If getting host is down, check network filter on little snitch
+	// return "", "", nil
+	// fmt.Println("---- GET IMAGE ----")
 	envVar := envy.Get("GOOGLE_APPLICATION_CREDENTIALS_PATH", "")
 	err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", envVar)
 	if err != nil {
 		return "", "", err
 	}
+	// fmt.Println("---- ENV SET ----")
 
 	credentialFile, err := ioutil.ReadFile(envVar)
 	if err != nil {
 		return "", "", err
 	}
+	// fmt.Println("---- READ CREDENTIAL FILE ----")
 
 	credentialContent := make(map[string]string)
 	if err := json.Unmarshal(credentialFile, &credentialContent); err != nil {
 		return "", "", err
 	}
+	// fmt.Println("---- MAKE CREDENTIAL CONTENT ----", credentialContent)
 
 	// fmt.Printf("\n%#v\n", credentialContent)
 
@@ -284,14 +289,21 @@ func getImage(participantID string) (string, string, error) {
 	bucket := client.Bucket(bucketName)
 
 	idsToCheck := []string{strings.ToUpper(pID), strings.ToUpper(cleanPID), strings.ToLower(pID), strings.ToLower(cleanPID)}
+	// fmt.Println("---- IDS TO CHECK ----", idsToCheck)
+
 	for _, id := range idsToCheck {
 		// fmt.Println(id)
 		objs := bucket.Objects(ctx, &storage.Query{
 			Prefix:    id,
 			Delimiter: "",
 		})
-
+		// fmt.Println("---- ID ----", id)
+		i := 0
 		for {
+			if i > 2 {
+				break
+			}
+			i++
 			attrs, err := objs.Next()
 			if err == iterator.Done {
 				break
@@ -299,7 +311,7 @@ func getImage(participantID string) (string, string, error) {
 			if err != nil {
 				continue
 			}
-			// fmt.Println(attrs.Name)
+			// fmt.Println("---- ID Filename ----", attrs.Name)
 			name := strings.ToLower(attrs.Name)
 			if strings.Contains(name, "right") {
 				fileNames["right"] = attrs.Name
@@ -312,7 +324,7 @@ func getImage(participantID string) (string, string, error) {
 		}
 	}
 
-	// fmt.Println(fileNames)
+	// fmt.Println("---- FINAL ----", fileNames)
 
 	if len(fileNames) == 0 {
 		return right, left, errors.New("no file found for the participant id")

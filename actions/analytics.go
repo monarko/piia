@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
-	"github.com/gobuffalo/pop/nulls"
+	"github.com/gobuffalo/nulls"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
