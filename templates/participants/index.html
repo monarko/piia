@@ -115,7 +115,7 @@
                                         <%= p.ParticipantID %>
                                         <%= if (current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.Screening) { %>
                                             <div class="action-item col-md-auto" style="padding-right: 0;">
-                                                <a class="btn btn-sm item-btn" href="<%= participantsEditPath({pid: p.ID}) %>" title="Participant"><i class="fa fa-pencil fa-sm"></i> <span>Edit</span></a>
+                                                <a class="btn btn-sm item-btn" href="<%= participantsEditPath({pid: p.ID}) %>" title="Participant"><i class="fa fa-pencil-alt fa-sm"></i> <span>Edit</span></a>
                                             </div>
                                         <% } %>
                                     </div>
@@ -166,7 +166,7 @@
                                         <%= if (len(p.Screenings) > 0) { %>
                                             <% let psc = p.Screenings[0] %>
                                             <div class="action-item col-md-auto" style="padding-right: 0;">
-                                                <a class="btn btn-sm item-btn" href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil fa-sm"></i> <span>Edit Data</span></a>
+                                                <a class="btn btn-sm item-btn" href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil-alt fa-sm"></i> <span>Edit Data</span></a>
                                             </div>
                                         <% } else { %>
                                         <div class="action-item col-md-auto" style="padding-right: 0;">
@@ -176,7 +176,7 @@
                                     <% } %>
                                     <%= if (current_user.Admin || current_user.Permission.StudyCoordinator || (p.Status == "111" && current_user.Permission.Screening)) { %>
                                         <div class="action-item col-md-auto" style="padding-right: 0;">
-                                            <a class="btn btn-sm item-btn" href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-sm"></i> <span>Details</span></a>
+                                            <a class="btn btn-sm item-btn" href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-alt fa-sm"></i> <span>Details</span></a>
                                         </div>
                                     <% } %>
                                 </div>

@@ -7,7 +7,7 @@ import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/envy"
-	"github.com/gobuffalo/packr"
+	"github.com/gobuffalo/packr/v2"
 	mailgun "github.com/mailgun/mailgun-go"
 	"github.com/pkg/errors"
 )
@@ -31,8 +31,8 @@ func init() {
 
 	r = render.New(render.Options{
 		HTMLLayout:   "layout.html",
-		TemplatesBox: packr.NewBox("../templates/mail"),
-		AssetsBox:    packr.NewBox("../public"),
+		TemplatesBox: packr.New("../templates/mail", "../templates/mail"),
+		AssetsBox:    packr.New("../public", "../public"),
 		Helpers:      render.Helpers{},
 	})
 }

@@ -107,10 +107,10 @@
                                     <% } %>
                                 </td>
                                 <td class="row-actions">
-                                    <!--<a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-text-o fa-lg"></i></a>-->
+                                    <!--<a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-alt fa-lg"></i></a>-->
                                     <%= if (!stringInSlice(p.ID.String(), finished)) { %>
 
-                                    <a class="btn btn-sm btn-warning" href="<%= referralsParticipantPath({pid: p.ID}) %>" title="Mark"><i class="fa fa-pencil fa-sm"></i> Track Referral</a>
+                                    <a class="btn btn-sm btn-warning" href="<%= referralsParticipantPath({pid: p.ID}) %>" title="Mark"><i class="fa fa-pencil-alt fa-sm"></i> Track Referral</a>
                                     <% } %>
                                 </td>
                             </tr>
