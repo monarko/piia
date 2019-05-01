@@ -527,6 +527,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 
 	headers := []string{
 		"created_date",
+		"study_site",
 		"participant_id",
 		"age",
 		"gender",
@@ -574,10 +575,18 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
+	sites := map[string]string{
+		"K": "Khlong Luang",
+		"L": "Lamlukka",
+		"N": "Nongseau",
+		"T": "Thanyaburi",
+	}
+
 	for _, a := range records {
 		var rc []string
 
 		rc = append(rc, a.CreatedDate.Format(time.RFC3339))
+		rc = append(rc, sites[a.ParticipantID[1:2]])
 		rc = append(rc, a.ParticipantID)
 		rc = append(rc, strconv.FormatInt(int64(a.Age), 10))
 		rc = append(rc, a.Gender)

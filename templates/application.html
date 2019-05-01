@@ -44,7 +44,7 @@
                                             <% } %>
                                         </button>
                                         <div class="dropdown-menu" style="width: 100%;">
-                                            <%= if (current_user.Permission.Screening) { %>
+                                            <%= if (current_user.Permission.Screening && !(current_user.Admin || current_user.Permission.StudyCoordinator)) { %>
                                                 <a class="dropdown-item active" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=<%= current_site %>"><%= t("site_" + current_site) %></a>
                                             <% } else { %>
                                                 <a class="dropdown-item <%= if (len(current_site) == 0) { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>"><%= t("site_all") %></a>
