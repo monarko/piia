@@ -621,7 +621,11 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		rc = append(rc, a.ScreeningAssessmentDate.String)
 		rc = append(rc, a.DrReferral.String)
 		rc = append(rc, a.DrReferralRefused.String)
-		rc = append(rc, a.DrReferralNotes.String)
+		haveNotes := "FALSE"
+		if a.DrReferralNotes.Valid && len(a.DrReferralNotes.String) > 0 {
+			haveNotes = "TRUE"
+		}
+		rc = append(rc, haveNotes)
 		screeningReasons := ""
 		if a.DrReferral.String == "Yes" {
 			screeningReasons = screeningDetails(
