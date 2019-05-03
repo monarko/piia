@@ -337,6 +337,7 @@ func downloadVeil(analytics []models.AnalyticsScreening) (*bytes.Buffer, error) 
 
 type fullRecord struct {
 	CreatedDate                     time.Time    `json:"created_date" db:"created_date"`
+	ScreeningID                     string       `json:"screening_id" db:"screening_id"`
 	ParticipantID                   string       `json:"participant_id" db:"participant_id"`
 	Age                             int          `json:"age" db:"age"`
 	Gender                          string       `json:"gender" db:"gender"`
@@ -387,6 +388,7 @@ func DownloadFull(c buffalo.Context) error {
 
 	query := `SELECT
 	s.created_at AS "created_date",
+	s.id AS "screening_id",
 	p.participant_id AS "participant_id",
 	date_part('year', age(((p.dob->>'calculated_date'::text)::date)::timestamp with time zone)) AS "age",
         CASE
@@ -528,6 +530,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 	headers := []string{
 		"created_date",
 		"study_site",
+		"study_id",
 		"participant_id",
 		"age",
 		"gender",
@@ -555,6 +558,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"screening_left_previous_visual_acuity",
 		"screening_left_dr_grade",
 		"screening_left_dme",
+		"screening_gradeability",
 		"screening_assessment_date",
 		"screening_referral",
 		"screening_referral_refused",
@@ -566,6 +570,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"overreading_left_dr_grade",
 		"overreading_left_dme",
 		"overreading_left_suspected_pathology",
+		"overreading_gradeability",
 		"overreading_referral",
 		"overreading_referral_notes",
 		"overreading_referral_details",
@@ -587,6 +592,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 
 		rc = append(rc, a.CreatedDate.Format(time.RFC3339))
 		rc = append(rc, sites[a.ParticipantID[1:2]])
+		rc = append(rc, a.ScreeningID)
 		rc = append(rc, a.ParticipantID)
 		rc = append(rc, strconv.FormatInt(int64(a.Age), 10))
 		rc = append(rc, a.Gender)
@@ -618,6 +624,11 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		rc = append(rc, a.LeftPreviousVisualAcuity.String)
 		rc = append(rc, a.LeftDRGrade.String)
 		rc = append(rc, a.LeftDME.String)
+		screeningGradeability := "GRADEABLE"
+		if a.RightDRGrade.String == "Ungradeable" || a.RightDME.String == "Ungradeable" || a.LeftDRGrade.String == "Ungradeable" || a.LeftDME.String == "Ungradeable" {
+			screeningGradeability = "UNGRADEABLE"
+		}
+		rc = append(rc, screeningGradeability)
 		rc = append(rc, a.ScreeningAssessmentDate.String)
 		rc = append(rc, a.DrReferral.String)
 		rc = append(rc, a.DrReferralRefused.String)
@@ -655,6 +666,11 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 			sls = a.LeftSuspectedOver.String
 		}
 		rc = append(rc, SliceStringToCommaSeparatedValue(sls))
+		overReadingGradeability := "GRADEABLE"
+		if a.RightDRGradeOver.String == "Ungradeable" || a.RightDMEOver.String == "Ungradeable" || a.LeftDRGradeOver.String == "Ungradeable" || a.LeftDMEOver.String == "Ungradeable" {
+			overReadingGradeability = "UNGRADEABLE"
+		}
+		rc = append(rc, overReadingGradeability)
 		rc = append(rc, a.OverReferral.String)
 		rc = append(rc, a.OverReferralNotes.String)
 		overreadingReasons := ""
