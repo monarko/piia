@@ -293,10 +293,16 @@
 <%= javascriptTag("imageviewer.js") %>
 <%= javascriptTag("validator.js") %>
 <%= javascriptTag("Chart.js") %>
-    <script>
-        $(function () {
-            toogleReferralRefusalBox();
 
+<script>
+        $(function () {
+            $(".todo-item").on('click', function () {
+                var targ = $(this).attr('data-target');
+                // console.log("TODO-ITEM clicked: " + targ);
+                $(targ).modal();
+            });
+
+            toogleReferralRefusalBox();
             $(".select2").select2();
             $('.tasks-header-toggler').on('click', function () {
                 $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
@@ -330,163 +336,6 @@
 
             $(".participantID_field").inputmask("AA-9999-9");
             $(".birth_year_field").inputmask("9999", { "clearIncomplete": true, "max": 2800, "min": 1900 });
-
-            if (typeof Chart !== 'undefined') {
-
-                var fontFamily = '"Proxima Nova W01", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-                // set defaults
-                Chart.defaults.global.defaultFontFamily = fontFamily;
-                Chart.defaults.global.tooltips.titleFontSize = 14;
-                Chart.defaults.global.tooltips.titleMarginBottom = 4;
-                Chart.defaults.global.tooltips.displayColors = false;
-                Chart.defaults.global.tooltips.bodyFontSize = 12;
-                Chart.defaults.global.tooltips.xPadding = 10;
-                Chart.defaults.global.tooltips.yPadding = 8;
-
-                // init pie chart if element exists
-                if ($("#pieChart1").length) {
-                var pieChart1 = $("#pieChart1");
-
-                // pie chart data
-                var pieData1 = {
-                    labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
-                    datasets: [{
-                    data: [300, 50, 100, 30, 70],
-                    backgroundColor: ["#5797fc", "#7e6fff", "#4ecc48", "#ffcc29", "#f37070"],
-                    hoverBackgroundColor: ["#5797fc", "#7e6fff", "#4ecc48", "#ffcc29", "#f37070"],
-                    borderWidth: 0
-                    }]
-                };
-
-                // -----------------
-                // init pie chart
-                // -----------------
-                new Chart(pieChart1, {
-                    type: 'pie',
-                    data: pieData1,
-                    options: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                        boxWidth: 15,
-                        fontColor: '#3e4b5b'
-                        }
-                    },
-                    animation: {
-                        animateScale: true
-                    }
-                    }
-                });
-                }
-
-                // -----------------
-                // init donut chart if element exists
-                // -----------------
-                if ($("#donutChart").length) {
-                var donutChart = $("#donutChart");
-
-                // donut chart data
-                var data = {
-                    labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
-                    datasets: [{
-                    data: [300, 50, 100, 30, 70],
-                    backgroundColor: ["#5797fc", "#7e6fff", "#4ecc48", "#ffcc29", "#f37070"],
-                    hoverBackgroundColor: ["#5797fc", "#7e6fff", "#4ecc48", "#ffcc29", "#f37070"],
-                    borderWidth: 0
-                    }]
-                };
-
-                // -----------------
-                // init donut chart
-                // -----------------
-                new Chart(donutChart, {
-                    type: 'doughnut',
-                    data: data,
-                    options: {
-                    legend: {
-                        display: false
-                    },
-                    animation: {
-                        animateScale: true
-                    },
-                    cutoutPercentage: 80
-                    }
-                });
-                }
-
-                // -----------------
-                // init donut chart if element exists
-                // -----------------
-                if ($("#donutChart1").length) {
-                var donutChart1 = $("#donutChart1");
-
-                // donut chart data
-                var data1 = {
-                    labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
-                    datasets: [{
-                    data: [300, 50, 100, 30, 70],
-                    backgroundColor: ["#5797fc", "#7e6fff", "#4ecc48", "#ffcc29", "#f37070"],
-                    hoverBackgroundColor: ["#5797fc", "#7e6fff", "#4ecc48", "#ffcc29", "#f37070"],
-                    borderWidth: 6,
-                    hoverBorderColor: 'transparent'
-                    }]
-                };
-
-                // -----------------
-                // init donut chart
-                // -----------------
-                new Chart(donutChart1, {
-                    type: 'doughnut',
-                    data: data1,
-                    options: {
-                    legend: {
-                        display: false
-                    },
-                    animation: {
-                        animateScale: true
-                    },
-                    cutoutPercentage: 80
-                    }
-                });
-                }
-                }
-
-                // -----------------
-                // init donut chart if element exists
-                // -----------------
-                if ($("#donutChart2").length) {
-                var donutChart1 = $("#donutChart2");
-
-                // donut chart data
-                var data1 = {
-                    labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
-                    datasets: [{
-                    data: [300, 50, 100, 30, 70],
-                    backgroundColor: ["#5797fc", "#7e6fff", "#4ecc48", "#ffcc29", "#f37070"],
-                    hoverBackgroundColor: ["#5797fc", "#7e6fff", "#4ecc48", "#ffcc29", "#f37070"],
-                    borderWidth: 6,
-                    hoverBorderColor: 'transparent'
-                    }]
-                };
-
-                // -----------------
-                // init donut chart
-                // -----------------
-                new Chart(donutChart1, {
-                    type: 'doughnut',
-                    data: data1,
-                    options: {
-                    legend: {
-                        display: false
-                    },
-                    animation: {
-                        animateScale: true
-                    },
-                    cutoutPercentage: 80
-                    }
-                });
-            }
-        
             $("#screeningForm").on("submit", function (e) {
                 // e.preventDefault();
                 shouldRefer = false;
@@ -544,11 +393,9 @@
                     $('#referral-notes').focus();
                 }
             });
-            
             $("#referral_yes").on("change", function () {
                 toogleReferralRefusalBox();
             });
-
             $("#referral_no").on("change", function () {
                 toogleReferralRefusalBox();
             });
