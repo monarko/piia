@@ -229,3 +229,24 @@ func ReferralsParticipantsGet(c buffalo.Context) error {
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("referrals/create.html"))
 }
+
+// ReferralsParticipantsView returns form
+func ReferralsParticipantsView(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader", "Referrals").Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+	c.Set("participant", participant)
+
+	hospitals := envy.Get("HOSPITALS", "")
+	listHospitals := strings.Split(hospitals, ",")
+
+	c.Set("hospitals", listHospitals)
+
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Referrals"] = "/referrals/index"
+	breadcrumbMap["Referrals Details"] = "/referrals/participants/" + participant.ID.String()
+	c.Set("breadcrumbMap", breadcrumbMap)
+	return c.Render(200, r.HTML("referrals/details.html"))
+}
