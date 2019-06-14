@@ -12,3 +12,4 @@ piia
 .vscode/
 .grifter/
 .env
+package-lock.json

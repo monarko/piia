@@ -29027,3 +29027,34 @@ Contents:
     padding-left: 0.5rem;
     color: #9e9e9e;
 }
+
+/* big check labels */
+.label-big-check {
+	position: relative;
+	display: block;
+	padding: 15px 0 15px 35px;
+	margin: 0;
+	cursor: pointer;
+}
+.label-big-check input {
+	display: none;
+}
+.label-big-check .check-title {
+	font-size: 1.2em;
+	font-weight: 400;
+	cursor: pointer;
+}
+.label-big-check input[type="checkbox"] + .check-title:before {
+	position: absolute;
+	top: 12px;
+	left: 0;
+	width: 30px;
+  content: "\f14a";
+  font-size: 3em;
+  line-height: 1;
+  color: #aaa;
+}
+.label-big-check input[type="checkbox"]:checked + .check-title:before {
+    content: "\f14a";
+    color: #333;
+}

@@ -129,6 +129,8 @@
   translation: "เกณฑ์การเข้าร่วมวิจัยและความยินยอม"
 - id: eligibility_text
   translation: "ยืนยันว่าเข้าเกณฑ์การร่วมวิจัย"
+- id: eligibiligy_criteria_checkbox_label
+  translation: "ยินยอมให้มีส่วนร่วม"
 - id: eligibiligy_criteria_checkbox
   translation: "ผู้ป่วยรายนี้ได้ยินยอมและเซ็นหนังสือแสดงความยินยอม"
 - id: form_button_enroll

@@ -129,6 +129,8 @@
   translation: "Eligibility & Consent"
 - id: eligibility_text
   translation: "Confirm that all eligibility criteria are met and that"
+- id: eligibiligy_criteria_checkbox_label
+  translation: "Consented for Participation"
 - id: eligibiligy_criteria_checkbox
   translation: "By checking this box, you confirm that (i) the patient is eligible for the study and (ii) has provided informed consent to participate"
 - id: form_button_enroll

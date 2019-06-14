@@ -92,8 +92,17 @@
                                 <p class="lead"><%= t("eligibility_text") %></p>
                         </div>
                         <hr/>
-                        <div class="form-check">
-                            <label class="form-check-label"><input class="form-check-input" type="checkbox" name="Consented" required><%= t("eligibiligy_criteria_checkbox") %></label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="pretty p-icon p-curve p-thick" style="font-size: 1.5rem;">
+                                    <input type="checkbox" name="Consented" required />
+                                    <div class="state p-primary">
+                                        <i class="icon fa fa-check"></i>
+                                        <label><%= t("eligibiligy_criteria_checkbox_label") %></label>
+                                    </div>
+                                </div>
+                                <p style="margin-top: 1rem; margin-bottom: 0; font-size: 1.2rem;"><%= t("eligibiligy_criteria_checkbox") %></p>
+                            </div>
                         </div>
                     </fieldset>
                     <div class="form-buttons-w">
