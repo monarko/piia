@@ -2,6 +2,8 @@ package models
 
 import (
 	"encoding/json"
+	"math"
+	"strings"
 	"time"
 
 	"github.com/monarko/piia/helpers/types"
@@ -65,4 +67,115 @@ func (p *Participant) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Field: p.Gender, Name: "Gender"},
 		&validators.TimeIsPresent{Field: p.DOB.GivenDate, Name: "Date of birth"},
 	), nil
+}
+
+// Completeness returns the completeness score
+func (p Participant) Completeness() int {
+	score, total := 0, 0
+
+	// Participant
+	if len(p.ParticipantID) == 9 {
+		score += 10
+	}
+	gender := strings.ToLower(p.Gender)
+	if gender == "m" || gender == "f" || gender == "o" {
+		score += 10
+	}
+	if !p.DOB.CalculatedDate.IsZero() {
+		score += 10
+	}
+	if p.Consented {
+		score += 10
+	}
+	total += 40
+
+	// Screening
+	scTotal := 190
+	if len(p.Screenings) > 0 {
+		s := p.Screenings[0]
+		if s.Diabetes.DiabetesType.Valid {
+			score += 10
+		}
+		if s.Diabetes.Duration.Valid {
+			score += 10
+		}
+		if s.MedicalHistory.Smoker.Valid {
+			score += 10
+		}
+		if s.Medications.OnInsulin.Valid {
+			score += 10
+		}
+		if s.Medications.TakingMedications.Valid {
+			score += 10
+		}
+		if s.Measurements.BloodPressure.SBP.Valid {
+			score += 10
+		}
+		if s.Measurements.BloodPressure.DBP.Valid {
+			score += 10
+		}
+		if !s.Measurements.BloodPressure.AssessmentDate.CalculatedDate.IsZero() {
+			score += 10
+		}
+		if s.Pathology.HbA1C.HbA1C.Valid {
+			score += 10
+		}
+		if !s.Pathology.HbA1C.AssessmentDate.CalculatedDate.IsZero() {
+			score += 10
+		}
+		if s.Pathology.Lipids.TotalCholesterol.Valid {
+			score += 10
+		}
+		if !s.Pathology.Lipids.AssessmentDate.CalculatedDate.IsZero() {
+			score += 10
+		}
+		if !s.Eyes.AssessmentDate.CalculatedDate.IsZero() {
+			score += 10
+		}
+		if s.Eyes.RightEye.VisualAcuity.Valid {
+			score += 10
+		}
+		if s.Eyes.RightEye.DRGrading.Valid {
+			score += 10
+		}
+		if s.Eyes.RightEye.DMEAssessment.Valid {
+			score += 10
+		}
+		if s.Eyes.LeftEye.VisualAcuity.Valid {
+			score += 10
+		}
+		if s.Eyes.LeftEye.DRGrading.Valid {
+			score += 10
+		}
+		if s.Eyes.LeftEye.DMEAssessment.Valid {
+			score += 10
+		}
+	}
+	total += scTotal
+
+	// Over Reading
+	ovTotal := 40
+	if len(p.OverReadings) > 0 {
+		o := p.OverReadings[0]
+		if o.Eyes.RightEye.DRGrading.Valid {
+			score += 10
+		}
+		if o.Eyes.RightEye.DMEAssessment.Valid {
+			score += 10
+		}
+		if o.Eyes.LeftEye.DRGrading.Valid {
+			score += 10
+		}
+		if o.Eyes.LeftEye.DMEAssessment.Valid {
+			score += 10
+		}
+	}
+	total += ovTotal
+
+	if total > 0 {
+		v := float64(score) / float64(total)
+		return int(math.Round(v * 100))
+	}
+
+	return 0
 }

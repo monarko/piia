@@ -59,6 +59,8 @@
   translation: "Notification Message"
 - id: th_site
   translation: "Site"
+- id: th_data_completeness
+  translation: "Data Completeness"
 - id: th_notifications_type
   translation: "Notification Type"
 - id: th_workflow_date

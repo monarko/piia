@@ -116,18 +116,19 @@ func App() *buffalo.App {
 
 		screenings.POST("/{sid}/appointmentdone", UpdateReferredMessage).Name("participantsAppointmentPath")
 
-		reports := app.Group("/reports")
-		reports.Use(LoginRequired)
-		reports.Use(StudyCoordinatorPermissionRequired)
-		reports.GET("/", ReportsIndex)
-		reports.GET("/index", ReportsIndex)
+		// reports := app.Group("/reports")
+		// reports.Use(LoginRequired)
+		// reports.Use(StudyCoordinatorPermissionRequired)
+		// reports.GET("/", ReportsIndex)
+		// reports.GET("/index", ReportsIndex)
 
 		analytics := app.Group("/analytics")
 		analytics.Use(LoginRequired)
-		analytics.Use(AdminRequired)
-		analytics.GET("/", AnalyticsIndex)
-		analytics.GET("/index", AnalyticsIndex)
-		analytics.GET("/full-download", DownloadFull)
+		analytics.Use(StudyCoordinatorPermissionRequired)
+		analytics.GET("/", ReportsIndex)
+		analytics.GET("/index", ReportsIndex)
+		analytics.GET("/full-download", AdminRequired(DownloadFull))
+		analytics.GET("/veil-download", AdminRequired(DownloadVeil))
 
 		referrals := app.Group("/referrals")
 		referrals.Use(LoginRequired)

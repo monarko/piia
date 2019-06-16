@@ -20,20 +20,20 @@ func ReportsIndex(c buffalo.Context) error {
 	user := c.Value("current_user").(*models.User)
 	if user.Admin || user.Permission.StudyCoordinator {
 		if len(c.Param("status")) > 0 {
-			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at DESC")
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).Order("created_at DESC")
 		} else {
-			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at DESC")
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Order("created_at DESC")
 		}
 	} else if user.Permission.Screening && user.Permission.OverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status != ?", "111").Where("participants.participant_id LIKE '_" + user.Site + "%'").Order("created_at DESC")
 	} else if user.Permission.Screening {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '_" + user.Site + "%'").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "1%").Where("participants.participant_id LIKE '_" + user.Site + "%'").Order("created_at DESC")
 	} else if user.Permission.OverRead {
-		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "11%").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status LIKE ?", "11%").Order("created_at DESC")
 	} else {
 		// If there are no errors set a success message
 		c.Flash().Add("danger", "You don't have sufficient permission.")
-		InsertLog("error", "User viewed reports error", "Insufficient permission", "", "", user.ID, c)
+		InsertLog("error", "User viewed analytics error", "Insufficient permission", "", "", user.ID, c)
 		// and redirect to the index page
 		return c.Redirect(302, "/")
 	}
@@ -46,13 +46,13 @@ func ReportsIndex(c buffalo.Context) error {
 			"index_error": {errStr},
 		}
 		c.Set("errors", errs)
-		InsertLog("error", "User viewed reports error", err.Error(), "", "", user.ID, c)
+		InsertLog("error", "User viewed analytics error", err.Error(), "", "", user.ID, c)
 		return c.Redirect(302, "/")
 	}
 	// Make posts available inside the html template
 	c.Set("participants", participants)
 	// Add the paginator to the context so it can be used in the template.
-	c.Set("pagination", q.Paginator)
+	// c.Set("pagination", q.Paginator)
 
 	s := 0
 	if s, err = tx.Count(&models.Screening{}); err != nil {
@@ -108,10 +108,10 @@ func ReportsIndex(c buffalo.Context) error {
 	c.Set("stat", stat)
 
 	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["page_reports_title"] = "/reports/index"
+	breadcrumbMap["page_analytics_title"] = "/analytics/index"
 	c.Set("breadcrumbMap", breadcrumbMap)
-	c.Set("filterStatus", c.Params().Get("status"))
-	logErr := InsertLog("view", "User viewed reports", "", "", "", user.ID, c)
+	// c.Set("filterStatus", c.Params().Get("status"))
+	logErr := InsertLog("view", "User viewed analytics", "", "", "", user.ID, c)
 	if logErr != nil {
 		// return errors.WithStack(logErr)
 		errStr := logErr.Error()
@@ -119,7 +119,7 @@ func ReportsIndex(c buffalo.Context) error {
 			"index_error": {errStr},
 		}
 		c.Set("errors", errs)
-		InsertLog("error", "User viewed reports error", logErr.Error(), "", "", user.ID, c)
+		InsertLog("error", "User viewed analytics error", logErr.Error(), "", "", user.ID, c)
 		return c.Render(422, r.HTML("reports/index.html"))
 	}
 	return c.Render(200, r.HTML("reports/index.html"))

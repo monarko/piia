@@ -105,6 +105,9 @@ func init() {
 				}
 				return strings.Join([]string{s, toAdd}, " ")
 			},
+			"getSite": func(participantID string) string {
+				return participantID[1:2]
+			},
 		},
 	})
 }

@@ -107,18 +107,7 @@
                             <li>
                                 <div class="menu-actions"></div>
                             </li>
-                            <li class="">
-                                <a href="<%= reportsIndexPath() %>">
-                                    <div class="icon-w">
-                                        <div class="fa fa-book"></div>
-                                    </div>
-                                    <span>
-                                        <%= t("nav_reports") %></span>
-                                </a>
-                            </li>
-                        <% } %>
-
-                        <%= if (current_user.Admin) { %>
+                            
                             <li class="">
                                 <a href="<%= analyticsIndexPath() %>">
                                     <div class="icon-w">
@@ -128,7 +117,9 @@
                                         <%= t("nav_analytics") %></span>
                                 </a>
                             </li>
-                        
+                        <% } %>
+
+                        <%= if (current_user.Admin) { %>
                         <li class="">
                             <a href="<%= usersIndexPath() %>">
                                 <div class="icon-w">
@@ -399,6 +390,15 @@
             $("#referral_no").on("change", function () {
                 toogleReferralRefusalBox();
             });
+        
+            if ($('#dataTable1').length) {
+                $('#dataTable1').DataTable({
+                    'columnDefs': [{
+                        'targets': [2,5,6], /* column index */
+                        'orderable': false, /* true or false */
+                    }]                             
+                });
+            }
         });
 
         function toogleReferralRefusalBox() {

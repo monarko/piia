@@ -59,6 +59,8 @@
   translation: "ข้อความแจ้งเตือน"
 - id: th_site
   translation: "สถาน"
+- id: th_data_completeness
+  translation: "ความสมบูรณ์ของข้อมูล"
 - id: th_notifications_type
   translation: "ประเภทการแจ้งเตือน"
 - id: th_workflow_date

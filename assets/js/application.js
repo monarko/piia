@@ -4,6 +4,8 @@ require("bootstrap/dist/js/bootstrap.bundle.js");
 require("./moment.js");
 require("./select2.full.js");
 require("./jquery.inputmask.bundle.js");
+require("datatables.net");
+require("datatables.net-bs4");
 $(() => {
 
 });

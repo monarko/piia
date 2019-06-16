@@ -235,6 +235,97 @@ func downloadAnalytics(analytics []models.AnalyticsScreening) (*bytes.Buffer, er
 	return b, nil
 }
 
+// DownloadVeil function
+func DownloadVeil(c buffalo.Context) error {
+	tx := c.Value("tx").(*pop.Connection)
+	user := c.Value("current_user").(*models.User)
+	analyticsScreenings := &models.AnalyticsScreenings{}
+
+	query := `SELECT 
+	s.created_at AS "CreatedDate",
+	p.participant_id AS "ParticipantID",
+	date_part('year', age(((p.dob->>'calculated_date'::text)::date)::timestamp with time zone)) AS "Age",
+        CASE
+            WHEN ((p.gender)::text = 'M'::text) THEN 'Male'::text
+            ELSE 'Female'::text
+        END AS "Gender",
+	((s.eye->'right'::text)->>'visual_acuity'::text) AS "VAOD",
+	((s.eye->'right'::text)->>'last_visual_acuity'::text) AS "VAPreviousOD",
+	((s.eye->'right'::text)->>'dr'::text) AS "DRGradeOD",
+	((s.eye->'right'::text)->>'dme'::text) AS "DMEOD",
+	((s.eye->'left'::text)->>'visual_acuity'::text) AS "VAOS",
+	((s.eye->'left'::text)->>'last_visual_acuity'::text) AS "VAPreviousOS",
+	((s.eye->'left'::text)->>'dr'::text) AS "DRGradeOS",
+	((s.eye->'left'::text)->>'dme'::text) AS "DMEOS",
+        CASE
+            WHEN ((s.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
+            ELSE 'No'::text
+        END AS "DrReferral",
+	(s.referral->>'additional_notes'::text) AS "ReferralNotes",
+	((o.eye_assessment->'left'::text)->>'dr'::text) AS "DRGradeOVLeft",
+	((o.eye_assessment->'left'::text)->>'dme'::text) AS "DMEOVLeft",
+	((o.eye_assessment->'left'::text)->>'suspected_pathologies'::text) AS "SuspectedLeft",
+	((o.eye_assessment->'right'::text)->>'dr'::text) AS "DRGradeOVRight",
+	((o.eye_assessment->'right'::text)->>'dme'::text) AS "DMEOVRight",
+	((o.eye_assessment->'right'::text)->>'suspected_pathologies'::text) AS "SuspectedRight",
+        CASE
+            WHEN ((o.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
+            ELSE 'No'::text
+        END AS "OVReferral",
+	(o.referral->>'additional_notes'::text) AS "OVReferralNotes"
+FROM (
+	participants p
+	LEFT JOIN screenings s ON (p.id = s.participant_id)
+	LEFT JOIN over_readings o ON (o.screening_id = s.id)
+)
+WHERE (
+	s.id IS NOT NULL
+)
+ORDER BY s.created_at DESC`
+	q := tx.RawQuery(query)
+
+	if err := q.All(analyticsScreenings); err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		InsertLog("error", "User download veil analytics error", err.Error(), "", "", user.ID, c)
+		return c.Redirect(302, "/analytics/index")
+	}
+
+	appHost := envy.Get("APP_HOST", "http://127.0.0.1")
+	hosts := strings.Split(strings.TrimSpace(strings.Replace(appHost, "/", "", -1)), ":")
+	// filename := hosts[1] + "-full-record-" + time.Now().Format("2006-01-02T15-04-05") + ".csv"
+	filename := hosts[1] + "-veil-analytics" + ".csv"
+
+	b, err := downloadVeil(*analyticsScreenings)
+	if err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		InsertLog("error", "User download veil analytics error", err.Error(), "", "", user.ID, c)
+		return c.Redirect(302, "/analytics/index")
+	}
+
+	err = storeToGoogleCloudStorage(filename, b)
+	if err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		c.Flash().Add("danger", "Error from GCS: "+errStr)
+		InsertLog("error", "User download veil analytics error", err.Error(), "", "", user.ID, c)
+	} else {
+		c.Flash().Add("success", "Successfully saved the Veil Analytics to your storage bucket")
+	}
+
+	return c.Redirect(302, "/analytics/index")
+}
+
 func downloadVeil(analytics []models.AnalyticsScreening) (*bytes.Buffer, error) {
 	b := &bytes.Buffer{}
 	w := csv.NewWriter(b)
