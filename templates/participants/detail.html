@@ -392,11 +392,26 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <%= if (len(participant.Screenings) > 0) { %>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td style="width: 200px;"></td>
+                                        <td>
+                                            <div class="img-thumbnail text-center">
+                                                <img class="fullscreen-image" src="<%= rightEyeLink %>" data-high-res-src="<%= rightEyeLink %>">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="img-thumbnail text-center">
+                                                <img class="fullscreen-image" src="<%= leftEyeLink %>" data-high-res-src="<%= leftEyeLink %>">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
                             <%= for (psc) in participant.Screenings { %>
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th style="width: 200px;"></th>
                                         <th style="text-align: left;">Right Eye</th>
                                         <th style="text-align: left;">Left Eye</th>
                                     </tr>
@@ -526,7 +541,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th style="width: 200px;"></th>
                                         <th style="text-align: left;">Right Eye</th>
                                         <th style="text-align: left;">Left Eye</th>
                                     </tr>
@@ -610,6 +625,7 @@
     </div>
 </div>
 
+<%= if (drReferral || ovReferral) { %>
 <!-- Referral -->
 <div class="row">
     <div class="col-sm-12">
@@ -622,7 +638,20 @@
                         </div>
                         <div class="element-info-text">
                             <h5 class="element-inner-header">
-                                Referral
+                                Referral 
+                                <small>
+                                        (Referred by 
+                                        <%= if (drReferral || ovReferral) { %>
+                                            both <strong><%= t("role_screener") %></strong> and <strong><%= t("role_reader") %></strong>
+                                        <% } else if (drReferral) { %>
+                                            <strong><%= t("role_screener") %></strong>
+                                        <% } else if (ovReferral) { %>
+                                            <strong><%= t("role_reader") %></strong>
+                                        <% } else { %>
+                                            No one
+                                        <% } %>
+                                        )
+                                </small>
                             </h5>
                             <div class="element-inner-desc">
                                 Referral Data
@@ -687,3 +716,4 @@
         </div>
     </div>
 </div>
+<% } %>

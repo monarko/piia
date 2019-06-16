@@ -484,6 +484,28 @@ func ParticipantsDetail(c buffalo.Context) error {
 	allLogs = append(allLogs, *participantLogs...)
 	allLogs = append(allLogs, *screeningLogs...)
 
+	right, left, err := getImage(participant.ParticipantID)
+	if err != nil {
+		left = ""
+		right = ""
+	}
+
+	c.Set("leftEyeLink", left)
+	c.Set("rightEyeLink", right)
+
+	drReferral := false
+	ovReferral := false
+
+	if len(participant.Screenings) > 0 {
+		drReferral = participant.Screenings[0].Referral.Referred
+	}
+	if len(participant.OverReadings) > 0 {
+		ovReferral = participant.OverReadings[0].Referral.Referred
+	}
+
+	c.Set("drReferral", drReferral)
+	c.Set("ovReferral", ovReferral)
+
 	c.Set("user_activities", userActivities)
 	c.Set("activities_keys", keys)
 	c.Set("audits", audits)
