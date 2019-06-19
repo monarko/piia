@@ -484,6 +484,11 @@ func ParticipantsDetail(c buffalo.Context) error {
 	allLogs = append(allLogs, *participantLogs...)
 	allLogs = append(allLogs, *screeningLogs...)
 
+	// fmt.Println("ParticipantLogs:", len(*participantLogs))
+	// fmt.Println("ParticipantAudit:", len(*participantAudits))
+	// fmt.Println("ScreeningLogs:", len(*screeningLogs))
+	// fmt.Println("ScreeningAudit:", len(*screeningAudits))
+
 	right, left, err := getImage(participant.ParticipantID)
 	if err != nil {
 		left = ""

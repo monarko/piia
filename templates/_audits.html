@@ -54,6 +54,10 @@
     </div>
 </div> -->
 
+<h1>AUDITS</h1>
+<%= json(audits) %>
+<h1>LOGS</h1>
+<%= json(logs) %>
 
 <div class="element-wrapper">
     <h6 class="element-header">
@@ -86,7 +90,6 @@
                 </thead>
                 <tbody>
                     <%= for (i, log) in logs { %>
-                    <%= if (downcase(log.Action) != "create") { %> 
                     <tr>
                         <td class="text-center">
                             <a class="badge badge-success-inverted" href="" style="text-transform: uppercase;"><%= log.Action %></a>
@@ -174,7 +177,6 @@
                                 <% } %>
                         </td>
                     </tr>
-                    <% } %>
                     <% } %>
                 </tbody>
             </table>
