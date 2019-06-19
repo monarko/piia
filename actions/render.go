@@ -108,6 +108,9 @@ func init() {
 			"getSite": func(participantID string) string {
 				return participantID[1:2]
 			},
+			"tolower": func(s string) string {
+				return strings.ToLower(s)
+			},
 		},
 	})
 }

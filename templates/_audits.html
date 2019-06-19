@@ -84,6 +84,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <% let part = 0 %>
+                    <% let scr = 0 %>
+                    <% let logi = 0 %>
                     <%= for (i, log) in logs { %>
                     <tr>
                         <td class="text-center">
@@ -132,7 +135,18 @@
                     <tr class="expandable-row" id="expandable-row-<%= i %>">
                         <td colspan="6">
                                 <%= for (j, audit) in audits { %>
-                                    <%= if (i == j) { %>
+                                    <% 
+                                    if (tolower(audit.ModelType) == "participant") {
+                                        logi = part
+                                        part = part + 1
+                                    } 
+                                    if (tolower(audit.ModelType) == "participant") {
+                                        logi = part + scr
+                                        scr = scr + 1
+                                    } 
+                                    %>
+                                    <%= if (logi == j && tolower(log.ResourceType) == tolower(audit.ModelType)) { %>
+                                        <% logi = logi + 1 %>
                                         <div id="expandable-row-<%= i %>-content" class="expandable-content">
                                             <table class="table table-striped">
                                                             <thead>
