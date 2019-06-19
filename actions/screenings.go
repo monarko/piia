@@ -178,6 +178,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 	}
 	// screening.ScreenerID = user.ID
 	// screening.ParticipantID = participant.ID
+	screening.Referral.Referred = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
 		screening.Referral.Referred = true
