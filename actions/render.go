@@ -111,6 +111,11 @@ func init() {
 			"tolower": func(s string) string {
 				return strings.ToLower(s)
 			},
+			"matchTimes": func(a time.Time, b time.Time) bool {
+				end := b.Add(time.Duration(1) * time.Second)
+				start := b.Add(time.Duration(-1) * time.Second)
+				return a.After(start) && a.Before(end)
+			},
 		},
 	})
 }

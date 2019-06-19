@@ -84,9 +84,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% let part = 0 %>
-                    <% let scr = 0 %>
-                    <% let logi = 0 %>
                     <%= for (i, log) in logs { %>
                     <tr>
                         <td class="text-center">
@@ -133,57 +130,45 @@
                         </td>
                     </tr>
                     <tr class="expandable-row" id="expandable-row-<%= i %>">
-                        <td colspan="6">
-                                <%= for (j, audit) in audits { %>
-                                    <% 
-                                    if (tolower(audit.ModelType) == "participant") {
-                                        logi = part
-                                        part = part + 1
-                                    } 
-                                    if (tolower(audit.ModelType) == "screening") {
-                                        logi = part + scr
-                                        scr = scr + 1
-                                    } 
-                                    %>
-                                    <%= if (logi == j && tolower(log.ResourceType) == tolower(audit.ModelType)) { %>
-                                        <% logi = logi + 1 %>
-                                        <div id="expandable-row-<%= i %>-content" class="expandable-content">
-                                            <table class="table table-striped">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th style="text-align: left;">
-                                                                        Attribiute
-                                                                    </th>
-                                                                    <th>
-                                                                        Old Value
-                                                                    </th>
-                                                                    <th>
-                                                                        New Value
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <%= for (k, v) in audit.Changes { %>
-                                                                <%= if ((lastElement(k, "->") != "assessment_date") && (lastElement(k, "->") != "id") && (lastElement(k, "->") != "unit")) { %>
-                                                                    <tr>
-                                                                        <td style="text-align: left;" class="text-uppercase">
-                                                                            <%= k %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= v["from"] %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= v["to"] %>
-                                                                        </td>
-                                                                    </tr>
-                                                                <% } %>
-                                                              <% } %>
-                                                            </tbody>
-                                            </table>
-                                            <!-- <textarea class="form-control" rows="15" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'><%= audit %></textarea> -->
-                                        </div>
-                                    <% } %>
+                        <td colspan="7">
+                            <%= for (audit) in audits { %>
+                                <%= if (matchTimes(log.CreatedAt, audit.CreatedAt) && tolower(log.ResourceType) == tolower(audit.ModelType)) { %>
+                                    <div id="expandable-row-<%= i %>-content" class="expandable-content">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align: left;">
+                                                        Attribiute
+                                                    </th>
+                                                    <th>
+                                                        Old Value
+                                                    </th>
+                                                    <th>
+                                                        New Value
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%= for (k, v) in audit.Changes { %>
+                                                <%= if ((lastElement(k, "->") != "assessment_date") && (lastElement(k, "->") != "id") && (lastElement(k, "->") != "unit")) { %>
+                                                <tr>
+                                                    <td style="text-align: left;" class="text-uppercase">
+                                                        <%= k %>
+                                                    </td>
+                                                    <td>
+                                                        <%= v["from"] %>
+                                                    </td>
+                                                    <td>
+                                                        <%= v["to"] %>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 <% } %>
+                            <% } %>
                         </td>
                     </tr>
                     <% } %>
