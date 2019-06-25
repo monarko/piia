@@ -1,81 +1,102 @@
 <div class="element-wrapper">
-    <h6 class="element-header">
-        Audits
-    </h6>
-    <div class="element-box-tp">
-        <div class="table-responsive">
-            <table id="audit-table" width="100%" class="table table-striped table-lightfont" style="font-size: 0.8rem;">
-                <thead>
-                    <tr>
-                        <th>
-                            Activity
-                        </th>
-                        <th>
-                            User
-                        </th>
-                        <th>
-                            Message
-                        </th>
-                        <th class="text-center">
-                            Time
-                        </th>
-                        <th>
-                            IP
-                        </th>
-                        <th>
-                            View
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%= for (i, log) in logs { %>
-                    <tr data-child-data="<%= getMatchingAudit(log, audits) %>">
-                        <td class="text-center">
-                            <a class="badge badge-success-inverted" href="" style="text-transform: uppercase;"><%= log.Action %></a>
-                        </td>
-                        <td>
-                            <div class="user-with-avatar">
-                                    <%= if (len(log.User.Avatar) > 10) { %>
-                                        <img alt="" src="<%= log.User.Avatar %>">
-                                    <% } else { %>
-                                        <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
-                                    <% } %>
-                                <span><%= log.User.Name %></span>
-                                <span class="badge badge-inverted badge-info">
-                                    <%= if (log.User.Admin) { %>
-                                            <%= t("role_admin") %>
-                                            <% } else if (log.User.Permission.StudyCoordinator) { %>
-                                            <%= t("role_study_coordinator") %>
-                                            <% } else if (log.User.Permission.Screening) { %>
-                                            <%= t("role_screener") %>
-                                            <% } else if (log.User.Permission.OverRead) { %>
-                                            <%= t("role_reader") %>
-                                            <% } else if (log.User.Permission.ReferralTracker) { %>
-                                            <%= t("role_referral_tracker") %>
-                                            <% } else { %>
-                                            <%= t("role_general") %>
-                                            <% } %>
-                                </span>
+    <div class="element-box" style="padding: 1rem 1rem 0 1rem;">
+        <div class="todo-app-w">
+            <div class="todo-content" style="padding: 0;">
+                <div class="all-tasks-w" style="padding-top: 0;">
+                    <div class="tasks-section">
+                        <div class="tasks-header-w" style="margin-top: 0;">
+                            <a class="tasks-header-toggler" href="#">
+                                <i class="os-icon os-icon-ui-23"></i>
+                            </a>
+                            <h5 class="tasks-header">
+                                Audits
+                            </h5>
+                        </div>
+                        <div class="tasks-list-w" style="display: none;">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table id="audit-table" width="100%" class="table table-striped table-lightfont"
+                                            style="font-size: 0.8rem;">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Activity
+                                                    </th>
+                                                    <th>
+                                                        User
+                                                    </th>
+                                                    <th>
+                                                        Message
+                                                    </th>
+                                                    <th class="text-center">
+                                                        Time
+                                                    </th>
+                                                    <th>
+                                                        IP
+                                                    </th>
+                                                    <th>
+                                                        View
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%= for (i, log) in logs { %>
+                                                <tr data-child-data="<%= getMatchingAudit(log, audits) %>">
+                                                    <td class="text-center">
+                                                        <a class="badge badge-success-inverted" href=""
+                                                            style="text-transform: uppercase;"><%= log.Action %></a>
+                                                    </td>
+                                                    <td>
+                                                        <div class="user-with-avatar">
+                                                            <%= if (len(log.User.Avatar) > 10) { %>
+                                                            <img alt="" src="<%= log.User.Avatar %>">
+                                                            <% } else { %>
+                                                            <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                                                            <% } %>
+                                                            <span><%= log.User.Name %></span>
+                                                            <span class="badge badge-inverted badge-info">
+                                                                <%= if (log.User.Admin) { %>
+                                                                <%= t("role_admin") %>
+                                                                <% } else if (log.User.Permission.StudyCoordinator) { %>
+                                                                <%= t("role_study_coordinator") %>
+                                                                <% } else if (log.User.Permission.Screening) { %>
+                                                                <%= t("role_screener") %>
+                                                                <% } else if (log.User.Permission.OverRead) { %>
+                                                                <%= t("role_reader") %>
+                                                                <% } else if (log.User.Permission.ReferralTracker) { %>
+                                                                <%= t("role_referral_tracker") %>
+                                                                <% } else { %>
+                                                                <%= t("role_general") %>
+                                                                <% } %>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="lighter">
+                                                            <%= log.Activity %>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span><%= languageDate(log.CreatedAt, "2006-01-02 15:04:05", t("lang_calendar")) %></span>
+                                                    </td>
+                                                    <td class="nowrap">
+                                                        <span><%= log.ClientIP %></span>
+                                                    </td>
+                                                    <td class="row-actions audit-action-detail">
+
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </td>
-                        <td>
-                            <div class="lighter">
-                                <%= log.Activity %>
-                            </div>
-                        </td>
-                        <td>
-                            <span><%= languageDate(log.CreatedAt, "2006-01-02 15:04:05", t("lang_calendar")) %></span>
-                        </td>
-                        <td class="nowrap">
-                            <span><%= log.ClientIP %></span>
-                        </td>
-                        <td class="row-actions audit-action-detail">
-                            
-                        </td>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

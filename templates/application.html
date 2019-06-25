@@ -401,7 +401,6 @@
             }
 
             if ($('#audit-table').length) {
-                console.log("Audit table");
                 var table = $('#audit-table').DataTable({
                     "order": [[ 3, "desc" ]],
                     'columnDefs':[{
@@ -423,7 +422,6 @@
                     else {
                         // Open this row
                         var trdata = tr.data("child-data")
-                        console.log(trdata)
                         row.child( format(trdata) ).show();
                         tr.addClass('shown');
                     }
@@ -443,7 +441,7 @@
     
         /* Formatting function for row details - modify as you need */
         function format ( d ) {
-            if (d.length > 0) {
+            if (Object.keys(d).length > 0) {
                 // `d` is the original data object for the row
                 var data = '<table class="table table-striped table-lightfont" style="font-size: 0.8rem;">'+
                     '<thead><tr><th style="text-align: left;">Attribiute</th><th>Old Value</th><th>New Value</th></tr></thead><tbody>';
