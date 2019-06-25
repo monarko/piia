@@ -60,7 +60,7 @@
     </h6>
     <div class="element-box-tp">
         <div class="table-responsive">
-            <table class="table table-striped" id="audit-table">
+            <table id="audit-table" width="100%" class="table table-striped table-lightfont" style="font-size: 0.8rem;">
                 <thead>
                     <tr>
                         <th>
@@ -85,7 +85,7 @@
                 </thead>
                 <tbody>
                     <%= for (i, log) in logs { %>
-                    <tr>
+                    <tr data-child-data="<%= getMatchingAudit(log, audits) %>">
                         <td class="text-center">
                             <a class="badge badge-success-inverted" href="" style="text-transform: uppercase;"><%= log.Action %></a>
                         </td>
@@ -120,55 +120,13 @@
                             </div>
                         </td>
                         <td>
-                            <span><%= languageDate(log.CreatedAt, "02-Jan-2006 03:04:05pm", t("lang_calendar")) %></span>
+                            <span><%= languageDate(log.CreatedAt, "2006-01-02 15:04:05", t("lang_calendar")) %></span>
                         </td>
                         <td class="nowrap">
                             <span><%= log.ClientIP %></span>
                         </td>
-                        <td class="row-actions">
-                            <a href="#" class="expand-row" data-src="expandable-row-<%= i %>"><i class="os-icon os-icon-grid-10"></i></a>
-                        </td>
-                    </tr>
-                    <tr class="expandable-row" id="expandable-row-<%= i %>">
-                        <td colspan="7">
-                            <%= for (audit) in audits { %>
-                                <%= if (matchTimes(log.CreatedAt, audit.CreatedAt) && tolower(log.ResourceType) == tolower(audit.ModelType)) { %>
-                                    <div id="expandable-row-<%= i %>-content" class="expandable-content">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th style="text-align: left;">
-                                                        Attribiute
-                                                    </th>
-                                                    <th>
-                                                        Old Value
-                                                    </th>
-                                                    <th>
-                                                        New Value
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <%= for (k, v) in audit.Changes { %>
-                                                <%= if ((lastElement(k, "->") != "assessment_date") && (lastElement(k, "->") != "id") && (lastElement(k, "->") != "unit")) { %>
-                                                <tr>
-                                                    <td style="text-align: left;" class="text-uppercase">
-                                                        <%= k %>
-                                                    </td>
-                                                    <td>
-                                                        <%= v["from"] %>
-                                                    </td>
-                                                    <td>
-                                                        <%= v["to"] %>
-                                                    </td>
-                                                </tr>
-                                                <% } %>
-                                                <% } %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                <% } %>
-                            <% } %>
+                        <td class="row-actions audit-action-detail">
+                            
                         </td>
                     </tr>
                     <% } %>

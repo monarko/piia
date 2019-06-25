@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"encoding/json"
 	"html/template"
 	"strconv"
 	"strings"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/gobuffalo/buffalo/render"
 	"github.com/gobuffalo/packr/v2"
+	"github.com/monarko/piia/models"
 )
 
 var r *render.Engine
@@ -112,9 +114,18 @@ func init() {
 				return strings.ToLower(s)
 			},
 			"matchTimes": func(a time.Time, b time.Time) bool {
-				end := b.Add(time.Duration(1) * time.Second)
-				start := b.Add(time.Duration(-1) * time.Second)
-				return a.After(start) && a.Before(end)
+				return matchTimes(a, b)
+			},
+			"getMatchingAudit": func(l models.SystemLog, as []models.Audit) string {
+				for _, a := range as {
+					if matchTimes(l.CreatedAt, a.CreatedAt) && (strings.ToLower(l.ResourceType) == strings.ToLower(a.ModelType)) {
+						jsonString, err := json.Marshal(a.Changes)
+						if err == nil {
+							return string(jsonString)
+						}
+					}
+				}
+				return ""
 			},
 		},
 	})
@@ -216,4 +227,10 @@ func SliceStringToCommaSeparatedValue(s string) string {
 	}
 
 	return strings.Join(sl, ", ")
+}
+
+func matchTimes(a time.Time, b time.Time) bool {
+	end := b.Add(time.Duration(1) * time.Second)
+	start := b.Add(time.Duration(-1) * time.Second)
+	return a.After(start) && a.Before(end)
 }

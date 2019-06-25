@@ -29058,3 +29058,11 @@ Contents:
     content: "\f14a";
     color: #333;
 }
+
+td.audit-action-detail {
+    background: url('../img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.audit-action-detail {
+  background: url('../img/details_close.png') no-repeat center center;
+}
