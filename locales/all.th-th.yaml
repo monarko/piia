@@ -165,11 +165,13 @@
 - id: th_overread_date
   translation: "วันที่สอบทาน"
 - id: th_workflow_status
-  translation: "สถานะ"
+  translation: "สถานะเวิร์กโฟลว์"
 - id: th_actions
   translation: "การปฏิบัติ"
 - id: th_screening
   translation: "การฉาย"
+- id: th_screening_done
+  translation: "เสร็จสิ้นการคัดกรอง"
 - id: th_overreading
   translation: "สำหรับการตรวจสอบ"
 - id: th_completed

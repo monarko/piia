@@ -171,6 +171,8 @@
   translation: "Actions"
 - id: th_screening
   translation: "Screening"
+- id: th_screening_done
+  translation: "Screening Done"
 - id: th_overreading
   translation: "Over Reading"
 - id: th_status

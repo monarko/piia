@@ -215,3 +215,77 @@ func (v *InRangeInt) IsValid(errors *validate.Errors) {
 		}
 	}
 }
+
+// Completeness returns the completeness score
+func (s Screening) Completeness() int {
+	score, total := 0, 0
+
+	// Screening
+	scTotal := 190
+
+	if s.Diabetes.DiabetesType.Valid {
+		score += 10
+	}
+	if s.Diabetes.Duration.Valid {
+		score += 10
+	}
+	if s.MedicalHistory.Smoker.Valid {
+		score += 10
+	}
+	if s.Medications.OnInsulin.Valid {
+		score += 10
+	}
+	if s.Medications.TakingMedications.Valid {
+		score += 10
+	}
+	if s.Measurements.BloodPressure.SBP.Valid {
+		score += 10
+	}
+	if s.Measurements.BloodPressure.DBP.Valid {
+		score += 10
+	}
+	if !s.Measurements.BloodPressure.AssessmentDate.CalculatedDate.IsZero() {
+		score += 10
+	}
+	if s.Pathology.HbA1C.HbA1C.Valid {
+		score += 10
+	}
+	if !s.Pathology.HbA1C.AssessmentDate.CalculatedDate.IsZero() {
+		score += 10
+	}
+	if s.Pathology.Lipids.TotalCholesterol.Valid {
+		score += 10
+	}
+	if !s.Pathology.Lipids.AssessmentDate.CalculatedDate.IsZero() {
+		score += 10
+	}
+	if !s.Eyes.AssessmentDate.CalculatedDate.IsZero() {
+		score += 10
+	}
+	if s.Eyes.RightEye.VisualAcuity.Valid {
+		score += 10
+	}
+	if s.Eyes.RightEye.DRGrading.Valid {
+		score += 10
+	}
+	if s.Eyes.RightEye.DMEAssessment.Valid {
+		score += 10
+	}
+	if s.Eyes.LeftEye.VisualAcuity.Valid {
+		score += 10
+	}
+	if s.Eyes.LeftEye.DRGrading.Valid {
+		score += 10
+	}
+	if s.Eyes.LeftEye.DMEAssessment.Valid {
+		score += 10
+	}
+	total += scTotal
+
+	if total > 0 {
+		v := float64(score) / float64(total)
+		return int(math.Round(v * 100))
+	}
+
+	return 0
+}
