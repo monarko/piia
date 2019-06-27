@@ -3,6 +3,8 @@ package actions
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"strconv"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
@@ -208,6 +210,7 @@ func setErrorHandler(app *buffalo.App) {
 
 func customErrorHandler() buffalo.ErrorHandler {
 	return func(status int, err error, c buffalo.Context) error {
+		log.Println("Error handler:", err, c.Request().RequestURI)
 		ct := c.Request().Header.Get("Content-Type")
 		if c.Value("current_user") != nil {
 			user, ok := c.Value("current_user").(*models.User)
@@ -236,6 +239,11 @@ func customErrorHandler() buffalo.ErrorHandler {
 					return c.Redirect(302, "/errors/"+tmpl)
 				}
 			}
+		}
+
+		if status > 0 {
+			s := strconv.Itoa(status)
+			return c.Redirect(302, "/errors/"+s)
 		}
 
 		return c.Redirect(302, "/errors/default")
