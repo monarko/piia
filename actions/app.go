@@ -209,29 +209,35 @@ func setErrorHandler(app *buffalo.App) {
 func customErrorHandler() buffalo.ErrorHandler {
 	return func(status int, err error, c buffalo.Context) error {
 		ct := c.Request().Header.Get("Content-Type")
-		user := c.Value("current_user").(*models.User)
-		InsertLog("error", "Error", err.Error(), "", "", user.ID, c)
-		switch strings.ToLower(ct) {
-		case "application/json", "text/json", "json":
-			c.Logger().Error(err)
-			c.Response().WriteHeader(status)
+		if c.Value("current_user") != nil {
+			user, ok := c.Value("current_user").(*models.User)
+			if ok {
+				InsertLog("error", "Error", err.Error(), "", "", user.ID, c)
+				switch strings.ToLower(ct) {
+				case "application/json", "text/json", "json":
+					c.Logger().Error(err)
+					c.Response().WriteHeader(status)
 
-			msg := fmt.Sprintf("%+v", err)
-			return json.NewEncoder(c.Response()).Encode(map[string]interface{}{
-				"error": msg,
-				"code":  status,
-			})
-		default:
-			tmpl := "default"
-			switch status {
-			case 401:
-				tmpl = "401"
-			case 403:
-				tmpl = "403"
-			case 404:
-				tmpl = "404"
+					msg := fmt.Sprintf("%+v", err)
+					return json.NewEncoder(c.Response()).Encode(map[string]interface{}{
+						"error": msg,
+						"code":  status,
+					})
+				default:
+					tmpl := "default"
+					switch status {
+					case 401:
+						tmpl = "401"
+					case 403:
+						tmpl = "403"
+					case 404:
+						tmpl = "404"
+					}
+					return c.Redirect(302, "/errors/"+tmpl)
+				}
 			}
-			return c.Redirect(302, "/errors/"+tmpl)
 		}
+
+		return c.Redirect(302, "/errors/default")
 	}
 }
