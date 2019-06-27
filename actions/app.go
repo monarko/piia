@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"strconv"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
@@ -241,11 +240,15 @@ func customErrorHandler() buffalo.ErrorHandler {
 			}
 		}
 
-		if status > 0 {
-			s := strconv.Itoa(status)
-			return c.Redirect(302, "/errors/"+s)
+		tmpl := "default"
+		switch status {
+		case 401:
+			tmpl = "401"
+		case 403:
+			tmpl = "403"
+		case 404:
+			tmpl = "404"
 		}
-
-		return c.Redirect(302, "/errors/default")
+		return c.Redirect(302, "/errors/"+tmpl)
 	}
 }
