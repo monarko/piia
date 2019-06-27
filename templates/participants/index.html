@@ -90,9 +90,6 @@
                                 <th>
                                     <%= t("th_demographics") %>
                                 </th>
-                                <th style="width: 7%;">
-                                    <%= t("th_consented") %>
-                                </th>
                                 <th>
                                     <%= t("th_enrolled_date") %>
                                 </th>
@@ -131,13 +128,6 @@
                                         <span><i class="fa fa-mars fa-lg"></i></span>
                                     <% } %>
                                 </td>
-                                <td class="text-center">
-                                    <%= if (p.Consented) { %>
-                                    <span><i class="fa fa-check"></i></span>
-                                    <% } else { %>
-                                    <span><i class="fa fa-times"></i></span>
-                                    <% } %>
-                                </td>
                                  <td class="text-center">
                                     <%= languageDate(p.CreatedAt, "02-Jan-2006", t("lang_calendar")) %>
                                 </td>
@@ -167,9 +157,9 @@
                                     <div class="progress">
                                         <%= if (len(p.Screenings) > 0) { %>
                                             <% let psc = p.Screenings[0] %>
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: <%= psc.Completeness() %>%;" aria-valuenow="<%= psc.Completeness() %>" aria-valuemin="0" aria-valuemax="100"><%= psc.Completeness() %>%</div>
+                                            <div class="progress-bar" role="progressbar" style="width: <%= psc.Completeness() %>%;" aria-valuenow="<%= psc.Completeness() %>" aria-valuemin="0" aria-valuemax="100"><%= psc.Completeness() %>%</div>
                                         <% } else { %>
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                                         <% } %>
                                     </div>
                                 </td>
