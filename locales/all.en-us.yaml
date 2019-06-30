@@ -51,6 +51,8 @@
   translation: "Study Co-ordinator"
 - id: role_referral_tracker
   translation: "Referral Tracker"
+- id: role_study_team_member
+  translation: "Study Team Member"
 - id: section_header_notifications
   translation: "Notifications"
 - id: section_header_summarystats

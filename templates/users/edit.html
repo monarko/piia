@@ -167,7 +167,7 @@
                     <fieldset class="form-group">
                         <legend><span>Role</span></legend>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
                                         <%= if (user.Admin) { %>
@@ -179,7 +179,7 @@
                                         </label>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
                                         <%= if (user.Permission.StudyCoordinator) { %>
@@ -190,6 +190,20 @@
                                             name="Permission.StudyCoordinator" value="true">
                                         <% } %>
                                         <strong>Is Study Co-ordinator?</strong>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-check form-group">
+                                    <label class="form-check-label">
+                                        <%= if (user.Permission.StudyTeamMember) { %>
+                                            <input class="btn form-check-input" type="checkbox"
+                                            name="Permission.StudyTeamMember" value="true" checked>
+                                        <% } else { %>
+                                            <input class="btn form-check-input" type="checkbox"
+                                            name="Permission.StudyTeamMember" value="true">
+                                        <% } %>
+                                        <strong>Is Study Team Member?</strong>
                                     </label>
                                 </div>
                             </div>

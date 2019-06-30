@@ -109,7 +109,9 @@
                                 <td class="row-actions">
                                     <!--<a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-alt fa-lg"></i></a>-->
                                     <%= if (!stringInSlice(p.ID.String(), finished)) { %>
-                                        <a class="btn btn-sm btn-warning" href="<%= referralsParticipantPath({pid: p.ID}) %>" title="Mark"><i class="fa fa-pencil-alt fa-sm"></i> Track Referral</a>
+                                        <%= if (!current_user.Permission.StudyTeamMember) { %>
+                                            <a class="btn btn-sm btn-warning" href="<%= referralsParticipantPath({pid: p.ID}) %>" title="Mark"><i class="fa fa-pencil-alt fa-sm"></i> Track Referral</a>
+                                        <% } %>
                                     <% } else { %>
                                         <a class="btn btn-sm btn-info" href="<%= referralsParticipantViewPath({pid: p.ID}) %>" title="View"><i class="fa fa-eye fa-sm"></i> View</a>
                                     <% } %>

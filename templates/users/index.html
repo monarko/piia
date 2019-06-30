@@ -113,6 +113,12 @@
 											Referral Tracker
 										</div>
 									<% } %>
+
+									<%= if (user.Permission.StudyTeamMember) { %>
+										<div class="badge badge-default-inverted">
+											Study Team Member
+										</div>
+									<% } %>
 								</td>
 								<td class="text-center">
 									<%= user.CreatedAt.Format("02-Jan-2006") %>

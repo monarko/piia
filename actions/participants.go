@@ -47,7 +47,7 @@ func ParticipantsIndex(c buffalo.Context) error {
 
 	whereStmt := strings.Join(where, " AND ")
 
-	if user.Admin || user.Permission.StudyCoordinator || user.Permission.Screening {
+	if user.Admin || user.Permission.StudyCoordinator || user.Permission.Screening || user.Permission.StudyTeamMember {
 		if len(whereStmt) > 0 {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
 		} else {

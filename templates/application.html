@@ -44,7 +44,7 @@
                                             <% } %>
                                         </button>
                                         <div class="dropdown-menu" style="width: 100%;">
-                                            <%= if (current_user.Permission.Screening && !(current_user.Admin || current_user.Permission.StudyCoordinator)) { %>
+                                            <%= if (current_user.Permission.Screening && !(current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.StudyTeamMember)) { %>
                                                 <a class="dropdown-item active" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=<%= current_site %>"><%= t("site_" + current_site) %></a>
                                             <% } else { %>
                                                 <a class="dropdown-item <%= if (len(current_site) == 0) { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>"><%= t("site_all") %></a>
@@ -67,7 +67,7 @@
                                 </span>
                             </a>
                         </li>
-                        <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator) { %>
+                        <%= if (current_user.Admin || current_user.Permission.Screening || current_user.Permission.StudyCoordinator || current_user.Permission.StudyTeamMember) { %>
                         <li class="">
                             <a href="<%= participantsIndexPath() %>">
                                 <div class="icon-w">
@@ -79,7 +79,7 @@
                         </li>
                         <% } %>
 
-                        <%= if (!current_user.Permission.Screening || current_user.Admin || current_user.Permission.ReferralTracker || current_user.Permission.StudyCoordinator || current_user.Permission.OverRead) { %>
+                        <%= if (!current_user.Permission.Screening || current_user.Admin || current_user.Permission.ReferralTracker || current_user.Permission.StudyCoordinator || current_user.Permission.OverRead || current_user.Permission.StudyTeamMember) { %>
                         <li class="">
                             <a href="<%= casesIndexPath() %>">
                                 <div class="icon-w">
@@ -91,7 +91,7 @@
                         </li>
                         <% } %>
 
-                        <%= if (current_user.Admin || current_user.Permission.ReferralTracker || current_user.Permission.StudyCoordinator) { %>
+                        <%= if (current_user.Admin || current_user.Permission.ReferralTracker || current_user.Permission.StudyCoordinator || current_user.Permission.StudyTeamMember) { %>
                             <li class="">
                                 <a href="<%= referralsIndexPath() %>">
                                     <div class="icon-w">
@@ -103,7 +103,7 @@
                             </li>
                         <% } %>
 
-                        <%= if (current_user.Admin || current_user.Permission.StudyCoordinator) { %>
+                        <%= if (current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.StudyTeamMember) { %>
                             <li>
                                 <div class="menu-actions"></div>
                             </li>
@@ -197,14 +197,14 @@
                     </div>
                     <div class="logged-user-w avatar-inline">
                         <div class="logged-user-i">
-                            <div class="avatar-w">
+                            <div class="avatar-w" style="border-radius: 0;">
                                 <%= if (len(current_user.Avatar) > 10) { %>
                                     <img alt="" src="<%= current_user.Avatar %>">
                                 <% } else { %>
                                     <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
                                 <% } %>
                             </div>
-                            <div class="logged-user-info-w">
+                            <div class="logged-user-info-w" style="padding-right: 20px;">
                                 <div class="logged-user-name">
                                     <%= current_user.Name %>
                                 </div>
@@ -219,6 +219,8 @@
                                     <%= t("role_reader") %>
                                     <% } else if (current_user.Permission.ReferralTracker) { %>
                                     <%= t("role_referral_tracker") %>
+                                    <% } else if (current_user.Permission.StudyTeamMember) { %>
+                                    <%= t("role_study_team_member") %>
                                     <% } else { %>
                                     <%= t("role_general") %>
                                     <% } %>
@@ -229,21 +231,33 @@
                             </div>
                             <div class="logged-user-menu color-style-bright">
                                 <div class="logged-user-avatar-info">
-                                    <div class="avatar-w">
+                                    <div class="avatar-w" style="margin-right: 15px;">
                                             <%= if (len(current_user.Avatar) > 10) { %>
-                                                <img alt="" src="<%= current_user.Avatar %>">
+                                                <img alt="" src="<%= current_user.Avatar %>" style="margin-right: 0;">
                                             <% } else { %>
-                                                <img alt="" src="<%= assetPath("images/avatar1.jpg") %>">
+                                                <img alt="" src="<%= assetPath("images/avatar1.jpg") %>" style="margin-right: 0;">
                                             <% } %>
                                     </div>
-                                    <div class="logged-user-info-w">
+                                    <div class="logged-user-info-w" style="padding: 10px;">
                                         <div class="logged-user-name">
                                             <%= current_user.Name %>
                                         </div>
                                         <div class="logged-user-role">
-                                            <%= if (current_user.Admin) { %>
-                                            <%= t("role_admin") %>
-                                            <% } %>
+                                                <%= if (current_user.Admin) { %>
+                                                    <%= t("role_admin") %>
+                                                    <% } else if (current_user.Permission.StudyCoordinator) { %>
+                                                    <%= t("role_study_coordinator") %>
+                                                    <% } else if (current_user.Permission.Screening) { %>
+                                                    <%= t("role_screener") %>
+                                                    <% } else if (current_user.Permission.OverRead) { %>
+                                                    <%= t("role_reader") %>
+                                                    <% } else if (current_user.Permission.ReferralTracker) { %>
+                                                    <%= t("role_referral_tracker") %>
+                                                    <% } else if (current_user.Permission.StudyTeamMember) { %>
+                                                    <%= t("role_study_team_member") %>
+                                                    <% } else { %>
+                                                    <%= t("role_general") %>
+                                                    <% } %>
                                         </div>
                                     </div>
                                 </div>
@@ -271,7 +285,7 @@
                     <%= yield %>
                 </div>
             </div>
-            <%= if (len(audits) > 0) { %>
+            <%= if (len(audits) > 0 && current_user.Admin) { %>
             <div class="content-box" style="background: #fff;">
                 <%= partial("audits.html") %>
             </div>

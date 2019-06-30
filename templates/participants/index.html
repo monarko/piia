@@ -177,7 +177,7 @@
                                         </div>
                                         <% } %>
                                     <% } %>
-                                    <%= if (current_user.Admin || current_user.Permission.StudyCoordinator || (p.Status == "111" && current_user.Permission.Screening)) { %>
+                                    <%= if (current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.StudyTeamMember || (p.Status == "111" && current_user.Permission.Screening)) { %>
                                         <div class="action-item col-md-auto" style="padding-right: 0;">
                                             <a class="btn btn-sm item-btn" href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-alt fa-sm"></i> <span>Details</span></a>
                                         </div>

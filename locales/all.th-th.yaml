@@ -51,6 +51,8 @@
   translation: "ผู้ประสานงาน"
 - id: role_referral_tracker
   translation: "การอ้างอิงติดตาม"
+- id: role_study_team_member
+  translation: "สมาชิกในทีมศึกษา"
 - id: section_header_notifications
   translation: "การแจ้งเตือน"
 - id: section_header_summarystats

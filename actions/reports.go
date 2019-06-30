@@ -18,7 +18,7 @@ func ReportsIndex(c buffalo.Context) error {
 	var err error
 
 	user := c.Value("current_user").(*models.User)
-	if user.Admin || user.Permission.StudyCoordinator {
+	if user.Admin || user.Permission.StudyCoordinator || user.Permission.StudyTeamMember {
 		if len(c.Param("status")) > 0 {
 			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where("status = ?", c.Param("status")).Order("created_at DESC")
 		} else {

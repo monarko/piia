@@ -12,6 +12,7 @@ type Permission struct {
 	Screening        bool `json:"screening"`
 	StudyCoordinator bool `json:"study_coordinator"`
 	ReferralTracker  bool `json:"referral_tracker"`
+	StudyTeamMember  bool `json:"study_team_member"`
 }
 
 // Value returns database driver compatible type
