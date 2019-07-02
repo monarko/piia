@@ -10,7 +10,9 @@
                 <div class="controls-above-table">
                     <div class="row">
                         <div class="col-sm-6">
-
+                            <a href="?status=" class="btn btn-sm btn-primary"><%= t("option_referrals_all") %>: <%= len(all_ids) %></a>
+                            <a href="?status=completed" class="btn btn-sm btn-info"><%= t("option_referrals_completed") %>: <%= len(finished) %></a>
+                            <a href="?status=open" class="btn btn-sm btn-warning"><%= t("option_referrals_open") %>: <%= len(all_ids) - len(finished) %></a>
                         </div>
                         <div class="col-sm-6">
                             <form class="form-inline justify-content-sm-end">

@@ -638,20 +638,13 @@
                         </div>
                         <div class="element-info-text">
                             <h5 class="element-inner-header">
-                                Referral 
-                                <small>
-                                        (Referred by 
-                                        <%= if (drReferral || ovReferral) { %>
-                                            both <strong><%= t("role_screener") %></strong> and <strong><%= t("role_reader") %></strong>
-                                        <% } else if (drReferral) { %>
-                                            <strong><%= t("role_screener") %></strong>
-                                        <% } else if (ovReferral) { %>
-                                            <strong><%= t("role_reader") %></strong>
-                                        <% } else { %>
-                                            No one
-                                        <% } %>
-                                        )
-                                </small>
+                                Referral
+                                <%= if (drReferral) { %>
+                                    <span class="badge badge-primary"><%= t("role_screener") %></span>
+                                <% } %>
+                                <%= if (ovReferral) { %>
+                                    <span class="badge badge-success"><%= t("role_reader") %></span>
+                                <% } %>
                             </h5>
                             <div class="element-inner-desc">
                                 Referral Data

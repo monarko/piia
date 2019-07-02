@@ -43,8 +43,7 @@ func ReferralsIndex(c buffalo.Context) error {
 	}
 
 	refers := &models.ReferredMessages{}
-	rq := tx.PaginateFromParams(c.Params())
-	if err := rq.All(refers); err != nil {
+	if err := tx.All(refers); err != nil {
 		InsertLog("error", "User viewed referrals error", err.Error(), "", "", user.ID, c)
 		return errors.WithStack(err)
 	}
@@ -125,6 +124,7 @@ func ReferralsIndex(c buffalo.Context) error {
 	// Make posts available inside the html template
 	c.Set("participants", participants)
 	c.Set("finished", rIds)
+	c.Set("all_ids", ids)
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 	breadcrumbMap := make(map[string]interface{})
