@@ -47,6 +47,8 @@ func (s Screening) Maps() map[string]interface{} {
 	json.Unmarshal(bt, &m)
 	delete(m, "screener")
 	delete(m, "participant")
+	delete(m, "notifications")
+	delete(m, "over_readings")
 	delete(m, "created_at")
 	delete(m, "updated_at")
 	return m

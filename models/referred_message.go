@@ -32,6 +32,19 @@ func (r ReferredMessage) String() string {
 	return string(jr)
 }
 
+// Maps will return a map
+func (r ReferredMessage) Maps() map[string]interface{} {
+	bt, _ := json.Marshal(r)
+	m := make(map[string]interface{})
+	json.Unmarshal(bt, &m)
+	delete(m, "screening")
+	delete(m, "participant")
+	delete(m, "user")
+	delete(m, "created_at")
+	delete(m, "updated_at")
+	return m
+}
+
 // ReferredMessages is not required by pop and may be deleted
 type ReferredMessages []ReferredMessage
 

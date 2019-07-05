@@ -118,7 +118,9 @@ func init() {
 			},
 			"getMatchingAudit": func(l models.SystemLog, as []models.Audit) string {
 				for _, a := range as {
-					if matchTimes(l.CreatedAt, a.CreatedAt) && (strings.ToLower(l.ResourceType) == strings.ToLower(a.ModelType)) {
+					rType := strings.ToLower(strings.Replace(l.ResourceType, "_", "", -1))
+					mType := strings.ToLower(strings.Replace(a.ModelType, "_", "", -1))
+					if matchTimes(l.CreatedAt, a.CreatedAt) && (rType == mType) {
 						jsonString, err := json.Marshal(a.Changes)
 						if err == nil {
 							return string(jsonString)

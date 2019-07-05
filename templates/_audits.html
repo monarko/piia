@@ -44,8 +44,13 @@
                                                 <%= for (i, log) in logs { %>
                                                 <tr data-child-data="<%= getMatchingAudit(log, audits) %>">
                                                     <td class="text-center">
-                                                        <a class="badge badge-success-inverted" href=""
+                                                        <%= if (tolower(log.Action) == "create") { %>
+                                                        <a class="badge badge-primary-inverted" href="#"
                                                             style="text-transform: uppercase;"><%= log.Action %></a>
+                                                        <% } else { %>
+                                                        <a class="badge badge-success-inverted" href="#"
+                                                            style="text-transform: uppercase;"><%= log.Action %></a>
+                                                        <% } %>
                                                     </td>
                                                     <td>
                                                         <div class="user-with-avatar">

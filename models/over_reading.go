@@ -32,6 +32,19 @@ func (o OverReading) String() string {
 	return string(jo)
 }
 
+// Maps will return a map
+func (o OverReading) Maps() map[string]interface{} {
+	bt, _ := json.Marshal(o)
+	m := make(map[string]interface{})
+	json.Unmarshal(bt, &m)
+	delete(m, "screening")
+	delete(m, "participant")
+	delete(m, "over_reader")
+	delete(m, "created_at")
+	delete(m, "updated_at")
+	return m
+}
+
 // OverReadings is not required by pop and may be deleted
 type OverReadings []OverReading
 

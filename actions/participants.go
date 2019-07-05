@@ -412,7 +412,9 @@ func ParticipantsDetail(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
+	notificationIDs := make([]string, 0)
 	for _, n := range *notifications {
+		notificationIDs = append(notificationIDs, n.ID.String())
 		logs := &models.SystemLogs{}
 		if err := tx.Eager().Where("resource_id = ?", n.ID).Where("resource_type = ?", "notification").All(logs); err != nil {
 			return c.Error(404, err)
@@ -456,9 +458,14 @@ func ParticipantsDetail(c buffalo.Context) error {
 	}
 	sort.Strings(keys)
 
+	fmt.Println("NOTIFICATION IDS", notificationIDs)
+
 	audits := []models.Audit{}
 	screeningAudits := &models.Audits{}
 	participantAudits := &models.Audits{}
+	overReadingAudits := &models.Audits{}
+	notificationAudits := &models.Audits{}
+	referralAudits := &models.Audits{}
 	if err := tx.Eager().Where("model_type = ?", "Participant").Where("model_id = ?", participant.ID).All(participantAudits); err != nil {
 		return c.Error(404, err)
 	}
@@ -467,12 +474,33 @@ func ParticipantsDetail(c buffalo.Context) error {
 			return c.Error(404, err)
 		}
 	}
+	if len(participant.OverReadings) > 0 {
+		if err := tx.Eager().Where("model_type = ?", "OverReading").Where("model_id = ?", participant.OverReadings[0].ID).All(overReadingAudits); err != nil {
+			return c.Error(404, err)
+		}
+	}
+	if len(notificationIDs) > 0 {
+		if err := tx.Eager().Where("model_type = ?", "Notification").Where("model_id in (?)", notificationIDs).All(notificationAudits); err != nil {
+			return c.Error(404, err)
+		}
+	}
+	if len(participant.Referrals) > 0 {
+		if err := tx.Eager().Where("model_type = ?", "ReferredMessage").Where("model_id = ?", participant.Referrals[0].ID).All(referralAudits); err != nil {
+			return c.Error(404, err)
+		}
+	}
 	audits = append(audits, *participantAudits...)
 	audits = append(audits, *screeningAudits...)
+	audits = append(audits, *overReadingAudits...)
+	audits = append(audits, *notificationAudits...)
+	audits = append(audits, *referralAudits...)
 
 	allLogs := []models.SystemLog{}
-	screeningLogs := &models.SystemLogs{}
 	participantLogs := &models.SystemLogs{}
+	screeningLogs := &models.SystemLogs{}
+	overReadingLogs := &models.SystemLogs{}
+	notificationLogs := &models.SystemLogs{}
+	referralLogs := &models.SystemLogs{}
 	if err := tx.Eager().Where("resource_id = ?", participant.ID).Where("resource_type = ?", "participant").All(participantLogs); err != nil {
 		return c.Error(404, err)
 	}
@@ -481,8 +509,26 @@ func ParticipantsDetail(c buffalo.Context) error {
 			return c.Error(404, err)
 		}
 	}
+	if len(participant.OverReadings) > 0 {
+		if err := tx.Eager().Where("resource_id = ?", participant.OverReadings[0].ID).Where("resource_type = ?", "overReading").All(overReadingLogs); err != nil {
+			return c.Error(404, err)
+		}
+	}
+	if len(notificationIDs) > 0 {
+		if err := tx.Eager().Where("resource_id in (?)", notificationIDs).Where("resource_type = ?", "notification").All(notificationLogs); err != nil {
+			return c.Error(404, err)
+		}
+	}
+	if len(participant.Referrals) > 0 {
+		if err := tx.Eager().Where("resource_id = ?", participant.Referrals[0].ID).Where("resource_type = ?", "referred_message").All(referralLogs); err != nil {
+			return c.Error(404, err)
+		}
+	}
 	allLogs = append(allLogs, *participantLogs...)
 	allLogs = append(allLogs, *screeningLogs...)
+	allLogs = append(allLogs, *overReadingLogs...)
+	allLogs = append(allLogs, *notificationLogs...)
+	allLogs = append(allLogs, *referralLogs...)
 
 	// fmt.Println("ParticipantLogs:", len(*participantLogs))
 	// fmt.Println("ParticipantAudit:", len(*participantAudits))
