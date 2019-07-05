@@ -14,6 +14,7 @@ import (
 func UpdateReferredMessage(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	refer := &models.ReferredMessage{}
+	oldRefer := refer.Maps()
 	user := c.Value("current_user").(*models.User)
 	refer.UserID = user.ID
 
@@ -60,6 +61,12 @@ func UpdateReferredMessage(c buffalo.Context) error {
 	if verrs.HasAny() {
 		c.Set("errors", verrs.Errors)
 	} else {
+		newRefer := refer.Maps()
+		auditErr := MakeAudit("ReferredMessage", refer.ID, oldRefer, newRefer, user.ID, c)
+		if auditErr != nil {
+			return errors.WithStack(auditErr)
+		}
+
 		logErr := InsertLog("create", "User created a referral message: "+c.Request().FormValue("message"), "", refer.ID.String(), "referred_message", user.ID, c)
 		if logErr != nil {
 			return errors.WithStack(logErr)

@@ -141,15 +141,12 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 // ScreeningsEditGet renders the form for creating a new Screening.
 func ScreeningsEditGet(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
-	participant := &models.Participant{}
-	if err := tx.Find(participant, c.Param("pid")); err != nil {
-		return c.Error(404, err)
-	}
-	c.Set("participant", participant)
 	screening := &models.Screening{}
-	if err := tx.Find(screening, c.Param("sid")); err != nil {
+	if err := tx.Eager().Find(screening, c.Param("sid")); err != nil {
 		return c.Error(404, err)
 	}
+	participant := screening.Participant
+	c.Set("participant", participant)
 	c.Set("screening", screening)
 	// statuses := screening.StatusesMap()
 	// c.Set("screeningStatuses", statuses)

@@ -49,6 +49,7 @@ func NotificationsIndex(c buffalo.Context) error {
 // InsertNotification inserts a notification into db
 func InsertNotification(notificationType, message, status, site string, fromUserID uuid.UUID, participantID uuid.UUID, screeningID uuid.UUID, c buffalo.Context) error {
 	notification := &models.Notification{}
+	oldNotification := notification.Maps()
 
 	notification.Type = notificationType
 	notification.Message = message
@@ -63,6 +64,12 @@ func InsertNotification(notificationType, message, status, site string, fromUser
 	_, err := tx.ValidateAndCreate(notification)
 	if err != nil {
 		return err
+	}
+
+	newNotification := notification.Maps()
+	auditErr := MakeAudit("Notification", notification.ID, oldNotification, newNotification, fromUserID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
 	}
 
 	return nil

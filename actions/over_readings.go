@@ -59,25 +59,6 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 	c.Set("screening", screening)
 	c.Set("overReading", &models.OverReading{})
 
-	// images
-	// response, err := http.Get("http://localhost:8080/" + participant.ParticipantID)
-	// if err != nil {
-	// 	// If there are no errors set a success message
-	// 	c.Flash().Add("danger", "Error from the image server")
-
-	// 	return c.Redirect(302, "/cases/index")
-	// }
-	// defer response.Body.Close()
-	// data, _ := ioutil.ReadAll(response.Body)
-	// respData := map[string]string{}
-	// uerr := json.Unmarshal(data, &respData)
-	// if uerr != nil {
-	// 	// If there are no errors set a success message
-	// 	c.Flash().Add("danger", "Error from the image server")
-
-	// 	return c.Redirect(302, "/cases/index")
-	// }
-
 	right, left, err := getImage(participant.ParticipantID)
 	if err != nil {
 		left = ""
@@ -89,8 +70,7 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Cases"] = "/cases/index"
-	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-	breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
+	breadcrumbMap["New Over Reading"] = "#"
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("over_readings/create.html"))
 }
@@ -108,7 +88,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	}
 	user := c.Value("current_user").(*models.User)
 	overReading := &models.OverReading{}
-
+	oldOverReading := overReading.Maps()
 	if err := c.Bind(overReading); err != nil {
 		return errors.WithStack(err)
 	}
@@ -132,28 +112,6 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	c.Set("leftEyeLink", left)
 	c.Set("rightEyeLink", right)
 
-	// shouldBeRefer := shouldBeReferred(overReading)
-	// if shouldBeRefer && !overReading.Referral.Referred {
-	// 	c.Set("participant", participant)
-	// 	c.Set("screening", screening)
-	// 	c.Set("overReading", overReading)
-
-	// 	breadcrumbMap := make(map[string]interface{})
-	// 	breadcrumbMap["Cases"] = "/cases/index"
-	// 	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-	// 	breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
-	// 	c.Set("breadcrumbMap", breadcrumbMap)
-
-	// 	errs := make(map[string][]string)
-	// 	errs["a"] = []string{"Participant meets the referral criteria. Please consider for referral"}
-	// 	//errs["b"] = []string{"DR is Ungradable, Moderate or Severe"}
-	// 	//errs["c"] = []string{"DME is Present"}
-
-	// 	c.Set("errors", errs)
-
-	// 	return c.Render(422, r.HTML("over_readings/create.html"))
-	// }
-
 	verrs, err := tx.ValidateAndCreate(overReading)
 	if err != nil {
 		return errors.WithStack(err)
@@ -165,8 +123,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Cases"] = "/cases/index"
-		// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-		breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
+		breadcrumbMap["New Over Reading"] = "#"
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("over_readings/create.html"))
 	}
@@ -183,10 +140,15 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Cases"] = "/cases/index"
-		// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-		breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
+		breadcrumbMap["New Over Reading"] = "#"
 		c.Set("breadcrumbMap", breadcrumbMap)
 		return c.Render(422, r.HTML("over_readings/create.html"))
+	}
+
+	newOverReading := overReading.Maps()
+	auditErr := MakeAudit("OverReading", overReading.ID, oldOverReading, newOverReading, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
 	}
 
 	logErr := InsertLog("create", "Case overread", "", overReading.ID.String(), "overReading", user.ID, c)
@@ -219,37 +181,21 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 
 // OverReadingsEditGet renders the form for creating a new OverReading.
 func OverReadingsEditGet(c buffalo.Context) error {
+	user := c.Value("current_user").(*models.User)
 	tx := c.Value("tx").(*pop.Connection)
-	participant := &models.Participant{}
-	if err := tx.Eager("Screenings", "OverReadings").Find(participant, c.Param("pid")); err != nil {
+	overReading := &models.OverReading{}
+	if err := tx.Eager().Find(overReading, c.Param("oid")); err != nil {
 		return c.Error(404, err)
 	}
-	screening := participant.Screenings[0]
-	if len(participant.OverReadings) > 0 {
-		return c.Redirect(302, "/cases/index")
+	if overReading.OverReaderID != user.ID || !user.Admin {
+		c.Flash().Add("danger", "Access denied")
+		return c.Redirect(403, "/cases/index")
 	}
+	participant := overReading.Participant
+	screening := overReading.Screening
 	c.Set("participant", participant)
 	c.Set("screening", screening)
-	c.Set("overReading", &models.OverReading{})
-
-	// images
-	// response, err := http.Get("http://localhost:8080/" + participant.ParticipantID)
-	// if err != nil {
-	// 	// If there are no errors set a success message
-	// 	c.Flash().Add("danger", "Error from the image server")
-
-	// 	return c.Redirect(302, "/cases/index")
-	// }
-	// defer response.Body.Close()
-	// data, _ := ioutil.ReadAll(response.Body)
-	// respData := map[string]string{}
-	// uerr := json.Unmarshal(data, &respData)
-	// if uerr != nil {
-	// 	// If there are no errors set a success message
-	// 	c.Flash().Add("danger", "Error from the image server")
-
-	// 	return c.Redirect(302, "/cases/index")
-	// }
+	c.Set("overReading", overReading)
 
 	right, left, err := getImage(participant.ParticipantID)
 	if err != nil {
@@ -262,33 +208,31 @@ func OverReadingsEditGet(c buffalo.Context) error {
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Cases"] = "/cases/index"
-	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-	breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
+	breadcrumbMap["Edit Over Reading"] = "#"
 	c.Set("breadcrumbMap", breadcrumbMap)
-	return c.Render(200, r.HTML("over_readings/create.html"))
+	return c.Render(200, r.HTML("over_readings/edit.html"))
 }
 
 // OverReadingsEditPost renders the form for creating a new OverReading.
 func OverReadingsEditPost(c buffalo.Context) error {
+	user := c.Value("current_user").(*models.User)
 	tx := c.Value("tx").(*pop.Connection)
-	participant := &models.Participant{}
-	if err := tx.Eager("Screenings", "OverReadings").Find(participant, c.Param("pid")); err != nil {
+	overReading := &models.OverReading{}
+	if err := tx.Eager().Find(overReading, c.Param("oid")); err != nil {
 		return c.Error(404, err)
 	}
-	screening := participant.Screenings[0]
-	if len(participant.OverReadings) > 0 {
-		return c.Redirect(302, "/cases/index")
+	if overReading.OverReaderID != user.ID || !user.Admin {
+		c.Flash().Add("danger", "Access denied")
+		return c.Redirect(403, "/cases/index")
 	}
-	user := c.Value("current_user").(*models.User)
-	overReading := &models.OverReading{}
-
+	participant := overReading.Participant
+	screening := overReading.Screening
+	c.Set("participant", participant)
+	c.Set("screening", screening)
+	oldOverReading := overReading.Maps()
 	if err := c.Bind(overReading); err != nil {
 		return errors.WithStack(err)
 	}
-
-	overReading.OverReaderID = user.ID
-	overReading.ParticipantID = participant.ID
-	overReading.ScreeningID = screening.ID
 
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
@@ -301,33 +245,10 @@ func OverReadingsEditPost(c buffalo.Context) error {
 		left = ""
 		right = ""
 	}
-
 	c.Set("leftEyeLink", left)
 	c.Set("rightEyeLink", right)
 
-	// shouldBeRefer := shouldBeReferred(overReading)
-	// if shouldBeRefer && !overReading.Referral.Referred {
-	// 	c.Set("participant", participant)
-	// 	c.Set("screening", screening)
-	// 	c.Set("overReading", overReading)
-
-	// 	breadcrumbMap := make(map[string]interface{})
-	// 	breadcrumbMap["Cases"] = "/cases/index"
-	// 	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-	// 	breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
-	// 	c.Set("breadcrumbMap", breadcrumbMap)
-
-	// 	errs := make(map[string][]string)
-	// 	errs["a"] = []string{"Participant meets the referral criteria. Please consider for referral"}
-	// 	//errs["b"] = []string{"DR is Ungradable, Moderate or Severe"}
-	// 	//errs["c"] = []string{"DME is Present"}
-
-	// 	c.Set("errors", errs)
-
-	// 	return c.Render(422, r.HTML("over_readings/create.html"))
-	// }
-
-	verrs, err := tx.ValidateAndCreate(overReading)
+	verrs, err := tx.ValidateAndUpdate(overReading)
 	if err != nil {
 		return errors.WithStack(err)
 	}
@@ -338,31 +259,18 @@ func OverReadingsEditPost(c buffalo.Context) error {
 		c.Set("errors", verrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Cases"] = "/cases/index"
-		// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-		breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
+		breadcrumbMap["Edit Over Reading"] = "#"
 		c.Set("breadcrumbMap", breadcrumbMap)
-		return c.Render(422, r.HTML("over_readings/create.html"))
+		return c.Render(422, r.HTML("over_readings/edit.html"))
 	}
 
-	participant.Status = "111"
-	perrs, err := tx.ValidateAndUpdate(participant)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	if perrs.HasAny() {
-		c.Set("participant", participant)
-		c.Set("screening", screening)
-		c.Set("overReading", overReading)
-		c.Set("errors", verrs.Errors)
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Cases"] = "/cases/index"
-		// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-		breadcrumbMap["New Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/create"
-		c.Set("breadcrumbMap", breadcrumbMap)
-		return c.Render(422, r.HTML("over_readings/create.html"))
+	newOverReading := overReading.Maps()
+	auditErr := MakeAudit("OverReading", overReading.ID, oldOverReading, newOverReading, user.ID, c)
+	if auditErr != nil {
+		return errors.WithStack(auditErr)
 	}
 
-	logErr := InsertLog("create", "Case overread", "", overReading.ID.String(), "overReading", user.ID, c)
+	logErr := InsertLog("update", "Case overread update", "", overReading.ID.String(), "overReading", user.ID, c)
 	if logErr != nil {
 		return errors.WithStack(logErr)
 	}
@@ -385,7 +293,7 @@ func OverReadingsEditPost(c buffalo.Context) error {
 	}
 
 	// If there are no errors set a success message
-	c.Flash().Add("success", "New over reading added successfully.")
+	c.Flash().Add("success", "Over reading edited successfully.")
 
 	return c.Redirect(302, "/cases/index")
 }

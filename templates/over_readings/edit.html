@@ -5,7 +5,7 @@
                 <%= t("page_overreadcase_title") %>
             </h6>
             <div class="element-box">
-                <form action="<%= participantScreeningOverreadingsCreatePath({pid: participant.ID, sid: screening.ID}) %>" method="POST">
+                <form action="<%= participantScreeningOverreadingsEditPath({pid: participant.ID, sid: screening.ID, oid: overReading.ID}) %>" method="POST">
                     <%= csrf() %>
                     <div class="form-desc">
                         <h6><%= participant.ParticipantID %></h6>
@@ -191,12 +191,12 @@
                                     <div class="radio-button">
                                         <label class="form-check-label"><input class="form-check-input"
                                                 name="referral" type="radio"
-                                                value="yes"><%= t("option_yes") %></label>
+                                                value="yes" <%= if (overReading.Referral.Referred) { %> checked <% } %>><%= t("option_yes") %></label>
                                     </div>
                                     <div class="radio-button">
                                         <label class="form-check-label"><input class="form-check-input"
                                                 name="referral" type="radio"
-                                                value="no"><%= t("option_no") %></label>
+                                                value="no" <%= if (!overReading.Referral.Referred) { %> checked <% } %>><%= t("option_no") %></label>
                                     </div>
                                 </div>
                             </div>

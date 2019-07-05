@@ -110,7 +110,7 @@
                                         <% let o = p.OverReadings[0] %>
                                         <%= if ((o.OverReader.ID.String() == current_user.ID.String()) || current_user.Admin) { %>
                                             <div class="action-item col-md-auto" style="padding-right: 0;">                                        
-                                                <a class="btn btn-sm btn-outline-primary" href="<%= participantScreeningOverreadingPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-pencil-alt fa-sm"></i> Edit</a>                                        
+                                                <a class="btn btn-sm btn-outline-primary" href="<%= participantScreeningOverreadingsEditPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-pencil-alt fa-sm"></i> Edit</a>                                        
                                             </div>
                                         <% } %>
                                         <div class="action-item col-md-auto" style="padding-right: 0;">                                        
