@@ -401,8 +401,9 @@ func ParticipantsDetail(c buffalo.Context) error {
 		})
 	}
 
+	openNotificationStatuses := []string{"open", "nurse-notified", "patient-contacted", "referral-arranged"}
 	openNotifications := &models.Notifications{}
-	if err := tx.Eager().Where("participant_id = ?", participant.ID).Where("status != ?", "closed").All(openNotifications); err != nil {
+	if err := tx.Eager().Where("participant_id = ?", participant.ID).Where("status in (?)", openNotificationStatuses).All(openNotifications); err != nil {
 		return c.Error(404, err)
 	}
 	c.Set("open_notifications", openNotifications)

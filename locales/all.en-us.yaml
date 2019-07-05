@@ -391,6 +391,8 @@
   translation: "Patient contacted"
 - id: notification_status_referral_arranged
   translation: "Referral arranged"
+- id: notification_status_archived
+  translation: "Archived"
 - id: notification_status_closed
   translation: "Closed"
 - id: label_status

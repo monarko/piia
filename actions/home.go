@@ -90,11 +90,12 @@ func HomeHandler(c buffalo.Context) error {
 	// Notifications
 	notifications := &models.Notifications{}
 	var q *pop.Query
+	openNotificationStatuses := []string{"open", "nurse-notified", "patient-contacted", "referral-arranged"}
 
 	if len(site) > 0 {
-		q = tx.Eager().Where("site = ?", site).Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("site = ?", site).Where("status in (?)", openNotificationStatuses).PaginateFromParams(c.Params()).Order("created_at DESC")
 	} else if loggedInUser.Admin || loggedInUser.Permission.StudyCoordinator {
-		q = tx.Eager().Where("status != ?", "closed").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("status in (?)", openNotificationStatuses).PaginateFromParams(c.Params()).Order("created_at DESC")
 	} else {
 		q = tx.Eager().Where("status != ?", "unknown").PaginateFromParams(c.Params()).Order("created_at DESC")
 	}

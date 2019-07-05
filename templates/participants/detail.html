@@ -155,6 +155,11 @@
                                         <option value="referral-arranged">
                                             <%= t("notification_status_referral_arranged") %>
                                         </option>
+                                        <%= if (current_user.Admin || current_user.Permission.StudyCoordinator) { %>
+                                        <option value="archived">
+                                            <%= t("notification_status_archived") %>
+                                        </option>
+                                        <% } %>
                                         <option value="closed">
                                             <%= t("notification_status_closed") %>
                                         </option>
@@ -165,7 +170,7 @@
                                         <%= t("label_event_date") %></label>
                                     <input class="form-control" placeholder="Select date" type="date" name="eventDate"
                                         value="<%= currentDate(t(" lang_calendar")) %>">
-                                    <input type="hidden" name="eventDateLanguage" value="<%= t(" lang_calendar") %>">
+                                    <input type="hidden" name="eventDateLanguage" value="<%= t("lang_calendar") %>">
                                 </div>
                                 <div class="form-group" style="margin-top: 1rem;">
                                     <label for="notes">
