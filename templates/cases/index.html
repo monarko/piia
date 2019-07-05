@@ -97,17 +97,28 @@
                                     <span><i class="fa fa-times"></i></span>
                                     <% } %>
                                 </td>
-                                <td class="row-actions">
+                                <td class="row-actions" style="text-align: left; padding-left: .8rem; padding-right: .8rem;">
+                                    <div class="row">
                                     <%= if (p.Status == "11" && (current_user.Permission.OverRead || current_user.Admin)) { %>
                                         <% let s = p.Screenings[0] %>
-                                    <a class="btn btn-sm btn-warning" href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> Review Case</a>
+                                        <div class="action-item col-md-auto" style="padding-right: 0;">
+                                            <a class="btn btn-sm btn-warning" href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> Review Case</a>
+                                        </div>
                                     <% } else { %>
                                         <%= if (len(p.OverReadings) > 0) { %>
                                         <% let s = p.Screenings[0] %>
                                         <% let o = p.OverReadings[0] %>
-                                        <a class="btn btn-sm btn-info" href="<%= participantScreeningOverreadingPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> View</a>
+                                        <%= if ((o.OverReader.ID.String() == current_user.ID.String()) || current_user.Admin) { %>
+                                            <div class="action-item col-md-auto" style="padding-right: 0;">                                        
+                                                <a class="btn btn-sm btn-outline-primary" href="<%= participantScreeningOverreadingPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-pencil-alt fa-sm"></i> Edit</a>                                        
+                                            </div>
+                                        <% } %>
+                                        <div class="action-item col-md-auto" style="padding-right: 0;">                                        
+                                            <a class="btn btn-sm btn-info" href="<%= participantScreeningOverreadingPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> View</a>
+                                        </div>
                                         <% } %>
                                     <% } %>
+                                </div>
                                 </td>
                             </tr>
                             <% } %>
