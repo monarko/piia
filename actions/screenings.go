@@ -146,6 +146,10 @@ func ScreeningsEditGet(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	participant := screening.Participant
+	if c.Param("pid") != participant.ID.String() {
+		c.Flash().Add("danger", "Not Found")
+		return c.Redirect(302, "/participants/index")
+	}
 	c.Set("participant", participant)
 	c.Set("screening", screening)
 	// statuses := screening.StatusesMap()
@@ -160,14 +164,15 @@ func ScreeningsEditGet(c buffalo.Context) error {
 // ScreeningsEditPost renders the form for creating a new Screening.
 func ScreeningsEditPost(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
-	participant := &models.Participant{}
-	if err := tx.Find(participant, c.Param("pid")); err != nil {
-		return c.Error(404, err)
-	}
 	user := c.Value("current_user").(*models.User)
 	screening := &models.Screening{}
 	if err := tx.Find(screening, c.Param("sid")); err != nil {
 		return c.Error(404, err)
+	}
+	participant := screening.Participant
+	if c.Param("pid") != participant.ID.String() {
+		c.Flash().Add("danger", "Not Found")
+		return c.Redirect(302, "/participants/index")
 	}
 	oldScreening := screening.Maps()
 	if err := c.Bind(screening); err != nil {

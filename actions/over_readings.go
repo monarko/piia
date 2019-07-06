@@ -55,6 +55,10 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 	if len(participant.OverReadings) > 0 {
 		return c.Redirect(302, "/cases/index")
 	}
+	if !(c.Param("pid") == participant.ID.String() && c.Param("sid") == screening.ID.String()) {
+		c.Flash().Add("danger", "Not Found")
+		return c.Redirect(302, "/cases/index")
+	}
 	c.Set("participant", participant)
 	c.Set("screening", screening)
 	c.Set("overReading", &models.OverReading{})
@@ -84,6 +88,10 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	}
 	screening := participant.Screenings[0]
 	if len(participant.OverReadings) > 0 {
+		return c.Redirect(302, "/cases/index")
+	}
+	if !(c.Param("pid") == participant.ID.String() && c.Param("sid") == screening.ID.String()) {
+		c.Flash().Add("danger", "Not Found")
 		return c.Redirect(302, "/cases/index")
 	}
 	user := c.Value("current_user").(*models.User)
@@ -187,12 +195,16 @@ func OverReadingsEditGet(c buffalo.Context) error {
 	if err := tx.Eager().Find(overReading, c.Param("oid")); err != nil {
 		return c.Error(404, err)
 	}
-	if overReading.OverReaderID != user.ID || !user.Admin {
+	if !(overReading.OverReaderID == user.ID || user.Admin) {
 		c.Flash().Add("danger", "Access denied")
-		return c.Redirect(403, "/cases/index")
+		return c.Redirect(302, "/cases/index")
 	}
 	participant := overReading.Participant
 	screening := overReading.Screening
+	if !(c.Param("pid") == participant.ID.String() && c.Param("sid") == screening.ID.String()) {
+		c.Flash().Add("danger", "Not Found")
+		return c.Redirect(302, "/cases/index")
+	}
 	c.Set("participant", participant)
 	c.Set("screening", screening)
 	c.Set("overReading", overReading)
@@ -221,12 +233,16 @@ func OverReadingsEditPost(c buffalo.Context) error {
 	if err := tx.Eager().Find(overReading, c.Param("oid")); err != nil {
 		return c.Error(404, err)
 	}
-	if overReading.OverReaderID != user.ID || !user.Admin {
+	if !(overReading.OverReaderID == user.ID || user.Admin) {
 		c.Flash().Add("danger", "Access denied")
-		return c.Redirect(403, "/cases/index")
+		return c.Redirect(302, "/cases/index")
 	}
 	participant := overReading.Participant
 	screening := overReading.Screening
+	if !(c.Param("pid") == participant.ID.String() && c.Param("sid") == screening.ID.String()) {
+		c.Flash().Add("danger", "Not Found")
+		return c.Redirect(302, "/cases/index")
+	}
 	c.Set("participant", participant)
 	c.Set("screening", screening)
 	oldOverReading := overReading.Maps()
