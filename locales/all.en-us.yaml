@@ -37,6 +37,8 @@
   translation: "Lamlukka"
 - id: site_N
   translation: "Nongseau"
+- id: site_R
+  translation: "Rajavithi"
 - id: site_T
   translation: "Thanyaburi"
 - id: role_admin

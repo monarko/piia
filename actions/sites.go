@@ -18,6 +18,8 @@ func ChangeSite(c buffalo.Context) error {
 		site = "L"
 	} else if selectedSite == "T" {
 		site = "T"
+	} else if selectedSite == "R" {
+		site = "R"
 	} else {
 		site = ""
 	}
