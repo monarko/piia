@@ -135,6 +135,7 @@ func App() *buffalo.App {
 		analytics.GET("/index", ReportsIndex)
 		analytics.GET("/full-download", AdminRequired(DownloadFull))
 		analytics.GET("/veil-download", AdminRequired(DownloadVeil))
+		analytics.GET("/full-download-csv", AdminRequired(DownloadFullCSV))
 
 		referrals := app.Group("/referrals")
 		referrals.Use(LoginRequired)

@@ -472,9 +472,54 @@ type fullRecord struct {
 
 // DownloadFull function
 func DownloadFull(c buffalo.Context) error {
-	tx := c.Value("tx").(*pop.Connection)
 	user := c.Value("current_user").(*models.User)
+	filename, b, err := downloadFull(c)
+	if err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
+		return c.Redirect(302, "/analytics/index")
+	}
 
+	err = storeToGoogleCloudStorage(filename, b)
+	if err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		c.Flash().Add("danger", "Error from GCS: "+errStr)
+		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
+	} else {
+		c.Flash().Add("success", "Successfully saved to your storage bucket")
+	}
+
+	return c.Redirect(302, "/analytics/index")
+}
+
+// DownloadFullCSV function
+func DownloadFullCSV(c buffalo.Context) error {
+	user := c.Value("current_user").(*models.User)
+	filename, b, err := downloadFull(c)
+	if err != nil {
+		errStr := err.Error()
+		errs := map[string][]string{
+			"index_error": {errStr},
+		}
+		c.Set("errors", errs)
+		c.Flash().Add("danger", "Error: "+errStr)
+		InsertLog("error", "User download csv analytics error", err.Error(), "", "", user.ID, c)
+		return c.Redirect(302, "/analytics/index")
+	}
+
+	return c.Render(200, r.Download(c, filename, b))
+}
+
+func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
+	tx := c.Value("tx").(*pop.Connection)
 	fullRecords := make([]fullRecord, 0)
 
 	query := `SELECT
@@ -573,13 +618,7 @@ ORDER BY s.created_at`
 	q := tx.RawQuery(query)
 
 	if err := q.All(&fullRecords); err != nil {
-		errStr := err.Error()
-		errs := map[string][]string{
-			"index_error": {errStr},
-		}
-		c.Set("errors", errs)
-		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
-		return c.Redirect(302, "/analytics/index")
+		return "", nil, err
 	}
 
 	appHost := envy.Get("APP_HOST", "http://127.0.0.1")
@@ -589,29 +628,10 @@ ORDER BY s.created_at`
 
 	b, err := downloadAllRecords(fullRecords)
 	if err != nil {
-		errStr := err.Error()
-		errs := map[string][]string{
-			"index_error": {errStr},
-		}
-		c.Set("errors", errs)
-		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
-		return c.Redirect(302, "/analytics/index")
+		return "", nil, err
 	}
 
-	err = storeToGoogleCloudStorage(filename, b)
-	if err != nil {
-		errStr := err.Error()
-		errs := map[string][]string{
-			"index_error": {errStr},
-		}
-		c.Set("errors", errs)
-		c.Flash().Add("danger", "Error from GCS: "+errStr)
-		InsertLog("error", "User download analytics error", err.Error(), "", "", user.ID, c)
-	} else {
-		c.Flash().Add("success", "Successfully saved to your storage bucket")
-	}
-
-	return c.Redirect(302, "/analytics/index")
+	return filename, b, nil
 }
 
 func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
