@@ -166,7 +166,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
 	user := c.Value("current_user").(*models.User)
 	screening := &models.Screening{}
-	if err := tx.Find(screening, c.Param("sid")); err != nil {
+	if err := tx.Eager().Find(screening, c.Param("sid")); err != nil {
 		return c.Error(404, err)
 	}
 	participant := screening.Participant
