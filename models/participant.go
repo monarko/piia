@@ -59,7 +59,7 @@ type Participants []Participant
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 func (p *Participant) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	p.DOB.CalculatedDate = p.DOB.GivenDate
-	if p.DOB.Calendar == "thai" {
+	if p.DOB.Calendar == "thai" && !p.DOB.GivenDate.IsZero() {
 		p.DOB.CalculatedDate = p.DOB.CalculatedDate.AddDate(-543, 0, 0)
 	}
 

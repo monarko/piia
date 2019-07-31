@@ -146,22 +146,22 @@ func (s *Screening) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	valids := make([]validate.Validator, 0)
 
 	s.Measurements.BloodPressure.AssessmentDate.CalculatedDate = s.Measurements.BloodPressure.AssessmentDate.GivenDate
-	if s.Measurements.BloodPressure.AssessmentDate.Calendar == "thai" {
+	if s.Measurements.BloodPressure.AssessmentDate.Calendar == "thai" && !s.Measurements.BloodPressure.AssessmentDate.GivenDate.IsZero() {
 		s.Measurements.BloodPressure.AssessmentDate.CalculatedDate = s.Measurements.BloodPressure.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
 	}
 
 	s.Pathology.HbA1C.AssessmentDate.CalculatedDate = s.Pathology.HbA1C.AssessmentDate.GivenDate
-	if s.Pathology.HbA1C.AssessmentDate.Calendar == "thai" {
+	if s.Pathology.HbA1C.AssessmentDate.Calendar == "thai" && !s.Pathology.HbA1C.AssessmentDate.GivenDate.IsZero() {
 		s.Pathology.HbA1C.AssessmentDate.CalculatedDate = s.Pathology.HbA1C.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
 	}
 
 	s.Pathology.Lipids.AssessmentDate.CalculatedDate = s.Pathology.Lipids.AssessmentDate.GivenDate
-	if s.Pathology.Lipids.AssessmentDate.Calendar == "thai" {
+	if s.Pathology.Lipids.AssessmentDate.Calendar == "thai" && !s.Pathology.Lipids.AssessmentDate.GivenDate.IsZero() {
 		s.Pathology.Lipids.AssessmentDate.CalculatedDate = s.Pathology.Lipids.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
 	}
 
 	s.Eyes.AssessmentDate.CalculatedDate = s.Eyes.AssessmentDate.GivenDate
-	if s.Eyes.AssessmentDate.Calendar == "thai" {
+	if s.Eyes.AssessmentDate.Calendar == "thai" && !s.Eyes.AssessmentDate.GivenDate.IsZero() {
 		s.Eyes.AssessmentDate.CalculatedDate = s.Eyes.AssessmentDate.CalculatedDate.AddDate(-543, 0, 0)
 	}
 
