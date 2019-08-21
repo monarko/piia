@@ -19,15 +19,26 @@ func ReferralsIndex(c buffalo.Context) error {
 	// Default values are "page=1" and "per_page=20".
 
 	user := c.Value("current_user").(*models.User)
+
+	site := ""
+	if c.Value("current_site") != nil {
+		site = strings.TrimSpace(c.Value("current_site").(string))
+	}
+	whereso := make([]string, 0)
+	wheresso := make([]interface{}, 0)
+	whereso = append(whereso, "referral->>'referred' = ?")
+	wheresso = append(wheresso, "true")
+	whereStmtso := strings.Join(whereso, " AND ")
+
 	screenings := &models.Screenings{}
-	sq := tx.Where("referral->>'referred' = ?", "true")
+	sq := tx.Eager("Participant").Where(whereStmtso, wheresso...)
 	if err := sq.All(screenings); err != nil {
 		InsertLog("error", "User viewed referrals error", err.Error(), "", "", user.ID, c)
 		return errors.WithStack(err)
 	}
 
 	overs := &models.OverReadings{}
-	oq := tx.Where("referral->>'referred' = ?", "true")
+	oq := tx.Eager("Participant").Where(whereStmtso, wheresso...)
 	if err := oq.All(overs); err != nil {
 		InsertLog("error", "User viewed referrals error", err.Error(), "", "", user.ID, c)
 		return errors.WithStack(err)
@@ -35,11 +46,17 @@ func ReferralsIndex(c buffalo.Context) error {
 
 	ids := make([]string, 0)
 	for _, s := range *screenings {
-		ids = append(ids, s.ParticipantID.String())
+		pid := s.Participant.ParticipantID
+		if len(site) == 0 || string(pid[1]) == site {
+			ids = append(ids, s.ParticipantID.String())
+		}
 	}
 
 	for _, o := range *overs {
-		ids = append(ids, o.ParticipantID.String())
+		pid := o.Participant.ParticipantID
+		if len(site) == 0 || string(pid[1]) == site {
+			ids = append(ids, o.ParticipantID.String())
+		}
 	}
 
 	refers := &models.ReferredMessages{}
@@ -91,11 +108,6 @@ func ReferralsIndex(c buffalo.Context) error {
 	if len(c.Param("search")) > 0 {
 		where = append(where, "replace(participants.participant_id, '-', '') LIKE ?")
 		wheres = append(wheres, "%"+strings.Replace(strings.ToUpper(c.Param("search")), "-", "", -1)+"%")
-	}
-
-	site := ""
-	if c.Value("current_site") != nil {
-		site = c.Value("current_site").(string)
 	}
 
 	if len(site) > 0 {

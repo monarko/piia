@@ -30,15 +30,19 @@
 - id: header_title
   translation: "Piia ผู้ดูแลระบบ"
 - id: site_all
-  translation: "เว็บไซต์ทั้งหมด"
+  translation: "All Sites"
 - id: site_K
   translation: "Khlong Luang"
 - id: site_L
   translation: "Lamlukka"
 - id: site_N
   translation: "Nongseau"
+- id: site_O
+  translation: "Phrao"
 - id: site_R
   translation: "Rajavithi"
+- id: site_S
+  translation: "San Patong"
 - id: site_T
   translation: "Thanyaburi"
 - id: role_admin
