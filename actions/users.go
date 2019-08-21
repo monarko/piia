@@ -209,6 +209,7 @@ func UsersEditPost(c buffalo.Context) error {
 	}
 	user.Admin = false
 	user.Permission.StudyCoordinator = false
+	user.Permission.StudyTeamMember = false
 	user.Permission.Screening = false
 	user.Permission.OverRead = false
 	user.Permission.ReferralTracker = false
