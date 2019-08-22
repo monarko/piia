@@ -416,7 +416,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th style="width: 200px;"></th>
+                                        <th style="width: 400px;"></th>
                                         <th style="text-align: left;">Right Eye</th>
                                         <th style="text-align: left;">Left Eye</th>
                                     </tr>
@@ -424,46 +424,40 @@
                                 <tbody>
                                     <tr>
                                         <td style="text-align: left;">
-                                            <%= t("field_visual_acuity") %>
+                                            <%= t("field_dilate_pupil") %>
                                         </td>
                                         <td style="text-align: left;">
-                                            <%= psc.Eyes.RightEye.VisualAcuity %>
+                                            <%= if (psc.Eyes.RightEye.DilatePupil.Valid) { %>
+                                            <%= if (psc.Eyes.RightEye.DilatePupil.Bool) { %>Yes
+                                            <% } else { %>No
+                                            <% } %>
+                                            <% } %>
                                         </td>
                                         <td style="text-align: left;">
-                                            <%= psc.Eyes.LeftEye.VisualAcuity %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left;">
-                                            <%= t("field_last_visual_acuity") %>
-                                        </td>
-                                        <td style="text-align: left;">
-                                            <%= psc.Eyes.RightEye.LastVisualAcuity %>
-                                        </td>
-                                        <td style="text-align: left;">
-                                            <%= psc.Eyes.LeftEye.LastVisualAcuity %>
+                                            <%= if (psc.Eyes.LeftEye.DilatePupil.Valid) { %>
+                                            <%= if (psc.Eyes.LeftEye.DilatePupil.Bool) { %>Yes
+                                            <% } else { %>No
+                                            <% } %>
+                                            <% } %>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: left;">
-                                            <%= t("field_dr_grading") %>
+                                            <%= t("field_suspected_cataract") %>
                                         </td>
                                         <td style="text-align: left;">
-                                            <%= psc.Eyes.RightEye.DRGrading %>
+                                            <%= if (psc.Eyes.RightEye.SuspectedCataract.Valid) { %>
+                                            <%= if (psc.Eyes.RightEye.SuspectedCataract.Bool) { %>Yes
+                                            <% } else { %>No
+                                            <% } %>
+                                            <% } %>
                                         </td>
                                         <td style="text-align: left;">
-                                            <%= psc.Eyes.LeftEye.DRGrading %>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left;">
-                                            <%= t("field_dme_assessment") %>
-                                        </td>
-                                        <td style="text-align: left;">
-                                            <%= psc.Eyes.RightEye.DMEAssessment %>
-                                        </td>
-                                        <td style="text-align: left;">
-                                            <%= psc.Eyes.LeftEye.DMEAssessment %>
+                                            <%= if (psc.Eyes.LeftEye.SuspectedCataract.Valid) { %>
+                                            <%= if (psc.Eyes.LeftEye.SuspectedCataract.Bool) { %>Yes
+                                            <% } else { %>No
+                                            <% } %>
+                                            <% } %>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -497,6 +491,14 @@
                                     <% } else { %>No
                                     <% } %>
                                 </label>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-3" for="">
+                                    <%= t("label_referral_reason") %></label>
+                                <div class="col-form-label col-sm-9">
+                                    <%= psc.Referral.ReferralReason %>
+                                </div>
                             </div>
 
                             <div class="form-group row">
