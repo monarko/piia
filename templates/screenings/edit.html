@@ -406,87 +406,35 @@
                                                     <div class="element-box">
                                                         <h6><%= t("field_right_eye") %></h6>
                                                         <div class="form-group">
-                                                            <label for=""><%= t("field_visual_acuity") %></label>
-                                                            <select class="form-control" name="Eyes.RightEye.VisualAcuity">
-                                                                <option value="">
-                                                                    <%= t("form_select_any") %>
-                                                                </option>
-                                                                <option value="NLP" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
-                                                                <option value="LP" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
-                                                                <option value="HM" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
-                                                                <option value="CF" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
-                                                                <option value="20/200" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/200") { %> selected <% } %>>20/200 (6/60)</option>
-                                                                <option value="20/100" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/100") { %> selected <% } %>>20/100 (6/30)</option>
-                                                                <option value="20/70" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/70") { %> selected <% } %>>20/70 (6/21)</option>
-                                                                <option value="20/50" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/50") { %> selected <% } %>>20/50 (6/15)</option>
-                                                                <option value="20/40" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
-                                                                <option value="20/30" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
-                                                                <option value="20/20" <%= if (screening.Eyes.RightEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="Last visual acuity"><%= t("field_previous_visual_acuity") %></label>
-                                                            <select class="form-control" name="Eyes.RightEye.LastVisualAcuity">
-                                                                <option value="">
-                                                                    <%= t("form_select_any") %>
-                                                                </option>
-                                                                <option value="NLP" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
-                                                                <option value="LP" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
-                                                                <option value="HM" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
-                                                                <option value="CF" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
-                                                                <option value="20/200" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/200") { %> selected <% } %>>20/200 (6/60)</option>
-                                                                <option value="20/100" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/100") { %> selected <% } %>>20/100 (6/30)</option>
-                                                                <option value="20/70" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/70") { %> selected <% } %>>20/70 (6/21)</option>
-                                                                <option value="20/50" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/50") { %> selected <% } %>>20/50 (6/15)</option>
-                                                                <option value="20/40" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
-                                                                <option value="20/30" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
-                                                                <option value="20/20" <%= if (screening.Eyes.RightEye.LastVisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_dr_grading") %></label>
-                                                            <select class="form-control" name="Eyes.RightEye.DRGrading">
-                                                                <option value="">
-                                                                    <%= t("form_select_any") %>
-                                                                </option>
-                                                                <option value="Ungradeable" <%= if (screening.Eyes.RightEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
-                                                                    <%= t("option_ungradeable") %>
-                                                                </option>
-                                                                <option value="Normal" <%= if (screening.Eyes.RightEye.DRGrading.String == "Normal") { %> selected <% } %>>
-                                                                    <%= t("option_normal") %>
-                                                                </option>
-                                                                <option value="Mild DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
-                                                                    <%= t("option_mild_npdr") %>
-                                                                </option>
-                                                                <option value="Moderate DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
-                                                                    <%= t("option_mod_npdr") %>
-                                                                </option>
-                                                                <option value="Severe DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
-                                                                    <%= t("option_severe_npdr") %>
-                                                                </option>
-                                                                <option value="Proliferative DR" <%= if (screening.Eyes.RightEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
-                                                                    <%= t("option_proliferative_dr") %>
-                                                                </option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_dme_assessment") %></label>
+                                                            <label for=""><%= t("field_dilate_pupil") %></label>
                                                             <div class="form-group">
                                                                 <div class="form-check-inline">
                                                                     <div class="radio-button">
                                                                         <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
-                                                                                value="Ungradeable" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Ungradeable") { %> checked <% } %>><%= t("option_ungradeable") %></label>
+                                                                                name="Eyes.RightEye.DilatePupil" type="radio"
+                                                                                value="true" <%= if (screening.Eyes.RightEye.DilatePupil.Valid && screening.Eyes.RightEye.DilatePupil.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
                                                                     </div>
                                                                     <div class="radio-button">
                                                                         <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
-                                                                                value="Not Present" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Not Present") { %> checked <% } %>><%= t("option_not_present") %></label>
+                                                                                name="Eyes.RightEye.DilatePupil" type="radio"
+                                                                                value="false" <%= if (screening.Eyes.RightEye.DilatePupil.Valid && !screening.Eyes.RightEye.DilatePupil.Bool) { %> checked <% } %>><%= t("option_no") %></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_suspected_cataract") %></label>
+                                                            <div class="form-group">
+                                                                <div class="form-check-inline">
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.RightEye.SuspectedCataract" type="radio"
+                                                                                value="true" <%= if (screening.Eyes.RightEye.SuspectedCataract.Valid && screening.Eyes.RightEye.SuspectedCataract.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
                                                                     </div>
                                                                     <div class="radio-button">
                                                                         <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.DMEAssessment" type="radio"
-                                                                                value="Present" <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Present") { %> checked <% } %>><%= t("option_present") %></label>
+                                                                                name="Eyes.RightEye.SuspectedCataract" type="radio"
+                                                                                value="false" <%= if (screening.Eyes.RightEye.SuspectedCataract.Valid && !screening.Eyes.RightEye.SuspectedCataract.Bool) { %> checked <% } %>><%= t("option_no") %></label>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -498,92 +446,40 @@
                                                 <div class="element-wrapper">
                                                     <div class="element-box">
                                                         <h6><%= t("field_left_eye") %></h6>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_dilate_pupil") %></label>
                                                             <div class="form-group">
-                                                                <label for=""><%= t("field_visual_acuity") %></label>
-                                                                <select class="form-control" name="Eyes.LeftEye.VisualAcuity">
-                                                                    <option value="">
-                                                                        <%= t("form_select_any") %>
-                                                                    </option>
-                                                                    <option value="NLP" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
-                                                                    <option value="LP" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
-                                                                    <option value="HM" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
-                                                                    <option value="CF" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
-                                                                    <option value="20/200" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/200") { %> selected <% } %>>20/200 (6/60)</option>
-                                                                    <option value="20/100" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/100") { %> selected <% } %>>20/100 (6/30)</option>
-                                                                    <option value="20/70" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/70") { %> selected <% } %>>20/70 (6/21)</option>
-                                                                    <option value="20/50" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/50") { %> selected <% } %>>20/50 (6/15)</option>
-                                                                    <option value="20/40" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
-                                                                    <option value="20/30" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
-                                                                    <option value="20/20" <%= if (screening.Eyes.LeftEye.VisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="Last visual acuity"><%= t("field_previous_visual_acuity") %></label>
-                                                                <select class="form-control" name="Eyes.LeftEye.LastVisualAcuity">
-                                                                    <option value="">
-                                                                        <%= t("form_select_any") %>
-                                                                    </option>
-                                                                    <option value="NLP" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "NLP") { %> selected <% } %>>NLP</option>
-                                                                    <option value="LP" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "LP") { %> selected <% } %>>LP</option>
-                                                                    <option value="HM" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "HM") { %> selected <% } %>>HM</option>
-                                                                    <option value="CF" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "CF") { %> selected <% } %>>CF</option>
-                                                                    <option value="20/200" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/200") { %> selected <% } %>>20/200 (6/60)</option>
-                                                                    <option value="20/100" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/100") { %> selected <% } %>>20/100 (6/30)</option>
-                                                                    <option value="20/70" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/70") { %> selected <% } %>>20/70 (6/21)</option>
-                                                                    <option value="20/50" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/50") { %> selected <% } %>>20/50 (6/15)</option>
-                                                                    <option value="20/40" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/40") { %> selected <% } %>>20/40 (6/12)</option>
-                                                                    <option value="20/30" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/20") { %> selected <% } %>>20/30 (6/9)</option>
-                                                                    <option value="20/20" <%= if (screening.Eyes.LeftEye.LastVisualAcuity.String == "20/20") { %> selected <% } %>>20/20 (6/6)</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for=""><%= t("field_dr_grading") %></label>
-                                                                <select class="form-control" name="Eyes.LeftEye.DRGrading">
-                                                                    <option value="">
-                                                                        <%= t("form_select_any") %>
-                                                                    </option>
-                                                                    <option value="Ungradeable" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %> selected <% } %>>
-                                                                        <%= t("option_ungradeable") %>
-                                                                    </option>
-                                                                    <option value="Normal" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Normal") { %> selected <% } %>>
-                                                                        <%= t("option_normal") %>
-                                                                    </option>
-                                                                    <option value="Mild DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Mild DR") { %> selected <% } %>>
-                                                                        <%= t("option_mild_npdr") %>
-                                                                    </option>
-                                                                    <option value="Moderate DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Moderate DR") { %> selected <% } %>>
-                                                                        <%= t("option_mod_npdr") %>
-                                                                    </option>
-                                                                    <option value="Severe DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Severe DR") { %> selected <% } %>>
-                                                                        <%= t("option_severe_npdr") %>
-                                                                    </option>
-                                                                    <option value="Proliferative DR" <%= if (screening.Eyes.LeftEye.DRGrading.String == "Proliferative DR") { %> selected <% } %>>
-                                                                        <%= t("option_proliferative_dr") %>
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for=""><%= t("field_dme_assessment") %></label>
-                                                                <div class="form-group">
-                                                                    <div class="form-check-inline">
-                                                                        <div class="radio-button">
-                                                                            <label class="form-check-label"><input class="form-check-input"
-                                                                                    name="Eyes.LeftEye.DMEAssessment" type="radio"
-                                                                                    value="Ungradeable" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Ungradeable") { %> checked <% } %>><%= t("option_ungradeable") %></label>
-                                                                        </div>
-                                                                        <div class="radio-button">
-                                                                            <label class="form-check-label"><input class="form-check-input"
-                                                                                    name="Eyes.LeftEye.DMEAssessment" type="radio"
-                                                                                    value="Not Present" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %> checked <% } %>><%= t("option_not_present") %></label>
-                                                                        </div>
-                                                                        <div class="radio-button">
-                                                                            <label class="form-check-label"><input class="form-check-input"
-                                                                                    name="Eyes.LeftEye.DMEAssessment" type="radio"
-                                                                                    value="Present" <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Present") { %> checked <% } %>><%= t("option_present") %></label>
-                                                                        </div>
+                                                                <div class="form-check-inline">
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.LeftEye.DilatePupil" type="radio"
+                                                                                value="true" <%= if (screening.Eyes.LeftEye.DilatePupil.Valid && screening.Eyes.LeftEye.DilatePupil.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
+                                                                    </div>
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.LeftEye.DilatePupil" type="radio"
+                                                                                value="false" <%= if (screening.Eyes.LeftEye.DilatePupil.Valid && !screening.Eyes.LeftEye.DilatePupil.Bool) { %> checked <% } %>><%= t("option_no") %></label>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for=""><%= t("field_suspected_cataract") %></label>
+                                                            <div class="form-group">
+                                                                <div class="form-check-inline">
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.LeftEye.SuspectedCataract" type="radio"
+                                                                                value="true" <%= if (screening.Eyes.LeftEye.SuspectedCataract.Valid && screening.Eyes.LeftEye.SuspectedCataract.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
+                                                                    </div>
+                                                                    <div class="radio-button">
+                                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                                name="Eyes.LeftEye.SuspectedCataract" type="radio"
+                                                                                value="false" <%= if (screening.Eyes.LeftEye.SuspectedCataract.Valid && !screening.Eyes.LeftEye.SuspectedCataract.Bool) { %> checked <% } %>><%= t("option_no") %></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         </div>
                                                     </div>
                                                 </div> <!--/element-wrapper-->
@@ -625,12 +521,33 @@
                                                 </div>
                                             </div> <!-- /referral row -->
                                             <div class="row" id="referral-refused-box" style="margin-top: 10px;">
-                                                <div class="col-sm-12">
+                                                <div class="col-sm-4">
                                                     <div class="form-check-inline">
                                                         <div class="radio-button">
                                                             <label class="form-check-label"><input class="form-check-input"
                                                                     name="referral_refused" type="checkbox" id="referral_refused" 
                                                                     value="refused" <%= if (screening.Referral.ReferralRefused) { %> checked <% } %>><%= t("label_referral_refused") %></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group row">
+                                                        <label class="col-form-label col-sm-3" for="Referral Reason"><%= t("label_referral_reason") %></label>
+                                                        <div class="col-sm-9">
+                                                            <select class="form-control" id="referral_reason" name="Referral.ReferralReason">
+                                                                <option value="">
+                                                                    <%= t("form_select_any") %>
+                                                                </option>
+                                                                <option value="Visual Acuity" <%= if (screening.Referral.ReferralReason.String == "Visual Acuity") { %> selected <% } %>>
+                                                                    <%= t("option_referral_reason_visual_acuity") %>
+                                                                </option>
+                                                                <option value="DR/DME" <%= if (screening.Referral.ReferralReason.String == "DR/DME") { %> selected <% } %>>
+                                                                    <%= t("option_referral_reason_dr_dme") %>
+                                                                </option>
+                                                                <option value="Ungradeable" <%= if (screening.Referral.ReferralReason.String == "Ungradeable") { %> selected <% } %>>
+                                                                    <%= t("option_referral_reason_ungradeable") %>
+                                                                </option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>

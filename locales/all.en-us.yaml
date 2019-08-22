@@ -250,6 +250,14 @@
   translation: "Referral Refused by Participant"
 - id: label_referral_refused_error
   translation: "According to the eye conditions, this participant should be referred. Please write your note if you want to save anyway."
+- id: label_referral_reason
+  translation: "Referral Reason"
+- id: option_referral_reason_visual_acuity
+  translation: "Visual Acuity"
+- id: option_referral_reason_dr_dme
+  translation: "DR/DME"
+- id: option_referral_reason_ungradeable
+  translation: "Ungradeable"
 # create new - enrollment
 - id: page_enroll_title
   translation: "Enroll into Study"
@@ -324,6 +332,10 @@
   translation: "DR Grading"
 - id: field_dme_assessment
   translation: "DME Assessment"
+- id: field_dilate_pupil
+  translation: "Did you dilate the pupils?"
+- id: field_suspected_cataract
+  translation: "Suspected cataract?"
 - id: field_visual_acuity
   translation: "Visual Acuity"
 - id: field_right_eye

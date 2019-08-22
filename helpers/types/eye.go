@@ -12,10 +12,12 @@ import (
 
 // EyeAssessment model
 type EyeAssessment struct {
-	VisualAcuity     nulls.String `json:"visual_acuity"`
-	LastVisualAcuity nulls.String `json:"last_visual_acuity"`
-	DRGrading        nulls.String `json:"dr"`
-	DMEAssessment    nulls.String `json:"dme"`
+	VisualAcuity      nulls.String `json:"visual_acuity"`
+	LastVisualAcuity  nulls.String `json:"last_visual_acuity"`
+	DRGrading         nulls.String `json:"dr"`
+	DMEAssessment     nulls.String `json:"dme"`
+	DilatePupil       nulls.Bool   `json:"dilate_pupil"`
+	SuspectedCataract nulls.Bool   `json:"suspected_cataract"`
 }
 
 // EyeScreening model

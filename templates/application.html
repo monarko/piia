@@ -401,6 +401,7 @@
                     $('#referral-notes').focus();
                 }
             });
+            
             $("#referral_yes").on("change", function () {
                 toogleReferralRefusalBox();
             });
@@ -452,6 +453,7 @@
                 $("#referral-refused-box").show();
             } else {
                 $("#referral_refused").prop("checked", false);
+                $("#referral_reason").val("");
                 $("#referral-refused-box").hide();
             }
         }

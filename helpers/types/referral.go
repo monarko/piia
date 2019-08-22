@@ -14,6 +14,7 @@ import (
 type ReferralScreening struct {
 	Referred        bool         `json:"referred"`
 	ReferralRefused bool         `json:"referral_refused"`
+	ReferralReason  nulls.String `json:"referral_reason"`
 	Notes           nulls.String `json:"additional_notes"`
 }
 

@@ -251,6 +251,14 @@
   translation: "ผู้อ้างอิงถูกปฏิเสธโดยผู้เข้าร่วม"
 - id: label_referral_refused_error
   translation: "ตามเงื่อนไขของสายตาผู้เข้าร่วมนี้ควรได้รับการอ้างอิง โปรดเขียนบันทึกย่อของคุณหากคุณต้องการบันทึกต่อไป"
+- id: label_referral_reason
+  translation: "เหตุผลการอ้างอิง"
+- id: option_referral_reason_visual_acuity
+  translation: "Visual Acuity"
+- id: option_referral_reason_dr_dme
+  translation: "DR/DME"
+- id: option_referral_reason_ungradeable
+  translation: "Ungradeable"
 # create new - enrollment
 - id: page_enroll_title
   translation: "ลงทะเบียนเข้าศึกษา"
@@ -323,6 +331,10 @@
   translation: "ประเมินระยะโรคของภาวะเบาหวานเข้าจอตา"
 - id: field_dme_assessment
   translation: "จุดภาพชัดบวมจากเบาหวาน"
+- id: field_dilate_pupil
+  translation: "คุณขยายรูม่านตาหรือไม่?"
+- id: field_suspected_cataract
+  translation: "ต้อกระจกที่ต้องสงสัย?"
 - id: field_visual_acuity
   translation: "ระดับการมอเห็นที่ได้รับการแก้ไข (BCVA)"
 - id: field_right_eye
