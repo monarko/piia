@@ -459,6 +459,7 @@ type fullRecord struct {
 	ScreeningAssessmentDate         nulls.String `json:"screening_assessment_date" db:"screening_assessment_date"`
 	DrReferral                      nulls.String `json:"dr_referral" db:"dr_referral"`
 	DrReferralRefused               nulls.String `json:"dr_referral_refused" db:"dr_referral_refused"`
+	DrReferralReason                nulls.String `json:"dr_referral_reason" db:"dr_referral_reason"`
 	DrReferralNotes                 nulls.String `json:"dr_referral_notes" db:"dr_referral_notes"`
 	RightDRGradeOver                nulls.String `json:"right_dr_grade_over" db:"right_dr_grade_over"`
 	RightDMEOver                    nulls.String `json:"right_dme_over" db:"right_dme_over"`
@@ -592,6 +593,7 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
         WHEN ((s.referral->>'referral_refused'::text) = 'true'::text) THEN 'Yes'::text
         ELSE 'No'::text
     END AS "dr_referral_refused",
+	(s.referral->>'referral_reason'::text) AS "dr_referral_reason",
 	(s.referral->>'additional_notes'::text) AS "dr_referral_notes",
 
 	((o.eye_assessment->'right'::text)->>'dr'::text) AS "right_dr_grade_over",
@@ -661,20 +663,11 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"pathology_lipids_total_cholesterol",
 		"pathology_lipids_unit",
 		"pathology_lipids_assessment_date",
-		"screening_right_visual_acuity",
-		"screening_right_previous_visual_acuity",
-		"screening_right_dr_grade",
-		"screening_right_dme",
-		"screening_left_visual_acuity",
-		"screening_left_previous_visual_acuity",
-		"screening_left_dr_grade",
-		"screening_left_dme",
-		"screening_gradeability",
 		"screening_assessment_date",
 		"screening_referral",
 		"screening_referral_refused",
+		"screening_referral_reason",
 		"screening_referral_notes",
-		"screening_referral_details",
 		"overreading_right_dr_grade",
 		"overreading_right_dme",
 		"overreading_right_suspected_pathology",
@@ -695,6 +688,9 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"K": "Khlong Luang",
 		"L": "Lamlukka",
 		"N": "Nongseau",
+		"O": "Phrao",
+		"R": "Rajavithi",
+		"S": "San Patong",
 		"T": "Thanyaburi",
 	}
 
@@ -727,29 +723,11 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		rc = append(rc, a.PathologyLipidsTotalCholesterol.String)
 		rc = append(rc, a.PathologyLipidsUnit.String)
 		rc = append(rc, a.PathologyLipidsAssessmentDate.String)
-		rc = append(rc, a.RightVisualAcuity.String)
-		rc = append(rc, a.RightPreviousVisualAcuity.String)
-		rc = append(rc, a.RightDRGrade.String)
-		rc = append(rc, a.RightDME.String)
-		rc = append(rc, a.LeftVisualAcuity.String)
-		rc = append(rc, a.LeftPreviousVisualAcuity.String)
-		rc = append(rc, a.LeftDRGrade.String)
-		rc = append(rc, a.LeftDME.String)
-		screeningGradeability := "GRADEABLE"
-		if a.RightDRGrade.String == "Ungradeable" || a.RightDME.String == "Ungradeable" || a.LeftDRGrade.String == "Ungradeable" || a.LeftDME.String == "Ungradeable" {
-			screeningGradeability = "UNGRADEABLE"
-		}
-		rc = append(rc, screeningGradeability)
 		rc = append(rc, a.ScreeningAssessmentDate.String)
 		rc = append(rc, a.DrReferral.String)
 		rc = append(rc, a.DrReferralRefused.String)
-		haveNotes := "FALSE"
-		if a.DrReferralNotes.Valid && len(a.DrReferralNotes.String) > 0 {
-			haveNotes = "TRUE"
-		}
-		rc = append(rc, haveNotes)
 		screeningReasons := ""
-		if a.DrReferral.String == "Yes" {
+		if a.DrReferral.String == "Yes" && len(a.DrReferralReason.String) == 0 {
 			screeningReasons = screeningDetails(
 				a.RightVisualAcuity.String,
 				a.RightPreviousVisualAcuity.String,
@@ -760,9 +738,15 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 				a.LeftDRGrade.String,
 				a.LeftDME.String,
 			)
+		} else {
+			screeningReasons = a.DrReferralReason.String
 		}
 		rc = append(rc, screeningReasons)
-
+		haveNotes := "FALSE"
+		if a.DrReferralNotes.Valid && len(a.DrReferralNotes.String) > 0 {
+			haveNotes = "TRUE"
+		}
+		rc = append(rc, haveNotes)
 		rc = append(rc, a.RightDRGradeOver.String)
 		rc = append(rc, a.RightDMEOver.String)
 		srs := ""
@@ -857,7 +841,6 @@ func screeningDetails(rightVA, rightLastVA, rightDR, rightDME, leftVA, leftLastV
 	if len(right) > 0 {
 		reasons = append(reasons, right...)
 	}
-
 	left := screeningDetailsForEye(leftVA, leftLastVA, leftDR, leftDME, "L")
 	if len(left) > 0 {
 		reasons = append(reasons, left...)
