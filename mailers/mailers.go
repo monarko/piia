@@ -59,15 +59,15 @@ func (em EmailDetails) SendMessage(c buffalo.Context) error {
 		html = buf.String()
 	}
 
-	sendMessage(mg, from, em.Subject, body, html, em.To)
+	sendMessage(c, mg, from, em.Subject, body, html, em.To)
 
 	return nil
 }
 
-func sendMessage(mg mailgun.Mailgun, sender, subject, body, html string, recipient []string) error {
+func sendMessage(c buffalo.Context, mg mailgun.Mailgun, sender, subject, body, html string, recipient []string) error {
 	message := mg.NewMessage(sender, subject, body, recipient...)
 	message.SetHtml(html)
-	_, _, err := mg.Send(message)
+	_, _, err := mg.Send(c, message)
 
 	if err != nil {
 		return errors.WithStack(err)
