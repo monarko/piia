@@ -466,6 +466,7 @@ type fullRecord struct {
 	LeftDRGradeOver                 nulls.String `json:"left_dr_grade_over" db:"left_dr_grade_over"`
 	LeftDMEOver                     nulls.String `json:"left_dme_over" db:"left_dme_over"`
 	LeftSuspectedOver               nulls.String `json:"left_suspected_over" db:"left_suspected_over"`
+	OverReadingAssessmentDate       nulls.String `json:"over_assessment_date" db:"over_assessment_date"`
 	OverReferral                    nulls.String `json:"over_referral" db:"over_referral"`
 	OverReferralNotes               nulls.String `json:"over_referral_notes" db:"over_referral_notes"`
 }
@@ -580,9 +581,13 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 	((s.eye->'left'::text)->>'last_visual_acuity'::text) AS "left_previous_visual_acuity",
 	((s.eye->'left'::text)->>'dr'::text) AS "left_dr_grade",
 	((s.eye->'left'::text)->>'dme'::text) AS "left_dme",
-	CASE 
-	    WHEN (LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10) = '0001-01-01'::text) THEN NULL
-	    ELSE LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10)
+	CASE
+	    WHEN ((s.eye->'assessment_date'::text)->>'calculated_date'::text) IS NULL THEN TO_CHAR(s.created_at, 'YYYY-MM-DD')
+	    ELSE
+			CASE 
+				WHEN (LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10) = '0001-01-01'::text) THEN NULL
+				ELSE LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10)
+			END 
 	END AS screening_assessment_date,
     CASE
         WHEN ((s.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
@@ -600,6 +605,7 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 	((o.eye_assessment->'left'::text)->>'dr'::text) AS "left_dr_grade_over",
 	((o.eye_assessment->'left'::text)->>'dme'::text) AS "left_dme_over",
 	((o.eye_assessment->'left'::text)->>'suspected_pathologies'::text) AS "left_suspected_over",
+	TO_CHAR(o.created_at, 'YYYY-MM-DD') AS over_assessment_date,
         CASE
             WHEN ((o.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
             ELSE 'No'::text
@@ -682,6 +688,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"overreading_left_dme",
 		"overreading_left_suspected_pathology",
 		"overreading_gradeability",
+		"overreading_assessment_date",
 		"overreading_referral",
 		"overreading_referral_notes",
 		"overreading_referral_details",
@@ -695,6 +702,9 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"K": "Khlong Luang",
 		"L": "Lamlukka",
 		"N": "Nongseau",
+		"O": "Phrao",
+		"R": "Rajavithi",
+		"S": "San Patong",
 		"T": "Thanyaburi",
 	}
 
@@ -782,6 +792,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 			overReadingGradeability = "UNGRADEABLE"
 		}
 		rc = append(rc, overReadingGradeability)
+		rc = append(rc, a.OverReadingAssessmentDate.String)
 		rc = append(rc, a.OverReferral.String)
 		rc = append(rc, a.OverReferralNotes.String)
 		overreadingReasons := ""
