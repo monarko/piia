@@ -90,7 +90,11 @@
                                     <% } %>
                                 </td>
                                 <td>
-                                    <%= psc.CreatedAt.Format("2006-01-02") %>
+                                        <%= if (!psc.Eyes.AssessmentDate.CalculatedDate.IsZero()) { %>
+                                            <%= languageDate(psc.Eyes.AssessmentDate.CalculatedDate, "02-Jan-2006", t("lang_calendar")) %>
+                                        <% } else { %>
+                                            <%= languageDate(psc.CreatedAt, "02-Jan-2006", t("lang_calendar")) %>
+                                        <% } %>
                                 </td>
                                 <td>
                                     <%= if (len(p.OverReadings) > 0) { %>

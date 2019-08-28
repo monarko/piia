@@ -1,7 +1,6 @@
 package actions
 
 import (
-	"fmt"
 	"math"
 	"strings"
 	"time"
@@ -26,11 +25,12 @@ func CasesIndex(c buffalo.Context) error {
 	}
 
 	type scr struct {
-		SID           string    `db:"sid"`
-		ParticipantID string    `db:"partid"`
-		OverReadingID *string   `db:"oid"`
-		PID           string    `db:"pid"`
-		CreatedAt     time.Time `db:"created"`
+		SID            string    `db:"sid"`
+		ParticipantID  string    `db:"partid"`
+		OverReadingID  *string   `db:"oid"`
+		PID            string    `db:"pid"`
+		CreatedAt      time.Time `db:"created"`
+		AssessmentDate *string   `db:"assessment"`
 	}
 	screenings := make([]scr, 0)
 	fresh := make([]string, 0)
@@ -48,6 +48,7 @@ func CasesIndex(c buffalo.Context) error {
 		"participants.participant_id AS partid",
 		"screenings.created_at AS created",
 		"screenings.id AS sid",
+		"screenings.eye->'assessment_date'->>'calculated_date' AS assessment",
 	}
 	sql, args := query.ToSQL(&pop.Model{Value: models.Screening{}}, columns...)
 	if err = allParticipants.RawQuery(sql, args...).All(&screenings); err != nil {
@@ -60,7 +61,14 @@ func CasesIndex(c buffalo.Context) error {
 			finished = append(finished, s.PID)
 			continue
 		}
-		ago := daysAgo(s.CreatedAt)
+		date := s.CreatedAt
+		if s.AssessmentDate != nil {
+			aDate, err := time.Parse(time.RFC3339, *s.AssessmentDate)
+			if err == nil {
+				date = aDate
+			}
+		}
+		ago := daysAgo(date)
 		if ago < 4 {
 			fresh = append(fresh, s.PID)
 		} else if ago < 8 {
@@ -124,7 +132,6 @@ func CasesIndex(c buffalo.Context) error {
 	whereStmt := strings.Join(where, " AND ")
 	var q *pop.Query
 	q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where(whereStmt, wheres...)
-	fmt.Println("\n\nINIDS\n\n", inIds, "\n\n")
 	if len(inIds) > 0 {
 		q = q.Where("participants.id in (?)", inIds)
 	} else {

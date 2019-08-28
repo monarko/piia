@@ -135,7 +135,11 @@ func (s Screening) StatusesMap() map[string]bool {
 
 // DaysAgo returns days ago its created
 func (s Screening) DaysAgo() int {
-	days := int(math.Floor(time.Now().Sub(s.CreatedAt).Hours() / 24))
+	date := s.CreatedAt
+	if !s.Eyes.AssessmentDate.CalculatedDate.IsZero() {
+		date = s.Eyes.AssessmentDate.CalculatedDate
+	}
+	days := int(math.Floor(time.Now().Sub(date).Hours() / 24))
 
 	return days
 }
