@@ -374,6 +374,10 @@
   translation: "Open cases"
 - id: option_overreading_completed
   translation: "Completed cases"
+- id: option_overreading_open_in_7_days
+  translation: "Opened in 7 days"
+- id: option_overreading_open_before_7_days
+  translation: "Opened before 7 days"
 # languages
 - id: language_btn_txt
   translation: "Language"

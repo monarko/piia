@@ -133,9 +133,9 @@ func (s Screening) StatusesMap() map[string]bool {
 	return maps
 }
 
-// DaysAgo returns days ago its updated
+// DaysAgo returns days ago its created
 func (s Screening) DaysAgo() int {
-	days := int(math.Floor(time.Now().Sub(s.UpdatedAt).Hours() / 24))
+	days := int(math.Floor(time.Now().Sub(s.CreatedAt).Hours() / 24))
 
 	return days
 }
