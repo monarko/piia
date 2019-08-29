@@ -459,7 +459,7 @@ func ParticipantsDetail(c buffalo.Context) error {
 	}
 	sort.Strings(keys)
 
-	fmt.Println("NOTIFICATION IDS", notificationIDs)
+	// fmt.Println("NOTIFICATION IDS", notificationIDs)
 
 	audits := []models.Audit{}
 	screeningAudits := &models.Audits{}
