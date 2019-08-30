@@ -1,0 +1,8 @@
+create_table("archives") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("archiver_id", "uuid", {})
+	t.Column("archive_type", "string", {"default":""})
+	t.Column("model_id", "uuid", {})
+	t.Column("data", "jsonb", {"null": true})
+	t.Column("dependency", "jsonb", {"null": true})
+}

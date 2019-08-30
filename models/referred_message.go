@@ -17,11 +17,11 @@ type ReferredMessage struct {
 	CreatedAt     time.Time                    `json:"created_at" db:"created_at"`
 	UpdatedAt     time.Time                    `json:"updated_at" db:"updated_at"`
 	User          User                         `belongs_to:"user" json:"-"`
-	UserID        uuid.UUID                    `json:"-" db:"user_id"`
+	UserID        uuid.UUID                    `json:"user_id" db:"user_id"`
 	Participant   Participant                  `belongs_to:"participant" json:"-"`
-	ParticipantID uuid.UUID                    `json:"-" db:"participant_id"`
+	ParticipantID uuid.UUID                    `json:"participant_id" db:"participant_id"`
 	Screening     Screening                    `belongs_to:"screening" json:"-"`
-	ScreeningID   uuid.UUID                    `json:"-" db:"screening_id"`
+	ScreeningID   uuid.UUID                    `json:"screening_id" db:"screening_id"`
 	Message       string                       `json:"message" db:"message"`
 	ReferralData  types.ReferredMessageElement `json:"referral_data" db:"referral_data"`
 }

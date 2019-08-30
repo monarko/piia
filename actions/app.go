@@ -116,6 +116,7 @@ func App() *buffalo.App {
 		overReadings.POST("/create", OverReadingsCreatePost)
 		overReadings.GET("/edit/{oid}", OverReadingsEditGet).Name("participantScreeningOverreadingsEditPath")
 		overReadings.POST("/edit/{oid}", OverReadingsEditPost).Name("participantScreeningOverreadingsEditPath")
+		overReadings.DELETE("/delete/{oid}", AdminRequired(OverReadingDestroy))
 		overReadings.Middleware.Skip(OverReadingPermissionRequired, OverReadingsDetails)
 		overReadings.GET("/{oid}", OverReadingsDetails)
 
@@ -156,6 +157,14 @@ func App() *buffalo.App {
 		logs.Use(AdminRequired)
 		logs.GET("/", SystemLogsIndex)
 		logs.GET("/index", SystemLogsIndex)
+
+		archive := app.Group("/archives")
+		archive.Use(AdminRequired)
+		archive.GET("/", ArchiveIndex)
+		archive.GET("/index", ArchiveIndex)
+		archive.GET("/restore/{aid}", ArchiveRestore)
+		archive.DELETE("/delete/{aid}", ArchiveDestroy)
+		archive.GET("/{aid}", ArchiveShow)
 
 		app.GET("/errors/{status}", ErrorsDefault)
 

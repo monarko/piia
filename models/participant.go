@@ -30,7 +30,7 @@ type Participant struct {
 	IDType              nulls.String     `json:"id_type" db:"id_type"`
 	IDNumber            nulls.String     `json:"id_number" db:"id_number"`
 	User                User             `belongs_to:"user" json:"registrar"`
-	UserID              uuid.UUID        `json:"-" db:"author_id"`
+	UserID              uuid.UUID        `json:"author_id" db:"author_id"`
 	Status              string           `json:"status" db:"status"`
 	Screenings          Screenings       `has_many:"screenings" json:"-"`
 	OverReadings        OverReadings     `has_many:"over_readings" json:"-"`

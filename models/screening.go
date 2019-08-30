@@ -27,9 +27,9 @@ type Screening struct {
 	Eyes           types.EyeScreening            `json:"eyes" db:"eye"`
 	Referral       types.ReferralScreening       `json:"referral" db:"referral"`
 	Screener       User                          `belongs_to:"user" json:"-"`
-	ScreenerID     uuid.UUID                     `json:"-" db:"screener_id"`
+	ScreenerID     uuid.UUID                     `json:"screener_id" db:"screener_id"`
 	Participant    Participant                   `belongs_to:"participant" json:"-"`
-	ParticipantID  uuid.UUID                     `json:"-" db:"participant_id"`
+	ParticipantID  uuid.UUID                     `json:"participant_id" db:"participant_id"`
 	Notifications  Notifications                 `has_many:"notifications" json:"-"`
 	OverReadings   OverReadings                  `has_many:"over_readings" json:"-"`
 }
