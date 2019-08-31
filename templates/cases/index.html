@@ -133,8 +133,9 @@
                                         </div>
                                         <%= if (current_user.Admin) { %>
                                             <form class="delete-form" action="<%= participantScreeningOverreadingsDeletePath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" method="POST">
-                                            <%= csrf() %>
-                                            <input type="hidden" name="_method" value="DELETE" />
+                                                <%= csrf() %>
+                                                <input type="hidden" name="_method" value="DELETE" />
+                                                <input type="hidden" name="reason" value="" />
                                                 <div class="action-item col-md-auto" style="padding-right: 0;">                                        
                                                     <button class="btn btn-sm btn-outline-danger delete-btn" title="Over-read"><i class="fa fa-trash-alt fa-sm"></i> Delete</button>                                        
                                                 </div>

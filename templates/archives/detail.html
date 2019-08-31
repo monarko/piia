@@ -5,9 +5,22 @@
                 Archive Detail
             </h6>
             <div class="element-box">
-                <%= json(archive) %>
+                <h3><%= archive.ArchiveType %></h3>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <span class="badge badge-primary">Dependency</span>
+                        <%= for (k, v) in (archive.Dependency) { %>
+                            <span class="badge badge-warning"><%= k %></span>
+                        <% } %>                            
+                    </div>
+                </div>
                 <hr>
-                <%= json(data) %>
+                <h5>Reason</h5>
+                <p><%= archive.Reason %></p>
+                <h5>Data</h5>
+                <textarea class="form-control" rows="25" id="archive-data-json" style='font-size: 11px; font-family: monospace,Menlo,Monaco,Consolas,"Liberation Mono","Courier New";'>
+                    <%= data %>
+                </textarea>
             </div>
         </div>
     </div>

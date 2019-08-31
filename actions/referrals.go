@@ -120,12 +120,12 @@ func ReferralsIndex(c buffalo.Context) error {
 	var q *pop.Query
 	if len(idsToSearch) > 0 {
 		if len(where) > 0 {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
 		} else {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
 		}
 	} else {
-		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("gender = ? ", "abc").Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("gender = ? ", "abc").Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
 	}
 
 	// Retrieve all Posts from the DB
@@ -261,4 +261,52 @@ func ReferralsParticipantsView(c buffalo.Context) error {
 	breadcrumbMap["Referrals Details"] = "/referrals/participants/" + participant.ID.String()
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("referrals/details.html"))
+}
+
+// ReferralsDestroy function
+func ReferralsDestroy(c buffalo.Context) error {
+	returnURL := "/referrals/index"
+	user := c.Value("current_user").(*models.User)
+	if !user.Admin {
+		c.Flash().Add("danger", "Access denied")
+		return c.Redirect(302, returnURL)
+	}
+
+	tx := c.Value("tx").(*pop.Connection)
+
+	referral := &models.ReferredMessage{}
+	if err := tx.Eager().Find(referral, c.Param("rid")); err != nil {
+		return c.Error(404, err)
+	}
+	participant := referral.Participant
+	if c.Param("pid") != participant.ID.String() {
+		c.Flash().Add("danger", "Not Found")
+		return c.Redirect(302, returnURL)
+	}
+
+	reason := c.Request().FormValue("reason")
+
+	err := ArchiveMake(c, user.ID, referral.ID, "ReferredMessage", referral, reason)
+	if err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	referralID := referral.ID
+
+	if err := tx.Destroy(referral); err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	logErr := InsertLog("delete", "ReferredMessage deleted, reason: "+reason, "", referralID.String(), "referred_message", user.ID, c)
+	if logErr != nil {
+		c.Flash().Add("danger", logErr.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	// If there are no errors set a flash message
+	c.Flash().Add("success", "Archived successfully")
+
+	return c.Redirect(302, returnURL)
 }

@@ -47,9 +47,12 @@
                                                         <%= if (tolower(log.Action) == "create") { %>
                                                         <a class="badge badge-primary-inverted" href="#"
                                                             style="text-transform: uppercase;"><%= log.Action %></a>
-                                                        <% } else { %>
-                                                        <a class="badge badge-success-inverted" href="#"
+                                                        <% } else if(tolower(log.Action) == "delete") { %>
+                                                        <a class="badge badge-danger-inverted" href="#"
                                                             style="text-transform: uppercase;"><%= log.Action %></a>
+                                                        <% } else { %>
+                                                            <a class="badge badge-success-inverted" href="#"
+                                                                style="text-transform: uppercase;"><%= log.Action %></a>
                                                         <% } %>
                                                     </td>
                                                     <td>

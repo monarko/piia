@@ -523,10 +523,11 @@ func OverReadingsDetails(c buffalo.Context) error {
 
 // OverReadingDestroy function
 func OverReadingDestroy(c buffalo.Context) error {
+	returnURL := "/cases/index"
 	user := c.Value("current_user").(*models.User)
 	if !user.Admin {
 		c.Flash().Add("danger", "Access denied")
-		return c.Redirect(302, "/cases/index")
+		return c.Redirect(302, returnURL)
 	}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -538,13 +539,15 @@ func OverReadingDestroy(c buffalo.Context) error {
 	screening := overReading.Screening
 	if !(c.Param("pid") == participant.ID.String() && c.Param("sid") == screening.ID.String()) {
 		c.Flash().Add("danger", "Not Found")
-		return c.Redirect(302, "/cases/index")
+		return c.Redirect(302, returnURL)
 	}
 
-	err := ArchiveMake(c, user.ID, overReading.ID, "OverReading", overReading)
+	reason := c.Request().FormValue("reason")
+
+	err := ArchiveMake(c, user.ID, overReading.ID, "OverReading", overReading, reason)
 	if err != nil {
 		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, "/cases/index")
+		return c.Redirect(302, returnURL)
 	}
 
 	prt := &models.Participant{}
@@ -555,20 +558,28 @@ func OverReadingDestroy(c buffalo.Context) error {
 	perrs, err := tx.ValidateAndUpdate(prt)
 	if err != nil {
 		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, "/cases/index")
+		return c.Redirect(302, returnURL)
 	}
 	if perrs.HasAny() {
 		c.Set("errors", perrs.Errors)
-		return c.Redirect(302, "/cases/index")
+		return c.Redirect(302, returnURL)
 	}
+
+	overReadingID := overReading.ID
 
 	if err := tx.Destroy(overReading); err != nil {
 		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, "/cases/index")
+		return c.Redirect(302, returnURL)
+	}
+
+	logErr := InsertLog("delete", "Case overread deleted, reason: "+reason, "", overReadingID.String(), "overReading", user.ID, c)
+	if logErr != nil {
+		c.Flash().Add("danger", logErr.Error())
+		return c.Redirect(302, returnURL)
 	}
 
 	// If there are no errors set a flash message
 	c.Flash().Add("success", "Archived successfully")
 
-	return c.Redirect(302, "/cases/index")
+	return c.Redirect(302, returnURL)
 }

@@ -3,6 +3,7 @@ package actions
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
@@ -54,7 +55,7 @@ func ArchiveShow(c buffalo.Context) error {
 	archive := &models.Archive{}
 
 	// To find the Archive the parameter archive_id is used.
-	if err := tx.Find(archive, c.Param("aid")); err != nil {
+	if err := tx.Eager().Find(archive, c.Param("aid")); err != nil {
 		return c.Error(404, err)
 	}
 
@@ -64,47 +65,31 @@ func ArchiveShow(c buffalo.Context) error {
 		o := models.OverReading{}
 		json.Unmarshal(archive.Data, &o)
 		c.Set("data", o)
+	case "Notification":
+		o := models.Notification{}
+		json.Unmarshal(archive.Data, &o)
+		c.Set("data", o)
+	case "ReferredMessage":
+		o := models.ReferredMessage{}
+		json.Unmarshal(archive.Data, &o)
+		c.Set("data", o)
+	case "Screening":
+		o := models.Screening{}
+		json.Unmarshal(archive.Data, &o)
+		c.Set("data", o)
+	case "Participant":
+		o := models.Participant{}
+		json.Unmarshal(archive.Data, &o)
+		c.Set("data", o)
 	}
+
+	breadcrumbMap := make(map[string]interface{})
+	breadcrumbMap["Archives"] = "/archives/index"
+	breadcrumbMap["Archive Detail"] = "#"
+
+	c.Set("breadcrumbMap", breadcrumbMap)
 
 	return c.Render(200, r.HTML("archives/detail.html"))
-}
-
-// ArchiveCreatePost adds a Archive to the DB. This function is mapped to the
-// path POST /archives
-func ArchiveCreatePost(c buffalo.Context) error {
-	// Allocate an empty Archive
-	archive := &models.Archive{}
-
-	// Bind archive to the html form elements
-	if err := c.Bind(archive); err != nil {
-		return err
-	}
-
-	// Get the DB connection from the context
-	tx, ok := c.Value("tx").(*pop.Connection)
-	if !ok {
-		return fmt.Errorf("no transaction found")
-	}
-
-	// Validate the data from the html form
-	verrs, err := tx.ValidateAndCreate(archive)
-	if err != nil {
-		return err
-	}
-
-	if verrs.HasAny() {
-		// Make the errors available inside the html template
-		c.Set("errors", verrs)
-
-		// Render again the new.html template that the user can
-		// correct the input.
-		return c.Render(422, r.Auto(c, archive))
-	}
-
-	// If there are no errors set a success message
-	c.Flash().Add("success", T.Translate(c, "archive.created.success"))
-	// and redirect to the archives index page
-	return c.Render(201, r.Auto(c, archive))
 }
 
 // ArchiveDestroy deletes a Archive from the DB. This function is mapped
@@ -135,11 +120,12 @@ func ArchiveDestroy(c buffalo.Context) error {
 }
 
 // ArchiveMake functions
-func ArchiveMake(c buffalo.Context, userID, modelID uuid.UUID, archiveType string, data interface{}) error {
+func ArchiveMake(c buffalo.Context, userID, modelID uuid.UUID, archiveType string, data interface{}, reason string) error {
 	archive := &models.Archive{}
 	archive.ArchiverID = userID
 	archive.ArchiveType = archiveType
 	archive.ModelID = modelID
+	archive.Reason = reason
 	bt, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -160,6 +146,7 @@ func ArchiveMake(c buffalo.Context, userID, modelID uuid.UUID, archiveType strin
 
 // ArchiveRestore functions
 func ArchiveRestore(c buffalo.Context) error {
+	returnURL := "/archives/index"
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
@@ -174,6 +161,20 @@ func ArchiveRestore(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 
+	all, res := checkForDependency(archive.Dependency, tx)
+	if !all {
+		message := "Root elements not found: "
+		t := make([]string, 0)
+		for k, v := range res {
+			if !v {
+				t = append(t, k)
+			}
+		}
+		message += strings.Join(t, ", ")
+		c.Flash().Add("danger", message)
+		return c.Redirect(302, returnURL)
+	}
+
 	switch archive.ArchiveType {
 	case "OverReading":
 		o := &models.OverReading{}
@@ -182,36 +183,86 @@ func ArchiveRestore(c buffalo.Context) error {
 		err := tx.Create(o)
 		if err != nil {
 			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, "/archives/index")
+			return c.Redirect(302, returnURL)
 		}
 		err = tx.RawQuery("UPDATE over_readings SET created_at = ? WHERE id = ?", cr, o.ID).Exec()
 		if err != nil {
 			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, "/archives/index")
+			return c.Redirect(302, returnURL)
 		}
 		prt := &models.Participant{}
 		if err := tx.Find(prt, o.ParticipantID); err != nil {
 			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, "/archives/index")
+			return c.Redirect(302, returnURL)
 		}
 		prt.Status = "111"
 		perrs, err := tx.ValidateAndUpdate(prt)
 		if err != nil {
 			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, "/archives/index")
+			return c.Redirect(302, returnURL)
 		}
 		if perrs.HasAny() {
 			c.Set("errors", perrs.Errors)
-			return c.Redirect(302, "/archives/index")
+			return c.Redirect(302, returnURL)
+		}
+	case "ReferredMessage":
+		o := &models.ReferredMessage{}
+		json.Unmarshal(archive.Data, o)
+		cr := o.CreatedAt
+		err := tx.Create(o)
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
+		}
+		err = tx.RawQuery("UPDATE referred_messages SET created_at = ? WHERE id = ?", cr, o.ID).Exec()
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
 		}
 	}
 
 	if err := tx.Destroy(archive); err != nil {
 		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, "/archives/index")
+		return c.Redirect(302, returnURL)
 	}
 
 	c.Flash().Add("success", "Archive restored successfully")
 
-	return c.Redirect(302, "/archives/index")
+	return c.Redirect(302, returnURL)
+}
+
+func checkForDependency(d models.Mapping, tx *pop.Connection) (bool, map[string]bool) {
+	res := make(map[string]bool)
+	all := true
+
+	for k, v := range d {
+		res[k] = false
+		temp := v.(map[string]interface{})
+		current := false
+		for _, id := range temp {
+			switch k {
+			case "Participant":
+				prt := &models.Participant{}
+				if err := tx.Find(prt, id); err == nil {
+					res[k] = true
+					current = true
+				}
+			case "Screening":
+				prt := &models.Screening{}
+				if err := tx.Find(prt, id); err == nil {
+					res[k] = true
+					current = true
+				}
+			case "User":
+				prt := &models.User{}
+				if err := tx.Find(prt, id); err == nil {
+					res[k] = true
+					current = true
+				}
+			}
+			all = all && current
+		}
+	}
+
+	return all, res
 }

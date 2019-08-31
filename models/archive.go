@@ -30,6 +30,7 @@ type Archive struct {
 	ArchiverID  uuid.UUID `json:"archiver_id" db:"archiver_id"`
 	Data        []byte    `json:"data" db:"data"`
 	Dependency  Mapping   `json:"dependency" db:"dependency"`
+	Reason      string    `json:"reason" db:"reason"`
 }
 
 // String is not required by pop and may be deleted

@@ -146,6 +146,7 @@ func App() *buffalo.App {
 		referrals.GET("/index", ReferralsIndex)
 		referrals.GET("/participants/{pid}", ReferralsParticipantsGet)
 		referrals.GET("/participants/{pid}/view", ReferralsParticipantsView)
+		referrals.DELETE("/participants/{pid}/delete/{rid}", AdminRequired(ReferralsDestroy))
 
 		notifications := app.Group("/notifications")
 		notifications.Use(LoginRequired)
