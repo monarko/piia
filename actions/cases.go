@@ -33,7 +33,6 @@ func CasesIndex(c buffalo.Context) error {
 		AssessmentDate *string   `db:"assessment"`
 	}
 	screenings := make([]scr, 0)
-	fresh := make([]string, 0)
 	in7Days := make([]string, 0)
 	before7Days := make([]string, 0)
 	finished := make([]string, 0)
@@ -69,9 +68,7 @@ func CasesIndex(c buffalo.Context) error {
 			}
 		}
 		ago := daysAgo(date)
-		if ago < 4 {
-			fresh = append(fresh, s.PID)
-		} else if ago < 8 {
+		if ago < 8 {
 			in7Days = append(in7Days, s.PID)
 		} else {
 			before7Days = append(before7Days, s.PID)
@@ -93,7 +90,6 @@ func CasesIndex(c buffalo.Context) error {
 		} else if c.Param("status") == "open" {
 			status = "11"
 			modifier = "="
-			inIds = append(inIds, fresh...)
 			inIds = append(inIds, in7Days...)
 			inIds = append(inIds, before7Days...)
 		} else if c.Param("status") == "open_in_7_days" {
@@ -106,13 +102,11 @@ func CasesIndex(c buffalo.Context) error {
 			inIds = append(inIds, before7Days...)
 		} else {
 			inIds = append(inIds, finished...)
-			inIds = append(inIds, fresh...)
 			inIds = append(inIds, in7Days...)
 			inIds = append(inIds, before7Days...)
 		}
 	} else {
 		inIds = append(inIds, finished...)
-		inIds = append(inIds, fresh...)
 		inIds = append(inIds, in7Days...)
 		inIds = append(inIds, before7Days...)
 	}
@@ -149,7 +143,6 @@ func CasesIndex(c buffalo.Context) error {
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
 	c.Set("finished", len(finished))
-	c.Set("fresh", len(fresh))
 	c.Set("in7Days", len(in7Days))
 	c.Set("before7Days", len(before7Days))
 
