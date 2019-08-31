@@ -122,3 +122,32 @@ func ChangeNotificationStatus(c buffalo.Context) error {
 
 	return c.Redirect(302, referrer)
 }
+
+// NotificationsDestroy function
+func NotificationsDestroy(c buffalo.Context) error {
+	returnURL := "/notifications/index"
+	user := c.Value("current_user").(*models.User)
+	if !user.Admin {
+		c.Flash().Add("danger", "Access denied")
+		return c.Redirect(302, returnURL)
+	}
+
+	tx := c.Value("tx").(*pop.Connection)
+	notification := &models.Notification{}
+	if err := tx.Eager().Find(notification, c.Param("nid")); err != nil {
+		return c.Error(404, err)
+	}
+
+	reason := c.Request().FormValue("reason")
+
+	err := ArchiveMake(c, user.ID, notification.ID, "Notification", notification, reason)
+	if err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	// If there are no errors set a flash message
+	c.Flash().Add("success", "Archived successfully")
+
+	return c.Redirect(302, returnURL)
+}

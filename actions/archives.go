@@ -9,12 +9,14 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/monarko/piia/models"
+	"github.com/pkg/errors"
 )
 
 var (
 	types = map[string]map[string]string{
 		"OverReading":     map[string]string{"log": "overReading", "table": "over_readings"},
 		"ReferredMessage": map[string]string{"log": "referred_message", "table": "referred_messages"},
+		"Notification":    map[string]string{"log": "notification", "table": "notifications"},
 		"Screening":       map[string]string{"log": "screening", "table": "screenings"},
 		"Participant":     map[string]string{"log": "participant", "table": "participants"},
 	}
@@ -150,7 +152,17 @@ func ArchiveMake(c buffalo.Context, userID, modelID uuid.UUID, archiveType strin
 		return err
 	}
 
-	logErr := InsertLog("restore", "Archive created", "", modelID.String(), types[archiveType]["log"], userID, c)
+	logErr := InsertLog("archive", "Archive created", "", modelID.String(), types[archiveType]["log"], userID, c)
+	if logErr != nil {
+		return logErr
+	}
+
+	id := modelID
+	if err := tx.Destroy(data); err != nil {
+		return err
+	}
+
+	logErr = InsertLog("delete", archiveType+" deleted, reason: "+reason, "", id.String(), types[archiveType]["log"], userID, c)
 	if logErr != nil {
 		return logErr
 	}
@@ -189,68 +201,100 @@ func ArchiveRestore(c buffalo.Context) error {
 		return c.Redirect(302, returnURL)
 	}
 
-	switch archive.ArchiveType {
-	case "OverReading":
-		o := &models.OverReading{}
-		json.Unmarshal(archive.Data, o)
-		err := tx.Create(o)
-		if err != nil {
-			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, returnURL)
-		}
-		prt := &models.Participant{}
-		if err := tx.Find(prt, o.ParticipantID); err != nil {
-			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, returnURL)
-		}
-		prt.Status = "111"
-		perrs, err := tx.ValidateAndUpdate(prt)
-		if err != nil {
-			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, returnURL)
-		}
-		if perrs.HasAny() {
-			c.Set("errors", perrs.Errors)
-			return c.Redirect(302, returnURL)
-		}
-	case "ReferredMessage":
-		o := &models.ReferredMessage{}
-		json.Unmarshal(archive.Data, o)
-		cr := o.CreatedAt
-		err := tx.Create(o)
-		if err != nil {
-			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, returnURL)
-		}
-		err = tx.RawQuery("UPDATE referred_messages SET created_at = ? WHERE id = ?", cr, o.ID).Exec()
-		if err != nil {
-			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, returnURL)
-		}
-	}
-
-	if err := updateCreatedTime(tx, *archive); err != nil {
+	err := restoreModel(tx, archive, user.ID, c)
+	if err != nil {
 		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, returnURL)
-	}
-
-	id := archive.ModelID
-	idType := types[archive.ArchiveType]
-
-	if err := tx.Destroy(archive); err != nil {
-		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, returnURL)
-	}
-
-	logErr := InsertLog("restore", "Archive restored", "", id.String(), idType["log"], user.ID, c)
-	if logErr != nil {
-		c.Flash().Add("danger", logErr.Error())
 		return c.Redirect(302, returnURL)
 	}
 
 	c.Flash().Add("success", "Archive restored successfully")
 
 	return c.Redirect(302, returnURL)
+}
+
+func restoreModel(tx *pop.Connection, archive *models.Archive, userID uuid.UUID, c buffalo.Context) error {
+	switch archive.ArchiveType {
+	case "OverReading":
+		o := &models.OverReading{}
+		json.Unmarshal(archive.Data, o)
+		err := tx.Create(o)
+		if err != nil {
+			return err
+		}
+		prt := &models.Participant{}
+		if err := tx.Find(prt, o.ParticipantID); err != nil {
+			return err
+		}
+		prt.Status = "111"
+		perrs, err := tx.ValidateAndUpdate(prt)
+		if err != nil {
+			return err
+		}
+		if perrs.HasAny() {
+			msg := ""
+			for k, v := range perrs.Errors {
+				msg += k + ": "
+				msg += strings.Join(v, ", ")
+			}
+			return errors.New(msg)
+		}
+	case "ReferredMessage":
+		o := &models.ReferredMessage{}
+		json.Unmarshal(archive.Data, o)
+		err := tx.Create(o)
+		if err != nil {
+			return err
+		}
+	case "Notification":
+		o := &models.Notification{}
+		json.Unmarshal(archive.Data, o)
+		err := tx.Create(o)
+		if err != nil {
+			return err
+		}
+	case "Screening":
+		o := &models.Screening{}
+		json.Unmarshal(archive.Data, o)
+		err := tx.Create(o)
+		if err != nil {
+			return err
+		}
+		prt := &models.Participant{}
+		if err := tx.Find(prt, o.ParticipantID); err != nil {
+			return err
+		}
+		prt.Status = "11"
+		perrs, err := tx.ValidateAndUpdate(prt)
+		if err != nil {
+			return err
+		}
+		if perrs.HasAny() {
+			msg := ""
+			for k, v := range perrs.Errors {
+				msg += k + ": "
+				msg += strings.Join(v, ", ")
+			}
+			return errors.New(msg)
+		}
+	}
+
+	if err := updateCreatedTime(tx, *archive); err != nil {
+		return err
+	}
+
+	id := archive.ModelID
+	idType := types[archive.ArchiveType]
+
+	if err := tx.Destroy(archive); err != nil {
+		return err
+	}
+
+	logErr := InsertLog("restore", "Archive restored", "", id.String(), idType["log"], userID, c)
+	if logErr != nil {
+		return logErr
+	}
+
+	return nil
 }
 
 func checkForDependency(d models.Mapping, tx *pop.Connection) (bool, map[string]bool) {

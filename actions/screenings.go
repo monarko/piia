@@ -240,3 +240,89 @@ func ScreeningsEditPost(c buffalo.Context) error {
 
 	return c.Redirect(302, "/participants/index")
 }
+
+// ScreeningsDestroy renders the form for creating a new Screening.
+func ScreeningsDestroy(c buffalo.Context) error {
+	returnURL := "/participants/" + c.Param("pid")
+	user := c.Value("current_user").(*models.User)
+	if !user.Admin {
+		c.Flash().Add("danger", "Access denied")
+		return c.Redirect(302, returnURL)
+	}
+
+	tx := c.Value("tx").(*pop.Connection)
+	screening := &models.Screening{}
+	if err := tx.Eager().Find(screening, c.Param("sid")); err != nil {
+		return c.Error(404, err)
+	}
+	participant := screening.Participant
+	if c.Param("pid") != participant.ID.String() {
+		c.Flash().Add("danger", "Not Found")
+		return c.Redirect(302, "/participants/index")
+	}
+
+	reason := c.Request().FormValue("reason")
+
+	for _, o := range screening.OverReadings {
+		err := ArchiveMake(c, user.ID, o.ID, "OverReading", o, reason)
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
+		}
+	}
+
+	for _, o := range screening.Notifications {
+		err := ArchiveMake(c, user.ID, o.ID, "Notification", o, reason)
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
+		}
+	}
+
+	for _, o := range screening.ReferredMessages {
+		err := ArchiveMake(c, user.ID, o.ID, "ReferredMessage", o, reason)
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
+		}
+	}
+
+	err := ArchiveMake(c, user.ID, screening.ID, "Screening", screening, reason)
+	if err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	prt := &models.Participant{}
+	if err := tx.Find(prt, participant.ID); err != nil {
+		return c.Error(404, err)
+	}
+	prt.Status = "1"
+	perrs, err := tx.ValidateAndUpdate(prt)
+	if err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+	if perrs.HasAny() {
+		c.Set("errors", perrs.Errors)
+		return c.Redirect(302, returnURL)
+	}
+
+	// screeningID := screening.ID
+
+	// if err := tx.Destroy(screening); err != nil {
+	// 	c.Flash().Add("danger", err.Error())
+	// 	return c.Redirect(302, returnURL)
+	// }
+
+	// logErr := InsertLog("delete", "Screening deleted, reason: "+reason, "", screeningID.String(), "screening", user.ID, c)
+	// if logErr != nil {
+	// 	c.Flash().Add("danger", logErr.Error())
+	// 	return c.Redirect(302, returnURL)
+	// }
+
+	// If there are no errors set a flash message
+	c.Flash().Add("success", "Archived successfully")
+
+	return c.Redirect(302, returnURL)
+}

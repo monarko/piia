@@ -16,22 +16,23 @@ import (
 
 // Screening model
 type Screening struct {
-	ID             uuid.UUID                     `json:"id" db:"id"`
-	CreatedAt      time.Time                     `json:"created_at" db:"created_at"`
-	UpdatedAt      time.Time                     `json:"updated_at" db:"updated_at"`
-	Diabetes       types.DiabetesScreening       `json:"diabetes" db:"diabetes"`
-	MedicalHistory types.MedicalHistoryScreening `json:"medical_history" db:"medical_history"`
-	Medications    types.MedicationScreening     `json:"medications" db:"medications"`
-	Measurements   types.MeasurementScreening    `json:"measurements" db:"measurements"`
-	Pathology      types.PathologyScreening      `json:"pathology" db:"pathology"`
-	Eyes           types.EyeScreening            `json:"eyes" db:"eye"`
-	Referral       types.ReferralScreening       `json:"referral" db:"referral"`
-	Screener       User                          `belongs_to:"user" json:"-"`
-	ScreenerID     uuid.UUID                     `json:"screener_id" db:"screener_id"`
-	Participant    Participant                   `belongs_to:"participant" json:"-"`
-	ParticipantID  uuid.UUID                     `json:"participant_id" db:"participant_id"`
-	Notifications  Notifications                 `has_many:"notifications" json:"-"`
-	OverReadings   OverReadings                  `has_many:"over_readings" json:"-"`
+	ID               uuid.UUID                     `json:"id" db:"id"`
+	CreatedAt        time.Time                     `json:"created_at" db:"created_at"`
+	UpdatedAt        time.Time                     `json:"updated_at" db:"updated_at"`
+	Diabetes         types.DiabetesScreening       `json:"diabetes" db:"diabetes"`
+	MedicalHistory   types.MedicalHistoryScreening `json:"medical_history" db:"medical_history"`
+	Medications      types.MedicationScreening     `json:"medications" db:"medications"`
+	Measurements     types.MeasurementScreening    `json:"measurements" db:"measurements"`
+	Pathology        types.PathologyScreening      `json:"pathology" db:"pathology"`
+	Eyes             types.EyeScreening            `json:"eyes" db:"eye"`
+	Referral         types.ReferralScreening       `json:"referral" db:"referral"`
+	Screener         User                          `belongs_to:"user" json:"-"`
+	ScreenerID       uuid.UUID                     `json:"screener_id" db:"screener_id"`
+	Participant      Participant                   `belongs_to:"participant" json:"-"`
+	ParticipantID    uuid.UUID                     `json:"participant_id" db:"participant_id"`
+	Notifications    Notifications                 `has_many:"notifications" json:"-"`
+	OverReadings     OverReadings                  `has_many:"over_readings" json:"-"`
+	ReferredMessages ReferredMessages              `has_many:"referred_messages" json:"-"`
 }
 
 // String is not required by pop and may be deleted
@@ -49,6 +50,7 @@ func (s Screening) Maps() map[string]interface{} {
 	delete(m, "participant")
 	delete(m, "notifications")
 	delete(m, "over_readings")
+	delete(m, "referred_messages")
 	delete(m, "created_at")
 	delete(m, "updated_at")
 	return m

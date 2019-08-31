@@ -565,19 +565,6 @@ func OverReadingDestroy(c buffalo.Context) error {
 		return c.Redirect(302, returnURL)
 	}
 
-	overReadingID := overReading.ID
-
-	if err := tx.Destroy(overReading); err != nil {
-		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, returnURL)
-	}
-
-	logErr := InsertLog("delete", "Case overread deleted, reason: "+reason, "", overReadingID.String(), "overReading", user.ID, c)
-	if logErr != nil {
-		c.Flash().Add("danger", logErr.Error())
-		return c.Redirect(302, returnURL)
-	}
-
 	// If there are no errors set a flash message
 	c.Flash().Add("success", "Archived successfully")
 

@@ -273,7 +273,6 @@ func ReferralsDestroy(c buffalo.Context) error {
 	}
 
 	tx := c.Value("tx").(*pop.Connection)
-
 	referral := &models.ReferredMessage{}
 	if err := tx.Eager().Find(referral, c.Param("rid")); err != nil {
 		return c.Error(404, err)
@@ -289,19 +288,6 @@ func ReferralsDestroy(c buffalo.Context) error {
 	err := ArchiveMake(c, user.ID, referral.ID, "ReferredMessage", referral, reason)
 	if err != nil {
 		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, returnURL)
-	}
-
-	referralID := referral.ID
-
-	if err := tx.Destroy(referral); err != nil {
-		c.Flash().Add("danger", err.Error())
-		return c.Redirect(302, returnURL)
-	}
-
-	logErr := InsertLog("delete", "ReferredMessage deleted, reason: "+reason, "", referralID.String(), "referred_message", user.ID, c)
-	if logErr != nil {
-		c.Flash().Add("danger", logErr.Error())
 		return c.Redirect(302, returnURL)
 	}
 

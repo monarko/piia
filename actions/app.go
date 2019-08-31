@@ -108,6 +108,7 @@ func App() *buffalo.App {
 		screenings.POST("/create", ScreeningsCreatePost)
 		screenings.GET("/edit/{sid}", ScreeningsEditGet).Name("participantScreeningsEditPath")
 		screenings.POST("/edit/{sid}", ScreeningsEditPost).Name("participantScreeningsEditPath")
+		screenings.DELETE("/delete/{sid}", AdminRequired(ScreeningsDestroy))
 
 		overReadings := screenings.Group("/{sid}/overreadings")
 		overReadings.Middleware.Skip(ScreeningPermissionRequired, OverReadingsCreateGet, OverReadingsCreatePost, OverReadingsDetails, OverReadingsEditGet, OverReadingsEditPost)
@@ -152,6 +153,7 @@ func App() *buffalo.App {
 		notifications.Use(LoginRequired)
 		notifications.GET("/", NotificationsIndex)
 		notifications.GET("/index", NotificationsIndex)
+		notifications.DELETE("/delete/{nid}", AdminRequired(NotificationsDestroy))
 
 		// app.Resource("/system_logs", SystemLogsResource{})
 		logs := app.Group("/logs")

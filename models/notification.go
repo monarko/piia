@@ -17,11 +17,11 @@ type Notification struct {
 	UpdatedAt     time.Time        `json:"updated_at" db:"updated_at"`
 	Type          string           `json:"type" db:"type"`
 	Message       string           `json:"message" db:"message"`
-	FromUser      User             `belongs_to:"user" json:"from_user"`
+	FromUser      User             `belongs_to:"user" json:"-"`
 	FromUserID    uuid.UUID        `json:"from_user_id" db:"from_user_id"`
-	Participant   Participant      `belongs_to:"participant" json:"participant"`
+	Participant   Participant      `belongs_to:"participant" json:"-"`
 	ParticipantID uuid.UUID        `json:"participant_id" db:"participant_id"`
-	Screening     Screening        `belongs_to:"screening" json:"screening"`
+	Screening     Screening        `belongs_to:"screening" json:"-"`
 	ScreeningID   uuid.UUID        `json:"screening_id" db:"screening_id"`
 	Status        string           `json:"status" db:"status"`
 	Site          string           `json:"site" db:"site"`
