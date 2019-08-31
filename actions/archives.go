@@ -11,6 +11,15 @@ import (
 	"github.com/monarko/piia/models"
 )
 
+var (
+	types = map[string]map[string]string{
+		"OverReading":     map[string]string{"log": "overReading", "table": "over_readings"},
+		"ReferredMessage": map[string]string{"log": "referred_message", "table": "referred_messages"},
+		"Screening":       map[string]string{"log": "screening", "table": "screenings"},
+		"Participant":     map[string]string{"log": "participant", "table": "participants"},
+	}
+)
+
 // ArchiveIndex gets all Archives. This function is mapped to the path
 // GET /archives
 func ArchiveIndex(c buffalo.Context) error {
@@ -141,6 +150,11 @@ func ArchiveMake(c buffalo.Context, userID, modelID uuid.UUID, archiveType strin
 		return err
 	}
 
+	logErr := InsertLog("restore", "Archive created", "", modelID.String(), types[archiveType]["log"], userID, c)
+	if logErr != nil {
+		return logErr
+	}
+
 	return nil
 }
 
@@ -152,10 +166,10 @@ func ArchiveRestore(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	user := c.Value("current_user").(*models.User)
 
 	// Allocate an empty Archive
 	archive := &models.Archive{}
-
 	// To find the Archive the parameter archive_id is used.
 	if err := tx.Find(archive, c.Param("aid")); err != nil {
 		return c.Error(404, err)
@@ -179,13 +193,7 @@ func ArchiveRestore(c buffalo.Context) error {
 	case "OverReading":
 		o := &models.OverReading{}
 		json.Unmarshal(archive.Data, o)
-		cr := o.CreatedAt
 		err := tx.Create(o)
-		if err != nil {
-			c.Flash().Add("danger", err.Error())
-			return c.Redirect(302, returnURL)
-		}
-		err = tx.RawQuery("UPDATE over_readings SET created_at = ? WHERE id = ?", cr, o.ID).Exec()
 		if err != nil {
 			c.Flash().Add("danger", err.Error())
 			return c.Redirect(302, returnURL)
@@ -221,8 +229,22 @@ func ArchiveRestore(c buffalo.Context) error {
 		}
 	}
 
+	if err := updateCreatedTime(tx, *archive); err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	id := archive.ModelID
+	idType := types[archive.ArchiveType]
+
 	if err := tx.Destroy(archive); err != nil {
 		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	logErr := InsertLog("restore", "Archive restored", "", id.String(), idType["log"], user.ID, c)
+	if logErr != nil {
+		c.Flash().Add("danger", logErr.Error())
 		return c.Redirect(302, returnURL)
 	}
 
@@ -265,4 +287,16 @@ func checkForDependency(d models.Mapping, tx *pop.Connection) (bool, map[string]
 	}
 
 	return all, res
+}
+
+func updateCreatedTime(tx *pop.Connection, a models.Archive) error {
+	table := types[a.ArchiveType]["table"]
+	id := a.ModelID
+	data := make(map[string]interface{})
+	json.Unmarshal(a.Data, &data)
+	err := tx.RawQuery("UPDATE "+table+" SET created_at = ? WHERE id = ?", data["created_at"], id).Exec()
+	if err != nil {
+		return err
+	}
+	return nil
 }
