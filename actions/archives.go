@@ -156,7 +156,6 @@ func ArchiveMake(c buffalo.Context, userID, modelID uuid.UUID, archiveType strin
 	if logErr != nil {
 		return logErr
 	}
-
 	id := modelID
 	if err := tx.Destroy(data); err != nil {
 		return err
@@ -275,6 +274,13 @@ func restoreModel(tx *pop.Connection, archive *models.Archive, userID uuid.UUID,
 				msg += strings.Join(v, ", ")
 			}
 			return errors.New(msg)
+		}
+	case "Participant":
+		o := &models.Participant{}
+		json.Unmarshal(archive.Data, o)
+		err := tx.Create(o)
+		if err != nil {
+			return err
 		}
 	}
 

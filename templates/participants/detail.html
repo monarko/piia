@@ -24,7 +24,7 @@
     </div>
     <div class="col-sm-4" style="margin-left: 36px;">
         <%= if (current_user.Admin) { %>
-            <form class="delete-form" action="" method="POST">
+            <form class="delete-form" action="<%= participantsDeletePath({pid: participant.ID}) %>" method="POST">
                 <%= csrf() %>
                 <input type="hidden" name="_method" value="DELETE" />
                 <input type="hidden" name="reason" value="" />

@@ -91,6 +91,7 @@ func App() *buffalo.App {
 		participants.POST("/create", ParticipantsCreatePost)
 		participants.GET("/edit/{pid}", ParticipantsEditGet).Name("participantsEditPath")
 		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
+		participants.DELETE("/delete/{pid}", AdminRequired(ParticipantsDestroy))
 		participants.GET("/{pid}", ParticipantsDetail)
 		// participants.GET("/delete", ParticipantsDelete)
 		// participants.GET("/detail", ParticipantsDetail)

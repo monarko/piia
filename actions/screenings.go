@@ -264,7 +264,7 @@ func ScreeningsDestroy(c buffalo.Context) error {
 	reason := c.Request().FormValue("reason")
 
 	for _, o := range screening.OverReadings {
-		err := ArchiveMake(c, user.ID, o.ID, "OverReading", o, reason)
+		err := ArchiveMake(c, user.ID, o.ID, "OverReading", &o, reason)
 		if err != nil {
 			c.Flash().Add("danger", err.Error())
 			return c.Redirect(302, returnURL)
@@ -272,7 +272,7 @@ func ScreeningsDestroy(c buffalo.Context) error {
 	}
 
 	for _, o := range screening.Notifications {
-		err := ArchiveMake(c, user.ID, o.ID, "Notification", o, reason)
+		err := ArchiveMake(c, user.ID, o.ID, "Notification", &o, reason)
 		if err != nil {
 			c.Flash().Add("danger", err.Error())
 			return c.Redirect(302, returnURL)
@@ -280,7 +280,7 @@ func ScreeningsDestroy(c buffalo.Context) error {
 	}
 
 	for _, o := range screening.ReferredMessages {
-		err := ArchiveMake(c, user.ID, o.ID, "ReferredMessage", o, reason)
+		err := ArchiveMake(c, user.ID, o.ID, "ReferredMessage", &o, reason)
 		if err != nil {
 			c.Flash().Add("danger", err.Error())
 			return c.Redirect(302, returnURL)
@@ -307,19 +307,6 @@ func ScreeningsDestroy(c buffalo.Context) error {
 		c.Set("errors", perrs.Errors)
 		return c.Redirect(302, returnURL)
 	}
-
-	// screeningID := screening.ID
-
-	// if err := tx.Destroy(screening); err != nil {
-	// 	c.Flash().Add("danger", err.Error())
-	// 	return c.Redirect(302, returnURL)
-	// }
-
-	// logErr := InsertLog("delete", "Screening deleted, reason: "+reason, "", screeningID.String(), "screening", user.ID, c)
-	// if logErr != nil {
-	// 	c.Flash().Add("danger", logErr.Error())
-	// 	return c.Redirect(302, returnURL)
-	// }
 
 	// If there are no errors set a flash message
 	c.Flash().Add("success", "Archived successfully")
