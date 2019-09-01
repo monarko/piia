@@ -5,7 +5,23 @@
                 Archive Detail
             </h6>
             <div class="element-box">
-                <h3><%= archive.ArchiveType %></h3>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h3><%= archive.ArchiveType %></h3>
+                    </div>
+                    <div class="col-sm-4">
+                        <%= if (current_user.Admin) { %>
+                            <form class="delete-form" action="<%= archivesDeletePath({aid: archive.ID}) %>" method="POST">
+                            <%= csrf() %>
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <input type="hidden" name="reason" value="" />
+                            <div class="action-item col-md-auto" style="padding-right: 0; float: right;">                                        
+                                <button class="btn btn-outline-danger delete-btn" title="Delete"><i class="fa fa-trash-alt fa-sm"></i> Delete</button>                                        
+                            </div>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <span class="badge badge-primary">Dependency</span>

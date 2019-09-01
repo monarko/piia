@@ -106,28 +106,39 @@ func ArchiveShow(c buffalo.Context) error {
 // ArchiveDestroy deletes a Archive from the DB. This function is mapped
 // to the path DELETE /archives/{archive_id}
 func ArchiveDestroy(c buffalo.Context) error {
+	returnURL := "/archives/index"
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+	user := c.Value("current_user").(*models.User)
 
 	// Allocate an empty Archive
 	archive := &models.Archive{}
 
 	// To find the Archive the parameter archive_id is used.
-	if err := tx.Find(archive, c.Param("archive_id")); err != nil {
+	if err := tx.Find(archive, c.Param("aid")); err != nil {
 		return c.Error(404, err)
 	}
 
+	reason := c.Request().FormValue("reason")
+
 	if err := tx.Destroy(archive); err != nil {
-		return err
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	logErr := InsertLog("delete", "Archive deleted PERMANENTLY, reason: "+reason, "", c.Param("aid"), "archive", user.ID, c)
+	if logErr != nil {
+		c.Flash().Add("danger", logErr.Error())
+		return c.Redirect(302, returnURL)
 	}
 
 	// If there are no errors set a flash message
 	c.Flash().Add("success", T.Translate(c, "archive.destroyed.success"))
 	// Redirect to the archives index page
-	return c.Render(200, r.Auto(c, archive))
+	return c.Redirect(302, returnURL)
 }
 
 // ArchiveMake functions
