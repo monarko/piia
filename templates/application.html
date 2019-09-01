@@ -44,17 +44,15 @@
                                             <% } %>
                                         </button>
                                         <div class="dropdown-menu" style="width: 100%;">
-                                            <%= if (current_user.Permission.Screening && !(current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.StudyTeamMember)) { %>
-                                                <a class="dropdown-item active" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=<%= current_site %>"><%= t("site_" + current_site) %></a>
-                                            <% } else { %>
+                                            <%= if (len(current_user.Sites) == 0) { %>
                                                 <a class="dropdown-item <%= if (len(current_site) == 0) { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>"><%= t("site_all") %></a>
-                                                <a class="dropdown-item <%= if (current_site == "K") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=K"><%= t("site_K") %></a>
-                                                <a class="dropdown-item <%= if (current_site == "L") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=L"><%= t("site_L") %></a>
-                                                <a class="dropdown-item <%= if (current_site == "N") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=N"><%= t("site_N") %></a>
-                                                <a class="dropdown-item <%= if (current_site == "O") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=O"><%= t("site_O") %></a>
-                                                <a class="dropdown-item <%= if (current_site == "R") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=R"><%= t("site_R") %></a>
-                                                <a class="dropdown-item <%= if (current_site == "S") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=S"><%= t("site_S") %></a>
-                                                <a class="dropdown-item <%= if (current_site == "T") { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=T"><%= t("site_T") %></a>
+                                            <% } %>
+
+                                            <% let sites = ["K", "L", "N", "O", "R", "S", "T"] %>
+                                            <%= for (s) in sites { %>
+                                                <%= if (stringInSlice(s, current_user.Sites) || len(current_user.Sites) == 0) { %>
+                                                    <a class="dropdown-item <%= if (current_site == s) { %>active<% } %>" style="padding: 5px 10px;" href="<%= switchSitePath() %>?site=<%= s %>"><%= t("site_"+s) %></a>
+                                                <% } %>
                                             <% } %>
                                         </div>
                                     </div>

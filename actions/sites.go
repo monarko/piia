@@ -48,6 +48,9 @@ func SetCurrentSite(next buffalo.Handler) buffalo.Handler {
 					c.Set("current_site", "")
 				} else {
 					c.Set("current_site", user.Site)
+					if len(user.Site) > 1 {
+						c.Set("current_site", user.Sites[0])
+					}
 				}
 			} else {
 				c.Set("current_site", "")

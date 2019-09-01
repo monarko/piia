@@ -32,6 +32,7 @@ type User struct {
 	Provider        string    `json:"provider" db:"provider"`
 	ProviderID      string    `json:"provider_id" db:"provider_id"`
 	Avatar          string    `json:"avatar" db:"avatar"`
+	Sites           []string  `json:"sites" db:"-"`
 
 	Permission types.Permission `json:"permissions" db:"permissions"`
 
@@ -40,6 +41,12 @@ type User struct {
 	OverReadings  OverReadings  `has_many:"over_readings" fk_id:"over_reader_id" json:"-"`
 	SystemLogs    SystemLogs    `has_many:"system_logs" json:"-"`
 	Notifications Notifications `has_many:"notifications" json:"-"`
+}
+
+// UserSites returns user sites
+func (u User) UserSites() []string {
+	sites := strings.Split(u.Site, "")
+	return sites
 }
 
 // String is not required by pop and may be deleted
@@ -97,6 +104,8 @@ func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 	valids = append(valids, &validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirm, Message: "Passwords do not match."})
 	valids = append(valids, &EmailNotTaken{Name: "Email", Field: u.Email, tx: tx})
 
+	u.Site = strings.Join(u.Sites, "")
+
 	if u.Permission.Screening && !u.Permission.StudyCoordinator && !u.Admin && !u.Permission.ReferralTracker && !u.Permission.OverRead {
 		valids = append(valids, &validators.StringIsPresent{Field: u.Site, Name: "Site"})
 	}
@@ -112,6 +121,8 @@ func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	valids = append(valids, &validators.StringIsPresent{Field: u.Name, Name: "Name"})
 	valids = append(valids, &validators.EmailIsPresent{Name: "Email", Field: u.Email})
 	valids = append(valids, &validators.StringsMatch{Name: "Password", Field: u.Password, Field2: u.PasswordConfirm, Message: "Passwords do not match."})
+
+	u.Site = strings.Join(u.Sites, "")
 
 	if u.Permission.Screening && !u.Permission.StudyCoordinator && !u.Admin && !u.Permission.ReferralTracker && !u.Permission.OverRead {
 		valids = append(valids, &validators.StringIsPresent{Field: u.Site, Name: "Site"})

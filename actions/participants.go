@@ -101,10 +101,11 @@ func ParticipantsCreateGet(c buffalo.Context) error {
 	// user := c.Value("current_user").(*models.User)
 	// luhnID := helpers.GenerateLuhnIDWithGivenPrefix(user.Site)
 	// c.Set("luhnID", luhnID.ID)
-	user := c.Value("current_user").(*models.User)
+	// user := c.Value("current_user").(*models.User)
+	currentSite := c.Value("current_site").(string)
 	prefix := "P"
-	if len(user.Site) > 0 {
-		prefix = prefix + user.Site
+	if len(currentSite) > 0 {
+		prefix = prefix + currentSite
 	}
 	c.Set("participantIDPrefix", prefix)
 	breadcrumbMap := make(map[string]interface{})
@@ -121,9 +122,10 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	oldParticipant := participant.Maps()
 	user := c.Value("current_user").(*models.User)
 
+	currentSite := c.Value("current_site").(string)
 	prefix := "P"
-	if len(user.Site) > 0 {
-		prefix = prefix + user.Site
+	if len(currentSite) > 0 {
+		prefix = prefix + currentSite
 	}
 	c.Set("participantIDPrefix", prefix)
 
@@ -266,9 +268,10 @@ func ParticipantsEditPost(c buffalo.Context) error {
 	participant := &models.Participant{}
 	user := c.Value("current_user").(*models.User)
 
+	currentSite := c.Value("current_site").(string)
 	prefix := "P"
-	if len(user.Site) > 0 {
-		prefix = prefix + user.Site
+	if len(currentSite) > 0 {
+		prefix = prefix + currentSite
 	}
 	c.Set("participantIDPrefix", prefix)
 
