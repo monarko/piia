@@ -104,9 +104,9 @@ func (s Screening) Statuses() Status {
 		pathology.Done = true
 	}
 
-	if len(s.Eyes.RightEye.VisualAcuity.String) > 0 && len(s.Eyes.RightEye.DRGrading.String) > 0 && len(s.Eyes.RightEye.DMEAssessment.String) > 0 && len(s.Eyes.LeftEye.VisualAcuity.String) > 0 && len(s.Eyes.LeftEye.DRGrading.String) > 0 && len(s.Eyes.LeftEye.DMEAssessment.String) > 0 {
-		eyeAssessments.Done = true
-	}
+	// if len(s.Eyes.RightEye.VisualAcuity.String) > 0 && len(s.Eyes.RightEye.DRGrading.String) > 0 && len(s.Eyes.RightEye.DMEAssessment.String) > 0 && len(s.Eyes.LeftEye.VisualAcuity.String) > 0 && len(s.Eyes.LeftEye.DRGrading.String) > 0 && len(s.Eyes.LeftEye.DMEAssessment.String) > 0 {
+	eyeAssessments.Done = true
+	// }
 
 	if s.MedicalHistory.Smoker.Valid && (s.MedicalHistory.Morbidities != nil || (diabetes.Done && medications.Done && measurements.Done && pathology.Done && eyeAssessments.Done)) {
 		medicalHistory.Done = true
@@ -229,7 +229,7 @@ func (s Screening) Completeness() int {
 	score, total := 0, 0
 
 	// Screening
-	scTotal := 190
+	scTotal := 130
 
 	if s.Diabetes.DiabetesType.Valid {
 		score += 10
@@ -270,24 +270,24 @@ func (s Screening) Completeness() int {
 	if !s.Eyes.AssessmentDate.CalculatedDate.IsZero() {
 		score += 10
 	}
-	if s.Eyes.RightEye.VisualAcuity.Valid {
-		score += 10
-	}
-	if s.Eyes.RightEye.DRGrading.Valid {
-		score += 10
-	}
-	if s.Eyes.RightEye.DMEAssessment.Valid {
-		score += 10
-	}
-	if s.Eyes.LeftEye.VisualAcuity.Valid {
-		score += 10
-	}
-	if s.Eyes.LeftEye.DRGrading.Valid {
-		score += 10
-	}
-	if s.Eyes.LeftEye.DMEAssessment.Valid {
-		score += 10
-	}
+	// if s.Eyes.RightEye.VisualAcuity.Valid {
+	// 	score += 10
+	// }
+	// if s.Eyes.RightEye.DRGrading.Valid {
+	// 	score += 10
+	// }
+	// if s.Eyes.RightEye.DMEAssessment.Valid {
+	// 	score += 10
+	// }
+	// if s.Eyes.LeftEye.VisualAcuity.Valid {
+	// 	score += 10
+	// }
+	// if s.Eyes.LeftEye.DRGrading.Valid {
+	// 	score += 10
+	// }
+	// if s.Eyes.LeftEye.DMEAssessment.Valid {
+	// 	score += 10
+	// }
 	total += scTotal
 
 	if total > 0 {

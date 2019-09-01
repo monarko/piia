@@ -90,7 +90,7 @@ func (p Participant) Completeness() int {
 	total += 40
 
 	// Screening
-	scTotal := 190
+	scTotal := 130
 	if len(p.Screenings) > 0 {
 		s := p.Screenings[0]
 		if s.Diabetes.DiabetesType.Valid {
@@ -132,24 +132,24 @@ func (p Participant) Completeness() int {
 		if !s.Eyes.AssessmentDate.CalculatedDate.IsZero() {
 			score += 10
 		}
-		if s.Eyes.RightEye.VisualAcuity.Valid {
-			score += 10
-		}
-		if s.Eyes.RightEye.DRGrading.Valid {
-			score += 10
-		}
-		if s.Eyes.RightEye.DMEAssessment.Valid {
-			score += 10
-		}
-		if s.Eyes.LeftEye.VisualAcuity.Valid {
-			score += 10
-		}
-		if s.Eyes.LeftEye.DRGrading.Valid {
-			score += 10
-		}
-		if s.Eyes.LeftEye.DMEAssessment.Valid {
-			score += 10
-		}
+		// if s.Eyes.RightEye.VisualAcuity.Valid {
+		// 	score += 10
+		// }
+		// if s.Eyes.RightEye.DRGrading.Valid {
+		// 	score += 10
+		// }
+		// if s.Eyes.RightEye.DMEAssessment.Valid {
+		// 	score += 10
+		// }
+		// if s.Eyes.LeftEye.VisualAcuity.Valid {
+		// 	score += 10
+		// }
+		// if s.Eyes.LeftEye.DRGrading.Valid {
+		// 	score += 10
+		// }
+		// if s.Eyes.LeftEye.DMEAssessment.Valid {
+		// 	score += 10
+		// }
 	}
 	total += scTotal
 
