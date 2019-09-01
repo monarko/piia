@@ -35,16 +35,16 @@ func ArchiveIndex(c buffalo.Context) error {
 
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
-	q := tx.PaginateFromParams(c.Params())
+	// q := tx.PaginateFromParams(c.Params())
 
 	// Retrieve all Archives from the DB
-	if err := q.Eager().All(archives); err != nil {
+	if err := tx.Eager().All(archives); err != nil {
 		return err
 	}
 
 	c.Set("archives", archives)
 	// Add the paginator to the context so it can be used in the template.
-	c.Set("pagination", q.Paginator)
+	// c.Set("pagination", q.Paginator)
 
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Archives"] = "/archives/index"
@@ -123,13 +123,13 @@ func ArchiveDestroy(c buffalo.Context) error {
 	}
 
 	reason := c.Request().FormValue("reason")
-
+	aType := archive.ArchiveType
 	if err := tx.Destroy(archive); err != nil {
 		c.Flash().Add("danger", err.Error())
 		return c.Redirect(302, returnURL)
 	}
 
-	logErr := InsertLog("delete", "Archive deleted PERMANENTLY, reason: "+reason, "", c.Param("aid"), "archive", user.ID, c)
+	logErr := InsertLog("delete", "Archive ("+aType+") deleted PERMANENTLY, reason: "+reason, "", c.Param("aid"), "archive", user.ID, c)
 	if logErr != nil {
 		c.Flash().Add("danger", logErr.Error())
 		return c.Redirect(302, returnURL)
@@ -163,7 +163,7 @@ func ArchiveMake(c buffalo.Context, userID, modelID uuid.UUID, archiveType strin
 		return err
 	}
 
-	logErr := InsertLog("archive", "Archive created", "", modelID.String(), types[archiveType]["log"], userID, c)
+	logErr := InsertLog("archive", "Archive created ("+archiveType+")", "", modelID.String(), types[archiveType]["log"], userID, c)
 	if logErr != nil {
 		return logErr
 	}
@@ -306,7 +306,7 @@ func restoreModel(tx *pop.Connection, archive *models.Archive, userID uuid.UUID,
 		return err
 	}
 
-	logErr := InsertLog("restore", "Archive restored", "", id.String(), idType["log"], userID, c)
+	logErr := InsertLog("restore", "Archive restored ("+archive.ArchiveType+")", "", id.String(), idType["log"], userID, c)
 	if logErr != nil {
 		return logErr
 	}
