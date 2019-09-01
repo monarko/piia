@@ -81,8 +81,10 @@
 									<%= user.Mobile %>
 								</td>
 								<td class="text-center">
-									<%= if (len(user.Site) > 0) { %>
-										<%= t("site_"+user.Site) %> (P<%= user.Site %>)
+									<%= if (len(user.UserSites()) > 0) { %>
+										<%= for (site) in user.UserSites() { %>
+											<%= t("site_"+site) %> (P<%= site %>)
+										<% } %>
 									<% } %>
 								</td>
 								<td class="text-center">

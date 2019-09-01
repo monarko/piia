@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"strings"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/pop"
@@ -138,6 +140,7 @@ func UsersCreatePost(c buffalo.Context) error {
 	if err := c.Bind(user); err != nil {
 		return errors.WithStack(err)
 	}
+
 	// Get the DB connection from the context
 	tx := c.Value("tx").(*pop.Connection)
 	// Validate the data from the html form
@@ -191,6 +194,7 @@ func UsersEditGet(c buffalo.Context) error {
 	if err := tx.Find(user, c.Param("uid")); err != nil {
 		return c.Error(404, err)
 	}
+	user.Sites = user.UserSites()
 	c.Set("user", user)
 
 	breadcrumbMap := make(map[string]interface{})
@@ -252,6 +256,7 @@ func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
 			tx := c.Value("tx").(*pop.Connection)
 			err := tx.Find(u, uid)
 			if err == nil {
+				u.Sites = strings.Split(u.Site, "")
 				c.Set("current_user", u)
 				if u.Admin {
 					c.Set("admin_user", u.Admin)

@@ -30,38 +30,38 @@
                     <fieldset class="form-group">
                         <legend><span>Demographics</span></legend>
                         <div class="row">
-                            <div class="col-sm-10">
+                            <div class="col-sm-8">
                                 <div class="form-group">
                                     <label for="">Name</label><input class="form-control" placeholder="Name" type="text"
                                         name="Name" value="<%= user.Name %>">
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for=""> Site</label>
-                                    <select class="form-control" name="Site">
-                                            <option value="">
+                                    <select class="form-control select2" name="Sites[]" multiple>
+                                            <option value="" <%= if (stringInSlice("", user.Sites)) { %> selected <% } %>>
                                                 All
                                             </option>
-                                            <option value="K" <%= if (user.Site == "K") { %> selected <% } %>>
+                                            <option value="K" <%= if (stringInSlice("K", user.Sites)) { %> selected <% } %>>
                                                 <%= t("site_K") %> (PK)
                                             </option>
-                                            <option value="L" <%= if (user.Site == "L") { %> selected <% } %>>
+                                            <option value="L" <%= if (stringInSlice("L", user.Sites)) { %> selected <% } %>>
                                                 <%= t("site_L") %> (PL)
                                             </option>
-                                            <option value="N" <%= if (user.Site == "N") { %> selected <% } %>>
+                                            <option value="N" <%= if (stringInSlice("N", user.Sites)) { %> selected <% } %>>
                                                 <%= t("site_N") %> (PN)
                                             </option>
-                                            <option value="O" <%= if (user.Site == "O") { %> selected <% } %>>
+                                            <option value="O" <%= if (stringInSlice("O", user.Sites)) { %> selected <% } %>>
                                                 <%= t("site_O") %> (PO)
                                             </option>
-                                            <option value="R" <%= if (user.Site == "R") { %> selected <% } %>>
+                                            <option value="R" <%= if (stringInSlice("R", user.Sites)) { %> selected <% } %>>
                                                 <%= t("site_R") %> (PR)
                                             </option>
-                                            <option value="S" <%= if (user.Site == "S") { %> selected <% } %>>
+                                            <option value="S" <%= if (stringInSlice("S", user.Sites)) { %> selected <% } %>>
                                                 <%= t("site_S") %> (PS)
                                             </option>
-                                            <option value="T" <%= if (user.Site == "T") { %> selected <% } %>>
+                                            <option value="T" <%= if (stringInSlice("T", user.Sites)) { %> selected <% } %>>
                                                 <%= t("site_T") %> (PT)
                                             </option>
                                     </select>
