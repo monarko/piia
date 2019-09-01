@@ -9,9 +9,9 @@
                 <div class="controls-above-table">
                     <div class="row">
                         <div class="col-sm-7">
-                            <a href="?status=" class="btn btn-sm btn-primary"><%= t("option_overreading_all") %>: <%= fresh+in7Days+before7Days+finished %></a>
+                            <a href="?status=" class="btn btn-sm btn-primary"><%= t("option_overreading_all") %>: <%= in7Days+before7Days+finished %></a>
                             <a href="?status=completed" class="btn btn-sm btn-info"><%= t("option_overreading_completed") %>: <%= finished %></a>
-                            <!-- <a href="?status=open" class="btn btn-sm btn-warning"><%= t("option_overreading_open") %>: <%= fresh+in7Days+before7Days %></a> -->
+                            <!-- <a href="?status=open" class="btn btn-sm btn-warning"><%= t("option_overreading_open") %>: <%= in7Days+before7Days %></a> -->
                             <a href="?status=open_in_7_days" class="btn btn-sm btn-success"><%= t("option_overreading_open_in_7_days") %>: <%= in7Days %></a>
                             <a href="?status=open_before_7_days" class="btn btn-sm btn-danger"><%= t("option_overreading_open_before_7_days") %>: <%= before7Days %></a>                        
                         </div>
@@ -131,6 +131,16 @@
                                         <div class="action-item col-md-auto" style="padding-right: 0;">                                        
                                             <a class="btn btn-sm btn-info" href="<%= participantScreeningOverreadingPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> View</a>
                                         </div>
+                                        <%= if (current_user.Admin) { %>
+                                            <form class="delete-form" action="<%= participantScreeningOverreadingsDeletePath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" method="POST">
+                                                <%= csrf() %>
+                                                <input type="hidden" name="_method" value="DELETE" />
+                                                <input type="hidden" name="reason" value="" />
+                                                <div class="action-item col-md-auto" style="padding-right: 0;">                                        
+                                                    <button class="btn btn-sm btn-outline-danger delete-btn" title="Over-read"><i class="fa fa-trash-alt fa-sm"></i> Delete</button>                                        
+                                                </div>
+                                            </form>
+                                        <% } %>
                                         <% } %>
                                     <% } %>
                                 </div>

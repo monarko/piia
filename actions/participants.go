@@ -594,3 +594,63 @@ func ParticipantsReferralAppointmentDone(c buffalo.Context) error {
 	c.Flash().Add("success", "Participant is marked successfully.")
 	return c.Redirect(302, "/referrals/index")
 }
+
+// ParticipantsDestroy for the insert form
+func ParticipantsDestroy(c buffalo.Context) error {
+	returnURL := "/participants/index"
+	user := c.Value("current_user").(*models.User)
+	if !user.Admin {
+		c.Flash().Add("danger", "Access denied")
+		return c.Redirect(302, returnURL)
+	}
+
+	tx := c.Value("tx").(*pop.Connection)
+	participant := &models.Participant{}
+	if err := tx.Eager().Find(participant, c.Param("pid")); err != nil {
+		return c.Error(404, err)
+	}
+
+	reason := c.Request().FormValue("reason")
+
+	for _, o := range participant.OverReadings {
+		err := ArchiveMake(c, user.ID, o.ID, "OverReading", &o, reason)
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
+		}
+	}
+
+	for _, o := range participant.Notifications {
+		err := ArchiveMake(c, user.ID, o.ID, "Notification", &o, reason)
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
+		}
+	}
+
+	for _, o := range participant.Referrals {
+		err := ArchiveMake(c, user.ID, o.ID, "ReferredMessage", &o, reason)
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
+		}
+	}
+
+	for _, o := range participant.Screenings {
+		err := ArchiveMake(c, user.ID, o.ID, "Screening", &o, reason)
+		if err != nil {
+			c.Flash().Add("danger", err.Error())
+			return c.Redirect(302, returnURL)
+		}
+	}
+
+	err := ArchiveMake(c, user.ID, participant.ID, "Participant", participant, reason)
+	if err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	c.Flash().Add("success", "Archived successfully")
+
+	return c.Redirect(302, returnURL)
+}

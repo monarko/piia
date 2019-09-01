@@ -134,6 +134,15 @@
                         </li>
 
                         <li class="">
+                            <a href="<%= archivesIndexPath() %>">
+                                <div class="icon-w">
+                                    <div class="fa fa-archive"></div>
+                                </div>
+                                <span>Archives</span>
+                            </a>
+                        </li>
+
+                        <li class="">
                             <a href="<%= logsIndexPath() %>">
                                 <div class="icon-w">
                                     <div class="fa fa-database"></div>
@@ -408,10 +417,69 @@
                 toogleReferralRefusalBox();
             });
         
+            $(".delete-btn").on("click", function (ee) {
+                ee.preventDefault();
+                var df = $(this).parents("form");
+                var reason = df.find('input[name=reason]')
+                var matching = makeid(5)+'-'+makeid(5);
+                $.confirm({
+                    title: 'Are you Sure?',
+                    content: '' +
+                    '<form action="" class="formName">' +
+                    '<div class="form-group">' +
+                    '<label>Type <b>'+matching+'</b> in the box to delete this resource</label>' +
+                    '<input type="text" placeholder="" class="typeValue form-control" required />' +
+                    '<br><label>Reason to delete</label>' +
+                    '<textarea type="text" placeholder="" class="typeText form-control" required></textarea>' +
+                    '</div>' +
+                    '</form>',
+                    buttons: {
+                        formSubmit: {
+                            text: 'Submit',
+                            btnClass: 'btn-blue',
+                            action: function () {
+                                var value = this.$content.find('.typeValue').val();
+                                if(value != matching){
+                                    $.alert('Invalid code');
+                                    return false;
+                                }
+                                var text = this.$content.find('.typeText').val();
+                                if($.trim(text).length == 0) {
+                                    $.alert('Invalid reason text');
+                                    return false;
+                                }
+                                reason.val(text);
+                                df.submit();
+                            }
+                        },
+                        cancel: function () {
+                        },
+                    },
+                    onContentReady: function () {
+                        // bind to events
+                        var jc = this;
+                        this.$content.find('form').on('submit', function (e) {
+                            // if the user submits the form by pressing enter in the field.
+                            e.preventDefault();
+                            jc.$$formSubmit.trigger('click'); // reference the button and click it
+                        });
+                    },
+                });
+            });
+           
             if ($('#dataTable1').length) {
                 $('#dataTable1').DataTable({
                     'columnDefs': [{
                         'targets': [2,5,6], /* column index */
+                        'orderable': false, /* true or false */
+                    }]                             
+                });
+            }
+
+            if ($('#dataTableArchive').length) {
+                $('#dataTableArchive').DataTable({
+                    'columnDefs': [{
+                        'targets': [3, 4], /* column index */
                         'orderable': false, /* true or false */
                     }]                             
                 });
@@ -443,6 +511,16 @@
                         tr.addClass('shown');
                     }
                 } );
+            }
+        
+            if ($("#archive-json").length) {
+                var archiveJson = JSON.stringify(JSON.parse($("#archive-json").val()), undefined, 4);
+                $("#archive-json").text(archiveJson);
+            }
+
+            if ($("#archive-data-json").length) {
+                var archiveJson = JSON.stringify(JSON.parse($("#archive-data-json").val()), undefined, 4);
+                $("#archive-data-json").text(archiveJson);
             }
         });
 
@@ -482,6 +560,16 @@
             var partsOfStr = s.split(sep);
             var last_element = partsOfStr[partsOfStr.length - 1];
             return last_element
+        }
+
+        function makeid(length) {
+            var result           = '';
+            var characters       = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            var charactersLength = characters.length;
+            for ( var i = 0; i < length; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
         }
     </script>
 </body>

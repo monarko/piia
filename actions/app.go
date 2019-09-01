@@ -91,6 +91,7 @@ func App() *buffalo.App {
 		participants.POST("/create", ParticipantsCreatePost)
 		participants.GET("/edit/{pid}", ParticipantsEditGet).Name("participantsEditPath")
 		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
+		participants.DELETE("/delete/{pid}", AdminRequired(ParticipantsDestroy))
 		participants.GET("/{pid}", ParticipantsDetail)
 		// participants.GET("/delete", ParticipantsDelete)
 		// participants.GET("/detail", ParticipantsDetail)
@@ -108,6 +109,7 @@ func App() *buffalo.App {
 		screenings.POST("/create", ScreeningsCreatePost)
 		screenings.GET("/edit/{sid}", ScreeningsEditGet).Name("participantScreeningsEditPath")
 		screenings.POST("/edit/{sid}", ScreeningsEditPost).Name("participantScreeningsEditPath")
+		screenings.DELETE("/delete/{sid}", AdminRequired(ScreeningsDestroy))
 
 		overReadings := screenings.Group("/{sid}/overreadings")
 		overReadings.Middleware.Skip(ScreeningPermissionRequired, OverReadingsCreateGet, OverReadingsCreatePost, OverReadingsDetails, OverReadingsEditGet, OverReadingsEditPost)
@@ -116,6 +118,7 @@ func App() *buffalo.App {
 		overReadings.POST("/create", OverReadingsCreatePost)
 		overReadings.GET("/edit/{oid}", OverReadingsEditGet).Name("participantScreeningOverreadingsEditPath")
 		overReadings.POST("/edit/{oid}", OverReadingsEditPost).Name("participantScreeningOverreadingsEditPath")
+		overReadings.DELETE("/delete/{oid}", AdminRequired(OverReadingDestroy))
 		overReadings.Middleware.Skip(OverReadingPermissionRequired, OverReadingsDetails)
 		overReadings.GET("/{oid}", OverReadingsDetails)
 
@@ -145,17 +148,27 @@ func App() *buffalo.App {
 		referrals.GET("/index", ReferralsIndex)
 		referrals.GET("/participants/{pid}", ReferralsParticipantsGet)
 		referrals.GET("/participants/{pid}/view", ReferralsParticipantsView)
+		referrals.DELETE("/participants/{pid}/delete/{rid}", AdminRequired(ReferralsDestroy))
 
 		notifications := app.Group("/notifications")
 		notifications.Use(LoginRequired)
 		notifications.GET("/", NotificationsIndex)
 		notifications.GET("/index", NotificationsIndex)
+		notifications.DELETE("/delete/{nid}", AdminRequired(NotificationsDestroy))
 
 		// app.Resource("/system_logs", SystemLogsResource{})
 		logs := app.Group("/logs")
 		logs.Use(AdminRequired)
 		logs.GET("/", SystemLogsIndex)
 		logs.GET("/index", SystemLogsIndex)
+
+		archive := app.Group("/archives")
+		archive.Use(AdminRequired)
+		archive.GET("/", ArchiveIndex)
+		archive.GET("/index", ArchiveIndex)
+		archive.GET("/restore/{aid}", ArchiveRestore)
+		archive.DELETE("/delete/{aid}", ArchiveDestroy)
+		archive.GET("/{aid}", ArchiveShow)
 
 		app.GET("/errors/{status}", ErrorsDefault)
 

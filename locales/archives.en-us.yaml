@@ -1,0 +1,6 @@
+- id: "archive.created.success"
+  translation: "Archive was successfully created."
+- id: "archive.updated.success"
+  translation: "Archive was successfully updated."
+- id: "archive.destroyed.success"
+  translation: "Archive was successfully destroyed."

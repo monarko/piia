@@ -145,7 +145,7 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		c.Set("participant", participant)
 		c.Set("screening", screening)
 		c.Set("overReading", overReading)
-		c.Set("errors", verrs.Errors)
+		c.Set("errors", perrs.Errors)
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Cases"] = "/cases/index"
 		breadcrumbMap["New Over Reading"] = "#"
@@ -519,4 +519,54 @@ func OverReadingsDetails(c buffalo.Context) error {
 	breadcrumbMap["Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/" + c.Param("oid")
 	c.Set("breadcrumbMap", breadcrumbMap)
 	return c.Render(200, r.HTML("over_readings/details.html"))
+}
+
+// OverReadingDestroy function
+func OverReadingDestroy(c buffalo.Context) error {
+	returnURL := "/cases/index"
+	user := c.Value("current_user").(*models.User)
+	if !user.Admin {
+		c.Flash().Add("danger", "Access denied")
+		return c.Redirect(302, returnURL)
+	}
+
+	tx := c.Value("tx").(*pop.Connection)
+	overReading := &models.OverReading{}
+	if err := tx.Eager().Find(overReading, c.Param("oid")); err != nil {
+		return c.Error(404, err)
+	}
+	participant := overReading.Participant
+	screening := overReading.Screening
+	if !(c.Param("pid") == participant.ID.String() && c.Param("sid") == screening.ID.String()) {
+		c.Flash().Add("danger", "Not Found")
+		return c.Redirect(302, returnURL)
+	}
+
+	reason := c.Request().FormValue("reason")
+
+	err := ArchiveMake(c, user.ID, overReading.ID, "OverReading", overReading, reason)
+	if err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+
+	prt := &models.Participant{}
+	if err := tx.Find(prt, participant.ID); err != nil {
+		return c.Error(404, err)
+	}
+	prt.Status = "11"
+	perrs, err := tx.ValidateAndUpdate(prt)
+	if err != nil {
+		c.Flash().Add("danger", err.Error())
+		return c.Redirect(302, returnURL)
+	}
+	if perrs.HasAny() {
+		c.Set("errors", perrs.Errors)
+		return c.Redirect(302, returnURL)
+	}
+
+	// If there are no errors set a flash message
+	c.Flash().Add("success", "Archived successfully")
+
+	return c.Redirect(302, returnURL)
 }

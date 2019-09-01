@@ -19,11 +19,11 @@ type OverReading struct {
 	Eyes          types.EyeOverReading    `json:"eyes" db:"eye_assessment"`
 	Referral      types.ReferralScreening `json:"referral" db:"referral"`
 	OverReader    User                    `belongs_to:"user" json:"-"`
-	OverReaderID  uuid.UUID               `json:"-" db:"over_reader_id"`
+	OverReaderID  uuid.UUID               `json:"over_reader_id" db:"over_reader_id"`
 	Participant   Participant             `belongs_to:"participant" json:"-"`
-	ParticipantID uuid.UUID               `json:"-" db:"participant_id"`
+	ParticipantID uuid.UUID               `json:"participant_id" db:"participant_id"`
 	Screening     Screening               `belongs_to:"screening" json:"-"`
-	ScreeningID   uuid.UUID               `json:"-" db:"screening_id"`
+	ScreeningID   uuid.UUID               `json:"screening_id" db:"screening_id"`
 }
 
 // String is not required by pop and may be deleted
