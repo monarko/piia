@@ -342,6 +342,8 @@
   translation: "Right Eye (OD)"
 - id: field_left_eye
   translation: "Left Eye (OS)"
+- id: field_both_eye
+  translation: "Both Eyes"
 - id: field_eye_assessment
   translation: "DR Assessment"
 - id: option_type_1

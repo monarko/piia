@@ -355,89 +355,7 @@
                                     </div>
                                     <div class="tasks-list-w">
                                         <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="element-wrapper">
-                                                    <div class="element-box">
-                                                        <h6><%= t("field_right_eye") %></h6>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_dilate_pupil") %></label>
-                                                            <div class="form-group">
-                                                                <div class="form-check-inline">
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.DilatePupil" type="radio"
-                                                                                value="true"><%= t("option_yes") %></label>
-                                                                    </div>
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.DilatePupil" type="radio"
-                                                                                value="false"><%= t("option_no") %></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_suspected_cataract") %></label>
-                                                            <div class="form-group">
-                                                                <div class="form-check-inline">
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.SuspectedCataract" type="radio"
-                                                                                value="true"><%= t("option_yes") %></label>
-                                                                    </div>
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.SuspectedCataract" type="radio"
-                                                                                value="false"><%= t("option_no") %></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6 ml-auto">
-                                                <div class="element-wrapper">
-                                                    <div class="element-box">
-                                                        <h6><%= t("field_left_eye") %></h6>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_dilate_pupil") %></label>
-                                                            <div class="form-group">
-                                                                <div class="form-check-inline">
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.LeftEye.DilatePupil" type="radio"
-                                                                                value="true"><%= t("option_yes") %></label>
-                                                                    </div>
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.LeftEye.DilatePupil" type="radio"
-                                                                                value="false"><%= t("option_no") %></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_suspected_cataract") %></label>
-                                                            <div class="form-group">
-                                                                <div class="form-check-inline">
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.LeftEye.SuspectedCataract" type="radio"
-                                                                                value="true"><%= t("option_yes") %></label>
-                                                                    </div>
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.LeftEye.SuspectedCataract" type="radio"
-                                                                                value="false"><%= t("option_no") %></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12 ml-auto">
+                                            <div class="col-sm-8">
                                                 <div class="form-group">
                                                     <label for=""><%= t("label_date_of_dr_assessment") %></label>
                                                     <%= if (!screening.Eyes.AssessmentDate.GivenDate.IsZero()) { %>
@@ -449,6 +367,37 @@
                                                     <% } %>
                                                 </div>
                                                 <input type="hidden" name="Eyes.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for=""><%= t("field_dilate_pupil") %></label>
+                                                    <div class="form-group">
+                                                        <div class="form-check-inline">
+                                                            <div class="radio-button">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="dilatePupil" type="radio"
+                                                                        value="no" <%= if (dilatePupil == nil || dilatePupil == "no") { %>checked<% } %>><%= t("option_no") %></label>
+                                                            </div>
+                                                            <div class="radio-button">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="dilatePupil" type="radio"
+                                                                        value="left" <%= if (dilatePupil != nil && dilatePupil == "left") { %>checked<% } %>><%= t("field_left_eye") %></label>
+                                                            </div>
+                                                            <div class="radio-button">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="dilatePupil" type="radio"
+                                                                        value="right" <%= if (dilatePupil != nil && dilatePupil == "right") { %>checked<% } %>><%= t("field_right_eye") %></label>
+                                                            </div>
+                                                            <div class="radio-button">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="dilatePupil" type="radio"
+                                                                        value="both" <%= if (dilatePupil != nil && dilatePupil == "both") { %>checked<% } %>><%= t("field_both_eye") %></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -474,33 +423,12 @@
                                             </div>
                                         </div>
                                         <div class="row" id="referral-refused-box" style="margin-top: 10px;">
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-12">
                                                 <div class="form-check-inline">
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
                                                                 name="referral_refused" type="checkbox" id="referral_refused" 
                                                                 value="refused"><%= t("label_referral_refused") %></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-8">
-                                                <div class="form-group row">
-                                                    <label class="col-form-label col-sm-3" for="Referral Reason"><%= t("label_referral_reason") %></label>
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control" id="referral_reason" name="Referral.ReferralReason">
-                                                            <option value="">
-                                                                <%= t("form_select_any") %>
-                                                            </option>
-                                                            <option value="Visual Acuity">
-                                                                <%= t("option_referral_reason_visual_acuity") %>
-                                                            </option>
-                                                            <option value="DR/DME">
-                                                                <%= t("option_referral_reason_dr_dme") %>
-                                                            </option>
-                                                            <option value="Ungradeable">
-                                                                <%= t("option_referral_reason_ungradeable") %>
-                                                            </option>
-                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>

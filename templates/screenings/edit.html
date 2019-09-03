@@ -401,104 +401,52 @@
                                     </div>
                                     <div class="tasks-list-w" <%= if (statusMap["Eye Assessment"]) { %>style="display: none;"<% } %>>
                                         <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="element-wrapper">
-                                                    <div class="element-box">
-                                                        <h6><%= t("field_right_eye") %></h6>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_dilate_pupil") %></label>
-                                                            <div class="form-group">
-                                                                <div class="form-check-inline">
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.DilatePupil" type="radio"
-                                                                                value="true" <%= if (screening.Eyes.RightEye.DilatePupil.Valid && screening.Eyes.RightEye.DilatePupil.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
-                                                                    </div>
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.DilatePupil" type="radio"
-                                                                                value="false" <%= if (screening.Eyes.RightEye.DilatePupil.Valid && !screening.Eyes.RightEye.DilatePupil.Bool) { %> checked <% } %>><%= t("option_no") %></label>
-                                                                    </div>
-                                                                </div>
+                                            <div class="col-sm-8">
+                                                <div class="form-group">
+                                                    <label for=""><%= t("label_date_of_dr_assessment") %></label>
+                                                    <%= if (!screening.Eyes.AssessmentDate.GivenDate.IsZero()) { %>
+                                                        <input class="form-control" placeholder="Select date" type="date"
+                                                        name="Eyes.AssessmentDate.GivenDate" value="<%= changeDate(screening.Eyes.AssessmentDate.GivenDate, "2006-01-02", screening.Eyes.AssessmentDate.Calendar, t("lang_calendar")) %>">
+                                                    <% } else { %>
+                                                        <input class="form-control" placeholder="Select date" type="date"
+                                                        name="Eyes.AssessmentDate.GivenDate" value="<%= currentDate(t("lang_calendar")) %>">
+                                                    <% } %>
+                                                </div>
+                                                <input type="hidden" name="Eyes.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for=""><%= t("field_dilate_pupil") %></label>
+                                                    <div class="form-group">
+                                                        <div class="form-check-inline">
+                                                            <div class="radio-button">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="dilatePupil" type="radio"
+                                                                        value="no" <%= if (dilatePupil == nil || dilatePupil == "no") { %>checked<% } %>><%= t("option_no") %></label>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_suspected_cataract") %></label>
-                                                            <div class="form-group">
-                                                                <div class="form-check-inline">
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.SuspectedCataract" type="radio"
-                                                                                value="true" <%= if (screening.Eyes.RightEye.SuspectedCataract.Valid && screening.Eyes.RightEye.SuspectedCataract.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
-                                                                    </div>
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.RightEye.SuspectedCataract" type="radio"
-                                                                                value="false" <%= if (screening.Eyes.RightEye.SuspectedCataract.Valid && !screening.Eyes.RightEye.SuspectedCataract.Bool) { %> checked <% } %>><%= t("option_no") %></label>
-                                                                    </div>
-                                                                </div>
+                                                            <div class="radio-button">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="dilatePupil" type="radio"
+                                                                        value="left" <%= if (dilatePupil != nil && dilatePupil == "left") { %>checked<% } %>><%= t("field_left_eye") %></label>
+                                                            </div>
+                                                            <div class="radio-button">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="dilatePupil" type="radio"
+                                                                        value="right" <%= if (dilatePupil != nil && dilatePupil == "right") { %>checked<% } %>><%= t("field_right_eye") %></label>
+                                                            </div>
+                                                            <div class="radio-button">
+                                                                <label class="form-check-label"><input class="form-check-input"
+                                                                        name="dilatePupil" type="radio"
+                                                                        value="both" <%= if (dilatePupil != nil && dilatePupil == "both") { %>checked<% } %>><%= t("field_both_eye") %></label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6 ml-auto">
-                                                <div class="element-wrapper">
-                                                    <div class="element-box">
-                                                        <h6><%= t("field_left_eye") %></h6>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_dilate_pupil") %></label>
-                                                            <div class="form-group">
-                                                                <div class="form-check-inline">
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.LeftEye.DilatePupil" type="radio"
-                                                                                value="true" <%= if (screening.Eyes.LeftEye.DilatePupil.Valid && screening.Eyes.LeftEye.DilatePupil.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
-                                                                    </div>
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.LeftEye.DilatePupil" type="radio"
-                                                                                value="false" <%= if (screening.Eyes.LeftEye.DilatePupil.Valid && !screening.Eyes.LeftEye.DilatePupil.Bool) { %> checked <% } %>><%= t("option_no") %></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for=""><%= t("field_suspected_cataract") %></label>
-                                                            <div class="form-group">
-                                                                <div class="form-check-inline">
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.LeftEye.SuspectedCataract" type="radio"
-                                                                                value="true" <%= if (screening.Eyes.LeftEye.SuspectedCataract.Valid && screening.Eyes.LeftEye.SuspectedCataract.Bool) { %> checked <% } %>><%= t("option_yes") %></label>
-                                                                    </div>
-                                                                    <div class="radio-button">
-                                                                        <label class="form-check-label"><input class="form-check-input"
-                                                                                name="Eyes.LeftEye.SuspectedCataract" type="radio"
-                                                                                value="false" <%= if (screening.Eyes.LeftEye.SuspectedCataract.Valid && !screening.Eyes.LeftEye.SuspectedCataract.Bool) { %> checked <% } %>><%= t("option_no") %></label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                </div> <!--/element-wrapper-->
-
-                                            <div class="col-sm-12 ml-auto">
-                                                    <div class="form-group">
-                                                        <label for=""><%= t("label_date_of_dr_assessment") %></label>
-                                                        <%= if (!screening.Eyes.AssessmentDate.GivenDate.IsZero()) { %>
-                                                            <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Eyes.AssessmentDate.GivenDate" value="<%= changeDate(screening.Eyes.AssessmentDate.GivenDate, "2006-01-02", screening.Eyes.AssessmentDate.Calendar, t("lang_calendar")) %>">
-                                                        <% } else { %>
-                                                            <input class="form-control" placeholder="Select date" type="date"
-                                                            name="Eyes.AssessmentDate.GivenDate" value="<%= currentDate(t("lang_calendar")) %>">
-                                                        <% } %>
-                                                    </div>
-                                                    <input type="hidden" name="Eyes.AssessmentDate.Calendar" value="<%= t("lang_calendar") %>">
-                                                </div>
-                                            </div> <!--/col-->
-                                            <div class="row">
+                                        </div>
+                                        <div class="row">
                                                 <div class="col-sm-12">
                                                     <fieldset class="form-group" style="margin-top: 0.5rem;">
                                                     <legend><span><%= t("dr_referral_label") %></span></legend>
@@ -519,9 +467,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> <!-- /referral row -->
-                                            <div class="row" id="referral-refused-box" style="margin-top: 10px;">
-                                                <div class="col-sm-4">
+                                        </div>
+                                        <div class="row" id="referral-refused-box" style="margin-top: 10px;">
+                                                <div class="col-sm-12">
                                                     <div class="form-check-inline">
                                                         <div class="radio-button">
                                                             <label class="form-check-label"><input class="form-check-input"
@@ -530,38 +478,17 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-8">
-                                                    <div class="form-group row">
-                                                        <label class="col-form-label col-sm-3" for="Referral Reason"><%= t("label_referral_reason") %></label>
-                                                        <div class="col-sm-9">
-                                                            <select class="form-control" id="referral_reason" name="Referral.ReferralReason">
-                                                                <option value="">
-                                                                    <%= t("form_select_any") %>
-                                                                </option>
-                                                                <option value="Visual Acuity" <%= if (screening.Referral.ReferralReason.String == "Visual Acuity") { %> selected <% } %>>
-                                                                    <%= t("option_referral_reason_visual_acuity") %>
-                                                                </option>
-                                                                <option value="DR/DME" <%= if (screening.Referral.ReferralReason.String == "DR/DME") { %> selected <% } %>>
-                                                                    <%= t("option_referral_reason_dr_dme") %>
-                                                                </option>
-                                                                <option value="Ungradeable" <%= if (screening.Referral.ReferralReason.String == "Ungradeable") { %> selected <% } %>>
-                                                                    <%= t("option_referral_reason_ungradeable") %>
-                                                                </option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="form-group" style="margin-top: 1rem;">
-                                                        <label for="referral-notes"><%= t("label_additional_notes") %></label>
-                                                        <textarea name="Referral.Notes" id="referral-notes" rows="6" class="form-control"><%= screening.Referral.Notes %></textarea>
-                                                    </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group" style="margin-top: 1rem;">
+                                                    <label for="referral-notes"><%= t("label_additional_notes") %></label>
+                                                    <textarea name="Referral.Notes" id="referral-notes" rows="6" class="form-control"><%= screening.Referral.Notes %></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                     </div>
                     <div class="form-buttons-w">
                         <button class="btn btn-primary btn-lg" type="submit"> <%= t("button_submit") %></button>

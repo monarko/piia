@@ -16,7 +16,7 @@ type EyeAssessment struct {
 	LastVisualAcuity  nulls.String `json:"last_visual_acuity"`
 	DRGrading         nulls.String `json:"dr"`
 	DMEAssessment     nulls.String `json:"dme"`
-	DilatePupil       nulls.Bool   `json:"dilate_pupil"`
+	DilatePupil       bool         `json:"dilate_pupil"`
 	SuspectedCataract nulls.Bool   `json:"suspected_cataract"`
 }
 

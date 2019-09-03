@@ -33,6 +33,18 @@ func ScreeningsIndex(c buffalo.Context) error {
 	return c.Render(200, r.HTML("screenings/index.html"))
 }
 
+func getDilatePupil(s models.Screening) string {
+	if s.Eyes.LeftEye.DilatePupil && s.Eyes.RightEye.DilatePupil {
+		return "both"
+	} else if s.Eyes.LeftEye.DilatePupil {
+		return "left"
+	} else if s.Eyes.RightEye.DilatePupil {
+		return "right"
+	}
+
+	return "no"
+}
+
 // ScreeningsCreateGet renders the form for creating a new Screening.
 func ScreeningsCreateGet(c buffalo.Context) error {
 	tx := c.Value("tx").(*pop.Connection)
@@ -45,8 +57,10 @@ func ScreeningsCreateGet(c buffalo.Context) error {
 		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
 		return c.Redirect(302, red)
 	}
+	screening := &models.Screening{}
 	c.Set("participant", participant)
-	c.Set("screening", &models.Screening{})
+	c.Set("screening", screening)
+	c.Set("dilatePupil", getDilatePupil(*screening))
 	breadcrumbMap := make(map[string]interface{})
 	breadcrumbMap["Participants"] = "/participants/index"
 	breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
@@ -72,7 +86,17 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	if err := c.Bind(screening); err != nil {
 		return errors.WithStack(err)
 	}
-
+	screening.Eyes.LeftEye.DilatePupil = false
+	screening.Eyes.RightEye.DilatePupil = false
+	dilatePupil := c.Request().FormValue("dilatePupil")
+	if dilatePupil == "both" {
+		screening.Eyes.LeftEye.DilatePupil = true
+		screening.Eyes.RightEye.DilatePupil = true
+	} else if dilatePupil == "left" {
+		screening.Eyes.LeftEye.DilatePupil = true
+	} else if dilatePupil == "right" {
+		screening.Eyes.RightEye.DilatePupil = true
+	}
 	screening.ScreenerID = user.ID
 	screening.ParticipantID = participant.ID
 	referral := c.Request().FormValue("referral")
@@ -93,6 +117,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		c.Set("participant", participant)
 		c.Set("screening", screening)
 		c.Set("errors", verrs.Errors)
+		c.Set("dilatePupil", getDilatePupil(*screening))
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Participants"] = "/participants/index"
 		// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
@@ -111,6 +136,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		c.Set("participant", participant)
 		c.Set("screening", screening)
 		c.Set("errors", verrs.Errors)
+		c.Set("dilatePupil", getDilatePupil(*screening))
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Participants"] = "/participants/index"
 		// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
@@ -151,6 +177,7 @@ func ScreeningsEditGet(c buffalo.Context) error {
 	}
 	c.Set("participant", participant)
 	c.Set("screening", screening)
+	c.Set("dilatePupil", getDilatePupil(*screening))
 	// statuses := screening.StatusesMap()
 	// c.Set("screeningStatuses", statuses)
 	breadcrumbMap := make(map[string]interface{})
@@ -177,8 +204,19 @@ func ScreeningsEditPost(c buffalo.Context) error {
 	if err := c.Bind(screening); err != nil {
 		return errors.WithStack(err)
 	}
-	// screening.ScreenerID = user.ID
-	// screening.ParticipantID = participant.ID
+
+	screening.Eyes.LeftEye.DilatePupil = false
+	screening.Eyes.RightEye.DilatePupil = false
+	dilatePupil := c.Request().FormValue("dilatePupil")
+	if dilatePupil == "both" {
+		screening.Eyes.LeftEye.DilatePupil = true
+		screening.Eyes.RightEye.DilatePupil = true
+	} else if dilatePupil == "left" {
+		screening.Eyes.LeftEye.DilatePupil = true
+	} else if dilatePupil == "right" {
+		screening.Eyes.RightEye.DilatePupil = true
+	}
+
 	screening.Referral.Referred = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
@@ -198,6 +236,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		c.Set("participant", participant)
 		c.Set("screening", screening)
 		c.Set("errors", verrs.Errors)
+		c.Set("dilatePupil", getDilatePupil(*screening))
 		breadcrumbMap := make(map[string]interface{})
 		breadcrumbMap["Participants"] = "/participants/index"
 		breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
@@ -215,6 +254,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 			c.Set("participant", participant)
 			c.Set("screening", screening)
 			c.Set("errors", verrs.Errors)
+			c.Set("dilatePupil", getDilatePupil(*screening))
 			breadcrumbMap := make(map[string]interface{})
 			breadcrumbMap["Participants"] = "/participants/index"
 			breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
