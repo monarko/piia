@@ -17,7 +17,7 @@
 - id: placeholder_password
   translation: "ป้อนรหัสผ่านของคุณ"
 - id: button_login
-  translation: "เข้าสู่ระบบฉัน"
+  translation: "เข้าสู่ระบบ"
 - id: button_submit
   translation: "ส่ง"
 - id: button_cancel
@@ -28,45 +28,45 @@
   translation: "ไม่"
 # admin dashboard
 - id: header_title
-  translation: "Piia ผู้ดูแลระบบ"
+  translation: "ผู้ดูแลระบบ"
 - id: site_all
-  translation: "All Sites"
+  translation: "ทุกที่วิจัย"
 - id: site_K
-  translation: "Khlong Luang"
+  translation: "รพ.คลองหลวง"
 - id: site_L
-  translation: "Lamlukka"
+  translation: "รพ.ลำลูกกา"
 - id: site_N
-  translation: "Nongseau"
+  translation: "รพ.หนองเสือ"
 - id: site_O
-  translation: "Phrao"
+  translation: "รพ.พร้าว"
 - id: site_R
-  translation: "Rajavithi"
+  translation: "รพ.ราชวิถี"
 - id: site_S
-  translation: "San Patong"
+  translation: "รพ.สันป่าตอง"
 - id: site_T
-  translation: "Thanyaburi"
+  translation: "รพ.ธัญบุรี"
 - id: role_admin
-  translation: "ผู้บริหาร"
+  translation: "ผู้ดููแลระบบ"
 - id: role_general
-  translation: "สมาชิก "
+  translation: "ทั่วไป"
 - id: role_screener
-  translation: "สมาชิก"
+  translation: "ผู้สกรีน"
 - id: role_reader
-  translation: "ผู้วิจารณ์"
+  translation: "ผู้อ่านภาพ"
 - id: role_study_coordinator
   translation: "ผู้ประสานงาน"
 - id: role_referral_tracker
-  translation: "การอ้างอิงติดตาม"
+  translation: "การอ้างอิง"
 - id: role_study_team_member
-  translation: "สมาชิกในทีมศึกษา"
+  translation: "สมาชิกในทีมวิจัย"
 - id: section_header_notifications
   translation: "การแจ้งเตือน"
 - id: section_header_summarystats
-  translation: "สถิติสรุป"
+  translation: "สรุปทางสถิติ"
 - id: th_notifications_message
   translation: "ข้อความแจ้งเตือน"
 - id: th_site
-  translation: "สถาน"
+  translation: "โรงพยาบาล"
 - id: th_data_completeness
   translation: "ความสมบูรณ์ของข้อมูล"
 - id: th_notifications_type
@@ -80,37 +80,37 @@
 - id: text_no_notifications
   translation: "ไม่มีการแจ้งเตือน"
 - id: card_title_registered
-  translation: "ผู้เข้าร่วมที่ลงทะเบียน"
+  translation: "อาสาสมัครที่ลงทะเบียน"
 - id: card_title_screened
   translation: "การตรวจคัดกรอง"
 - id: card_title_overead
-  translation: "เปิดเคสการอ่าน"
+  translation: "เคสที่รอการอ่านภาพ"
 # nav items & breadcrumbs
 - id: nav_home
   translation: "แผงควบคุม"
 - id: nav_logout
   translation: "ออกจากระบบ"
 - id: nav_participants
-  translation: "ผู้เข้าร่วม"
+  translation: "อาสาสมัคร"
 - id: nav_overreading
-  translation: "สำหรับรีวิว"
+  translation: "อ่านภาพ"
 - id: "nav_referrals"
-  translation: "แน่ะ"
+  translation: "การส่งต่อ"
 - id: nav_users
   translation: "การจัดการผู้ใช้"
 - id: nav_logs
-  translation: "ท่อน"
+  translation: "การเข้าถึง"
 - id: nav_cases
-  translation: "กรณีเพื่อตรวจสอบ"
+  translation: "ภาพที่รอการอ่าน"
 # participants
 - id: page_participants_title
-  translation: "ผู้เข้าร่วมการศึกษา"
+  translation: "อาสาสมัครที่ลงทะเบียนแล้ว"
 - id: button_download_csv
   translation: "Download CSV"
 - id: participantID_field
   translation: "รหัสประจำตัวอาสาสมัคร"
 - id: participant_ID_description
-  translation: "กรุณาใส่รหัสอาสาสมัครที่อยู่บนสติกเกิ"
+  translation: "กรุณาใส่รหัสอาสาสมัครที่อยู่บนสติกเกอร์"
 - id: participant_personal_details
   translation: "ข้อมูลส่วนบุคคล"
 - id: label_year_birth
@@ -126,13 +126,13 @@
 - id: button_enroll
   translation: "ลงทะเบียนผู้เข้าร่วมใหม่"
 - id: filter_status_select
-  translation: "Filter by status"
+  translation: "เรียงตามสถานะ"
 - id: option_enrolled
   translation: "ลงทะเบียน"
 - id: option_screened
   translation: "การตรวจคัดกรอง"
 - id: option_overread
-  translation: "สอบทาน"
+  translation: "อ่านภาพ"
 - id: button_filter_status
   translation: "ไป"
 - id: eligibility_header
@@ -140,22 +140,22 @@
 - id: eligibility_text
   translation: "ยืนยันว่าเข้าเกณฑ์การร่วมวิจัย"
 - id: eligibiligy_criteria_checkbox_label
-  translation: "ยินยอมให้มีส่วนร่วม"
+  translation: "ยินยอมเข้าร่วม"
 - id: eligibiligy_criteria_checkbox
-  translation: "ผู้ป่วยรายนี้ได้ยินยอมและเซ็นหนังสือแสดงความยินยอม"
+  translation: "ผู้ป่วยรายนี้ได้ยินยอมและเซ็นหนังสือแสดงความยินยอมแล้ว"
 - id: form_button_enroll
   translation: "ลงทะเบียน"
 - id: form_button_enroll_update
-  translation: "อัพเดทผู้เข้าร่วม"
+  translation: "อัพเดทอาสาสมัคร"
 - id: form_button_enroll_continue
-  translation: "ลงทะเบียน and enter data"
+  translation: "ลงทะเบียน และกรอกข้อมูล"
 # participant table header labels
 - id: th_participant_id
   translation: "หมายเลขผู้เข้าร่วม"
 - id: th_patient_id
   translation: "รหัสผู้ป่วย"
 - id: th_demographics
-  translation: "Demographics"
+  translation: "อายุ-เพศ"
 - id: th_name
   translation: "ชื่อ"
 - id: th_gender
@@ -166,32 +166,30 @@
   translation: "ยินยอม"
 - id: th_enrolled_date
   translation: "วันที่ลงทะเบียน"
-- id: th_screening_date
-  translation: "วันที่คัดเลือก"
 - id: th_dataentry
-  translation: "Data Entry"
+  translation: "วันที่ลงข้อมูล"
+- id: th_screening_date
+  translation: "วันที่คัดกรอง"
 - id: th_overread_date
-  translation: "วันที่สอบทาน"
+  translation: "วันที่อ่านภาพ"
 - id: th_workflow_status
-  translation: "สถานะเวิร์กโฟลว์"
+  translation: "สถานะ"
 - id: th_actions
-  translation: "การปฏิบัติ"
+  translation: "Leave blank"
 - id: th_screening
-  translation: "การฉาย"
+  translation: "การคัดกรอง"
 - id: th_screening_done
   translation: "เสร็จสิ้นการคัดกรอง"
 - id: th_overreading
-  translation: "สำหรับการตรวจสอบ"
-- id: th_completed
-  translation: "เสร็จ"
+  translation: "การอ่านภาพ"
 - id: th_status
   translation: "สถานะ"
 - id: pagination_title
-  translation: "การแสดง"
+  translation: "แสดง"
 - id: pagination_view_label
-  translation: "ดู"
+  translation: "การแสดง"
 - id: pagination_perpage_label
-  translation: "ต่อหน้า"
+  translation: "ต่อหน้้า"
 - id: pagination_options_10
   translation: "10"
 - id: pagination_options_20
@@ -200,13 +198,13 @@
   translation: "50"
 # screening encounter
 - id: screening_header
-  translation: "เริ่มการคัดกรอง"
+  translation: "เคสคัดกรองใหม่"
 - id: screening_form_header
-  translation: "บันทึกข้อมูลอาสาม"
+  translation: "บันทึกวันที่"
 - id: screening_medical_history
   translation: "ข้อมูลการรักษา"
 - id: screening_diabetes_type
-  translation: "ชนิดของเยาหวาน"
+  translation: "ระยะเวลาที่เป็นเบาหวาน"
 - id: label_duration
   translation: "ระยะเวลา"
 - id: label_years
@@ -218,17 +216,17 @@
 - id: screening_medication_history
   translation: "ยา"
 - id: label_medications_oral
-  translation: "ยาเบาหวานชนิดรับประทา"
+  translation: "ยาเบาหวานชนิดรับประทาน"
 - id: label_medications_insulin
   translation: "อินซูลิน"
 - id: screening_measurements
-  translation: "การวัด"
+  translation: "การตรวจ"
 - id: screening_measurements_bp
   translation: "ความดันโลหิต (มม.ปรอท)"
 - id: label_date_of_assessment
-  translation: "Dวันที่ประเมินล่าสุด"
+  translation: "วันที่ประเมินล่าสุด"
 - id: label_date_of_dr_assessment
-  translation: "วันที่ประเมิน DR"
+  translation: "วันที่ประเมินเบาหวานเข้าจอตา"
 - id: screening_pathology
   translation: "รอยโรค"
 - id: screening_measurements_blood_sugar
@@ -248,51 +246,53 @@
 - id: option_present
   translation: "ตรวจพบ DME "
 - id: label_referral_refused
-  translation: "ผู้อ้างอิงถูกปฏิเสธโดยผู้เข้าร่วม"
+  translation: "ปฏิเสธการส่งตัว"
 - id: label_referral_refused_error
-  translation: "ตามเงื่อนไขของสายตาผู้เข้าร่วมนี้ควรได้รับการอ้างอิง โปรดเขียนบันทึกย่อของคุณหากคุณต้องการบันทึกต่อไป"
+  translation: "ผูู้ป่วยจำเป็นต้องได้รับการส่งตัว กรุณาเขียนข้อความ หากต้องการ"
 - id: label_referral_reason
-  translation: "เหตุผลการอ้างอิง"
+  translation: "เหตุุผลที่ต้องส่งตัว"
 - id: option_referral_reason_visual_acuity
-  translation: "Visual Acuity"
+  translation: "ค่าสายตา"
 - id: option_referral_reason_dr_dme
   translation: "DR/DME"
 - id: option_referral_reason_ungradeable
-  translation: "Ungradeable"
+  translation: "ประเมินไม่ได้"
 # create new - enrollment
 - id: page_enroll_title
   translation: "ลงทะเบียนเข้าศึกษา"
 - id: form_enroll_header
   translation: "ลงทะเบียนผู้เข้าร่วมใหม่"
 - id: form_enroll_desc
-  translation: "กรอกแบบฟอร์มเพื่อลงทะเบียน"
+  translation: "กรอกข้อมูลให้ครบเพื่อลงทะเบียนอาสาสมัครรายใหม่"
 - id: breadcrumb_enrol_participant
-  translation: "ลงทะเบียนผู้เข้าร่วม"
+  translation: "ลงทะเบียน"
+- id: breadcrumb_enrol_participant_short
+  translation: "อาสาสมัคร"
 # update enrollment
 - id: page_enroll_update_title
   translation: "อัปเดตการลงทะเบียน"
 - id: form_enroll_update_header
   translation: "อัพเดทผู้เข้าร่วม"
 - id: form_enroll_update_desc
-  translation: "กรอกแบบฟอร์มเพื่ออัพเดตผู้เข้าร่วมในการศึกษา"
+  translation: "กรอกข้อมูลให้ครบเพื่ออัพเดตข้อมูลอาสาสมัคร"
 - id: breadcrumb_enrol_update_participant
   translation: "อัพเดทผู้เข้าร่วม"
 # over-reading index
 - id: page_overreading_title
-  translation: "รายการตรวจสอบ"
+  translation: "รายการอ่านภาพ"
 # over-reading case
 - id: page_overreadcase_title
-  translation: "ตรวจสอบกรณี"
+  translation: "เคสที่อ่านภาพ"
 - id: section_dr_assessment_header
   translation: "การประเมิน DR"
 - id: section_referral_header
-  translation: "ต้องการการอ้างอิง"
+  translation: "จุำเป็นต้องส่งตัว"
 - id: header_right_eye
   translation: "ตาขวา (OD)"
 - id: header_left_eye
   translation: "ตาซ้าย (OS)"
 - id: label_drgrading
-  translation: "เกรด DR"
+  translation: "ระยะโรคเบาหวานเข้าจอตา"
 - id: label_dme
   translation: "การประเมินจุดภาพชัดบวมจากเบาหวาน"
 - id: label_other_pathology
@@ -303,7 +303,7 @@
   translation: "โรคที่สงสัย"
 # grading scales
 - id: option_ungradeable
-  translation: "คุณภาพที่วัดระดับไม่ได้"
+  translation: "ไม่สามารถประเมินได้"
 - id: option_normal
   translation: "Normal"
 - id: option_mild_npdr
@@ -334,9 +334,9 @@
 - id: field_dilate_pupil
   translation: "คุณขยายรูม่านตาหรือไม่?"
 - id: field_suspected_cataract
-  translation: "ต้อกระจกที่ต้องสงสัย?"
+  translation: "สงสัยต้อกระจก"
 - id: field_visual_acuity
-  translation: "ระดับการมอเห็นที่ได้รับการแก้ไข (BCVA)"
+  translation: "ระดับการมองเห็น"
 - id: field_right_eye
   translation: "ตาขวา (OD)"
 - id: field_left_eye
@@ -344,7 +344,7 @@
 - id: field_both_eye
   translation: "ตาทั้งสองข้าง"
 - id: field_eye_assessment
-  translation: "Eye Assessment"
+  translation: "การคัดกรอง DR"
 - id: option_type_1
   translation: "Type 1"
 - id: option_type_2
@@ -359,7 +359,7 @@
   translation: "ค่าสายตาล่าสุด(หากมี)"
 - id: field_last_visual_acuity
   translation: "ค่าสายตาล่าสุด"
-# Referral tracking section
+# referral tracking
 - id: section_referral_tracking
   translation: "ติดตามการส่งตัวไปรักษาต่อ"
 - id: referral_attended
@@ -367,13 +367,13 @@
 - id: label_attended
   translation: "เข้าร่วม"
 - id: label_attended_date
-  translation: "วันที่เจ้าร่วม"
+  translation: "วันที่เข้าร่วม"
 - id: label_referral_plan
-  translation: "แนวทางการรัก"
+  translation: "แนวทางการรักษา"
 - id: label_referral_follow_up_plan
   translation: "แนวทางการติดตามการรักษา"
 - id: label_referral_hospital_name
-  translation: "Hospital Name (If referred to hospital)"
+  translation: "ชื่อโรงพยาบาล (หากส่งต่อ)"
 - id: label_additional_notes
   translation: "ข้อมูลเพิ่มเติม"
 - id: option_referrals_all
@@ -392,12 +392,12 @@
   translation: "Open cases within 7 days"
 - id: option_overreading_open_before_7_days
   translation: "Open cases >7 days"
-# languages
+#language
 - id: language_btn_txt
   translation: "Language"
-- id: language_th
-  translation: "ไทย"
 - id: language_en
+  translation: "ไทย"
+- id: language_th
   translation: "English"
 - id: language_bd
   translation: "বাংলা"
@@ -405,15 +405,15 @@
   translation: "thai"
 #notification
 - id: label_notification_modal
-  translation: "Change status"
+  translation: "เปลี่ยนสถานะ"
 - id: notification_status_open
   translation: "Open"
 - id: notification_status_nurse_notified
-  translation: "Nurse notified"
+  translation: "แจ้งพยาบาลแล้ว"
 - id: notification_status_patient_contacted
-  translation: "Patient contacted"
+  translation: "ติดต่อคนไข้แล้ว"
 - id: notification_status_referral_arranged
-  translation: "Referral arranged"
+  translation: "ส่งตัวแล้ว"
 - id: notification_status_archived
   translation: "Archived"
 - id: notification_status_closed
@@ -428,17 +428,17 @@
 - id: nav_reports
   translation: "รายงาน"
 - id: table_header_screener_referral
-  translation: "สมาชิก Referral"
+  translation: "ส่งตัวจากการคัดกรอง"
 - id: table_header_overreader_referral
-  translation: "ผู้วิจารณ์ Referral"
+  translation: "ส่งตัวจากการอ่านภาพ"
 - id: card_title_screening_referred
-  translation: "เรียกจากการคัดกรอง"
+  translation: "ส่งตัวจากการคัดกรอง"
 - id: card_title_overead_referred
-  translation: "อ้างจากการอ่านมากกว่า"
+  translation: "ส่งตัวจากการอ่านภาพ"
 - id: card_title_disagreement_referred
-  translation: "ความไม่เห็นด้วย"
+  translation: "ไม่ตรงกัน"
 # Analytics Page
 - id: page_analytics_title
-  translation: "Analytics"
+  translation: "การวิเคราะห์"
 - id: nav_analytics
-  translation: "Analytics"
+  translation: "การวิเคราะห์"

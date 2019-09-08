@@ -149,7 +149,6 @@
   translation: "Update Participant"
 - id: form_button_enroll_continue
   translation: "Enroll and enter data"
-
 # participant table header labels
 - id: th_participant_id
   translation: "Participant Id"
