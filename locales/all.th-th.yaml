@@ -396,9 +396,9 @@
 - id: language_btn_txt
   translation: "Language"
 - id: language_en
-  translation: "ไทย"
-- id: language_th
   translation: "English"
+- id: language_th
+  translation: "ไทย"
 - id: language_bd
   translation: "বাংলা"
 - id: lang_calendar
