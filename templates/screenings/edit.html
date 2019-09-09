@@ -424,7 +424,7 @@
                                                             <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
                                                                         name="dilatePupil" type="radio"
-                                                                        value="no" <%= if (dilatePupil == nil || dilatePupil == "no") { %>checked<% } %>><%= t("option_no") %></label>
+                                                                        value="no" <%= if (dilatePupil != nil && dilatePupil == "no") { %>checked<% } %>><%= t("option_no") %></label>
                                                             </div>
                                                             <div class="radio-button">
                                                                 <label class="form-check-label"><input class="form-check-input"
@@ -458,12 +458,12 @@
                                                         <div class="radio-button">
                                                             <label class="form-check-label"><input class="form-check-input"
                                                                     name="referral" type="radio" id="referral_yes"
-                                                                    value="yes" <%= if (screening.Referral.Referred) { %> checked <% } %>><%= t("option_yes") %></label>
+                                                                    value="yes" <%= if(screening.Referral.Referred.Valid && screening.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_yes") %></label>
                                                         </div>
                                                         <div class="radio-button">
                                                             <label class="form-check-label"><input class="form-check-input"
                                                                     name="referral" type="radio" id="referral_no"
-                                                                    value="false" <%= if (!screening.Referral.Referred) { %> checked <% } %>><%= t("option_no") %></label>
+                                                                    value="no" <%= if(screening.Referral.Referred.Valid && !screening.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_no") %></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -474,7 +474,7 @@
                                                         <div class="radio-button">
                                                             <label class="form-check-label"><input class="form-check-input"
                                                                     name="referral_refused" type="checkbox" id="referral_refused" 
-                                                                    value="refused" <%= if (screening.Referral.ReferralRefused) { %> checked <% } %>><%= t("label_referral_refused") %></label>
+                                                                    value="refused" <%= if (screening.Referral.ReferralRefused.Valid && screening.Referral.ReferralRefused.Bool) { %> checked <% } %>><%= t("label_referral_refused") %></label>
                                                         </div>
                                                     </div>
                                                 </div>

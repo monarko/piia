@@ -183,12 +183,12 @@
                                     <div class="radio-button">
                                         <label class="form-check-label"><input class="form-check-input"
                                                 name="referral" type="radio"
-                                                value="yes"><%= t("option_yes") %></label>
+                                                value="yes"<%= if(overReading.Referral.Referred.Valid && overReading.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_yes") %></label>
                                     </div>
                                     <div class="radio-button">
                                         <label class="form-check-label"><input class="form-check-input"
                                                 name="referral" type="radio"
-                                                value="no"><%= t("option_no") %></label>
+                                                value="no"<%= if(overReading.Referral.Referred.Valid && !overReading.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_no") %></label>
                                     </div>
                                 </div>
                             </div>

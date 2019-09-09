@@ -34,15 +34,18 @@ func ScreeningsIndex(c buffalo.Context) error {
 }
 
 func getDilatePupil(s models.Screening) string {
-	if s.Eyes.LeftEye.DilatePupil && s.Eyes.RightEye.DilatePupil {
-		return "both"
-	} else if s.Eyes.LeftEye.DilatePupil {
-		return "left"
-	} else if s.Eyes.RightEye.DilatePupil {
-		return "right"
+	returnText := ""
+	if s.Eyes.LeftEye.DilatePupil.Valid && s.Eyes.RightEye.DilatePupil.Valid && s.Eyes.LeftEye.DilatePupil.Bool && s.Eyes.RightEye.DilatePupil.Bool {
+		returnText = "both"
+	} else if s.Eyes.LeftEye.DilatePupil.Valid && s.Eyes.RightEye.DilatePupil.Valid && !s.Eyes.LeftEye.DilatePupil.Bool && !s.Eyes.RightEye.DilatePupil.Bool {
+		returnText = "no"
+	} else if s.Eyes.RightEye.DilatePupil.Valid && s.Eyes.RightEye.DilatePupil.Bool {
+		returnText = "right"
+	} else if s.Eyes.LeftEye.DilatePupil.Valid && s.Eyes.LeftEye.DilatePupil.Bool {
+		returnText = "left"
 	}
 
-	return "no"
+	return returnText
 }
 
 // ScreeningsCreateGet renders the form for creating a new Screening.
@@ -86,27 +89,46 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	if err := c.Bind(screening); err != nil {
 		return errors.WithStack(err)
 	}
-	screening.Eyes.LeftEye.DilatePupil = false
-	screening.Eyes.RightEye.DilatePupil = false
+	screening.Eyes.LeftEye.DilatePupil.Bool = false
+	screening.Eyes.RightEye.DilatePupil.Bool = false
+	screening.Eyes.LeftEye.DilatePupil.Valid = false
+	screening.Eyes.RightEye.DilatePupil.Valid = false
 	dilatePupil := c.Request().FormValue("dilatePupil")
 	if dilatePupil == "both" {
-		screening.Eyes.LeftEye.DilatePupil = true
-		screening.Eyes.RightEye.DilatePupil = true
+		screening.Eyes.LeftEye.DilatePupil.Bool = true
+		screening.Eyes.RightEye.DilatePupil.Bool = true
+		screening.Eyes.LeftEye.DilatePupil.Valid = true
+		screening.Eyes.RightEye.DilatePupil.Valid = true
 	} else if dilatePupil == "left" {
-		screening.Eyes.LeftEye.DilatePupil = true
+		screening.Eyes.LeftEye.DilatePupil.Bool = true
+		screening.Eyes.LeftEye.DilatePupil.Valid = true
 	} else if dilatePupil == "right" {
-		screening.Eyes.RightEye.DilatePupil = true
+		screening.Eyes.RightEye.DilatePupil.Bool = true
+		screening.Eyes.RightEye.DilatePupil.Valid = true
+	} else if dilatePupil == "no" {
+		screening.Eyes.LeftEye.DilatePupil.Valid = true
+		screening.Eyes.RightEye.DilatePupil.Valid = true
 	}
 	screening.ScreenerID = user.ID
 	screening.ParticipantID = participant.ID
+
+	screening.Referral.Referred.Bool = false
+	screening.Referral.Referred.Valid = false
+	screening.Referral.ReferralRefused.Bool = false
+	screening.Referral.ReferralRefused.Valid = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
-		screening.Referral.Referred = true
+		screening.Referral.Referred.Bool = true
+		screening.Referral.Referred.Valid = true
+		screening.Referral.ReferralRefused.Valid = true
+	} else if referral == "no" {
+		screening.Referral.Referred.Bool = false
+		screening.Referral.Referred.Valid = true
 	}
-	screening.Referral.ReferralRefused = false
 	referralRefused := c.Request().FormValue("referral_refused")
 	if referralRefused == "refused" {
-		screening.Referral.ReferralRefused = true
+		screening.Referral.ReferralRefused.Bool = true
+		screening.Referral.ReferralRefused.Valid = true
 	}
 
 	verrs, err := tx.ValidateAndCreate(screening)
@@ -127,24 +149,25 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	}
 
 	// if len(screening.Eyes.RightEye.VisualAcuity.String) > 0 && len(screening.Eyes.RightEye.DRGrading.String) > 0 && len(screening.Eyes.RightEye.DMEAssessment.String) > 0 && len(screening.Eyes.LeftEye.VisualAcuity.String) > 0 && len(screening.Eyes.LeftEye.DRGrading.String) > 0 && len(screening.Eyes.LeftEye.DMEAssessment.String) > 0 {
-	participant.Status = "11"
-	perrs, err := tx.ValidateAndUpdate(participant)
-	if err != nil {
-		return errors.WithStack(err)
+	if screening.Referral.Referred.Valid {
+		participant.Status = "11"
+		perrs, err := tx.ValidateAndUpdate(participant)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		if perrs.HasAny() {
+			c.Set("participant", participant)
+			c.Set("screening", screening)
+			c.Set("errors", verrs.Errors)
+			c.Set("dilatePupil", getDilatePupil(*screening))
+			breadcrumbMap := make(map[string]interface{})
+			breadcrumbMap["Participants"] = "/participants/index"
+			// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
+			breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
+			c.Set("breadcrumbMap", breadcrumbMap)
+			return c.Render(422, r.HTML("screenings/create.html"))
+		}
 	}
-	if perrs.HasAny() {
-		c.Set("participant", participant)
-		c.Set("screening", screening)
-		c.Set("errors", verrs.Errors)
-		c.Set("dilatePupil", getDilatePupil(*screening))
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Participants"] = "/participants/index"
-		// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
-		breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
-		c.Set("breadcrumbMap", breadcrumbMap)
-		return c.Render(422, r.HTML("screenings/create.html"))
-	}
-	// }
 
 	newScreening := screening.Maps()
 	auditErr := MakeAudit("Screening", screening.ID, oldScreening, newScreening, user.ID, c)
@@ -205,27 +228,44 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	screening.Eyes.LeftEye.DilatePupil = false
-	screening.Eyes.RightEye.DilatePupil = false
+	screening.Eyes.LeftEye.DilatePupil.Bool = false
+	screening.Eyes.RightEye.DilatePupil.Bool = false
+	screening.Eyes.LeftEye.DilatePupil.Valid = false
+	screening.Eyes.RightEye.DilatePupil.Valid = false
 	dilatePupil := c.Request().FormValue("dilatePupil")
 	if dilatePupil == "both" {
-		screening.Eyes.LeftEye.DilatePupil = true
-		screening.Eyes.RightEye.DilatePupil = true
+		screening.Eyes.LeftEye.DilatePupil.Bool = true
+		screening.Eyes.RightEye.DilatePupil.Bool = true
+		screening.Eyes.LeftEye.DilatePupil.Valid = true
+		screening.Eyes.RightEye.DilatePupil.Valid = true
 	} else if dilatePupil == "left" {
-		screening.Eyes.LeftEye.DilatePupil = true
+		screening.Eyes.LeftEye.DilatePupil.Bool = true
+		screening.Eyes.LeftEye.DilatePupil.Valid = true
 	} else if dilatePupil == "right" {
-		screening.Eyes.RightEye.DilatePupil = true
+		screening.Eyes.RightEye.DilatePupil.Bool = true
+		screening.Eyes.RightEye.DilatePupil.Valid = true
+	} else if dilatePupil == "no" {
+		screening.Eyes.LeftEye.DilatePupil.Valid = true
+		screening.Eyes.RightEye.DilatePupil.Valid = true
 	}
 
-	screening.Referral.Referred = false
+	screening.Referral.Referred.Bool = false
+	screening.Referral.Referred.Valid = false
+	screening.Referral.ReferralRefused.Bool = false
+	screening.Referral.ReferralRefused.Valid = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
-		screening.Referral.Referred = true
+		screening.Referral.Referred.Bool = true
+		screening.Referral.Referred.Valid = true
+		screening.Referral.ReferralRefused.Valid = true
+	} else if referral == "no" {
+		screening.Referral.Referred.Bool = false
+		screening.Referral.Referred.Valid = true
 	}
-	screening.Referral.ReferralRefused = false
 	referralRefused := c.Request().FormValue("referral_refused")
 	if referralRefused == "refused" {
-		screening.Referral.ReferralRefused = true
+		screening.Referral.ReferralRefused.Bool = true
+		screening.Referral.ReferralRefused.Valid = true
 	}
 
 	verrs, err := tx.ValidateAndUpdate(screening)
@@ -244,7 +284,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		return c.Render(422, r.HTML("screenings/edit.html"))
 	}
 
-	if participant.Status == "1" {
+	if participant.Status == "1" && screening.Referral.Referred.Valid {
 		participant.Status = "11"
 		perrs, err := tx.ValidateAndUpdate(&participant)
 		if err != nil {

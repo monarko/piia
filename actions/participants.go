@@ -552,10 +552,10 @@ func ParticipantsDetail(c buffalo.Context) error {
 	ovReferral := false
 
 	if len(participant.Screenings) > 0 {
-		drReferral = participant.Screenings[0].Referral.Referred
+		drReferral = participant.Screenings[0].Referral.Referred.Valid && participant.Screenings[0].Referral.Referred.Bool
 	}
 	if len(participant.OverReadings) > 0 {
-		ovReferral = participant.OverReadings[0].Referral.Referred
+		ovReferral = participant.OverReadings[0].Referral.Referred.Valid && participant.OverReadings[0].Referral.Referred.Bool
 	}
 
 	c.Set("drReferral", drReferral)

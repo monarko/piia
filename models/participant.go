@@ -90,7 +90,7 @@ func (p Participant) Completeness() int {
 	total += 40
 
 	// Screening
-	scTotal := 130
+	scTotal := 150
 	if len(p.Screenings) > 0 {
 		s := p.Screenings[0]
 		if s.Diabetes.DiabetesType.Valid {
@@ -150,11 +150,17 @@ func (p Participant) Completeness() int {
 		// if s.Eyes.LeftEye.DMEAssessment.Valid {
 		// 	score += 10
 		// }
+		if s.Eyes.LeftEye.DilatePupil.Valid || s.Eyes.RightEye.DilatePupil.Valid {
+			score += 10
+		}
+		if s.Referral.Referred.Valid {
+			score += 10
+		}
 	}
 	total += scTotal
 
 	// Over Reading
-	ovTotal := 40
+	ovTotal := 50
 	if len(p.OverReadings) > 0 {
 		o := p.OverReadings[0]
 		if o.Eyes.RightEye.DRGrading.Valid {
@@ -167,6 +173,9 @@ func (p Participant) Completeness() int {
 			score += 10
 		}
 		if o.Eyes.LeftEye.DMEAssessment.Valid {
+			score += 10
+		}
+		if o.Referral.Referred.Valid {
 			score += 10
 		}
 	}
