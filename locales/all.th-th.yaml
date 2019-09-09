@@ -175,7 +175,7 @@
 - id: th_workflow_status
   translation: "สถานะ"
 - id: th_actions
-  translation: "Leave blank"
+  translation: ""
 - id: th_screening
   translation: "การคัดกรอง"
 - id: th_screening_done
