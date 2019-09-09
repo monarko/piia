@@ -90,7 +90,7 @@ func (p Participant) Completeness() int {
 	total += 40
 
 	// Screening
-	scTotal := 140
+	scTotal := 150
 	if len(p.Screenings) > 0 {
 		s := p.Screenings[0]
 		if s.Diabetes.DiabetesType.Valid {
@@ -150,6 +150,9 @@ func (p Participant) Completeness() int {
 		// if s.Eyes.LeftEye.DMEAssessment.Valid {
 		// 	score += 10
 		// }
+		if s.Eyes.LeftEye.DilatePupil.Valid || s.Eyes.RightEye.DilatePupil.Valid {
+			score += 10
+		}
 		if s.Referral.Referred.Valid {
 			score += 10
 		}

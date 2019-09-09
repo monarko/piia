@@ -35,15 +35,14 @@ func ScreeningsIndex(c buffalo.Context) error {
 
 func getDilatePupil(s models.Screening) string {
 	returnText := ""
-	if s.Eyes.LeftEye.DilatePupil.Valid && s.Eyes.RightEye.DilatePupil.Valid {
+	if s.Eyes.LeftEye.DilatePupil.Valid && s.Eyes.RightEye.DilatePupil.Valid && s.Eyes.LeftEye.DilatePupil.Bool && s.Eyes.RightEye.DilatePupil.Bool {
+		returnText = "both"
+	} else if s.Eyes.LeftEye.DilatePupil.Valid && s.Eyes.RightEye.DilatePupil.Valid && !s.Eyes.LeftEye.DilatePupil.Bool && !s.Eyes.RightEye.DilatePupil.Bool {
 		returnText = "no"
-		if s.Eyes.LeftEye.DilatePupil.Bool && s.Eyes.RightEye.DilatePupil.Bool {
-			returnText = "both"
-		} else if s.Eyes.LeftEye.DilatePupil.Bool {
-			returnText = "left"
-		} else if s.Eyes.RightEye.DilatePupil.Bool {
-			returnText = "right"
-		}
+	} else if s.Eyes.RightEye.DilatePupil.Valid && s.Eyes.RightEye.DilatePupil.Bool {
+		returnText = "right"
+	} else if s.Eyes.LeftEye.DilatePupil.Valid && s.Eyes.LeftEye.DilatePupil.Bool {
+		returnText = "left"
 	}
 
 	return returnText
@@ -115,17 +114,17 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 
 	screening.Referral.Referred.Bool = false
 	screening.Referral.Referred.Valid = false
+	screening.Referral.ReferralRefused.Bool = false
+	screening.Referral.ReferralRefused.Valid = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
 		screening.Referral.Referred.Bool = true
 		screening.Referral.Referred.Valid = true
+		screening.Referral.ReferralRefused.Valid = true
 	} else if referral == "no" {
 		screening.Referral.Referred.Bool = false
 		screening.Referral.Referred.Valid = true
 	}
-
-	screening.Referral.ReferralRefused.Bool = false
-	screening.Referral.ReferralRefused.Valid = false
 	referralRefused := c.Request().FormValue("referral_refused")
 	if referralRefused == "refused" {
 		screening.Referral.ReferralRefused.Bool = true
@@ -252,16 +251,17 @@ func ScreeningsEditPost(c buffalo.Context) error {
 
 	screening.Referral.Referred.Bool = false
 	screening.Referral.Referred.Valid = false
+	screening.Referral.ReferralRefused.Bool = false
+	screening.Referral.ReferralRefused.Valid = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
 		screening.Referral.Referred.Bool = true
 		screening.Referral.Referred.Valid = true
+		screening.Referral.ReferralRefused.Valid = true
 	} else if referral == "no" {
 		screening.Referral.Referred.Bool = false
 		screening.Referral.Referred.Valid = true
 	}
-	screening.Referral.ReferralRefused.Bool = false
-	screening.Referral.ReferralRefused.Valid = false
 	referralRefused := c.Request().FormValue("referral_refused")
 	if referralRefused == "refused" {
 		screening.Referral.ReferralRefused.Bool = true

@@ -230,7 +230,7 @@ func (s Screening) Completeness() int {
 	score, total := 0, 0
 
 	// Screening
-	scTotal := 140
+	scTotal := 150
 
 	if s.Diabetes.DiabetesType.Valid {
 		score += 10
@@ -289,6 +289,9 @@ func (s Screening) Completeness() int {
 	// if s.Eyes.LeftEye.DMEAssessment.Valid {
 	// 	score += 10
 	// }
+	if s.Eyes.LeftEye.DilatePupil.Valid || s.Eyes.RightEye.DilatePupil.Valid {
+		score += 10
+	}
 	if s.Referral.Referred.Valid {
 		score += 10
 	}
