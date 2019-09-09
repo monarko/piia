@@ -105,8 +105,9 @@ func (s Screening) Statuses() Status {
 	}
 
 	// if len(s.Eyes.RightEye.VisualAcuity.String) > 0 && len(s.Eyes.RightEye.DRGrading.String) > 0 && len(s.Eyes.RightEye.DMEAssessment.String) > 0 && len(s.Eyes.LeftEye.VisualAcuity.String) > 0 && len(s.Eyes.LeftEye.DRGrading.String) > 0 && len(s.Eyes.LeftEye.DMEAssessment.String) > 0 {
-	eyeAssessments.Done = true
-	// }
+	if s.Referral.Referred.Valid {
+		eyeAssessments.Done = true
+	}
 
 	if s.MedicalHistory.Smoker.Valid && (s.MedicalHistory.Morbidities != nil || (diabetes.Done && medications.Done && measurements.Done && pathology.Done && eyeAssessments.Done)) {
 		medicalHistory.Done = true
@@ -229,7 +230,7 @@ func (s Screening) Completeness() int {
 	score, total := 0, 0
 
 	// Screening
-	scTotal := 130
+	scTotal := 140
 
 	if s.Diabetes.DiabetesType.Valid {
 		score += 10
@@ -288,6 +289,9 @@ func (s Screening) Completeness() int {
 	// if s.Eyes.LeftEye.DMEAssessment.Valid {
 	// 	score += 10
 	// }
+	if s.Referral.Referred.Valid {
+		score += 10
+	}
 	total += scTotal
 
 	if total > 0 {

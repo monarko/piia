@@ -105,9 +105,15 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 	overReading.ParticipantID = participant.ID
 	overReading.ScreeningID = screening.ID
 
+	overReading.Referral.Referred.Bool = false
+	overReading.Referral.Referred.Valid = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
-		overReading.Referral.Referred = true
+		overReading.Referral.Referred.Bool = true
+		overReading.Referral.Referred.Valid = true
+	} else if referral == "no" {
+		overReading.Referral.Referred.Bool = false
+		overReading.Referral.Referred.Valid = true
 	}
 
 	// images
@@ -250,10 +256,15 @@ func OverReadingsEditPost(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	overReading.Referral.Referred = false
+	overReading.Referral.Referred.Bool = false
+	overReading.Referral.Referred.Valid = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
-		overReading.Referral.Referred = true
+		overReading.Referral.Referred.Bool = true
+		overReading.Referral.Referred.Valid = true
+	} else if referral == "no" {
+		overReading.Referral.Referred.Bool = false
+		overReading.Referral.Referred.Valid = true
 	}
 
 	// images
@@ -316,7 +327,7 @@ func OverReadingsEditPost(c buffalo.Context) error {
 }
 
 func checkScreeningAndOverReading(screening *models.Screening, overReading *models.OverReading) bool {
-	if !screening.Referral.Referred && overReading.Referral.Referred {
+	if screening.Referral.Referred.Valid && !screening.Referral.Referred.Bool && overReading.Referral.Referred.Valid && overReading.Referral.Referred.Bool {
 		return true
 	}
 	return false
