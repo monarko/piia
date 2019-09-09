@@ -246,7 +246,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 
 	if participant.Status == "1" {
 		participant.Status = "11"
-		perrs, err := tx.ValidateAndUpdate(participant)
+		perrs, err := tx.ValidateAndUpdate(&participant)
 		if err != nil {
 			return errors.WithStack(err)
 		}

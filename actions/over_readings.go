@@ -250,6 +250,7 @@ func OverReadingsEditPost(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
+	overReading.Referral.Referred = false
 	referral := c.Request().FormValue("referral")
 	if referral == "yes" {
 		overReading.Referral.Referred = true
