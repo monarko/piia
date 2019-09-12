@@ -96,7 +96,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label for=""><%= t("section_referral_header") %></label>
-                                    <%= if (overReading.Referral.Referred) { %>
+                                    <%= if (overReading.Referral.Referred.Valid && overReading.Referral.Referred.Bool) { %>
                                         <input class="form-control" type="text" value="Yes" disabled>
                                     <% } else { %>
                                         <input class="form-control" type="text" value="No" disabled>
