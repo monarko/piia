@@ -456,6 +456,8 @@ type fullRecord struct {
 	LeftPreviousVisualAcuity        nulls.String `json:"left_previous_visual_acuity" db:"left_previous_visual_acuity"`
 	LeftDRGrade                     nulls.String `json:"left_dr_grade" db:"left_dr_grade"`
 	LeftDME                         nulls.String `json:"left_dme" db:"left_dme"`
+	RightDilation                   nulls.String `json:"right_dilation" db:"right_dilation"`
+	LeftDilation                    nulls.String `json:"left_dilation" db:"left_dilation"`
 	ScreeningAssessmentDate         nulls.String `json:"screening_assessment_date" db:"screening_assessment_date"`
 	DrReferral                      nulls.String `json:"dr_referral" db:"dr_referral"`
 	DrReferralRefused               nulls.String `json:"dr_referral_refused" db:"dr_referral_refused"`
@@ -582,6 +584,8 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 	((s.eye->'left'::text)->>'last_visual_acuity'::text) AS "left_previous_visual_acuity",
 	((s.eye->'left'::text)->>'dr'::text) AS "left_dr_grade",
 	((s.eye->'left'::text)->>'dme'::text) AS "left_dme",
+	((s.eye->'right'::text)->>'dilate_pupil'::text) AS "right_dilation",
+	((s.eye->'left'::text)->>'dilate_pupil'::text) AS "left_dilation",
 	CASE
 	    WHEN ((s.eye->'assessment_date'::text)->>'calculated_date'::text) IS NULL THEN TO_CHAR(s.created_at, 'YYYY-MM-DD')
 	    ELSE
@@ -669,6 +673,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"pathology_lipids_total_cholesterol",
 		"pathology_lipids_unit",
 		"pathology_lipids_assessment_date",
+		"pupil_dilation",
 		"screening_assessment_date",
 		"screening_referral",
 		"screening_referral_refused",
@@ -730,6 +735,19 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		rc = append(rc, a.PathologyLipidsTotalCholesterol.String)
 		rc = append(rc, a.PathologyLipidsUnit.String)
 		rc = append(rc, a.PathologyLipidsAssessmentDate.String)
+
+		pupilDilation := ""
+		if a.RightDilation.Valid && a.RightDilation.String == "true" && a.LeftDilation.Valid && a.LeftDilation.String == "true" {
+			pupilDilation = "BOTH EYES"
+		} else if a.RightDilation.Valid && a.RightDilation.String == "false" && a.LeftDilation.Valid && a.LeftDilation.String == "false" {
+			pupilDilation = "NO"
+		} else if a.RightDilation.Valid && a.RightDilation.String == "true" {
+			pupilDilation = "RIGHT EYE"
+		} else if a.LeftDilation.Valid && a.LeftDilation.String == "true" {
+			pupilDilation = "LEFT EYE"
+		}
+		rc = append(rc, pupilDilation)
+
 		rc = append(rc, a.ScreeningAssessmentDate.String)
 		rc = append(rc, a.DrReferral.String)
 		rc = append(rc, a.DrReferralRefused.String)
@@ -829,15 +847,6 @@ func storeToGoogleCloudStorage(filename string, bytesBuffer *bytes.Buffer) error
 	if err := wc.Close(); err != nil {
 		return err
 	}
-
-	// googleStorageEmail := envy.Get("GOOGLE_STORAGE_SERVICE_EMAIL", "")
-	// googleStoragePrivateKey := envy.Get("GOOGLE_STORAGE_SERVICE_PRIVATE_KEY", "")
-
-	// googleStorageEmail := credentialContent["client_email"]
-	// googleStoragePrivateKey := credentialContent["private_key"]
-
-	// fmt.Println(googleStorageEmail)
-	// fmt.Println(googleStoragePrivateKey)
 
 	return nil
 }
