@@ -26,7 +26,6 @@ func OverReadingsIndex(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	c.Set("participant", participant)
-
 	overReadings := &models.OverReadings{}
 	q := tx.Eager("OverReader").Where("participant_id = ?", c.Param("pid")).PaginateFromParams(c.Params()).Order("created_at DESC")
 	// Retrieve all OverReadings from the DB
@@ -52,12 +51,14 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	screening := participant.Screenings[0]
-	if len(participant.OverReadings) > 0 {
-		return c.Redirect(302, "/cases/index")
-	}
 	if !(c.Param("pid") == participant.ID.String() && c.Param("sid") == screening.ID.String()) {
 		c.Flash().Add("danger", "Not Found")
 		return c.Redirect(302, "/cases/index")
+	}
+	if len(participant.OverReadings) > 0 {
+		ovr := participant.OverReadings[0]
+		red := "/participants/" + c.Param("pid") + "/screenings/" + c.Param("sid") + "/overreadings/edit/" + ovr.ID.String()
+		return c.Redirect(302, red)
 	}
 	c.Set("participant", participant)
 	c.Set("screening", screening)
@@ -87,12 +88,14 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	screening := participant.Screenings[0]
-	if len(participant.OverReadings) > 0 {
-		return c.Redirect(302, "/cases/index")
-	}
 	if !(c.Param("pid") == participant.ID.String() && c.Param("sid") == screening.ID.String()) {
 		c.Flash().Add("danger", "Not Found")
 		return c.Redirect(302, "/cases/index")
+	}
+	if len(participant.OverReadings) > 0 {
+		ovr := participant.OverReadings[0]
+		red := "/participants/" + c.Param("pid") + "/screenings/" + c.Param("sid") + "/overreadings/edit/" + ovr.ID.String()
+		return c.Redirect(302, red)
 	}
 	user := c.Value("current_user").(*models.User)
 	overReading := &models.OverReading{}
