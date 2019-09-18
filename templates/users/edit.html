@@ -43,6 +43,9 @@
                                             <option value="" <%= if (stringInSlice("", user.Sites)) { %> selected <% } %>>
                                                 All
                                             </option>
+                                            <option value="J" <%= if (stringInSlice("J", user.Sites)) { %> selected <% } %>>
+                                                <%= t("site_J") %> (PJ)
+                                            </option>
                                             <option value="K" <%= if (stringInSlice("K", user.Sites)) { %> selected <% } %>>
                                                 <%= t("site_K") %> (PK)
                                             </option>

@@ -24,6 +24,8 @@ func ChangeSite(c buffalo.Context) error {
 		site = "O"
 	} else if selectedSite == "S" {
 		site = "S"
+	} else if selectedSite == "J" {
+		site = "J"
 	} else {
 		site = ""
 	}
