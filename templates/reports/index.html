@@ -140,7 +140,7 @@
                                 <td>
                                     <%= if (len(p.Screenings) > 0) { %>
                                     <% let psc = p.Screenings[0] %>
-                                    <%= if (psc.Referral.Referred) { %>
+                                    <%= if (psc.Referral.Referred.Valid && psc.Referral.Referred.Bool) { %>
                                     <span class="badge badge-success">Yes</span>
                                     <% } else { %>
                                     <span class="badge badge-danger">No</span>
@@ -148,13 +148,13 @@
                                     <% } %>
                                 </td>
                                 <td>   
-                                        <%= if (len(p.OverReadings) > 0) { %>
-                                            <% let pov = p.OverReadings[0] %>
-                                            <%= if (pov.Referral.Referred) { %>                       
+                                    <%= if (len(p.OverReadings) > 0) { %>
+                                    <% let pov = p.OverReadings[0] %>
+                                    <%= if (pov.Referral.Referred.Valid && pov.Referral.Referred.Bool) { %>                       
                                     <span class="badge badge-success">Yes</span>
                                     <% } else { %>
-                                        <span class="badge badge-danger">No</span>
-                                        <% } %>
+                                    <span class="badge badge-danger">No</span>
+                                    <% } %>
                                     <% } %>
                                 </td>
                             </tr>
