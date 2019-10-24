@@ -455,7 +455,7 @@
                                         <% } else if (psc.Eyes.RightEye.DilatePupil.Valid && psc.Eyes.RightEye.DilatePupil.Bool) { %>
                                             <%= t("field_right_eye") %>
                                         <% } else { %>
-                                            <%= t("option_no") %>
+                                            
                                         <% } %>
                                 </label>
                             </div>
@@ -474,8 +474,10 @@
                                 <label class="col-form-label col-sm-3" for="">
                                     <%= t("section_referral_header") %></label>
                                 <div class="col-form-label col-sm-9">
-                                    <%= if (psc.Referral.Referred.Valid && psc.Referral.Referred.Bool) { %>Yes
+                                    <%= if (psc.Referral.Referred.Valid) { %>
+                                    <%= if (psc.Referral.Referred.Bool) { %>Yes
                                     <% } else { %>No
+                                    <% } %>
                                     <% } %>
                                 </div>
                             </div>
@@ -484,8 +486,10 @@
                                 <label class="col-form-label col-sm-3">
                                     <%= t("label_referral_refused") %></label>
                                 <label class="col-form-label col-sm-9">
-                                    <%= if (psc.Referral.ReferralRefused.Valid && psc.Referral.ReferralRefused.Bool) { %>Yes
+                                    <%= if (psc.Referral.ReferralRefused.Valid) { %>
+                                    <%= if (psc.Referral.ReferralRefused.Bool) { %>Yes
                                     <% } else { %>No
+                                    <% } %>
                                     <% } %>
                                 </label>
                             </div>
@@ -593,8 +597,10 @@
                                 <label class="col-form-label col-sm-3">
                                     <%= t("section_referral_header") %></label>
                                 <label class="col-form-label col-sm-9">
-                                    <%= if (pov.Referral.Referred.Valid && pov.Referral.Referred.Bool) { %>Yes
+                                    <%= if (pov.Referral.Referred.Valid) { %>
+                                    <%= if (pov.Referral.Referred.Bool) { %>Yes
                                     <% } else { %>No
+                                    <% } %>
                                     <% } %>
                                 </label>
                             </div>

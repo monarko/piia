@@ -533,7 +533,8 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 	date_part('year', age(((p.dob->>'calculated_date'::text)::date)::timestamp with time zone)) AS "age",
         CASE
             WHEN ((p.gender)::text = 'M'::text) THEN 'Male'::text
-            ELSE 'Female'::text
+	    WHEN ((p.gender)::text = 'F'::text) THEN 'Female'::text
+            ELSE ''::text
         END AS "gender",
 
 	(s.diabetes->>'diabetes_type'::text) AS "diabetes_type",
@@ -542,17 +543,20 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 
 	CASE
             WHEN ((s.medical_history->>'smoker'::text) = 'true'::text) THEN 'Yes'::text
-            ELSE 'No'::text
+	    WHEN ((s.medical_history->>'smoker'::text) = 'false'::text) THEN 'No'::text
+            ELSE NULL
         END AS "medical_history_smoker",
 	(s.medical_history->>'morbidities'::text) AS "medical_history_morbidities",
 
 	CASE
             WHEN ((s.medications->>'on_insulin'::text) = 'true'::text) THEN 'Yes'::text
-            ELSE 'No'::text
+            WHEN ((s.medications->>'on_insulin'::text) = 'false'::text) THEN 'No'::text
+            ELSE NULL
         END AS "medications_on_insulin",
 	CASE
             WHEN ((s.medications->>'taking_medications'::text) = 'true'::text) THEN 'Yes'::text
-            ELSE 'No'::text
+	    WHEN ((s.medications->>'taking_medications'::text) = 'false'::text) THEN 'No'::text
+            ELSE NULL
         END AS "medications_taking_medications",
 
 	((s.measurements->'blood_pressure'::text)->>'sbp'::text) AS measurements_bp_sbp,
@@ -589,19 +593,21 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 	CASE
 	    WHEN ((s.eye->'assessment_date'::text)->>'calculated_date'::text) IS NULL THEN TO_CHAR(s.created_at, 'YYYY-MM-DD')
 	    ELSE
-			CASE 
-				WHEN (LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10) = '0001-01-01'::text) THEN NULL
-				ELSE LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10)
-			END 
+		CASE 
+			WHEN (LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10) = '0001-01-01'::text) THEN NULL
+			ELSE LEFT(((s.eye->'assessment_date'::text)->>'calculated_date'::text), 10)
+		END 
 	END AS screening_assessment_date,
-    CASE
-        WHEN ((s.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
-        ELSE 'No'::text
-    END AS "dr_referral",
 	CASE
-        WHEN ((s.referral->>'referral_refused'::text) = 'true'::text) THEN 'Yes'::text
-        ELSE 'No'::text
-    END AS "dr_referral_refused",
+		WHEN ((s.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
+		WHEN ((s.referral->>'referred'::text) = 'false'::text) THEN 'No'::text
+		ELSE NULL
+	END AS "dr_referral",
+	CASE
+		WHEN ((s.referral->>'referral_refused'::text) = 'true'::text) THEN 'Yes'::text
+		WHEN ((s.referral->>'referral_refused'::text) = 'false'::text) THEN 'No'::text
+		ELSE NULL
+	END AS "dr_referral_refused",
 	(s.referral->>'referral_reason'::text) AS "dr_referral_reason",
 	(s.referral->>'additional_notes'::text) AS "dr_referral_notes",
 
@@ -614,7 +620,8 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 	TO_CHAR(o.created_at, 'YYYY-MM-DD') AS over_assessment_date,
         CASE
             WHEN ((o.referral->>'referred'::text) = 'true'::text) THEN 'Yes'::text
-            ELSE 'No'::text
+	    WHEN ((o.referral->>'referred'::text) = 'false'::text) THEN 'No'::text
+            ELSE NULL
         END AS "over_referral",
 	(o.referral->>'additional_notes'::text) AS "over_referral_notes"
 FROM (
@@ -787,9 +794,12 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 			sls = a.LeftSuspectedOver.String
 		}
 		rc = append(rc, SliceStringToCommaSeparatedValue(sls))
-		overReadingGradeability := "GRADEABLE"
-		if a.RightDRGradeOver.String == "Ungradeable" || a.RightDMEOver.String == "Ungradeable" || a.LeftDRGradeOver.String == "Ungradeable" || a.LeftDMEOver.String == "Ungradeable" {
-			overReadingGradeability = "UNGRADEABLE"
+		overReadingGradeability := ""
+		if a.RightDRGradeOver.Valid && a.RightDMEOver.Valid && a.LeftDRGradeOver.Valid && a.LeftDMEOver.Valid {
+			overReadingGradeability = "GRADEABLE"
+			if a.RightDRGradeOver.String == "Ungradeable" || a.RightDMEOver.String == "Ungradeable" || a.LeftDRGradeOver.String == "Ungradeable" || a.LeftDMEOver.String == "Ungradeable" {
+				overReadingGradeability = "UNGRADEABLE"
+			}
 		}
 		rc = append(rc, overReadingGradeability)
 		rc = append(rc, a.OverReadingAssessmentDate.String)
