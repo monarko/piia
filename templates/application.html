@@ -353,6 +353,7 @@
             $(".birth_year_field").inputmask("9999", { "clearIncomplete": true, "max": 2800, "min": 1900 });
             $("#screeningForm").on("submit", function (e) {
                 // e.preventDefault();
+                var sform = $(this);
                 shouldRefer = false;
 
                 var rva = $("select[name='Eyes.RightEye.VisualAcuity']").val();
@@ -366,6 +367,7 @@
                 
                 var referralNotes = $('#referral-notes').val();
                 var referral = $("input[name=referral]:checked").val();
+                var referralCheck = $('#referral_check').val();
 
                 // console.log("rva=", rva, "rlva=", rlva, "rdr=", rdr, "rdme=", rdme, "lva=", lva, "llva=", llva, "ldr=", ldr, "ldme=", ldme);
                 // console.log("referralNotes=", referralNotes, "referral=", referral)
@@ -406,6 +408,22 @@
                     e.preventDefault();
                     $('#referral-error').html("<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\"><%= t("label_referral_refused_error") %><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div>");
                     $('#referral-notes').focus();
+                }
+
+                if (referralCheck == "strict" && (referral != "yes" || referral != "no")) {
+                    e.preventDefault();
+                    swal({
+                        title: "This will NOT be Over Read!",
+                        text: "You didn't update the DR Referral Recommendation. If you don't fill referral recommendation, this case is NOT going to be over read. Are you sure you want to save it?",
+                        icon: "warning",
+                        buttons: ["Let me fill the Referral Recommendation", "Save Anyway, I will update later!"],
+                        dangerMode: true,
+                    }).then((saveAnyway) => {
+                        if (saveAnyway) {
+                            $('#referral_check').val("flexible");
+                            sform.submit();
+                        }
+                    });
                 }
             });
             

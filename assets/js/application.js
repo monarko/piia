@@ -7,6 +7,7 @@ require("./jquery.inputmask.bundle.js");
 require("./jquery-confirm.js");
 require("datatables.net");
 require("datatables.net-bs4");
+require("sweetalert")
 $(() => {
 
 });
