@@ -444,3 +444,12 @@
   translation: "Analytics"
 - id: nav_analytics
   translation: "Analytics"
+# Screening Form - Referral Check Prompt
+- id: referral_check_prompt_title
+  translation: "This will NOT be Over Read!"
+- id: referral_check_prompt_desc
+  translation: "You did not update the DR Referral Recommendation. If you do not fill referral recommendation, this case is NOT going to be over read. Are you sure you want to save it?"
+- id: referral_check_prompt_button_cancel
+  translation: "Let me fill the Referral Recommendation"
+- id: referral_check_prompt_button_save_anyway
+  translation: "Save Anyway, I will update later!"

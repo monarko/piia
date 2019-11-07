@@ -444,3 +444,13 @@
   translation: "การวิเคราะห์"
 - id: nav_analytics
   translation: "การวิเคราะห์"
+# Screening Form - Referral Check Prompt
+- id: referral_check_prompt_title
+  translation: "ภาพนี้จะไม่ได้ถูกอ่านโดยจักษุแพทย์จอตา"
+- id: referral_check_prompt_desc
+  translation: "คุณไม่ได้ใส่สถานะการส่งตัว
+หากคุณไม่ได้ใส่สถานะการส่งตัว ภาพนี้จะไม่ได้ถูกอ่านโดยจักษุแพทย์จอตา คุณแน่ใจใช่ไหมที่จะบันทึก"
+- id: referral_check_prompt_button_cancel
+  translation: "กรอกข้อมูลส่งตัว"
+- id: referral_check_prompt_button_save_anyway
+  translation: "บันทึก ฉันจะกลับมากรอกข้อมูลทีหลัง"

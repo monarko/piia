@@ -413,10 +413,10 @@
                 if (referralCheck == "strict" && (referral != "yes" || referral != "no")) {
                     e.preventDefault();
                     swal({
-                        title: "This will NOT be Over Read!",
-                        text: "You didn't update the DR Referral Recommendation. If you don't fill referral recommendation, this case is NOT going to be over read. Are you sure you want to save it?",
+                        title: "<%= t("referral_check_prompt_title") %>",
+                        text: "<%= t("referral_check_prompt_desc") %>",
                         icon: "warning",
-                        buttons: ["Let me fill the Referral Recommendation", "Save Anyway, I will update later!"],
+                        buttons: ["<%= t("referral_check_prompt_button_cancel") %>", "<%= t("referral_check_prompt_button_save_anyway") %>"],
                         dangerMode: true,
                     }).then((saveAnyway) => {
                         if (saveAnyway) {
