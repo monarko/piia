@@ -410,7 +410,7 @@
                     $('#referral-notes').focus();
                 }
 
-                if (referralCheck == "strict" && (referral != "yes" || referral != "no")) {
+                if (referralCheck == "strict" && referral != "yes" && referral != "no") {
                     e.preventDefault();
                     swal({
                         title: "<%= t("referral_check_prompt_title") %>",
