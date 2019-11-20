@@ -31,6 +31,8 @@
   translation: "Piia Admin"
 - id: site_all
   translation: "All Sites"
+- id: site_A
+  translation: "Sansai"
 - id: site_J
   translation: "Jomthong"
 - id: site_K

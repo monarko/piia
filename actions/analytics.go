@@ -704,6 +704,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 	}
 
 	sites := map[string]string{
+		"A": "Sansai",
 		"J": "Jomthong",
 		"K": "Khlong Luang",
 		"L": "Lamlukka",

@@ -31,6 +31,8 @@
   translation: "ผู้ดูแลระบบ"
 - id: site_all
   translation: "ทุกที่วิจัย"
+- id: site_A
+  translation: "โรงพยาบาลสันทราย"
 - id: site_J
   translation: "รพ.จอมทอง"
 - id: site_K
