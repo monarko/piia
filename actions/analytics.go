@@ -472,6 +472,7 @@ type fullRecord struct {
 	OverReadingAssessmentDate       nulls.String `json:"over_assessment_date" db:"over_assessment_date"`
 	OverReferral                    nulls.String `json:"over_referral" db:"over_referral"`
 	OverReferralNotes               nulls.String `json:"over_referral_notes" db:"over_referral_notes"`
+	ReferredMessageID               nulls.String `json:"referred_message_id" db:"referred_message_id"`
 }
 
 // DownloadFull function
@@ -623,11 +624,13 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 	    WHEN ((o.referral->>'referred'::text) = 'false'::text) THEN 'No'::text
             ELSE NULL
         END AS "over_referral",
-	(o.referral->>'additional_notes'::text) AS "over_referral_notes"
+	(o.referral->>'additional_notes'::text) AS "over_referral_notes",
+	r.id AS "referred_message_id"
 FROM (
 	participants p
 	LEFT JOIN screenings s ON (p.id = s.participant_id)
 	LEFT JOIN over_readings o ON (o.screening_id = s.id)
+	LEFT JOIN referred_messages r ON (r.screening_id = s.id)
 )
 WHERE (
 	s.id IS NOT NULL
@@ -697,6 +700,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"overreading_referral",
 		"overreading_referral_notes",
 		"overreading_referral_details",
+		"referral_tracked",
 	}
 
 	if err := w.Write(headers); err != nil {
@@ -818,6 +822,11 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 			)
 		}
 		rc = append(rc, overreadingReasons)
+		referralPresent := "NO"
+		if a.ReferredMessageID.Valid && len(a.ReferredMessageID.String) > 0 {
+			referralPresent = "YES"
+		}
+		rc = append(rc, referralPresent)
 
 		if err := w.Write(rc); err != nil {
 			return nil, err
