@@ -460,8 +460,10 @@ type fullRecord struct {
 	LeftDilation                    nulls.String `json:"left_dilation" db:"left_dilation"`
 	ScreeningAssessmentDate         nulls.String `json:"screening_assessment_date" db:"screening_assessment_date"`
 	DrReferral                      nulls.String `json:"dr_referral" db:"dr_referral"`
+	HospitalReferral                nulls.String `json:"hospital_referral" db:"hospital_referral"`
 	DrReferralRefused               nulls.String `json:"dr_referral_refused" db:"dr_referral_refused"`
 	DrReferralReason                nulls.String `json:"dr_referral_reason" db:"dr_referral_reason"`
+	HospitalNotReferralReason       nulls.String `json:"hospital_not_referral_reason" db:"hospital_not_referral_reason"`
 	DrReferralNotes                 nulls.String `json:"dr_referral_notes" db:"dr_referral_notes"`
 	RightDRGradeOver                nulls.String `json:"right_dr_grade_over" db:"right_dr_grade_over"`
 	RightDMEOver                    nulls.String `json:"right_dme_over" db:"right_dme_over"`
@@ -605,11 +607,17 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 		ELSE NULL
 	END AS "dr_referral",
 	CASE
+		WHEN ((s.referral->>'hospital_referred'::text) = 'true'::text) THEN 'Yes'::text
+		WHEN ((s.referral->>'hospital_referred'::text) = 'false'::text) THEN 'No'::text
+		ELSE NULL
+	END AS "hospital_referral",
+	CASE
 		WHEN ((s.referral->>'referral_refused'::text) = 'true'::text) THEN 'Yes'::text
 		WHEN ((s.referral->>'referral_refused'::text) = 'false'::text) THEN 'No'::text
 		ELSE NULL
 	END AS "dr_referral_refused",
 	(s.referral->>'referral_reason'::text) AS "dr_referral_reason",
+	(s.referral->>'hospital_not_referral_reason'::text) AS "hospital_not_referral_reason",
 	(s.referral->>'additional_notes'::text) AS "dr_referral_notes",
 
 	((o.eye_assessment->'right'::text)->>'dr'::text) AS "right_dr_grade_over",
@@ -686,8 +694,10 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 		"pupil_dilation",
 		"screening_assessment_date",
 		"screening_referral",
+		"screening_hospital_referral",
 		"screening_referral_refused",
 		"screening_referral_reason",
+		"screening_hospital_not_referral_reason",
 		"screening_referral_notes",
 		"overreading_right_dr_grade",
 		"overreading_right_dme",
@@ -763,6 +773,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 
 		rc = append(rc, a.ScreeningAssessmentDate.String)
 		rc = append(rc, a.DrReferral.String)
+		rc = append(rc, a.HospitalReferral.String)
 		rc = append(rc, a.DrReferralRefused.String)
 		screeningReasons := ""
 		if a.DrReferral.String == "Yes" && len(a.DrReferralReason.String) == 0 {
@@ -780,6 +791,7 @@ func downloadAllRecords(records []fullRecord) (*bytes.Buffer, error) {
 			screeningReasons = a.DrReferralReason.String
 		}
 		rc = append(rc, screeningReasons)
+		rc = append(rc, a.HospitalNotReferralReason.String)
 		haveNotes := "FALSE"
 		if a.DrReferralNotes.Valid && len(a.DrReferralNotes.String) > 0 {
 			haveNotes = "TRUE"

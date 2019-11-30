@@ -26,6 +26,10 @@
   translation: "ใช่่"
 - id: option_no
   translation: "ไม่"
+- id: option_yes_refer
+  translation: "ใช่ (อ้างอิง)"
+- id: option_no_refer
+  translation: "ไม่ (ไม่แนะนำ)"
 # admin dashboard
 - id: header_title
   translation: "ผู้ดูแลระบบ"
@@ -261,6 +265,8 @@
   translation: "DR/DME"
 - id: option_referral_reason_ungradeable
   translation: "ประเมินไม่ได้"
+- id: label_not_referral_reason
+  translation: "เหตุผลที่ไม่แนะนำ"
 # create new - enrollment
 - id: page_enroll_title
   translation: "ลงทะเบียนเข้าศึกษา"
@@ -291,6 +297,10 @@
   translation: "การประเมิน DR"
 - id: section_referral_header
   translation: "จุำเป็นต้องส่งตัว"
+- id: section_hospital_referral_header
+  translation: "โรงพยาบาลเรียก"
+- id: section_hospital_not_referral_header
+  translation: "โรงพยาบาลไม่ได้อ้างอิงเหตุผล"
 - id: header_right_eye
   translation: "ตาขวา (OD)"
 - id: header_left_eye
@@ -305,6 +315,8 @@
   translation: "ส่งตัวไปรักษา"
 - id: label_suspected_pathology
   translation: "โรคที่สงสัย"
+- id: label_hospital_not_referred_reason
+  translation: "อะไรคือสาเหตุที่โรงพยาบาลไม่ให้อ้างอิง"
 # grading scales
 - id: option_ungradeable
   translation: "ไม่สามารถประเมินได้"
@@ -358,7 +370,9 @@
 - id: option_gestational_diabetes
   translation: "Gestational Diabetes"
 - id: dr_referral_label
-  translation: "แนะนำให้ส่งตัว"
+  translation: "Veil คำแนะนำ"
+- id: hospital_referral_label
+  translation: "การตัดสินใจของโรงพยาบาล"
 - id: field_previous_visual_acuity
   translation: "ค่าสายตาล่าสุด(หากมี)"
 - id: field_last_visual_acuity

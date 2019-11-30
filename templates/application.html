@@ -367,6 +367,7 @@
                 
                 var referralNotes = $('#referral-notes').val();
                 var referral = $("input[name=referral]:checked").val();
+                var hospitalReferral = $("input[name=hospital_referral]:checked").val();
                 var referralCheck = $('#referral_check').val();
 
                 // console.log("rva=", rva, "rlva=", rlva, "rdr=", rdr, "rdme=", rdme, "lva=", lva, "llva=", llva, "ldr=", ldr, "ldme=", ldme);
@@ -410,7 +411,7 @@
                     $('#referral-notes').focus();
                 }
 
-                if (referralCheck == "strict" && referral != "yes" && referral != "no") {
+                if (referralCheck == "strict" && referral != "yes" && referral != "no" && hospitalReferral != "yes" && hospitalReferral != "no") {
                     e.preventDefault();
                     swal({
                         title: "<%= t("referral_check_prompt_title") %>",
@@ -431,6 +432,12 @@
                 toogleReferralRefusalBox();
             });
             $("#referral_no").on("change", function () {
+                toogleReferralRefusalBox();
+            });
+            $("#hospital_referral_yes").on("change", function () {
+                toogleReferralRefusalBox();
+            });
+            $("#hospital_referral_no").on("change", function () {
                 toogleReferralRefusalBox();
             });
         
@@ -539,16 +546,50 @@
                 var archiveJson = JSON.stringify(JSON.parse($("#archive-data-json").val()), undefined, 4);
                 $("#archive-data-json").text(archiveJson);
             }
+
+            $("#hospital_not_referred_reason").on('change', function() {
+                var v = $(this).find(":selected").val();
+                if (v == "Other") {
+                    $("#not-referral-reason-text-box").show();
+                    $("#hospital_not_referred_reason_text").attr('required', '');
+                } else {
+                    $("#not-referral-reason-text-box").hide();
+                    $("#hospital_not_referred_reason_text").removeAttr('required');
+                    $("#hospital_not_referred_reason_text").val('');
+                }
+            });
         });
 
         function toogleReferralRefusalBox() {
             var referral = $("input[name=referral]:checked").val();
-            if (referral == "yes") {
+            var hospitalReferral = $("input[name=hospital_referral]:checked").val();
+
+            if (referral == "yes" && hospitalReferral == "yes") {
+                $("#not-referral-reason-box").hide();
+                $("#hospital_not_referred_reason").removeAttr('required');
+                $("#hospital_not_referred_reason").val('');
+                $("#not-referral-reason-text-box").hide();
+                $("#hospital_not_referred_reason_text").removeAttr('required');
+                $("#hospital_not_referred_reason_text").val('');
+
                 $("#referral-refused-box").show();
+            } else if (referral == "yes" && hospitalReferral == "no") {
+                $("#referral_refused").prop("checked", false);
+                $("#referral_reason").val("");
+                $("#referral-refused-box").hide();
+
+                $("#hospital_not_referred_reason").attr('required', '');
+                $("#not-referral-reason-box").show();
             } else {
                 $("#referral_refused").prop("checked", false);
                 $("#referral_reason").val("");
                 $("#referral-refused-box").hide();
+                $("#not-referral-reason-box").hide();
+                $("#hospital_not_referred_reason").removeAttr('required');
+                $("#hospital_not_referred_reason").val('');
+                $("#not-referral-reason-text-box").hide();
+                $("#hospital_not_referred_reason_text").removeAttr('required');
+                $("#hospital_not_referred_reason_text").val('');
             }
         }
     
