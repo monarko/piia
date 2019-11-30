@@ -29066,3 +29066,6 @@ td.audit-action-detail {
 tr.shown td.audit-action-detail {
   background: url('../img/details_close.png') no-repeat center center;
 }
+.detail-attribute-value {
+  margin-bottom: 0 !important;
+}

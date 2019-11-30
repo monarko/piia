@@ -442,7 +442,7 @@
                                     </tr>
                                 </table>
                             <%= for (psc) in participant.Screenings { %>
-                            <div class="form-group row">
+                            <div class="form-group row detail-attribute-value">
                                 <label class="col-form-label col-sm-3">
                                     <%= t("field_dilate_pupil") %></label>
                                 <label class="col-form-label col-sm-9">
@@ -460,7 +460,7 @@
                                 </label>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row detail-attribute-value">
                                 <label class="col-form-label col-sm-3">
                                     <%= t("label_date_of_dr_assessment") %></label>
                                 <label class="col-form-label col-sm-9">
@@ -470,7 +470,7 @@
                                 </label>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row detail-attribute-value">
                                 <label class="col-form-label col-sm-3" for="">
                                     <%= t("section_referral_header") %></label>
                                 <div class="col-form-label col-sm-9">
@@ -482,19 +482,41 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-form-label col-sm-3">
-                                    <%= t("label_referral_refused") %></label>
-                                <label class="col-form-label col-sm-9">
-                                    <%= if (psc.Referral.ReferralRefused.Valid) { %>
-                                    <%= if (psc.Referral.ReferralRefused.Bool) { %>Yes
+                            <div class="form-group row detail-attribute-value">
+                                <label class="col-form-label col-sm-3" for="">
+                                    <%= t("section_hospital_referral_header") %></label>
+                                <div class="col-form-label col-sm-9">
+                                    <%= if (psc.Referral.HospitalReferred.Valid) { %>
+                                    <%= if (psc.Referral.HospitalReferred.Bool) { %>Yes
                                     <% } else { %>No
                                     <% } %>
                                     <% } %>
-                                </label>
+                                </div>
                             </div>
 
-                            <div class="form-group row">
+                            <%= if (psc.Referral.ReferralRefused.Valid) { %>
+                            <div class="form-group row detail-attribute-value">
+                                <label class="col-form-label col-sm-3">
+                                    <%= t("label_referral_refused") %></label>
+                                <label class="col-form-label col-sm-9">
+                                    <%= if (psc.Referral.ReferralRefused.Bool) { %>Yes
+                                    <% } else { %>No
+                                    <% } %>
+                                </label>
+                            </div>
+                            <% } %>
+
+                            <%= if (psc.Referral.HospitalNotReferralReason.Valid && len(psc.Referral.HospitalNotReferralReason.String) > 0) { %>
+                            <div class="form-group row detail-attribute-value">
+                                <label class="col-form-label col-sm-3" for="">
+                                    <%= t("section_hospital_not_referral_header") %></label>
+                                <div class="col-form-label col-sm-9">
+                                    <%= psc.Referral.HospitalNotReferralReason %>
+                                </div>
+                            </div>
+                            <% } %>
+
+                            <div class="form-group row detail-attribute-value">
                                 <label class="col-form-label col-sm-3" for="">
                                     <%= t("label_additional_notes") %></label>
                                 <div class="col-form-label col-sm-9">
@@ -593,7 +615,7 @@
                                 </tbody>
                             </table>
 
-                            <div class="form-group row">
+                            <div class="form-group row detail-attribute-value">
                                 <label class="col-form-label col-sm-3">
                                     <%= t("section_referral_header") %></label>
                                 <label class="col-form-label col-sm-9">
@@ -605,7 +627,7 @@
                                 </label>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row detail-attribute-value">
                                 <label class="col-form-label col-sm-3" for="">
                                     <%= t("label_additional_notes") %></label>
                                 <div class="col-form-label col-sm-9">

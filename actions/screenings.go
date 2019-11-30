@@ -2,9 +2,11 @@ package actions
 
 import (
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/pop"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
+	"strings"
 )
 
 // ScreeningsIndex gets all Screenings. This function is mapped to the path
@@ -60,6 +62,9 @@ func ScreeningsCreateGet(c buffalo.Context) error {
 		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
 		return c.Redirect(302, red)
 	}
+	hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
+	reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
+	c.Set("hospitalNotReferralReasons", reasons)
 	screening := &models.Screening{}
 	c.Set("participant", participant)
 	c.Set("screening", screening)
@@ -83,6 +88,9 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
 		return c.Redirect(302, red)
 	}
+	hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
+	reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
+	c.Set("hospitalNotReferralReasons", reasons)
 	user := c.Value("current_user").(*models.User)
 	screening := &models.Screening{}
 	oldScreening := screening.Maps()
@@ -125,10 +133,32 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		screening.Referral.Referred.Bool = false
 		screening.Referral.Referred.Valid = true
 	}
+	hospitalReferral := c.Request().FormValue("hospital_referral")
+	if hospitalReferral == "yes" {
+		screening.Referral.HospitalReferred.Bool = true
+		screening.Referral.HospitalReferred.Valid = true
+	} else if hospitalReferral == "no" {
+		screening.Referral.HospitalReferred.Bool = false
+		screening.Referral.HospitalReferred.Valid = true
+	}
 	referralRefused := c.Request().FormValue("referral_refused")
 	if referralRefused == "refused" {
 		screening.Referral.ReferralRefused.Bool = true
 		screening.Referral.ReferralRefused.Valid = true
+	}
+	hospitalNotReferredReason := c.Request().FormValue("hospital_not_referred_reason")
+	hospitalNotReferredReasonText := c.Request().FormValue("hospital_not_referred_reason_text")
+	if len(hospitalNotReferredReason) > 0 {
+		screening.Referral.HospitalNotReferralReason.Valid = true
+		if hospitalNotReferredReason == "Other" {
+			screening.Referral.HospitalNotReferralReason.String = hospitalNotReferredReasonText
+		} else {
+			screening.Referral.HospitalNotReferralReason.String = hospitalNotReferredReason
+			if strings.Contains(hospitalNotReferredReason, "refused") {
+				screening.Referral.ReferralRefused.Bool = true
+				screening.Referral.ReferralRefused.Valid = true
+			}
+		}
 	}
 
 	verrs, err := tx.ValidateAndCreate(screening)
@@ -198,6 +228,9 @@ func ScreeningsEditGet(c buffalo.Context) error {
 		c.Flash().Add("danger", "Not Found")
 		return c.Redirect(302, "/participants/index")
 	}
+	hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
+	reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
+	c.Set("hospitalNotReferralReasons", reasons)
 	c.Set("participant", participant)
 	c.Set("screening", screening)
 	c.Set("dilatePupil", getDilatePupil(*screening))
@@ -223,6 +256,9 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		c.Flash().Add("danger", "Not Found")
 		return c.Redirect(302, "/participants/index")
 	}
+	hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
+	reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
+	c.Set("hospitalNotReferralReasons", reasons)
 	oldScreening := screening.Maps()
 	if err := c.Bind(screening); err != nil {
 		return errors.WithStack(err)
@@ -262,10 +298,32 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		screening.Referral.Referred.Bool = false
 		screening.Referral.Referred.Valid = true
 	}
+	hospitalReferral := c.Request().FormValue("hospital_referral")
+	if hospitalReferral == "yes" {
+		screening.Referral.HospitalReferred.Bool = true
+		screening.Referral.HospitalReferred.Valid = true
+	} else if hospitalReferral == "no" {
+		screening.Referral.HospitalReferred.Bool = false
+		screening.Referral.HospitalReferred.Valid = true
+	}
 	referralRefused := c.Request().FormValue("referral_refused")
 	if referralRefused == "refused" {
 		screening.Referral.ReferralRefused.Bool = true
 		screening.Referral.ReferralRefused.Valid = true
+	}
+	hospitalNotReferredReason := c.Request().FormValue("hospital_not_referred_reason")
+	hospitalNotReferredReasonText := c.Request().FormValue("hospital_not_referred_reason_text")
+	if len(hospitalNotReferredReason) > 0 {
+		screening.Referral.HospitalNotReferralReason.Valid = true
+		if hospitalNotReferredReason == "Other" {
+			screening.Referral.HospitalNotReferralReason.String = hospitalNotReferredReasonText
+		} else {
+			screening.Referral.HospitalNotReferralReason.String = hospitalNotReferredReason
+			if strings.Contains(hospitalNotReferredReason, "refused") {
+				screening.Referral.ReferralRefused.Bool = true
+				screening.Referral.ReferralRefused.Valid = true
+			}
+		}
 	}
 
 	verrs, err := tx.ValidateAndUpdate(screening)

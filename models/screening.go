@@ -105,7 +105,7 @@ func (s Screening) Statuses() Status {
 	}
 
 	// if len(s.Eyes.RightEye.VisualAcuity.String) > 0 && len(s.Eyes.RightEye.DRGrading.String) > 0 && len(s.Eyes.RightEye.DMEAssessment.String) > 0 && len(s.Eyes.LeftEye.VisualAcuity.String) > 0 && len(s.Eyes.LeftEye.DRGrading.String) > 0 && len(s.Eyes.LeftEye.DMEAssessment.String) > 0 {
-	if s.Referral.Referred.Valid {
+	if s.Referral.Referred.Valid && s.Referral.HospitalReferred.Valid {
 		eyeAssessments.Done = true
 	}
 
@@ -230,7 +230,7 @@ func (s Screening) Completeness() int {
 	score, total := 0, 0
 
 	// Screening
-	scTotal := 150
+	scTotal := 160
 
 	if s.Diabetes.DiabetesType.Valid {
 		score += 10
@@ -293,6 +293,9 @@ func (s Screening) Completeness() int {
 		score += 10
 	}
 	if s.Referral.Referred.Valid {
+		score += 10
+	}
+	if s.Referral.HospitalReferred.Valid {
 		score += 10
 	}
 	total += scTotal

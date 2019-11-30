@@ -26,6 +26,10 @@
   translation: "Yes"
 - id: option_no
   translation: "No"
+- id: option_yes_refer
+  translation: "Yes (Refer)"
+- id: option_no_refer
+  translation: "No (No Refer)"
 # admin dashboard
 - id: header_title
   translation: "Piia Admin"
@@ -261,6 +265,8 @@
   translation: "DR/DME"
 - id: option_referral_reason_ungradeable
   translation: "Ungradeable"
+- id: label_not_referral_reason
+  translation: "Reason to not refer"
 # create new - enrollment
 - id: page_enroll_title
   translation: "Enroll into Study"
@@ -291,6 +297,10 @@
   translation: "DR Assessment"
 - id: section_referral_header
   translation: "Referral Required"
+- id: section_hospital_referral_header
+  translation: "Hospital Referred"
+- id: section_hospital_not_referral_header
+  translation: "Hospital Not Referral Reason"
 - id: header_right_eye
   translation: "Right Eye (OD)"
 - id: header_left_eye
@@ -305,6 +315,8 @@
   translation: "Refer for assessment"
 - id: label_suspected_pathology
   translation: "Suspected Pathologies"
+- id: label_hospital_not_referred_reason
+  translation: "What is the reason for the hospital to NOT refer?"
 # grading scales
 - id: option_ungradeable
   translation: "Ungradeable"
@@ -358,7 +370,9 @@
 - id: option_gestational_diabetes
   translation: "Gestational Diabetes"
 - id: dr_referral_label
-  translation: "DR Referral Recommendation"
+  translation: "Veil Recommendation"
+- id: hospital_referral_label
+  translation: "Hospital Decision"
 - id: field_previous_visual_acuity
   translation: "Last recorded visual acuity (if available)"
 - id: field_last_visual_acuity

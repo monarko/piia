@@ -402,22 +402,43 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <fieldset class="form-group" style="margin-top: 0.5rem;">
+                                                <div id="referral-error" style="margin-top: -1.5rem;margin-bottom: 1rem;"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <fieldset class="form-group" style="margin-top: 0.5rem; margin-bottom: -0.5rem;">
                                                 <legend><span><%= t("dr_referral_label") %></span></legend>
                                                 </fieldset>
-
-                                                <div id="referral-error" style="margin-top: -1.5rem;margin-bottom: 1rem;"></div>
 
                                                 <div class="form-check-inline">
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
                                                                 name="referral" type="radio" id="referral_yes"
-                                                                value="yes"<%= if(screening.Referral.Referred.Valid && screening.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_yes") %></label>
+                                                                value="yes"<%= if(screening.Referral.Referred.Valid && screening.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_yes_refer") %></label>
                                                     </div>
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
                                                                 name="referral" type="radio" id="referral_no"
-                                                                value="no"<%= if(screening.Referral.Referred.Valid && !screening.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_no") %></label>
+                                                                value="no"<%= if(screening.Referral.Referred.Valid && !screening.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_no_refer") %></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <fieldset class="form-group" style="margin-top: 0.5rem; margin-bottom: -0.5rem;">
+                                                <legend><span><%= t("hospital_referral_label") %></span></legend>
+                                                </fieldset>
+
+                                                <div class="form-check-inline">
+                                                    <div class="radio-button">
+                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                name="hospital_referral" type="radio" id="hospital_referral_yes"
+                                                                value="yes"<%= if(screening.Referral.HospitalReferred.Valid && screening.Referral.HospitalReferred.Bool) { %> checked <% }%>><%= t("option_yes_refer") %></label>
+                                                    </div>
+                                                    <div class="radio-button">
+                                                        <label class="form-check-label"><input class="form-check-input"
+                                                                name="hospital_referral" type="radio" id="hospital_referral_no"
+                                                                value="no"<%= if(screening.Referral.HospitalReferred.Valid && !screening.Referral.HospitalReferred.Bool) { %> checked <% }%>><%= t("option_no_refer") %></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -432,6 +453,31 @@
                                                                 value="refused"><%= t("label_referral_refused") %></label>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" id="not-referral-reason-box" style="margin-top: 10px;">
+                                            <div class="col-sm-12">
+                                                <label for=""><%= t("label_hospital_not_referred_reason") %></label>
+                                                <select class="form-control" name="hospital_not_referred_reason" id="hospital_not_referred_reason">
+                                                    <option value="">
+                                                        <%= t("form_select_any") %>
+                                                    </option>
+                                                    <%= for (i) in hospitalNotReferralReasons { %>
+                                                    <option value="<%= i %>" <%= if (i == screening.Referral.HospitalNotReferralReason.String) { %> selected <% } %>>
+                                                        <%= i %>
+                                                    </option>
+                                                    <% } %>
+                                                    <option value="Other" <%= if (!stringInSlice(screening.Referral.HospitalNotReferralReason.String, hospitalNotReferralReasons)) { %> selected <% } %>>
+                                                        <%= t("option_suspected_other") %>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row" id="not-referral-reason-text-box" style="margin-top: 10px;">
+                                            <div class="col-sm-12">
+                                                <input type="text" name="hospital_not_referred_reason_text" id="hospital_not_referred_reason_text" 
+                                                    class="form-control" placeholder="<%= t("label_not_referral_reason") %>"
+                                                    value="<%= screening.Referral.HospitalNotReferralReason.String %>" />
                                             </div>
                                         </div>
                                         <div class="row">

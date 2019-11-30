@@ -12,10 +12,12 @@ import (
 
 // ReferralScreening model
 type ReferralScreening struct {
-	Referred        nulls.Bool   `json:"referred"`
-	ReferralRefused nulls.Bool   `json:"referral_refused"`
-	ReferralReason  nulls.String `json:"referral_reason"`
-	Notes           nulls.String `json:"additional_notes"`
+	Referred                  nulls.Bool   `json:"referred"`
+	HospitalReferred          nulls.Bool   `json:"hospital_referred"`
+	ReferralRefused           nulls.Bool   `json:"referral_refused"`
+	ReferralReason            nulls.String `json:"referral_reason"`
+	HospitalNotReferralReason nulls.String `json:"hospital_not_referral_reason"`
+	Notes                     nulls.String `json:"additional_notes"`
 }
 
 // Value returns database driver compatible type
