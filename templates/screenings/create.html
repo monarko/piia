@@ -467,7 +467,7 @@
                                                         <%= i %>
                                                     </option>
                                                     <% } %>
-                                                    <option value="Other" <%= if (!stringInSlice(screening.Referral.HospitalNotReferralReason.String, hospitalNotReferralReasons)) { %> selected <% } %>>
+                                                    <option value="Other" <%= if (!stringInSlice(screening.Referral.HospitalNotReferralReason.String, hospitalNotReferralReasons) && len(screening.Referral.HospitalNotReferralReason.String) > 0) { %> selected <% } %>>
                                                         <%= t("option_suspected_other") %>
                                                     </option>
                                                 </select>

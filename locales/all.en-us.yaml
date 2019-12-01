@@ -266,7 +266,7 @@
 - id: option_referral_reason_ungradeable
   translation: "Ungradeable"
 - id: label_not_referral_reason
-  translation: "Reason to not refer"
+  translation: "Please provide a reason for not referring"
 # create new - enrollment
 - id: page_enroll_title
   translation: "Enroll into Study"
