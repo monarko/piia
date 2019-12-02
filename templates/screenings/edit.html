@@ -508,13 +508,17 @@
                                                     <option value="">
                                                         <%= t("form_select_any") %>
                                                     </option>
-                                                    <%= for (i) in hospitalNotReferralReasons { %>
-                                                    <option value="<%= i %>" <%= if (i == screening.Referral.HospitalNotReferralReason.String) { %> selected <% } %>>
-                                                        <%= i %>
+                                                    <%= for (i, v) in hospitalNotReferralReasons { %>
+                                                    <option value="<%= v %>" <%= if (v == screening.Referral.HospitalNotReferralReason.String) { %> selected <% } %>>
+                                                        <%= if (current_lang == "th") { %>
+                                                            <%= hospitalNotReferralReasonsThai[i] %>
+                                                        <% } else { %>
+                                                            <%= hospitalNotReferralReasons[i] %>
+                                                        <% } %>
                                                     </option>
                                                     <% } %>
                                                     <option value="Other" <%= if (!stringInSlice(screening.Referral.HospitalNotReferralReason.String, hospitalNotReferralReasons) && len(screening.Referral.HospitalNotReferralReason.String) > 0) { %> selected <% } %>>
-                                                        <%= t("option_suspected_other") %>
+                                                        <%= t("option_other_for_referral_reason") %>
                                                     </option>
                                                 </select>
                                             </div>
