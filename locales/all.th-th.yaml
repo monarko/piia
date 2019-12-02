@@ -27,9 +27,15 @@
 - id: option_no
   translation: "ไม่"
 - id: option_yes_refer
-  translation: "ใช่ (อ้างอิง)"
+  translation: "ส่งตัว(Refer)"
 - id: option_no_refer
-  translation: "ไม่ (ไม่แนะนำ)"
+  translation: "ไม่ส่งตัว(No Refer)"
+- id: option_yes_refer_hospital
+  translation: "ใช่(Refer)"
+- id: option_no_refer_hospital
+  translation: "ไม่ใช่ (No Refer)"
+- id: option_other_for_referral_reason
+  translation: "อื่นๆ Other"
 # admin dashboard
 - id: header_title
   translation: "ผู้ดูแลระบบ"
@@ -316,7 +322,7 @@
 - id: label_suspected_pathology
   translation: "โรคที่สงสัย"
 - id: label_hospital_not_referred_reason
-  translation: "อะไรคือสาเหตุที่โรงพยาบาลไม่ให้อ้างอิง"
+  translation: "หากไม่ทำตาม เพราะอะไร?"
 # grading scales
 - id: option_ungradeable
   translation: "ไม่สามารถประเมินได้"
@@ -370,9 +376,9 @@
 - id: option_gestational_diabetes
   translation: "Gestational Diabetes"
 - id: dr_referral_label
-  translation: "Veil คำแนะนำ"
+  translation: "คำแนะนำของVeil"
 - id: hospital_referral_label
-  translation: "การตัดสินใจของโรงพยาบาล"
+  translation: "การตัดสินใจของพยาบาล"
 - id: field_previous_visual_acuity
   translation: "ค่าสายตาล่าสุด(หากมี)"
 - id: field_last_visual_acuity

@@ -30,6 +30,12 @@
   translation: "Yes (Refer)"
 - id: option_no_refer
   translation: "No (No Refer)"
+- id: option_yes_refer_hospital
+  translation: "Yes (Refer)"
+- id: option_no_refer_hospital
+  translation: "No (No Refer)"
+- id: option_other_for_referral_reason
+  translation: "Other"
 # admin dashboard
 - id: header_title
   translation: "Piia Admin"

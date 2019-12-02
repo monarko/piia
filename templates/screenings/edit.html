@@ -479,12 +479,12 @@
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
                                                                 name="hospital_referral" type="radio" id="hospital_referral_yes"
-                                                                value="yes"<%= if(screening.Referral.HospitalReferred.Valid && screening.Referral.HospitalReferred.Bool) { %> checked <% }%>><%= t("option_yes_refer") %></label>
+                                                                value="yes"<%= if(screening.Referral.HospitalReferred.Valid && screening.Referral.HospitalReferred.Bool) { %> checked <% }%>><%= t("option_yes_refer_hospital") %></label>
                                                     </div>
                                                     <div class="radio-button">
                                                         <label class="form-check-label"><input class="form-check-input"
                                                                 name="hospital_referral" type="radio" id="hospital_referral_no"
-                                                                value="no"<%= if(screening.Referral.HospitalReferred.Valid && !screening.Referral.HospitalReferred.Bool) { %> checked <% }%>><%= t("option_no_refer") %></label>
+                                                                value="no"<%= if(screening.Referral.HospitalReferred.Valid && !screening.Referral.HospitalReferred.Bool) { %> checked <% }%>><%= t("option_no_refer_hospital") %></label>
                                                     </div>
                                                 </div>
                                             </div>
