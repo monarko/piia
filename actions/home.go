@@ -75,17 +75,22 @@ func HomeHandler(c buffalo.Context) error {
 	var qov *pop.Query
 
 	if len(site) > 0 {
-		qov = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("status LIKE ?", "11%").Where("SUBSTRING(participants.participant_id,2,1) = ?", site).Order("created_at DESC")
+		qov = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("status LIKE ?", "11%").Where("SUBSTRING(participants.participant_id,2,1) = ?", site)
 	} else {
-		qov = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("status LIKE ?", "11%").Order("created_at DESC")
+		qov = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader").Where("status LIKE ?", "11%")
 	}
 	// Retrieve all Posts from the DB
-	if err := qov.All(participants); err != nil {
-		return errors.WithStack(err)
+	cn := 0
+	if cn, err = qov.Count(participants); err != nil {
+		cn = 0
 	}
 
 	// c.Set("total_cases", len(*participants))
-	c.Set("open_cases", len(*participants)-o)
+	openCases := 0
+	if cn > o {
+		openCases = cn - o
+	}
+	c.Set("open_cases", openCases)
 
 	// Notifications
 	notifications := &models.Notifications{}
