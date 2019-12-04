@@ -19,6 +19,7 @@ require (
 	github.com/josephburnett/jd v0.0.0-20190924095253-0dbacc995392
 	github.com/mailgun/mailgun-go v2.0.0+incompatible
 	github.com/markbates/goth v1.59.0
+	github.com/markbates/grift v1.5.0
 	github.com/pkg/errors v0.8.1
 	github.com/unrolled/secure v1.0.6
 	golang.org/x/crypto v0.0.0-20191202143827-86a70503ff7e

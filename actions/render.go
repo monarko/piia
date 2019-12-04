@@ -75,11 +75,7 @@ func init() {
 				return currentTime.Format(format)
 			},
 			"languageDate": func(gregorianDate time.Time, format, calendar string) string {
-				theDate := gregorianDate
-				if calendar == "thai" {
-					theDate = theDate.AddDate(543, 0, 0)
-				}
-				return theDate.Format(format)
+				return LanguageDate(gregorianDate, format, calendar)
 			},
 			"changeDate": func(givenDate time.Time, format, fromCalendar, toCalendar string) string {
 				gregorionDate := givenDate
@@ -133,6 +129,15 @@ func init() {
 			},
 		},
 	})
+}
+
+// LanguageDate returns localized time
+func LanguageDate(gregorianDate time.Time, format, calendar string) string {
+	theDate := gregorianDate
+	if calendar == "thai" {
+		theDate = theDate.AddDate(543, 0, 0)
+	}
+	return theDate.Format(format)
 }
 
 // Age calculates the participant's age
@@ -217,7 +222,7 @@ func Age(a time.Time) string {
 
 	ageText := strings.Join([]string{yearText, remainingText}, " ")
 
-	return ageText
+	return strings.TrimSpace(ageText)
 }
 
 // SliceStringToCommaSeparatedValue function

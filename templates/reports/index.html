@@ -97,7 +97,13 @@
                                     <%= t("th_participant_id") %>
                                 </th>
                                 <th>
+                                    PID
+                                </th>
+                                <th>
                                     <%= t("th_demographics") %>
+                                </th>
+                                <th>
+                                    <%= t("th_gender") %>
                                 </th>
                                 <th>
                                     <%= t("th_enrolled_date") %>
@@ -113,57 +119,6 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <%= for (p) in participants { %>
-                            <tr>
-                                <td class="text-center">
-                                    <%= getSite(p.ParticipantID) %>
-                                </td>
-                                <td class="text-center">
-                                    <a href="<%= participantPath({pid: p.ID}) %>" title="<%= p.ParticipantID %>">
-                                        <%= p.ParticipantID %></a>
-                                </td>
-                                <td class="text-center">
-                                    <%= ageHelper(p.DOB.CalculatedDate) %>&nbsp;
-                                    <%= if (p.Gender == "F") { %>
-                                    <span><i class="fa fa-venus fa-lg"></i></span>
-                                    <% } else { %>
-                                    <span><i class="fa fa-mars fa-lg"></i></span>
-                                    <% } %>
-                                </td>
-                                <td class="text-center">
-                                    <%= languageDate(p.CreatedAt, "2006-01-02", t("lang_calendar")) %>
-                                </td>
-                                <td>
-                                    <%= p.Completeness() %>%
-                                </td>
-                                <td>
-                                    <%= if (len(p.Screenings) > 0) { %>
-                                    <% let psc = p.Screenings[0] %>
-                                    <%= if (psc.Referral.Referred.Valid) { %>
-                                    <%= if (psc.Referral.Referred.Bool) { %>
-                                    <span class="badge badge-success">Yes</span>
-                                    <% } else { %>
-                                    <span class="badge badge-danger">No</span>
-                                    <% } %>
-                                    <% } %>
-                                    <% } %>
-                                </td>
-                                <td>   
-                                    <%= if (len(p.OverReadings) > 0) { %>
-                                    <% let pov = p.OverReadings[0] %>
-                                    <%= if (pov.Referral.Referred.Valid) { %>
-                                    <%= if (pov.Referral.Referred.Bool) { %>                       
-                                    <span class="badge badge-success">Yes</span>
-                                    <% } else { %>
-                                    <span class="badge badge-danger">No</span>
-                                    <% } %>
-                                    <% } %>
-                                    <% } %>
-                                </td>
-                            </tr>
-                            <% } %>
-                        </tbody>
                     </table>
                 </div>
             </div>
