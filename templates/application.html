@@ -493,10 +493,54 @@
            
             if ($('#dataTable1').length) {
                 $('#dataTable1').DataTable({
-                    'columnDefs': [{
-                        'targets': [2,5,6], /* column index */
-                        'orderable': false, /* true or false */
-                    }]                             
+                    "processing": true,
+                    "serverSide": true,
+                    ajax: {
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "/analytics/api/list/",
+                        data: function (d) {
+                            return JSON.stringify({ parameters: d });
+                        }
+                    },
+                    'columnDefs': [
+                        {
+                            'targets': [3,6,7,8], /* column index */
+                            'orderable': false, /* true or false */
+                        },
+                        {
+                            'targets': 1,
+                            'render': function (data, type, row) {
+                                return '<a href="/participants/'+row[2]+'" title="'+data+'">'+data+'</a>';
+                            }
+                        },
+                        {
+                            'targets': 3,
+                            'render': function (data, type, row) {
+                                var v = "venus";
+                                if (row[4]=="M") {
+                                    v = "mars";
+                                }
+                                return data+'&nbsp; <i class="fa fa-'+v+' fa-lg"></i>';
+                            }
+                        },
+                        {
+                            'visible': false,
+                            'targets': [2, 4]
+                        },
+                        {
+                            'targets': [7, 8],
+                            'render': function (data, type, row) {
+                                if (data == "No") {
+                                    return '<span class="badge badge-danger">'+data+'</span>';
+                                } else if (data == "Yes") {
+                                    return '<span class="badge badge-success">'+data+'</span>';
+                                } else {
+                                    return '';
+                                }
+                            }
+                        }
+                    ]                             
                 });
             }
 
