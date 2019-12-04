@@ -67,7 +67,7 @@ func (em EmailDetails) SendMessage(c buffalo.Context) error {
 func sendMessage(c buffalo.Context, mg mailgun.Mailgun, sender, subject, body, html string, recipient []string) error {
 	message := mg.NewMessage(sender, subject, body, recipient...)
 	message.SetHtml(html)
-	_, _, err := mg.Send(c, message)
+	_, _, err := mg.Send(message)
 
 	if err != nil {
 		return errors.WithStack(err)

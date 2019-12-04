@@ -6,7 +6,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
-	"github.com/gobuffalo/uuid"
+	"github.com/gofrs/uuid"
 	jd "github.com/josephburnett/jd/lib"
 	"github.com/monarko/piia/models"
 )

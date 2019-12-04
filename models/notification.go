@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/gobuffalo/pop"
-	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
+	"github.com/gofrs/uuid"
 	"github.com/monarko/piia/helpers/types"
 )
 
