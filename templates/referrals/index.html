@@ -145,30 +145,7 @@
                 </div>
 
                 <div class="controls-below-table">
-                    <div class="table-records-info">
-                        <%= t("pagination_title") %>
-                        <%= pagination.Offset + 1 %> -
-                        <%= pagination.Offset + pagination.CurrentEntriesSize %> of
-                        <%= pagination.TotalEntriesSize %>
-                        |
-                        <%= t("pagination_view_label") %>
-                        <a href="?per_page=10">
-                            <%= t("pagination_options_10") %></a> /
-                        <a href="?per_page=20">
-                            <%= t("pagination_options_20") %></a> /
-                        <a href="?per_page=50">
-                            <%= t("pagination_options_50") %></a>
-                        <%= t("pagination_perpage_label") %>
-                    </div>
-                    <div class="table-records-pages">
-                        <style>
-                            .page-link {
-                                border: none;
-                                padding: 0 2px;
-                            }
-                        </style>
-                        <%= paginator(pagination, {"class":"", "previousContent": "Previous", "nextContent": "Next"}) %>
-                    </div>
+                    <%= partial("pagination.html") %>
                 </div>
             </div>
         </div>

@@ -299,375 +299,375 @@
 <%= javascriptTag("Chart.js") %>
 
 <script>
-        $(function () {
-            $(".todo-item").on('click', function () {
-                var targ = $(this).attr('data-target');
-                // console.log("TODO-ITEM clicked: " + targ);
-                $(targ).modal();
-            });
-
-            toogleReferralRefusalBox();
-            $(".select2").select2();
-            $('.tasks-header-toggler').on('click', function () {
-                $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
-                return false;
-            });
-
-            $('.expand-row').on('click', function (e) {
-                e.preventDefault()
-                var elemId = $(this).attr("data-src")
-                var elemContent = elemId + "-content"
-                // alert(elemId)
-                var accordionRow = $("#"+elemId);
-                var accordionContent = $("#"+elemContent);
-                // alert(accordionRow.html())
-                if (!accordionRow.is(":visible")) {
-                    accordionRow.show()
-                    accordionContent.slideDown()
-                } else {
-                    accordionContent.slideUp()
-                    accordionRow.hide();
-                }
-            });
-
-            var viewer = ImageViewer();
-            $('.fullscreen-image').click(function () {
-                var imgSrc = this.src,
-                    highResolutionImage = $(this).data('high-res-src');
-
-                viewer.show(imgSrc, highResolutionImage);
-            });
-
-            $(".participantID_field").inputmask("AA-9999-9");
-            $(".birth_year_field").inputmask("9999", { "clearIncomplete": true, "max": 2800, "min": 1900 });
-            $("#screeningForm").on("submit", function (e) {
-                // e.preventDefault();
-                var sform = $(this);
-                shouldRefer = false;
-
-                var rva = $("select[name='Eyes.RightEye.VisualAcuity']").val();
-                var rlva = $("select[name='Eyes.RightEye.LastVisualAcuity']").val();
-                var rdr = $("select[name='Eyes.RightEye.DRGrading']").val();
-                var rdme = $("input[name='Eyes.RightEye.DMEAssessment']:checked").val();
-                var lva = $("select[name='Eyes.LeftEye.VisualAcuity']").val();
-                var llva = $("select[name='Eyes.LeftEye.LastVisualAcuity']").val();
-                var ldr = $("select[name='Eyes.LeftEye.DRGrading']").val();
-                var ldme = $("input[name='Eyes.LeftEye.DMEAssessment']:checked").val();
-                
-                var referralNotes = $('#referral-notes').val();
-                var referral = $("input[name=referral]:checked").val();
-                var hospitalReferral = $("input[name=hospital_referral]:checked").val();
-                var referralCheck = $('#referral_check').val();
-
-                // console.log("rva=", rva, "rlva=", rlva, "rdr=", rdr, "rdme=", rdme, "lva=", lva, "llva=", llva, "ldr=", ldr, "ldme=", ldme);
-                // console.log("referralNotes=", referralNotes, "referral=", referral)
-
-                /*
-                    - Ungradeable image in either eye (for DR or DME)
-                    - Severe NPDR or above in either eye
-                    - DME present in either eye
-                    - V/A 20/70 or worse
-                    - Worsening vision defined as reduced visual acuity by 2 or more lines over repeat visits
-                */
-
-                var vaValues = ["20/20", "20/30", "20/40", "20/50", "20/70", "20/100", "20/200", "CF", "HM", "LP", "NLP"]
-                var rvaIndex = vaValues.indexOf(rva)
-                var rlvaIndex = vaValues.indexOf(rlva)
-                var lvaIndex = vaValues.indexOf(lva)
-                var llvaIndex = vaValues.indexOf(llva)
-
-                // console.log("rvaIndex=", rvaIndex, "rlvaIndex=", rlvaIndex, "lvaIndex=", lvaIndex, "llvaIndex=", llvaIndex)
-
-                if (rdr == "Ungradeable" || rdme == "Ungradeable" || ldr == "Ungradeable" || ldme == "Ungradeable") {
-                    shouldRefer = true
-                } else if (rdr == "Severe DR" || rdr == "Proliferative DR" || ldr == "Severe DR" || ldr == "Proliferative DR") {
-                    shouldRefer = true
-                } else if (rdme == "Present" || ldme == "Present") {
-                    shouldRefer = true
-                } else if (rvaIndex >= 4 || lvaIndex >= 4) {
-                    shouldRefer = true                    
-                } else if (rvaIndex < 4 && (rvaIndex-rlvaIndex) >= 2) {
-                    shouldRefer = true 
-                } else if (lvaIndex < 4 && (lvaIndex-llvaIndex) >= 2) {
-                    shouldRefer = true 
-                }
-
-                // console.log("SHOULD REFER =", shouldRefer);
-
-                if (shouldRefer && $.trim(referralNotes).length == 0 && referral != "yes") {
-                    e.preventDefault();
-                    $('#referral-error').html("<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\"><%= t("label_referral_refused_error") %><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div>");
-                    $('#referral-notes').focus();
-                }
-
-                if (referralCheck == "strict" && ((referral != "yes" && referral != "no") || (hospitalReferral != "yes" && hospitalReferral != "no"))) {
-                    e.preventDefault();
-                    swal({
-                        title: "<%= t("referral_check_prompt_title") %>",
-                        text: "<%= t("referral_check_prompt_desc") %>",
-                        icon: "warning",
-                        buttons: ["<%= t("referral_check_prompt_button_cancel") %>", "<%= t("referral_check_prompt_button_save_anyway") %>"],
-                        dangerMode: true,
-                    }).then((saveAnyway) => {
-                        if (saveAnyway) {
-                            $('#referral_check').val("flexible");
-                            sform.submit();
-                        }
-                    });
-                }
-            });
-            
-            $("#referral_yes").on("change", function () {
-                toogleReferralRefusalBox();
-            });
-            $("#referral_no").on("change", function () {
-                toogleReferralRefusalBox();
-            });
-            $("#hospital_referral_yes").on("change", function () {
-                toogleReferralRefusalBox();
-            });
-            $("#hospital_referral_no").on("change", function () {
-                toogleReferralRefusalBox();
-            });
-        
-            $(".delete-btn").on("click", function (ee) {
-                ee.preventDefault();
-                var df = $(this).parents("form");
-                var reason = df.find('input[name=reason]')
-                var matching = makeid(5)+'-'+makeid(5);
-                $.confirm({
-                    title: 'Are you Sure?',
-                    content: '' +
-                    '<form action="" class="formName">' +
-                    '<div class="form-group">' +
-                    '<label>Type <b>'+matching+'</b> in the box to delete this resource</label>' +
-                    '<input type="text" placeholder="" class="typeValue form-control" required />' +
-                    '<br><label>Reason to delete</label>' +
-                    '<textarea type="text" placeholder="" class="typeText form-control" required></textarea>' +
-                    '</div>' +
-                    '</form>',
-                    buttons: {
-                        formSubmit: {
-                            text: 'Submit',
-                            btnClass: 'btn-blue',
-                            action: function () {
-                                var value = this.$content.find('.typeValue').val();
-                                if(value != matching){
-                                    $.alert('Invalid code');
-                                    return false;
-                                }
-                                var text = this.$content.find('.typeText').val();
-                                if($.trim(text).length == 0) {
-                                    $.alert('Invalid reason text');
-                                    return false;
-                                }
-                                reason.val(text);
-                                df.submit();
-                            }
-                        },
-                        cancel: function () {
-                        },
-                    },
-                    onContentReady: function () {
-                        // bind to events
-                        var jc = this;
-                        this.$content.find('form').on('submit', function (e) {
-                            // if the user submits the form by pressing enter in the field.
-                            e.preventDefault();
-                            jc.$$formSubmit.trigger('click'); // reference the button and click it
-                        });
-                    },
-                });
-            });
-           
-            if ($('#dataTable1').length) {
-                $('#dataTable1').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    ajax: {
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        url: "/analytics/api/list/",
-                        data: function (d) {
-                            return JSON.stringify({ parameters: d });
-                        }
-                    },
-                    'columnDefs': [
-                        {
-                            'targets': [3,6,7,8], /* column index */
-                            'orderable': false, /* true or false */
-                        },
-                        {
-                            'targets': 1,
-                            'render': function (data, type, row) {
-                                return '<a href="/participants/'+row[2]+'" title="'+data+'">'+data+'</a>';
-                            }
-                        },
-                        {
-                            'targets': 3,
-                            'render': function (data, type, row) {
-                                var v = "venus";
-                                if (row[4]=="M") {
-                                    v = "mars";
-                                }
-                                return data+'&nbsp; <i class="fa fa-'+v+' fa-lg"></i>';
-                            }
-                        },
-                        {
-                            'visible': false,
-                            'targets': [2, 4]
-                        },
-                        {
-                            'targets': [7, 8],
-                            'render': function (data, type, row) {
-                                if (data == "No") {
-                                    return '<span class="badge badge-danger">'+data+'</span>';
-                                } else if (data == "Yes") {
-                                    return '<span class="badge badge-success">'+data+'</span>';
-                                } else {
-                                    return '';
-                                }
-                            }
-                        }
-                    ]                             
-                });
-            }
-
-            if ($('#dataTableArchive').length) {
-                $('#dataTableArchive').DataTable({
-                    'columnDefs': [{
-                        'targets': [3, 4], /* column index */
-                        'orderable': false, /* true or false */
-                    }]                             
-                });
-            }
-
-            if ($('#audit-table').length) {
-                var table = $('#audit-table').DataTable({
-                    "order": [[ 3, "desc" ]],
-                    'columnDefs':[{
-                        'targets':[1,5],
-                        'orderable': false,
-                    }]
-                });
-
-                // Add event listener for opening and closing details
-                $('#audit-table tbody').on('click', 'td.audit-action-detail', function () {
-                    var tr = $(this).closest('tr');
-                    var row = table.row( tr );
-            
-                    if ( row.child.isShown() ) {
-                        // This row is already open - close it
-                        row.child.hide();
-                        tr.removeClass('shown');
-                    }
-                    else {
-                        // Open this row
-                        var trdata = tr.data("child-data")
-                        row.child( format(trdata) ).show();
-                        tr.addClass('shown');
-                    }
-                } );
-            }
-        
-            if ($("#archive-json").length) {
-                var archiveJson = JSON.stringify(JSON.parse($("#archive-json").val()), undefined, 4);
-                $("#archive-json").text(archiveJson);
-            }
-
-            if ($("#archive-data-json").length) {
-                var archiveJson = JSON.stringify(JSON.parse($("#archive-data-json").val()), undefined, 4);
-                $("#archive-data-json").text(archiveJson);
-            }
-
-            $("#hospital_not_referred_reason").on('change', function() {
-                var v = $(this).find(":selected").val();
-                console.log(v)
-                if (v == "Other") {
-                    $("#not-referral-reason-text-box").show();
-                    $("#hospital_not_referred_reason_text").prop('required', true);
-                } else {
-                    $("#hospital_not_referred_reason_text").val('');
-                    $("#hospital_not_referred_reason_text").prop('required', false);
-                    $("#not-referral-reason-text-box").hide();
-                }
-            });
+    $(function () {
+        $(".todo-item").on('click', function () {
+            var targ = $(this).attr('data-target');
+            $(targ).modal();
         });
 
-        function toogleReferralRefusalBox() {
+        toogleReferralRefusalBox();
+        $(".select2").select2();
+        $('.tasks-header-toggler').on('click', function () {
+            $(this).closest('.tasks-section').find('.tasks-list-w').slideToggle(300);
+            return false;
+        });
+
+        $('.expand-row').on('click', function (e) {
+            e.preventDefault()
+            var elemId = $(this).attr("data-src")
+            var elemContent = elemId + "-content"
+            // alert(elemId)
+            var accordionRow = $("#"+elemId);
+            var accordionContent = $("#"+elemContent);
+            // alert(accordionRow.html())
+            if (!accordionRow.is(":visible")) {
+                accordionRow.show()
+                accordionContent.slideDown()
+            } else {
+                accordionContent.slideUp()
+                accordionRow.hide();
+            }
+        });
+
+        var viewer = ImageViewer();
+        $('.fullscreen-image').click(function () {
+            var imgSrc = this.src,
+                highResolutionImage = $(this).data('high-res-src');
+
+            viewer.show(imgSrc, highResolutionImage);
+        });
+
+        $(".participantID_field").inputmask("AA-9999-9");
+        $(".birth_year_field").inputmask("9999", { "clearIncomplete": true, "max": 2800, "min": 1900 });
+        $("#screeningForm").on("submit", function (e) {
+            // e.preventDefault();
+            var sform = $(this);
+            shouldRefer = false;
+
+            var rva = $("select[name='Eyes.RightEye.VisualAcuity']").val();
+            var rlva = $("select[name='Eyes.RightEye.LastVisualAcuity']").val();
+            var rdr = $("select[name='Eyes.RightEye.DRGrading']").val();
+            var rdme = $("input[name='Eyes.RightEye.DMEAssessment']:checked").val();
+            var lva = $("select[name='Eyes.LeftEye.VisualAcuity']").val();
+            var llva = $("select[name='Eyes.LeftEye.LastVisualAcuity']").val();
+            var ldr = $("select[name='Eyes.LeftEye.DRGrading']").val();
+            var ldme = $("input[name='Eyes.LeftEye.DMEAssessment']:checked").val();
+            
+            var referralNotes = $('#referral-notes').val();
             var referral = $("input[name=referral]:checked").val();
             var hospitalReferral = $("input[name=hospital_referral]:checked").val();
+            var referralCheck = $('#referral_check').val();
 
-            if (referral == "yes" && hospitalReferral == "yes") {
-                $("#not-referral-reason-box").hide();
-                $("#hospital_not_referred_reason").prop('required', false);
-                $("#hospital_not_referred_reason option:selected").prop('selected', false);
+            // console.log("rva=", rva, "rlva=", rlva, "rdr=", rdr, "rdme=", rdme, "lva=", lva, "llva=", llva, "ldr=", ldr, "ldme=", ldme);
+            // console.log("referralNotes=", referralNotes, "referral=", referral)
 
-                $("#not-referral-reason-text-box").hide();
-                $("#hospital_not_referred_reason_text").prop('required', false);
-                $("#hospital_not_referred_reason_text").val('');
+            /*
+                - Ungradeable image in either eye (for DR or DME)
+                - Severe NPDR or above in either eye
+                - DME present in either eye
+                - V/A 20/70 or worse
+                - Worsening vision defined as reduced visual acuity by 2 or more lines over repeat visits
+            */
 
-                $("#referral-refused-box").show();
-            } else if (referral == "yes" && hospitalReferral == "no") {
-                $("#referral_refused").prop("checked", false);
-                $("#referral_reason").val("");
-                $("#referral-refused-box").hide();
+            var vaValues = ["20/20", "20/30", "20/40", "20/50", "20/70", "20/100", "20/200", "CF", "HM", "LP", "NLP"]
+            var rvaIndex = vaValues.indexOf(rva)
+            var rlvaIndex = vaValues.indexOf(rlva)
+            var lvaIndex = vaValues.indexOf(lva)
+            var llvaIndex = vaValues.indexOf(llva)
 
-                $("#hospital_not_referred_reason").prop('required', true);
-                $("#not-referral-reason-box").show();
-            } else {
-                $("#referral_refused").prop("checked", false);
-                $("#referral_reason").val("");
-                $("#referral-refused-box").hide();
+            // console.log("rvaIndex=", rvaIndex, "rlvaIndex=", rlvaIndex, "lvaIndex=", lvaIndex, "llvaIndex=", llvaIndex)
 
-                $("#not-referral-reason-box").hide();
-                $("#hospital_not_referred_reason").prop('required', false);
-                $("#hospital_not_referred_reason option:selected").prop('selected', false);
-
-                $("#not-referral-reason-text-box").hide();
-                $("#hospital_not_referred_reason_text").prop('required', false);
-                $("#hospital_not_referred_reason_text").val('');
+            if (rdr == "Ungradeable" || rdme == "Ungradeable" || ldr == "Ungradeable" || ldme == "Ungradeable") {
+                shouldRefer = true
+            } else if (rdr == "Severe DR" || rdr == "Proliferative DR" || ldr == "Severe DR" || ldr == "Proliferative DR") {
+                shouldRefer = true
+            } else if (rdme == "Present" || ldme == "Present") {
+                shouldRefer = true
+            } else if (rvaIndex >= 4 || lvaIndex >= 4) {
+                shouldRefer = true                    
+            } else if (rvaIndex < 4 && (rvaIndex-rlvaIndex) >= 2) {
+                shouldRefer = true 
+            } else if (lvaIndex < 4 && (lvaIndex-llvaIndex) >= 2) {
+                shouldRefer = true 
             }
+
+            // console.log("SHOULD REFER =", shouldRefer);
+
+            if (shouldRefer && $.trim(referralNotes).length == 0 && referral != "yes") {
+                e.preventDefault();
+                $('#referral-error').html("<div class=\"alert alert-danger alert-dismissible fade show\" role=\"alert\"><%= t("label_referral_refused_error") %><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button></div>");
+                $('#referral-notes').focus();
+            }
+
+            if (referralCheck == "strict" && ((referral != "yes" && referral != "no") || (hospitalReferral != "yes" && hospitalReferral != "no"))) {
+                e.preventDefault();
+                swal({
+                    title: "<%= t("referral_check_prompt_title") %>",
+                    text: "<%= t("referral_check_prompt_desc") %>",
+                    icon: "warning",
+                    buttons: ["<%= t("referral_check_prompt_button_cancel") %>", "<%= t("referral_check_prompt_button_save_anyway") %>"],
+                    dangerMode: true,
+                }).then((saveAnyway) => {
+                    if (saveAnyway) {
+                        $('#referral_check').val("flexible");
+                        sform.submit();
+                    }
+                });
+            }
+        });
+            
+        $("#referral_yes").on("change", function () {
+            toogleReferralRefusalBox();
+        });
+        $("#referral_no").on("change", function () {
+            toogleReferralRefusalBox();
+        });
+        $("#hospital_referral_yes").on("change", function () {
+            toogleReferralRefusalBox();
+        });
+        $("#hospital_referral_no").on("change", function () {
+            toogleReferralRefusalBox();
+        });
+    
+        $(".delete-btn").on("click", function (ee) {
+            ee.preventDefault();
+            var df = $(this).parents("form");
+            var reason = df.find('input[name=reason]')
+            var matching = makeid(5)+'-'+makeid(5);
+            $.confirm({
+                title: 'Are you Sure?',
+                content: '' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
+                '<label>Type <b>'+matching+'</b> in the box to delete this resource</label>' +
+                '<input type="text" placeholder="" class="typeValue form-control" required />' +
+                '<br><label>Reason to delete</label>' +
+                '<textarea type="text" placeholder="" class="typeText form-control" required></textarea>' +
+                '</div>' +
+                '</form>',
+                buttons: {
+                    formSubmit: {
+                        text: 'Submit',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                            var value = this.$content.find('.typeValue').val();
+                            if(value != matching){
+                                $.alert('Invalid code');
+                                return false;
+                            }
+                            var text = this.$content.find('.typeText').val();
+                            if($.trim(text).length == 0) {
+                                $.alert('Invalid reason text');
+                                return false;
+                            }
+                            reason.val(text);
+                            df.submit();
+                        }
+                    },
+                    cancel: function () {
+                    },
+                },
+                onContentReady: function () {
+                    // bind to events
+                    var jc = this;
+                    this.$content.find('form').on('submit', function (e) {
+                        // if the user submits the form by pressing enter in the field.
+                        e.preventDefault();
+                        jc.$$formSubmit.trigger('click'); // reference the button and click it
+                    });
+                },
+            });
+        });
+        
+        if ($('#dataTable1').length) {
+            $('#dataTable1').DataTable({
+                "processing": true,
+                "serverSide": true,
+                ajax: {
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/analytics/api/list/",
+                    data: function (d) {
+                        return JSON.stringify({ parameters: d });
+                    }
+                },
+                'columnDefs': [
+                    {
+                        'targets': [3,6,7,8], /* column index */
+                        'orderable': false, /* true or false */
+                    },
+                    {
+                        'targets': 1,
+                        'render': function (data, type, row) {
+                            return '<a href="/participants/'+row[2]+'" title="'+data+'">'+data+'</a>';
+                        }
+                    },
+                    {
+                        'targets': 3,
+                        'render': function (data, type, row) {
+                            var v = "venus";
+                            if (row[4]=="M") {
+                                v = "mars";
+                            }
+                            return data+'&nbsp; <i class="fa fa-'+v+' fa-lg"></i>';
+                        }
+                    },
+                    {
+                        'visible': false,
+                        'targets': [2, 4]
+                    },
+                    {
+                        'targets': [7, 8],
+                        'render': function (data, type, row) {
+                            if (data == "No") {
+                                return '<span class="badge badge-danger">'+data+'</span>';
+                            } else if (data == "Yes") {
+                                return '<span class="badge badge-success">'+data+'</span>';
+                            } else {
+                                return '';
+                            }
+                        }
+                    }
+                ]                             
+            });
+        }
+
+        if ($('#dataTableArchive').length) {
+            $('#dataTableArchive').DataTable({
+                'columnDefs': [{
+                    'targets': [3, 4], /* column index */
+                    'orderable': false, /* true or false */
+                }]                             
+            });
+        }
+
+        if ($('#audit-table').length) {
+            var table = $('#audit-table').DataTable({
+                "order": [[ 3, "desc" ]],
+                'columnDefs':[{
+                    'targets':[1,5],
+                    'orderable': false,
+                }]
+            });
+
+            // Add event listener for opening and closing details
+            $('#audit-table tbody').on('click', 'td.audit-action-detail', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row( tr );
+        
+                if ( row.child.isShown() ) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    var trdata = tr.data("child-data")
+                    row.child( format(trdata) ).show();
+                    tr.addClass('shown');
+                }
+            } );
         }
     
-        /* Formatting function for row details - modify as you need */
-        function format ( d ) {
-            if (Object.keys(d).length > 0) {
-                // `d` is the original data object for the row
-                var data = '<table class="table table-striped table-lightfont" style="font-size: 0.8rem;">'+
-                    '<thead><tr><th style="text-align: left;">Attribiute</th><th>Old Value</th><th>New Value</th></tr></thead><tbody>';
-                $.each(d, function(key, value) {
-                    last = lastElement(key, "->")
-                    if (last != "assessment_date" && last != "id" && last != "unit") {
-                        data += '<tr>'+
-                            '<td style="text-align: left;" class="text-uppercase">'+key+'</td>'+
-                            '<td>'+value.from+'</td>'+
-                            '<td>'+value.to+'</td>'+
-                        '</tr>'
-                    }
-                });    
-                data += '</tbody></table>';
-                return data
-            }
-            return ""
+        if ($("#archive-json").length) {
+            var archiveJson = JSON.stringify(JSON.parse($("#archive-json").val()), undefined, 4);
+            $("#archive-json").text(archiveJson);
         }
 
-        function lastElement(s, sep) {
-            var partsOfStr = s.split(sep);
-            var last_element = partsOfStr[partsOfStr.length - 1];
-            return last_element
+        if ($("#archive-data-json").length) {
+            var archiveJson = JSON.stringify(JSON.parse($("#archive-data-json").val()), undefined, 4);
+            $("#archive-data-json").text(archiveJson);
         }
 
-        function makeid(length) {
-            var result           = '';
-            var characters       = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            var charactersLength = characters.length;
-            for ( var i = 0; i < length; i++ ) {
-                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        $("#hospital_not_referred_reason").on('change', function() {
+            var v = $(this).find(":selected").val();
+            console.log(v)
+            if (v == "Other") {
+                $("#not-referral-reason-text-box").show();
+                $("#hospital_not_referred_reason_text").prop('required', true);
+            } else {
+                $("#hospital_not_referred_reason_text").val('');
+                $("#hospital_not_referred_reason_text").prop('required', false);
+                $("#not-referral-reason-text-box").hide();
             }
-            return result;
+        });
+    });
+
+    function toogleReferralRefusalBox() {
+        var referral = $("input[name=referral]:checked").val();
+        var hospitalReferral = $("input[name=hospital_referral]:checked").val();
+
+        if (referral == "yes" && hospitalReferral == "yes") {
+            $("#not-referral-reason-box").hide();
+            $("#hospital_not_referred_reason").prop('required', false);
+            $("#hospital_not_referred_reason option:selected").prop('selected', false);
+
+            $("#not-referral-reason-text-box").hide();
+            $("#hospital_not_referred_reason_text").prop('required', false);
+            $("#hospital_not_referred_reason_text").val('');
+
+            $("#referral-refused-box").show();
+        } else if (referral == "yes" && hospitalReferral == "no") {
+            $("#referral_refused").prop("checked", false);
+            $("#referral_reason").val("");
+            $("#referral-refused-box").hide();
+
+            $("#hospital_not_referred_reason").prop('required', true);
+            $("#not-referral-reason-box").show();
+        } else {
+            $("#referral_refused").prop("checked", false);
+            $("#referral_reason").val("");
+            $("#referral-refused-box").hide();
+
+            $("#not-referral-reason-box").hide();
+            $("#hospital_not_referred_reason").prop('required', false);
+            $("#hospital_not_referred_reason option:selected").prop('selected', false);
+
+            $("#not-referral-reason-text-box").hide();
+            $("#hospital_not_referred_reason_text").prop('required', false);
+            $("#hospital_not_referred_reason_text").val('');
         }
-    </script>
+    }
+    
+    function format ( d ) {
+        if (Object.keys(d).length > 0) {
+            // `d` is the original data object for the row
+            var data = '<table class="table table-striped table-lightfont" style="font-size: 0.8rem;">'+
+                '<thead><tr><th style="text-align: left;">Attribiute</th><th>Old Value</th><th>New Value</th></tr></thead><tbody>';
+            $.each(d, function(key, value) {
+                last = lastElement(key, "->")
+                if (last != "assessment_date" && last != "id" && last != "unit") {
+                    data += '<tr>'+
+                        '<td style="text-align: left;" class="text-uppercase">'+key+'</td>'+
+                        '<td>'+value.from+'</td>'+
+                        '<td>'+value.to+'</td>'+
+                    '</tr>'
+                }
+            });    
+            data += '</tbody></table>';
+            return data
+        }
+        return ""
+    }
+
+    function lastElement(s, sep) {
+        var partsOfStr = s.split(sep);
+        var last_element = partsOfStr[partsOfStr.length - 1];
+        return last_element
+    }
+
+    function makeid(length) {
+        var result           = '';
+        var characters       = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+    
+</script>
+
 </body>
 
 </html>
