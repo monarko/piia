@@ -14,6 +14,7 @@ import (
 	"cloud.google.com/go/storage"
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -36,10 +37,11 @@ func OverReadingsIndex(c buffalo.Context) error {
 
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Cases"] = "/cases/index"
-	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Cases", Path: "/cases/index"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("over_readings/index.html"))
 }
 
@@ -73,10 +75,11 @@ func OverReadingsCreateGet(c buffalo.Context) error {
 	c.Set("leftEyeLink", left)
 	c.Set("rightEyeLink", right)
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Cases"] = "/cases/index"
-	breadcrumbMap["New Over Reading"] = "#"
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Cases", Path: "/cases/index"})
+	b = append(b, helpers.Breadcrumb{Title: "New Over Reading", Path: "#"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("over_readings/create.html"))
 }
 
@@ -138,10 +141,12 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		c.Set("screening", screening)
 		c.Set("overReading", overReading)
 		c.Set("errors", verrs.Errors)
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Cases"] = "/cases/index"
-		breadcrumbMap["New Over Reading"] = "#"
-		c.Set("breadcrumbMap", breadcrumbMap)
+
+		b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+		b = append(b, helpers.Breadcrumb{Title: "Cases", Path: "/cases/index"})
+		b = append(b, helpers.Breadcrumb{Title: "New Over Reading", Path: "#"})
+		c.Set("breadcrumb", b)
+
 		return c.Render(422, r.HTML("over_readings/create.html"))
 	}
 
@@ -155,10 +160,12 @@ func OverReadingsCreatePost(c buffalo.Context) error {
 		c.Set("screening", screening)
 		c.Set("overReading", overReading)
 		c.Set("errors", perrs.Errors)
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Cases"] = "/cases/index"
-		breadcrumbMap["New Over Reading"] = "#"
-		c.Set("breadcrumbMap", breadcrumbMap)
+
+		b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+		b = append(b, helpers.Breadcrumb{Title: "Cases", Path: "/cases/index"})
+		b = append(b, helpers.Breadcrumb{Title: "New Over Reading", Path: "#"})
+		c.Set("breadcrumb", b)
+
 		return c.Render(422, r.HTML("over_readings/create.html"))
 	}
 
@@ -227,10 +234,11 @@ func OverReadingsEditGet(c buffalo.Context) error {
 	c.Set("leftEyeLink", left)
 	c.Set("rightEyeLink", right)
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Cases"] = "/cases/index"
-	breadcrumbMap["Edit Over Reading"] = "#"
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Cases", Path: "/cases/index"})
+	b = append(b, helpers.Breadcrumb{Title: "Edit Over Reading", Path: "#"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("over_readings/edit.html"))
 }
 
@@ -288,10 +296,10 @@ func OverReadingsEditPost(c buffalo.Context) error {
 		c.Set("screening", screening)
 		c.Set("overReading", overReading)
 		c.Set("errors", verrs.Errors)
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Cases"] = "/cases/index"
-		breadcrumbMap["Edit Over Reading"] = "#"
-		c.Set("breadcrumbMap", breadcrumbMap)
+		b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+		b = append(b, helpers.Breadcrumb{Title: "Cases", Path: "/cases/index"})
+		b = append(b, helpers.Breadcrumb{Title: "Edit Over Reading", Path: "#"})
+		c.Set("breadcrumb", b)
 		return c.Render(422, r.HTML("over_readings/edit.html"))
 	}
 
@@ -351,42 +359,30 @@ func shouldBeReferred(overReading *models.OverReading) bool {
 }
 
 func getImage(participantID string) (string, string, error) {
-	// If getting host is down, check network filter on little snitch
-	// return "", "", nil
-	// fmt.Println("---- GET IMAGE ----")
 	envVar := envy.Get("GOOGLE_APPLICATION_CREDENTIALS_PATH", "")
 	err := os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", envVar)
 	if err != nil {
 		return "", "", err
 	}
-	// fmt.Println("---- ENV SET ----")
 
 	credentialFile, err := ioutil.ReadFile(envVar)
 	if err != nil {
 		return "", "", err
 	}
-	// fmt.Println("---- READ CREDENTIAL FILE ----")
 
 	credentialContent := make(map[string]string)
 	if err := json.Unmarshal(credentialFile, &credentialContent); err != nil {
 		return "", "", err
 	}
-	// fmt.Println("---- MAKE CREDENTIAL CONTENT ----", credentialContent)
-
-	// fmt.Printf("\n%#v\n", credentialContent)
 
 	pID := participantID
 	cleanPID := strings.Replace(pID, "-", "", -1)
 
-	// fileNames := map[string]string{"right": pID + "_RIGHT_1543476715_40971517.png", "left": pID + "_LEFT_1543476746_40971518.png"}
 	fileNames := make(map[string]string)
 	right := ""
 	left := ""
 
 	ctx := context.Background()
-
-	// Sets your Google Cloud Platform project ID.
-	// projectID := "piia-project"
 
 	// Creates a client.
 	client, err := storage.NewClient(ctx)
@@ -394,22 +390,15 @@ func getImage(participantID string) (string, string, error) {
 		return right, left, err
 	}
 
-	// // Sets the name for the new bucket.
 	bucketName := envy.Get("GOOGLE_STORAGE_BUCKET_NAME", "piia_images")
-
-	// Creates a Bucket instance.
 	bucket := client.Bucket(bucketName)
-
 	idsToCheck := []string{strings.ToUpper(pID), strings.ToUpper(cleanPID), strings.ToLower(pID), strings.ToLower(cleanPID)}
-	// fmt.Println("---- IDS TO CHECK ----", idsToCheck)
 
 	for _, id := range idsToCheck {
-		// fmt.Println(id)
 		objs := bucket.Objects(ctx, &storage.Query{
 			Prefix:    id,
 			Delimiter: "",
 		})
-		// fmt.Println("---- ID ----", id)
 		i := 0
 		for {
 			if i > 2 {
@@ -423,7 +412,6 @@ func getImage(participantID string) (string, string, error) {
 			if err != nil {
 				continue
 			}
-			// fmt.Println("---- ID Filename ----", attrs.Name)
 			name := strings.ToLower(attrs.Name)
 			if strings.Contains(name, "right") {
 				fileNames["right"] = attrs.Name
@@ -436,33 +424,14 @@ func getImage(participantID string) (string, string, error) {
 		}
 	}
 
-	// fmt.Println("---- FINAL ----", fileNames)
-
 	if len(fileNames) == 0 {
 		return right, left, errors.New("no file found for the participant id")
 	}
 
-	// // rc, err := bucket.Object(fileNames[0]). .NewReader(ctx)
-	// // if err != nil {
-	// // 	return "", "", err
-	// // }
-	// // defer rc.Close()
-	// // body, err := ioutil.ReadAll(rc)
-	// // if err != nil {
-	// // 	return "", "", err
-	// // }
-
 	method := "GET"
 	expires := time.Now().Add(time.Second * 60 * 10)
-
-	// googleStorageEmail := envy.Get("GOOGLE_STORAGE_SERVICE_EMAIL", "")
-	// googleStoragePrivateKey := envy.Get("GOOGLE_STORAGE_SERVICE_PRIVATE_KEY", "")
-
 	googleStorageEmail := credentialContent["client_email"]
 	googleStoragePrivateKey := credentialContent["private_key"]
-
-	// fmt.Println(googleStorageEmail)
-	// fmt.Println(googleStoragePrivateKey)
 
 	for k, v := range fileNames {
 		url, err := storage.SignedURL(bucketName, v, &storage.SignedURLOptions{
@@ -500,25 +469,6 @@ func OverReadingsDetails(c buffalo.Context) error {
 	}
 	c.Set("overReading", overReadings)
 
-	// images
-	// response, err := http.Get("http://localhost:8080/" + participant.ParticipantID)
-	// if err != nil {
-	// 	// If there are no errors set a success message
-	// 	c.Flash().Add("danger", "Error from the image server")
-
-	// 	return c.Redirect(302, "/cases/index")
-	// }
-	// defer response.Body.Close()
-	// data, _ := ioutil.ReadAll(response.Body)
-	// respData := map[string]string{}
-	// uerr := json.Unmarshal(data, &respData)
-	// if uerr != nil {
-	// 	// If there are no errors set a success message
-	// 	c.Flash().Add("danger", "Error from the image server")
-
-	// 	return c.Redirect(302, "/cases/index")
-	// }
-
 	right, left, err := getImage(participant.ParticipantID)
 	if err != nil {
 		left = ""
@@ -528,11 +478,11 @@ func OverReadingsDetails(c buffalo.Context) error {
 	c.Set("leftEyeLink", left)
 	c.Set("rightEyeLink", right)
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Cases"] = "/cases/index"
-	// breadcrumbMap["Over Readings"] = "/participants/" + c.Param("pid") + "/overreadings/index"
-	breadcrumbMap["Over Reading"] = "/cases/" + c.Param("pid") + "/overreadings/" + c.Param("oid")
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Cases", Path: "/cases/index"})
+	b = append(b, helpers.Breadcrumb{Title: "Over Reading", Path: "/cases/" + c.Param("pid") + "/overreadings/" + c.Param("oid")})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("over_readings/details.html"))
 }
 

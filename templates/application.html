@@ -158,22 +158,11 @@
                  <!--------------------
               START - Breadcrumbs
               -------------------->
-              <%= if (breadcrumbMap) { %>
+              <%= if (len(breadcrumb) > 1) { %>
                 <ul class="breadcrumb">
+                    <%= for (v) in breadcrumb { %>
                     <li class="breadcrumb-item">
-                        <a href="<%= rootPath() %>">
-                            <%= t("nav_home") %></a>
-                    </li>
-
-                    <%= for (k, v) in breadcrumbMap { %>
-                    <li class="breadcrumb-item">
-                        <%= if (len(v) > 0) { %>
-                        <a href="<%= v %>">
-                            <%= t(k) %></a>
-                        <% } else { %>
-                        <span>
-                            <%= t(k) %></span>
-                        <% } %>
+                        <a href="<%= v.Path %>"><%= t(v.Title) %></a>
                     </li>
                     <% } %>
                 </ul>

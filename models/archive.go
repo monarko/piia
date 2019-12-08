@@ -33,20 +33,8 @@ type Archive struct {
 	Reason      string    `json:"reason" db:"reason"`
 }
 
-// String is not required by pop and may be deleted
-func (a Archive) String() string {
-	ja, _ := json.Marshal(a)
-	return string(ja)
-}
-
 // Archives is not required by pop and may be deleted
 type Archives []Archive
-
-// String is not required by pop and may be deleted
-func (a Archives) String() string {
-	ja, _ := json.Marshal(a)
-	return string(ja)
-}
 
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
@@ -60,17 +48,5 @@ func (a *Archive) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	}
 	a.Dependency = d
 
-	return validate.NewErrors(), nil
-}
-
-// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
-// This method is not required and may be deleted.
-func (a *Archive) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
-// ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
-// This method is not required and may be deleted.
-func (a *Archive) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }

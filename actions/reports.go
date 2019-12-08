@@ -8,6 +8,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -76,9 +77,10 @@ func ReportsIndex(c buffalo.Context) error {
 
 	c.Set("stat", stat)
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["page_analytics_title"] = "/analytics/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "page_analytics_title", Path: "/analytics/index"})
+	c.Set("breadcrumb", b)
+
 	// c.Set("filterStatus", c.Params().Get("status"))
 	logErr := InsertLog("view", "User viewed analytics", "", "", "", user.ID, c)
 	if logErr != nil {
@@ -166,9 +168,9 @@ func ReportsIndexAPI(c buffalo.Context) error {
 			p.ParticipantID[1:2],
 			p.ParticipantID,
 			p.ID.String(),
-			Age(p.DOB.CalculatedDate),
+			helpers.Age(p.DOB.CalculatedDate),
 			p.Gender,
-			LanguageDate(p.CreatedAt, "2006-01-02", c.Value("current_lang").(string)),
+			helpers.LanguageDate(p.CreatedAt, "2006-01-02", c.Value("current_lang").(string)),
 			strconv.Itoa(p.Completeness()) + "%",
 			scRef,
 			ovRef,

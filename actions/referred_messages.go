@@ -50,8 +50,6 @@ func UpdateReferredMessage(c buffalo.Context) error {
 		refer.ReferralData.HospitalName.Valid = true
 	}
 
-	// fmt.Printf("\n\n%#v\n\n", c.Request().FormValue("HospitalName"))
-
 	verrs, err := tx.ValidateAndCreate(refer)
 	if err != nil {
 		return errors.WithStack(err)

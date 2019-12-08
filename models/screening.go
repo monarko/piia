@@ -35,12 +35,6 @@ type Screening struct {
 	ReferredMessages ReferredMessages              `has_many:"referred_messages" json:"-"`
 }
 
-// String is not required by pop and may be deleted
-func (s Screening) String() string {
-	js, _ := json.Marshal(s)
-	return string(js)
-}
-
 // Maps will return a map
 func (s Screening) Maps() map[string]interface{} {
 	bt, _ := json.Marshal(s)
@@ -58,12 +52,6 @@ func (s Screening) Maps() map[string]interface{} {
 
 // Screenings is not required by pop and may be deleted
 type Screenings []Screening
-
-// String is not required by pop and may be deleted
-func (s Screenings) String() string {
-	js, _ := json.Marshal(s)
-	return string(js)
-}
 
 // SectionStatus object
 type SectionStatus struct {
@@ -179,18 +167,6 @@ func (s *Screening) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(valids...), nil
 }
 
-// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
-// This method is not required and may be deleted.
-func (s *Screening) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
-// ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
-// This method is not required and may be deleted.
-func (s *Screening) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
 // InRangeFloat64 Check
 type InRangeFloat64 struct {
 	Name  string
@@ -271,24 +247,6 @@ func (s Screening) Completeness() int {
 	if !s.Eyes.AssessmentDate.CalculatedDate.IsZero() {
 		score += 10
 	}
-	// if s.Eyes.RightEye.VisualAcuity.Valid {
-	// 	score += 10
-	// }
-	// if s.Eyes.RightEye.DRGrading.Valid {
-	// 	score += 10
-	// }
-	// if s.Eyes.RightEye.DMEAssessment.Valid {
-	// 	score += 10
-	// }
-	// if s.Eyes.LeftEye.VisualAcuity.Valid {
-	// 	score += 10
-	// }
-	// if s.Eyes.LeftEye.DRGrading.Valid {
-	// 	score += 10
-	// }
-	// if s.Eyes.LeftEye.DMEAssessment.Valid {
-	// 	score += 10
-	// }
 	if s.Eyes.LeftEye.DilatePupil.Valid || s.Eyes.RightEye.DilatePupil.Valid {
 		score += 10
 	}

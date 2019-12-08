@@ -8,6 +8,7 @@ import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gofrs/uuid"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -32,23 +33,15 @@ func ArchiveIndex(c buffalo.Context) error {
 	}
 
 	archives := &models.Archives{}
-
-	// Paginate results. Params "page" and "per_page" control pagination.
-	// Default values are "page=1" and "per_page=20".
-	// q := tx.PaginateFromParams(c.Params())
-
-	// Retrieve all Archives from the DB
 	if err := tx.Eager().All(archives); err != nil {
 		return err
 	}
 
 	c.Set("archives", archives)
-	// Add the paginator to the context so it can be used in the template.
-	// c.Set("pagination", q.Paginator)
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Archives"] = "/archives/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Archives", Path: "/archives/index"})
+	c.Set("breadcrumb", b)
 
 	return c.Render(200, r.HTML("archives/index.html"))
 }
@@ -94,11 +87,10 @@ func ArchiveShow(c buffalo.Context) error {
 		c.Set("data", o)
 	}
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Archives"] = "/archives/index"
-	breadcrumbMap["Archive Detail"] = "#"
-
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Archives", Path: "/archives/index"})
+	b = append(b, helpers.Breadcrumb{Title: "Archive Detail", Path: "#"})
+	c.Set("breadcrumb", b)
 
 	return c.Render(200, r.HTML("archives/detail.html"))
 }

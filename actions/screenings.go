@@ -1,12 +1,14 @@
 package actions
 
 import (
+	"strings"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/pop"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 // ScreeningsIndex gets all Screenings. This function is mapped to the path
@@ -28,10 +30,11 @@ func ScreeningsIndex(c buffalo.Context) error {
 
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Participants"] = "/participants/index"
-	// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("screenings/index.html"))
 }
 
@@ -72,10 +75,12 @@ func ScreeningsCreateGet(c buffalo.Context) error {
 	c.Set("participant", participant)
 	c.Set("screening", screening)
 	c.Set("dilatePupil", getDilatePupil(*screening))
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Participants"] = "/participants/index"
-	breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "New Screening", Path: "/participants/" + c.Param("pid") + "/screenings/create"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("screenings/create.html"))
 }
 
@@ -91,6 +96,12 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
 		return c.Redirect(302, red)
 	}
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "New Screening", Path: "/participants/" + c.Param("pid") + "/screenings/create"})
+	c.Set("breadcrumb", b)
+
 	hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
 	reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
 	c.Set("hospitalNotReferralReasons", reasons)
@@ -176,11 +187,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		c.Set("screening", screening)
 		c.Set("errors", verrs.Errors)
 		c.Set("dilatePupil", getDilatePupil(*screening))
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Participants"] = "/participants/index"
-		// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
-		breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
-		c.Set("breadcrumbMap", breadcrumbMap)
+
 		return c.Render(422, r.HTML("screenings/create.html"))
 	}
 
@@ -196,11 +203,7 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 			c.Set("screening", screening)
 			c.Set("errors", verrs.Errors)
 			c.Set("dilatePupil", getDilatePupil(*screening))
-			breadcrumbMap := make(map[string]interface{})
-			breadcrumbMap["Participants"] = "/participants/index"
-			// breadcrumbMap["Screenings"] = "/participants/" + c.Param("pid") + "/screenings/index"
-			breadcrumbMap["New Screening"] = "/participants/" + c.Param("pid") + "/screenings/create"
-			c.Set("breadcrumbMap", breadcrumbMap)
+
 			return c.Render(422, r.HTML("screenings/create.html"))
 		}
 	}
@@ -245,10 +248,12 @@ func ScreeningsEditGet(c buffalo.Context) error {
 	c.Set("dilatePupil", getDilatePupil(*screening))
 	// statuses := screening.StatusesMap()
 	// c.Set("screeningStatuses", statuses)
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Participants"] = "/participants/index"
-	breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "Edit Screening", Path: "/participants/" + c.Param("pid") + "/screenings/edit"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("screenings/edit.html"))
 }
 
@@ -265,6 +270,12 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		c.Flash().Add("danger", "Not Found")
 		return c.Redirect(302, "/participants/index")
 	}
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "Edit Screening", Path: "/participants/" + c.Param("pid") + "/screenings/edit"})
+	c.Set("breadcrumb", b)
+
 	hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
 	reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
 	c.Set("hospitalNotReferralReasons", reasons)
@@ -347,10 +358,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 		c.Set("screening", screening)
 		c.Set("errors", verrs.Errors)
 		c.Set("dilatePupil", getDilatePupil(*screening))
-		breadcrumbMap := make(map[string]interface{})
-		breadcrumbMap["Participants"] = "/participants/index"
-		breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
-		c.Set("breadcrumbMap", breadcrumbMap)
+
 		return c.Render(422, r.HTML("screenings/edit.html"))
 	}
 
@@ -365,10 +373,7 @@ func ScreeningsEditPost(c buffalo.Context) error {
 			c.Set("screening", screening)
 			c.Set("errors", verrs.Errors)
 			c.Set("dilatePupil", getDilatePupil(*screening))
-			breadcrumbMap := make(map[string]interface{})
-			breadcrumbMap["Participants"] = "/participants/index"
-			breadcrumbMap["Edit Screening"] = "/participants/" + c.Param("pid") + "/screenings/edit"
-			c.Set("breadcrumbMap", breadcrumbMap)
+
 			return c.Render(422, r.HTML("screenings/edit.html"))
 		}
 	}

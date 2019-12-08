@@ -7,6 +7,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -146,9 +147,10 @@ func CasesIndex(c buffalo.Context) error {
 	c.Set("in7Days", len(in7Days))
 	c.Set("before7Days", len(before7Days))
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Cases"] = "/cases/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Cases", Path: "/cases/index"})
+	c.Set("breadcrumb", b)
+
 	c.Set("filterStatus", c.Params().Get("status"))
 	c.Set("filterSearch", c.Params().Get("search"))
 	logErr := InsertLog("view", "User viewed cases", "", "", "", user.ID, c)

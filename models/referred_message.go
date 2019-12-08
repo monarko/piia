@@ -4,11 +4,10 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/gofrs/uuid"
-	"github.com/monarko/piia/helpers/types"
-
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/validate"
+	"github.com/gofrs/uuid"
+	"github.com/monarko/piia/helpers/types"
 )
 
 // ReferredMessage model
@@ -24,12 +23,6 @@ type ReferredMessage struct {
 	ScreeningID   uuid.UUID                    `json:"screening_id" db:"screening_id"`
 	Message       string                       `json:"message" db:"message"`
 	ReferralData  types.ReferredMessageElement `json:"referral_data" db:"referral_data"`
-}
-
-// String is not required by pop and may be deleted
-func (r ReferredMessage) String() string {
-	jr, _ := json.Marshal(r)
-	return string(jr)
 }
 
 // Maps will return a map
@@ -48,12 +41,6 @@ func (r ReferredMessage) Maps() map[string]interface{} {
 // ReferredMessages is not required by pop and may be deleted
 type ReferredMessages []ReferredMessage
 
-// String is not required by pop and may be deleted
-func (r ReferredMessages) String() string {
-	jr, _ := json.Marshal(r)
-	return string(jr)
-}
-
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (r *ReferredMessage) Validate(tx *pop.Connection) (*validate.Errors, error) {
@@ -61,17 +48,5 @@ func (r *ReferredMessage) Validate(tx *pop.Connection) (*validate.Errors, error)
 	if r.ReferralData.DateOfAttendance.Calendar == "thai" {
 		r.ReferralData.DateOfAttendance.CalculatedDate = r.ReferralData.DateOfAttendance.CalculatedDate.AddDate(-543, 0, 0)
 	}
-	return validate.NewErrors(), nil
-}
-
-// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
-// This method is not required and may be deleted.
-func (r *ReferredMessage) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
-// ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
-// This method is not required and may be deleted.
-func (r *ReferredMessage) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.NewErrors(), nil
 }
