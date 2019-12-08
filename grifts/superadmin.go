@@ -117,6 +117,7 @@ var _ = grift.Namespace("user", func() {
 					messages = append(messages, "=> \""+name+"\" creation failed")
 					messages = append(messages, "=> "+err.Error())
 					fmt.Println(strings.Join(messages, "\n"))
+					return nil
 				}
 				user.PasswordHash = string(pwdHash)
 			}
