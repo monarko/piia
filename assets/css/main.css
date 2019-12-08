@@ -29069,3 +29069,9 @@ tr.shown td.audit-action-detail {
 .detail-attribute-value {
   margin-bottom: 0 !important;
 }
+div.dataTables_processing {
+  background-color: #e6e6fa;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  font-weight: bold;
+}
