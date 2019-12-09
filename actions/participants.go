@@ -76,9 +76,11 @@ func ParticipantsIndex(c buffalo.Context) error {
 	c.Set("participants", participants)
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["page_participants_title"] = "/participants/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "page_participants_title", Path: "/participants/index"})
+	c.Set("breadcrumb", b)
+
 	c.Set("filterStatus", c.Params().Get("status"))
 	c.Set("filterSearch", c.Params().Get("search"))
 	logErr := InsertLog("view", "User viewed participants", "", "", "", user.ID, c)
@@ -98,20 +100,18 @@ func ParticipantsIndex(c buffalo.Context) error {
 // ParticipantsCreateGet for the insert form
 func ParticipantsCreateGet(c buffalo.Context) error {
 	c.Set("participant", &models.Participant{})
-	// user := c.Value("current_user").(*models.User)
-	// luhnID := helpers.GenerateLuhnIDWithGivenPrefix(user.Site)
-	// c.Set("luhnID", luhnID.ID)
-	// user := c.Value("current_user").(*models.User)
 	currentSite := c.Value("current_site").(string)
 	prefix := "P"
 	if len(currentSite) > 0 {
 		prefix = prefix + currentSite
 	}
 	c.Set("participantIDPrefix", prefix)
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["page_participants_title"] = "/participants/index"
-	breadcrumbMap["breadcrumb_enrol_participant"] = "/participants/create"
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "page_participants_title", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "breadcrumb_enrol_participant", Path: "/participants/create"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("participants/create.html"))
 }
 
@@ -129,6 +129,11 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 	}
 	c.Set("participantIDPrefix", prefix)
 
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "page_participants_title", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "breadcrumb_enrol_participant", Path: "/participants/create"})
+	c.Set("breadcrumb", b)
+
 	// Bind participant to the html form elements
 	if err := c.Bind(participant); err != nil {
 		// return errors.WithStack(err)
@@ -138,6 +143,7 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 		}
 		c.Set("participant", participant)
 		c.Set("errors", errs)
+
 		return c.Render(422, r.HTML("participants/create.html"))
 	}
 
@@ -220,7 +226,6 @@ func ParticipantsCreatePost(c buffalo.Context) error {
 
 	logErr := InsertLog("create", "User created a participant", "", participant.ID.String(), "participant", user.ID, c)
 	if logErr != nil {
-		// return errors.WithStack(logErr)
 		errStr := logErr.Error()
 		errs := map[string][]string{
 			"create_error": {errStr},
@@ -255,10 +260,12 @@ func ParticipantsEditGet(c buffalo.Context) error {
 		return c.Error(404, err)
 	}
 	c.Set("participant", participant)
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["page_participants_title"] = "/participants/index"
-	breadcrumbMap["breadcrumb_enrol_update_participant"] = "/participants/edit/" + participant.ID.String()
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "page_participants_title", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "breadcrumb_enrol_update_participant", Path: "/participants/edit/" + participant.ID.String()})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("participants/edit.html"))
 }
 
@@ -275,10 +282,10 @@ func ParticipantsEditPost(c buffalo.Context) error {
 	}
 	c.Set("participantIDPrefix", prefix)
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["page_participants_title"] = "/participants/index"
-	breadcrumbMap["breadcrumb_enrol_update_participant"] = "/participants/edit/" + participant.ID.String()
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "page_participants_title", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "breadcrumb_enrol_update_participant", Path: "/participants/edit/" + participant.ID.String()})
+	c.Set("breadcrumb", b)
 
 	if err := tx.Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
@@ -462,8 +469,6 @@ func ParticipantsDetail(c buffalo.Context) error {
 	}
 	sort.Strings(keys)
 
-	// fmt.Println("NOTIFICATION IDS", notificationIDs)
-
 	audits := []models.Audit{}
 	screeningAudits := &models.Audits{}
 	participantAudits := &models.Audits{}
@@ -534,11 +539,6 @@ func ParticipantsDetail(c buffalo.Context) error {
 	allLogs = append(allLogs, *notificationLogs...)
 	allLogs = append(allLogs, *referralLogs...)
 
-	// fmt.Println("ParticipantLogs:", len(*participantLogs))
-	// fmt.Println("ParticipantAudit:", len(*participantAudits))
-	// fmt.Println("ScreeningLogs:", len(*screeningLogs))
-	// fmt.Println("ScreeningAudit:", len(*screeningAudits))
-
 	right, left, err := getImage(participant.ParticipantID)
 	if err != nil {
 		left = ""
@@ -566,10 +566,11 @@ func ParticipantsDetail(c buffalo.Context) error {
 	c.Set("audits", audits)
 	c.Set("logs", allLogs)
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["page_participants_title"] = "/participants/index"
-	breadcrumbMap["breadcrumb_enrol_participant_short"] = "/participants/" + participant.ID.String()
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "page_participants_title", Path: "/participants/index"})
+	b = append(b, helpers.Breadcrumb{Title: "breadcrumb_enrol_participant_short", Path: "/participants/" + participant.ID.String()})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("participants/detail.html"))
 }
 

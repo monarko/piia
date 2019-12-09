@@ -15,7 +15,7 @@ import (
 var r *render.Engine
 
 var (
-	mailgunDomain = envy.Get("MAILGUN_DOMAIN", "mg.monarko.com")
+	mailgunDomain = envy.Get("MAILGUN_DOMAIN", "")
 	privateAPIKey = envy.Get("MAILGUN_API_KEY", "")
 
 	emailName    = envy.Get("EMAIL_NAME", "")

@@ -26,12 +26,6 @@ type OverReading struct {
 	ScreeningID   uuid.UUID               `json:"screening_id" db:"screening_id"`
 }
 
-// String is not required by pop and may be deleted
-func (o OverReading) String() string {
-	jo, _ := json.Marshal(o)
-	return string(jo)
-}
-
 // Maps will return a map
 func (o OverReading) Maps() map[string]interface{} {
 	bt, _ := json.Marshal(o)
@@ -48,12 +42,6 @@ func (o OverReading) Maps() map[string]interface{} {
 // OverReadings is not required by pop and may be deleted
 type OverReadings []OverReading
 
-// String is not required by pop and may be deleted
-func (o OverReadings) String() string {
-	jo, _ := json.Marshal(o)
-	return string(jo)
-}
-
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (o *OverReading) Validate(tx *pop.Connection) (*validate.Errors, error) {
@@ -63,16 +51,4 @@ func (o *OverReading) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Field: o.Eyes.RightEye.DRGrading.String, Name: "DR Grade for Right Eye"},
 		&validators.StringIsPresent{Field: o.Eyes.RightEye.DMEAssessment.String, Name: "DME Assessment for Right Eye"},
 	), nil
-}
-
-// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
-// This method is not required and may be deleted.
-func (o *OverReading) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
-// ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
-// This method is not required and may be deleted.
-func (o *OverReading) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
 }

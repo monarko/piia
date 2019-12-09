@@ -29,7 +29,6 @@ func AuthCallback(c buffalo.Context) error {
 	guser, err := gothic.CompleteUserAuth(c.Response(), c.Request())
 	if err != nil {
 		return errors.WithStack(err)
-		// return c.Error(401, err)
 	}
 	tx := c.Value("tx").(*pop.Connection)
 	q := tx.Where("provider = ? and provider_id = ?", "google", guser.UserID)

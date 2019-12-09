@@ -8,6 +8,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -76,9 +77,10 @@ func ReportsIndex(c buffalo.Context) error {
 
 	c.Set("stat", stat)
 
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["page_analytics_title"] = "/analytics/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "page_analytics_title", Path: "/analytics/index"})
+	c.Set("breadcrumb", b)
+
 	// c.Set("filterStatus", c.Params().Get("status"))
 	logErr := InsertLog("view", "User viewed analytics", "", "", "", user.ID, c)
 	if logErr != nil {
@@ -97,13 +99,13 @@ func ReportsIndex(c buffalo.Context) error {
 // ReportsIndexAPI default implementation.
 func ReportsIndexAPI(c buffalo.Context) error {
 	var err error
-	pr := DatatableRequest{}
+	pr := helpers.DatatableRequest{}
 	err = json.NewDecoder(c.Request().Body).Decode(&pr)
 	if err != nil {
 		return c.Render(400, r.JSON(err))
 	}
 	tx := c.Value("tx").(*pop.Connection)
-	responseResult := DatatableResponse{}
+	responseResult := helpers.DatatableResponse{}
 	responseResult.Draw = pr.Parameters.Draw
 	participants := &models.Participants{}
 	// Paginate results. Params "page" and "per_page" control pagination.
@@ -166,9 +168,9 @@ func ReportsIndexAPI(c buffalo.Context) error {
 			p.ParticipantID[1:2],
 			p.ParticipantID,
 			p.ID.String(),
-			Age(p.DOB.CalculatedDate),
+			helpers.Age(p.DOB.CalculatedDate),
 			p.Gender,
-			LanguageDate(p.CreatedAt, "2006-01-02", c.Value("current_lang").(string)),
+			helpers.LanguageDate(p.CreatedAt, "2006-01-02", c.Value("current_lang").(string)),
 			strconv.Itoa(p.Completeness()) + "%",
 			scRef,
 			ovRef,
@@ -180,38 +182,4 @@ func ReportsIndexAPI(c buffalo.Context) error {
 	responseResult.Data = data
 
 	return c.Render(200, r.JSON(responseResult))
-}
-
-// DatatableResponse object
-type DatatableResponse struct {
-	Draw            int        `json:"draw"`
-	RecordsTotal    int        `json:"recordsTotal"`
-	RecordsFiltered int        `json:"recordsFiltered"`
-	Data            [][]string `json:"data"`
-}
-
-// DatatableRequest object
-type DatatableRequest struct {
-	Parameters Parameters `json:"parameters"`
-}
-
-// Parameters object
-type Parameters struct {
-	Draw   int     `json:"draw"`
-	Length int     `json:"length"`
-	Start  int     `json:"start"`
-	Search Search  `json:"search"`
-	Order  []Order `json:"order"`
-}
-
-// Search object
-type Search struct {
-	Regex bool   `json:"regex"`
-	Value string `json:"value"`
-}
-
-// Order object
-type Order struct {
-	Column    int    `json:"column"`
-	Direction string `json:"dir"`
 }

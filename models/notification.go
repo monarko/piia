@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/gobuffalo/pop"
-	"github.com/gobuffalo/validate"
 	"github.com/gofrs/uuid"
 	"github.com/monarko/piia/helpers/types"
 )
@@ -40,38 +39,8 @@ func (n Notification) Maps() map[string]interface{} {
 	return m
 }
 
-// String is not required by pop and may be deleted
-func (n Notification) String() string {
-	jn, _ := json.Marshal(n)
-	return string(jn)
-}
-
 // Notifications is not required by pop and may be deleted
 type Notifications []Notification
-
-// String is not required by pop and may be deleted
-func (n Notifications) String() string {
-	jn, _ := json.Marshal(n)
-	return string(jn)
-}
-
-// Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
-// This method is not required and may be deleted.
-func (n *Notification) Validate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
-// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
-// This method is not required and may be deleted.
-func (n *Notification) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
-// ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
-// This method is not required and may be deleted.
-func (n *Notification) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
 
 // NotClosedNotifications returns the notifications without "closed" status
 func NotClosedNotifications() pop.ScopeFunc {

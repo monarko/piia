@@ -13,7 +13,6 @@ func HomeHandler(c buffalo.Context) error {
 	loggedInUser, ok := c.Value("current_user").(*models.User)
 	if !ok {
 		return c.Redirect(302, "/users/login")
-		// return c.Render(200, r.HTML("index-non-logged-in.html", "application-non-logged-in.html"))
 	}
 
 	tx := c.Value("tx").(*pop.Connection)
@@ -96,13 +95,14 @@ func HomeHandler(c buffalo.Context) error {
 	notifications := &models.Notifications{}
 	var q *pop.Query
 	openNotificationStatuses := []string{"open", "nurse-notified", "patient-contacted", "referral-arranged"}
+	to := 5
 
 	if len(site) > 0 {
-		q = tx.Eager().Where("site = ?", site).Where("status in (?)", openNotificationStatuses).PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("site = ?", site).Where("status in (?)", openNotificationStatuses).Paginate(1, to).Order("created_at DESC")
 	} else if loggedInUser.Admin || loggedInUser.Permission.StudyCoordinator {
-		q = tx.Eager().Where("status in (?)", openNotificationStatuses).PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("status in (?)", openNotificationStatuses).Paginate(1, to).Order("created_at DESC")
 	} else {
-		q = tx.Eager().Where("status != ?", "unknown").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("status != ?", "unknown").Paginate(1, to).Order("created_at DESC")
 	}
 
 	// Retrieve all Notifications from the DB
@@ -110,19 +110,9 @@ func HomeHandler(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	notis := make([]models.Notification, len(*notifications))
-	copy(notis, *notifications)
-
-	to := 5
-	if len(notis) <= to {
-		to = len(notis)
-	}
-
 	// Make posts available inside the html template
-	c.Set("notifications", notis[0:to])
-	c.Set("total_notifications", len(notis))
-	// Add the paginator to the context so it can be used in the template.
-	c.Set("pagination", q.Paginator)
+	c.Set("notifications", notifications)
+	c.Set("total_notifications", q.Paginator.TotalEntriesSize)
 
 	return c.Render(200, r.HTML("index.html"))
 }

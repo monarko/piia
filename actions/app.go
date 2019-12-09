@@ -63,13 +63,11 @@ func App() *buffalo.App {
 		app.Use(SetCurrentUser)
 		app.Use(SetCurrentLang)
 		app.Use(SetCurrentSite)
+		app.Use(SetBreadcrumb)
 
 		app.GET("/", HomeHandler)
 
-		// app.Resource("/users", UsersResource{})
 		auth := app.Group("/users")
-		// auth.GET("/register", UsersRegisterGet)
-		// auth.POST("/register", UsersRegisterPost)
 		auth.GET("/login", UsersLoginGet)
 		auth.POST("/login", UsersLoginPost)
 		auth.GET("/logout", UsersLogout)
@@ -93,18 +91,14 @@ func App() *buffalo.App {
 		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
 		participants.DELETE("/delete/{pid}", AdminRequired(ParticipantsDestroy))
 		participants.GET("/{pid}", ParticipantsDetail)
-		// participants.GET("/delete", ParticipantsDelete)
-		// participants.GET("/detail", ParticipantsDetail)
 
 		cases := app.Group("/cases")
 		cases.Use(LoginRequired)
-		// cases.Use(OverReadingPermissionRequired)
 		cases.GET("/", CasesIndex)
 		cases.GET("/index", CasesIndex)
 
 		screenings := participants.Group("/{pid}/screenings")
 		screenings.Use(ScreeningPermissionRequired)
-		// screenings.GET("/index", ScreeningsIndex)
 		screenings.GET("/create", ScreeningsCreateGet)
 		screenings.POST("/create", ScreeningsCreatePost)
 		screenings.GET("/edit/{sid}", ScreeningsEditGet).Name("participantScreeningsEditPath")
@@ -124,12 +118,6 @@ func App() *buffalo.App {
 
 		screenings.POST("/{sid}/appointmentdone", UpdateReferredMessage).Name("participantsAppointmentPath")
 
-		// reports := app.Group("/reports")
-		// reports.Use(LoginRequired)
-		// reports.Use(StudyCoordinatorPermissionRequired)
-		// reports.GET("/", ReportsIndex)
-		// reports.GET("/index", ReportsIndex)
-
 		analytics := app.Group("/analytics")
 		analytics.Use(LoginRequired)
 		analytics.Use(StudyCoordinatorPermissionRequired)
@@ -138,7 +126,6 @@ func App() *buffalo.App {
 		analytics.GET("/index", ReportsIndex)
 		analytics.POST("/api/list", ReportsIndexAPI)
 		analytics.GET("/full-download", AdminRequired(DownloadFull))
-		// analytics.GET("/veil-download", AdminRequired(DownloadVeil))
 		analytics.GET("/full-download-csv", AdminRequired(DownloadFullCSV))
 
 		referrals := app.Group("/referrals")
@@ -157,7 +144,6 @@ func App() *buffalo.App {
 		notifications.GET("/index", NotificationsIndex)
 		notifications.DELETE("/delete/{nid}", AdminRequired(NotificationsDestroy))
 
-		// app.Resource("/system_logs", SystemLogsResource{})
 		logs := app.Group("/logs")
 		logs.Use(AdminRequired)
 		logs.GET("/", SystemLogsIndex)

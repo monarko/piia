@@ -1,32 +1,32 @@
-# Welcome to Buffalo!
+# PIIA (Peer)
 
-Thank you for choosing Buffalo for your web development needs.
+Welcome to the source repository for PIIA. This is a brief overview of what steps you need to follow for start development.
 
-## Database Setup
+## Requirement
 
-It looks like you chose to set up your application using a postgres database! Fantastic!
+- Golang (v1.13+) [We use `gomodule`, consult [https://golang.org](https://golang.org/) for installing and enabling `gomodule`]
+- Buffalo Web Framework (v0.15.3+) [[http://gobuffalo.io](http://gobuffalo.io)]
+- PostgreSQL Database (v9.5+)
 
-The first thing you need to do is open up the "database.yml" file and edit it to use the correct usernames, passwords, hosts, etc... that are appropriate for your environment.
+For these, older versions might work, but can not give any guarantee.
 
-You will also need to make sure that **you** start/install the database of your choice. Buffalo **won't** install and start postgres for you.
+- Node (v13.2.0)
+- NPM (v6.13.1)
+- Yarn (v1.15.2)
 
-### Create Your Databases
+## Setup
 
-Ok, so you've edited the "database.yml" file and started postgres, now Buffalo can create the databases in that file for you:
+> This version heavily uses `gomodules`, so it should be cloned in a directory outside your `$GOPATH` (if `$GOPATH` is set)
 
-	$ buffalo db create -a
+After cloning the repository, make a copy of `.env.example` as `.env`.
 
-## Starting the Application
+- Edit the `.env` file and populate your credentials.
+- Run `buffalo pop migrate` to intialize database tables.
+- Run `buffalo task user:superadmin:create YOUR_EMAIL YOUR_NAME YOUR_PASSWORD` to create first super user on the site. (i.e. `buffalo task user:superadmin:create jon@example.com "Jon Doe" "J0nD@e!23"`)
+- Run `buffalo dev` to boot up the development server.
+- Browse to [http://127.0.0.1:3000/](http://127.0.0.1:3000/) and login using your super user.
 
-Buffalo ships with a command that will watch your application and automatically rebuild the Go binary and any assets for you. To do that run the "buffalo dev" command:
-
-	$ buffalo dev
-
-If you point your browser to [http://127.0.0.1:3000](http://127.0.0.1:3000) you should see a "Welcome to Buffalo!" page.
-
-**Congratulations!** You now have your Buffalo application up and running.
-
-## What Next?
+## Developments
 
 We recommend you heading over to [http://gobuffalo.io](http://gobuffalo.io) and reviewing all of the great documentation there.
 

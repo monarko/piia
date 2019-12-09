@@ -30,9 +30,11 @@ func SystemLogsIndex(c buffalo.Context) error {
 
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["Access Logs"] = "/logs/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "Access Logs", Path: "/logs/index"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("system_logs/index.html"))
 }
 

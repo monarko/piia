@@ -1,7 +1,6 @@
 package models
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/gobuffalo/pop"
@@ -26,20 +25,8 @@ type SystemLog struct {
 	ResourceType string    `json:"resource_type" db:"resource_type"`
 }
 
-// String is not required by pop and may be deleted
-func (s SystemLog) String() string {
-	js, _ := json.Marshal(s)
-	return string(js)
-}
-
 // SystemLogs is not required by pop and may be deleted
 type SystemLogs []SystemLog
-
-// String is not required by pop and may be deleted
-func (s SystemLogs) String() string {
-	js, _ := json.Marshal(s)
-	return string(js)
-}
 
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
@@ -48,16 +35,4 @@ func (s *SystemLog) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringIsPresent{Field: s.Action, Name: "Action"},
 		&validators.StringIsPresent{Field: s.ClientIP, Name: "ClientIP"},
 	), nil
-}
-
-// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
-// This method is not required and may be deleted.
-func (s *SystemLog) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
-// ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
-// This method is not required and may be deleted.
-func (s *SystemLog) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
 }

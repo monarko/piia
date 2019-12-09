@@ -22,16 +22,10 @@ func (p *PropertyMap) Scan(src interface{}) error {
 		return errors.New("type assertion .([]byte) failed")
 	}
 
-	// var i interface{}
 	err := json.Unmarshal(source, p)
 	if err != nil {
 		return err
 	}
-
-	// *p, ok = i.(map[string]interface{})
-	// if !ok {
-	// 	return errors.New("type assertion .(map[string]interface{}) failed")
-	// }
 
 	return nil
 }

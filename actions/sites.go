@@ -2,34 +2,37 @@ package actions
 
 import (
 	"github.com/gobuffalo/buffalo"
-	"github.com/monarko/piia/models"
 )
+
+// Site object
+type Site map[string]string
+
+var (
+	sites = Site{
+		"A": "Sansai",
+		"J": "Jomthong",
+		"K": "Khlong Luang",
+		"L": "Lamlukka",
+		"N": "Nongseau",
+		"O": "Phrao",
+		"R": "Rajavithi",
+		"S": "San Patong",
+		"T": "Thanyaburi",
+	}
+)
+
+// GetSystemSites returns current system sites
+func GetSystemSites() Site {
+	return sites
+}
 
 // ChangeSite changes the site
 func ChangeSite(c buffalo.Context) error {
 	selectedSite := c.Param("site")
 	site := ""
 
-	if selectedSite == "N" {
-		site = "N"
-	} else if selectedSite == "K" {
-		site = "K"
-	} else if selectedSite == "L" {
-		site = "L"
-	} else if selectedSite == "T" {
-		site = "T"
-	} else if selectedSite == "R" {
-		site = "R"
-	} else if selectedSite == "O" {
-		site = "O"
-	} else if selectedSite == "S" {
-		site = "S"
-	} else if selectedSite == "J" {
-		site = "J"
-	} else if selectedSite == "A" {
-		site = "A"
-	} else {
-		site = ""
+	if _, ok := sites[selectedSite]; ok {
+		site = selectedSite
 	}
 
 	c.Session().Set("site", site)
@@ -37,30 +40,4 @@ func ChangeSite(c buffalo.Context) error {
 	referrer := c.Request().Referer()
 
 	return c.Redirect(302, referrer)
-}
-
-// SetCurrentSite attempts to find a user based on the current_user_id
-// in the session. If one is found it is set on the context.
-func SetCurrentSite(next buffalo.Handler) buffalo.Handler {
-	return func(c buffalo.Context) error {
-		if site := c.Session().Get("site"); site != nil {
-			c.Set("current_site", site)
-		} else {
-			user, ok := c.Value("current_user").(*models.User)
-			if ok {
-				if user.Admin || user.Permission.StudyCoordinator {
-					c.Set("current_site", "")
-				} else {
-					c.Set("current_site", user.Site)
-					if len(user.Site) > 1 {
-						c.Set("current_site", user.Sites[0])
-					}
-				}
-			} else {
-				c.Set("current_site", "")
-			}
-		}
-
-		return next(c)
-	}
 }

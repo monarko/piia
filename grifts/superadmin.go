@@ -6,6 +6,7 @@ import (
 
 	"github.com/markbates/grift/grift"
 	"github.com/monarko/piia/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var _ = grift.Namespace("user", func() {
@@ -100,6 +101,7 @@ var _ = grift.Namespace("user", func() {
 		if len(c.Args) >= 1 {
 			email := strings.TrimSpace(c.Args[0])
 			name := strings.TrimSpace(c.Args[1])
+			password := strings.TrimSpace(c.Args[2])
 
 			user := &models.User{}
 			user.Admin = true
@@ -109,10 +111,21 @@ var _ = grift.Namespace("user", func() {
 			user.Permission.Screening = false
 			user.Permission.StudyCoordinator = false
 			user.Permission.ReferralTracker = false
+			if len(password) > 0 {
+				pwdHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+				if err != nil {
+					messages = append(messages, "=> \""+name+"\" creation failed")
+					messages = append(messages, "=> "+err.Error())
+					fmt.Println(strings.Join(messages, "\n"))
+					return nil
+				}
+				user.PasswordHash = string(pwdHash)
+			}
 
 			err := tx.Create(user)
 			if err != nil {
 				messages = append(messages, "=> \""+name+"\" creation failed")
+				messages = append(messages, "=> "+err.Error())
 			} else {
 				messages = append(messages, "=> \""+name+"\" is created and has been given superadmin previleges")
 			}

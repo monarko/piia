@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"encoding/json"
 	"strings"
 	"time"
 
@@ -49,20 +48,8 @@ func (u User) UserSites() []string {
 	return sites
 }
 
-// String is not required by pop and may be deleted
-func (u User) String() string {
-	ju, _ := json.Marshal(u)
-	return string(ju)
-}
-
 // Users is not required by pop and may be deleted
 type Users []User
-
-// String is not required by pop and may be deleted
-func (u Users) String() string {
-	ju, _ := json.Marshal(u)
-	return string(ju)
-}
 
 // Create validates and creates a new User.
 func (u *User) Create(tx *pop.Connection) (*validate.Errors, error) {

@@ -7,6 +7,7 @@ import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gofrs/uuid"
+	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )
@@ -16,7 +17,6 @@ func NotificationsIndex(c buffalo.Context) error {
 	loggedInUser, ok := c.Value("current_user").(*models.User)
 	if !ok {
 		return c.Redirect(302, "/users/login")
-		// return c.Render(200, r.HTML("index-non-logged-in.html", "application-non-logged-in.html"))
 	}
 	tx := c.Value("tx").(*pop.Connection)
 	// Notifications
@@ -40,9 +40,11 @@ func NotificationsIndex(c buffalo.Context) error {
 	c.Set("notifications", notifications)
 	// Add the paginator to the context so it can be used in the template.
 	c.Set("pagination", q.Paginator)
-	breadcrumbMap := make(map[string]interface{})
-	breadcrumbMap["section_header_notifications"] = "/notifications/index"
-	c.Set("breadcrumbMap", breadcrumbMap)
+
+	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+	b = append(b, helpers.Breadcrumb{Title: "section_header_notifications", Path: "/notifications/index"})
+	c.Set("breadcrumb", b)
+
 	return c.Render(200, r.HTML("notifications/index.html"))
 }
 

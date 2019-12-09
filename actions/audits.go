@@ -53,23 +53,6 @@ func MakeAudit(modelType string, modelID uuid.UUID, oldData map[string]interface
 		}
 	}
 
-	// fmt.Printf("\n\n%s\n\n", dff)
-
-	// diff, equal := messagediff.DeepDiff(oldData, newData)
-	// changes := make(map[string]interface{})
-	// if !equal {
-	// 	for k, v := range diff.Added {
-	// 		changes[k.String()] = v
-	// 	}
-
-	// 	for k, v := range diff.Modified {
-	// 		changes[k.String()] = v
-	// 	}
-
-	// 	for k, v := range diff.Removed {
-	// 		changes[k.String()] = v
-	// 	}
-	// }
 	audit.Changes = changes
 	audit.UserID = userID
 
