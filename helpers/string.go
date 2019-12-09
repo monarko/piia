@@ -77,7 +77,6 @@ func Age(a time.Time) string {
 	}
 
 	yearText := ""
-	//monthText := ""
 	remainingText := ""
 
 	if year > 0 {
@@ -87,15 +86,6 @@ func Age(a time.Time) string {
 			yearText = strconv.Itoa(year) + " year"
 		}
 	}
-	/*
-		if month > 0 {
-			if month > 1 {
-				monthText = strconv.Itoa(month) + " months"
-			} else {
-				monthText = strconv.Itoa(month) + " month"
-			}
-		}
-	*/
 
 	if month == 0 && year == 0 {
 		if day > 1 {
