@@ -30,6 +30,6 @@ After cloning the repository, make a copy of `.env.example` as `.env`.
 
 We recommend you heading over to [http://gobuffalo.io](http://gobuffalo.io) and reviewing all of the great documentation there.
 
-Good luck!
+## Deployment
 
-[Powered by Buffalo](http://gobuffalo.io)
+For deployment in Google Cloud Platform, please refer to the [Deployment in GCP Stack](./GCP-DEPLOYMENT.md) document.
