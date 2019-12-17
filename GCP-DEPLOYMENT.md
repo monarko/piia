@@ -14,7 +14,7 @@ We will deploy this to a Compute Engine VM running Ubuntu 18.04, thus we are gen
 
 ## GCP Project Setup
 
-Create a new project at (GCP Console)[https://console.cloud.google.com]. Then,
+Create a new project at [GCP Console](https://console.cloud.google.com). Then,
 
 - Go to `APIs & Services` -> `Credentials` -> `Create credentials` -> `OAuth client ID`
 - Create the credential for `Web application`
@@ -58,3 +58,27 @@ To export the analytics and reports, you'll need a storage bucket.
 
 ## GCE Setup
 
+Setup the production server in GCE.
+
+- Go to `Compute Engine` -> `VM instances`
+- Click `Create`
+- Give a name and select region/zone of your choice
+- Select `n1-standard-1` machine type (you can select lower configuration too)
+- In the `Boot Disk` section select `Change`, then select `Ubuntu 18.04 LTS`; and boot disk type to `SSD persistent disk`, click `Select`
+- In the `Firewall` section, select both `Allow HTTP traffic` and `Allow HTTPS traffic`
+- Click `Create`
+
+### NGINX Setup
+
+You can follow [this steps](https://gobuffalo.io/en/docs/deploy/proxy/#nginx) to create and start the `nginx` proxy to serve the site.
+
+### Systemd Service Setup
+
+Please follow [this steps](https://gobuffalo.io/en/docs/deploy/systemd/) to setup `piia` as a `systemd` service on the VM.
+
+## Stackdriver Logging and Monitoring
+
+- Go to Stackdriver monitoring.
+- Install both `Monitoring Agent` and `Logging Agent` from https://app.google.stackdriver.com/settings/accounts/agent?project=YOUR_PROJECT_ID
+- Install `Nginx plugin` from https://cloud.google.com/monitoring/agent/plugins/nginx
+- Setup some `Uptime Checks` and `Alert` to your workspace. (Recommendation: at least one for website uptime check and another for instance uptime check)
