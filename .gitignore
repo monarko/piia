@@ -13,3 +13,4 @@ piia
 .grifter/
 .env
 package-lock.json
+*.env
