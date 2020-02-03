@@ -1,43 +1,44 @@
 package actions
 
 import (
-	"github.com/gobuffalo/buffalo"
+    "github.com/gobuffalo/buffalo"
 )
 
 // Site object
 type Site map[string]string
 
 var (
-	sites = Site{
-		"A": "Sansai",
-		"J": "Jomthong",
-		"K": "Khlong Luang",
-		"L": "Lamlukka",
-		"N": "Nongseau",
-		"O": "Phrao",
-		"R": "Rajavithi",
-		"S": "San Patong",
-		"T": "Thanyaburi",
-	}
+    sites = Site{
+        "A": "Sansai",
+        "D": "Doi Saket",
+        "J": "Jomthong",
+        "K": "Khlong Luang",
+        "L": "Lamlukka",
+        "N": "Nongseau",
+        "O": "Phrao",
+        "R": "Rajavithi",
+        "S": "San Patong",
+        "T": "Thanyaburi",
+    }
 )
 
 // GetSystemSites returns current system sites
 func GetSystemSites() Site {
-	return sites
+    return sites
 }
 
 // ChangeSite changes the site
 func ChangeSite(c buffalo.Context) error {
-	selectedSite := c.Param("site")
-	site := ""
+    selectedSite := c.Param("site")
+    site := ""
 
-	if _, ok := sites[selectedSite]; ok {
-		site = selectedSite
-	}
+    if _, ok := sites[selectedSite]; ok {
+        site = selectedSite
+    }
 
-	c.Session().Set("site", site)
+    c.Session().Set("site", site)
 
-	referrer := c.Request().Referer()
+    referrer := c.Request().Referer()
 
-	return c.Redirect(302, referrer)
+    return c.Redirect(302, referrer)
 }

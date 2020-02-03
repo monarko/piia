@@ -43,6 +43,8 @@
   translation: "All Sites"
 - id: site_A
   translation: "Sansai"
+- id: site_D
+  translation: "Doi Saket"
 - id: site_J
   translation: "Jomthong"
 - id: site_K

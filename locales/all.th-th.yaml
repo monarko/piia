@@ -43,6 +43,8 @@
   translation: "ทุกที่วิจัย"
 - id: site_A
   translation: "รพ.สันทราย"
+- id: site_D
+  translation: "ดอยสะเก็ด"
 - id: site_J
   translation: "รพ.จอมทอง"
 - id: site_K
