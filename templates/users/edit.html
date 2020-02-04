@@ -33,65 +33,81 @@
                             <div class="col-sm-8">
                                 <div class="form-group">
                                     <label for="">Name</label><input class="form-control" placeholder="Name" type="text"
-                                        name="Name" value="<%= user.Name %>">
+                                                                     name="Name" value="<%= user.Name %>">
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for=""> Site</label>
                                     <select class="form-control select2" name="Sites[]" multiple>
-                                            <option value="" <%= if (stringInSlice("", user.Sites)) { %> selected <% } %>>
-                                                All
-                                            </option>
-                                            <option value="A" <%= if (stringInSlice("A", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_A") %> (PA)
-                                            </option>
-                                            <option value="J" <%= if (stringInSlice("J", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_J") %> (PJ)
-                                            </option>
-                                            <option value="K" <%= if (stringInSlice("K", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_K") %> (PK)
-                                            </option>
-                                            <option value="L" <%= if (stringInSlice("L", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_L") %> (PL)
-                                            </option>
-                                            <option value="N" <%= if (stringInSlice("N", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_N") %> (PN)
-                                            </option>
-                                            <option value="O" <%= if (stringInSlice("O", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_O") %> (PO)
-                                            </option>
-                                            <option value="R" <%= if (stringInSlice("R", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_R") %> (PR)
-                                            </option>
-                                            <option value="S" <%= if (stringInSlice("S", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_S") %> (PS)
-                                            </option>
-                                            <option value="T" <%= if (stringInSlice("T", user.Sites)) { %> selected <% } %>>
-                                                <%= t("site_T") %> (PT)
-                                            </option>
+                                        <option value=""
+                                        <%= if (stringInSlice("", user.Sites)) { %> selected <% } %>>
+                                        All
+                                        </option>
+                                        <option value="A"
+                                        <%= if (stringInSlice("A", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_A") %> (PA)
+                                        </option>
+                                        <option value="D"
+                                        <%= if (stringInSlice("D", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_D") %> (PD)
+                                        </option>
+                                        <option value="J"
+                                        <%= if (stringInSlice("J", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_J") %> (PJ)
+                                        </option>
+                                        <option value="K"
+                                        <%= if (stringInSlice("K", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_K") %> (PK)
+                                        </option>
+                                        <option value="L"
+                                        <%= if (stringInSlice("L", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_L") %> (PL)
+                                        </option>
+                                        <option value="N"
+                                        <%= if (stringInSlice("N", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_N") %> (PN)
+                                        </option>
+                                        <option value="O"
+                                        <%= if (stringInSlice("O", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_O") %> (PO)
+                                        </option>
+                                        <option value="R"
+                                        <%= if (stringInSlice("R", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_R") %> (PR)
+                                        </option>
+                                        <option value="S"
+                                        <%= if (stringInSlice("S", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_S") %> (PS)
+                                        </option>
+                                        <option value="T"
+                                        <%= if (stringInSlice("T", user.Sites)) { %> selected <% } %>>
+                                        <%= t("site_T") %> (PT)
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                                <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="">Email</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="">Email</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
                                                         <i class="os-icon os-icon-email-2-at2"></i>
                                                     </span>
-                                                </div>
-                                                <input class="form-control" placeholder="Email address" type="email" name="Email" value="<%= user.Email %>">
-                                            </div>
                                         </div>
+                                        <input class="form-control" placeholder="Email address" type="email"
+                                               name="Email" value="<%= user.Email %>">
                                     </div>
+                                </div>
+                            </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="mobile">Mobile</label>
-                                    <input type="text" name="Mobile" id="mobile" placeholder="Enter mobile" class="form-control" value="<%= user.Mobile %>">
+                                    <input type="text" name="Mobile" id="mobile" placeholder="Enter mobile"
+                                           class="form-control" value="<%= user.Mobile %>">
                                 </div>
                             </div>
                         </div>
@@ -102,13 +118,15 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" name="Password" id="password" placeholder="Password" class="form-control">
+                                    <input type="password" name="Password" id="password" placeholder="Password"
+                                           class="form-control">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="">Confirm Password</label><input class="form-control" name="PasswordConfirm"
-                                        placeholder="Password" type="password">
+                                    <label for="">Confirm Password</label><input class="form-control"
+                                                                                 name="PasswordConfirm"
+                                                                                 placeholder="Password" type="password">
                                 </div>
                             </div>
                         </div>
@@ -125,18 +143,18 @@
                                         <input class="btn form-check-input" type="checkbox" name="Admin">
                                         <% } %>
                                         <strong>Is Admin?</strong>
-                                        </label>
+                                    </label>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
                                         <%= if (user.Permission.StudyCoordinator) { %>
-                                            <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.StudyCoordinator" value="true" checked>
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.StudyCoordinator" value="true" checked>
                                         <% } else { %>
-                                            <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.StudyCoordinator" value="true">
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.StudyCoordinator" value="true">
                                         <% } %>
                                         <strong>Is Study Co-ordinator?</strong>
                                     </label>
@@ -146,11 +164,11 @@
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
                                         <%= if (user.Permission.StudyTeamMember) { %>
-                                            <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.StudyTeamMember" value="true" checked>
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.StudyTeamMember" value="true" checked>
                                         <% } else { %>
-                                            <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.StudyTeamMember" value="true">
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.StudyTeamMember" value="true">
                                         <% } %>
                                         <strong>Is Study Team Member?</strong>
                                     </label>
@@ -164,13 +182,13 @@
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
-                                            <%= if (user.Permission.Screening) { %>
-                                                <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.Screening" value="true" checked>
-                                            <% } else { %>
-                                                <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.Screening" value="true">
-                                            <% } %>
+                                        <%= if (user.Permission.Screening) { %>
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.Screening" value="true" checked>
+                                        <% } else { %>
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.Screening" value="true">
+                                        <% } %>
                                         Screening Permission
                                     </label>
                                 </div>
@@ -178,29 +196,29 @@
                             <div class="col-sm-6">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
-                                            <%= if (user.Permission.OverRead) { %>
-                                                <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.OverRead" value="true" checked>
-                                            <% } else { %>
-                                                <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.OverRead" value="true">
-                                            <% } %>
+                                        <%= if (user.Permission.OverRead) { %>
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.OverRead" value="true" checked>
+                                        <% } else { %>
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.OverRead" value="true">
+                                        <% } %>
                                         Over Read Permission
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">   
+                            <div class="col-sm-6">
                                 <div class="form-check form-group">
                                     <label class="form-check-label">
-                                            <%= if (user.Permission.ReferralTracker) { %>
-                                                <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.ReferralTracker" value="true" checked>
-                                            <% } else { %>
-                                                <input class="btn form-check-input" type="checkbox"
-                                            name="Permission.ReferralTracker" value="true">
-                                            <% } %>
+                                        <%= if (user.Permission.ReferralTracker) { %>
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.ReferralTracker" value="true" checked>
+                                        <% } else { %>
+                                        <input class="btn form-check-input" type="checkbox"
+                                               name="Permission.ReferralTracker" value="true">
+                                        <% } %>
                                         Referral Tracking Permission
                                     </label>
                                 </div>
