@@ -414,6 +414,8 @@
   translation: "Open cases"
 - id: option_overreading_completed
   translation: "Completed cases"
+- id: option_overreading_completed_me
+  translation: "Completed cases by Me"
 - id: option_overreading_open_in_7_days
   translation: "Open cases within 7 days"
 - id: option_overreading_open_before_7_days
