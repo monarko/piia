@@ -8,14 +8,18 @@
                 <!-- controls above table -->
                 <div class="controls-above-table">
                     <div class="row">
-                        <div class="col-sm-7">
+                        <div class="col-sm-12" style="margin-bottom: 10px;">
                             <a href="?status=" class="btn btn-sm btn-primary"><%= t("option_overreading_all") %>: <%= in7Days+before7Days+finished %></a>
                             <a href="?status=completed" class="btn btn-sm btn-info"><%= t("option_overreading_completed") %>: <%= finished %></a>
-                            <!-- <a href="?status=open" class="btn btn-sm btn-warning"><%= t("option_overreading_open") %>: <%= in7Days+before7Days %></a> -->
+                            <a href="?status=completed_by_me" class="btn btn-sm btn-info"><%= t("option_overreading_completed_me") %>: <%= finishedByMe %></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
                             <a href="?status=open_in_7_days" class="btn btn-sm btn-success"><%= t("option_overreading_open_in_7_days") %>: <%= in7Days %></a>
                             <a href="?status=open_before_7_days" class="btn btn-sm btn-danger"><%= t("option_overreading_open_before_7_days") %>: <%= before7Days %></a>                        
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
                             <form class="form-inline justify-content-sm-end">
                                 <input class="form-control form-control-sm rounded bright" placeholder="Search Participant ID" type="text" name="search" value="<%= filterSearch %>">
                                 <select class="form-control form-control-sm rounded bright" name="status">
