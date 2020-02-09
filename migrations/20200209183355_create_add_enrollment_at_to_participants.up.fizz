@@ -1,0 +1,1 @@
+add_column("participants", "enrolled_at", "timestamp", {"null": true})
