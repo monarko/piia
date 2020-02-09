@@ -27,7 +27,7 @@
                     </div>
                 </a>
             </div>
-            <div class="fancy-selector-w">
+            <div id="site_selector" class="fancy-selector-w">
                 <div class="fancy-selector-current">
                     <div class="fs-main-info">
                         <div class="fs-name">
@@ -82,33 +82,56 @@
                     <% } %>
                 </div>
             </div>
-            <!--------------------
-            START - Top Menu Controls
-            -------------------->
-            <div class="top-menu-controls">
-                <div class="menu-actions">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div id="lang_selector" class="fancy-selector-w" style="margin-right: 0; margin-left: auto;">
+                <div class="fancy-selector-current" style="color: #666666; background-color: #dddddd; min-width: 250px;">
+                    <div class="fs-main-info">
+                        <div class="fs-name">
                             <%= if (current_lang && current_lang == "th") { %>
-                            <img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %>
+                                <%= t("language_th") %>
                             <% } else { %>
-                            <img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %>
-                            <% } %>
-                        </button>
-                        <div class="dropdown-menu">
-                            <%= if (current_lang && current_lang == "bn") { %>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
-                            <% } else if (current_lang && current_lang == "th") { %>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
-                            <% } else { %>
-                            <a class="dropdown-item active" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=en"><img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px"> <%= t("language_en") %></a>
-                            <a class="dropdown-item" style="padding: 10px 5px;" href="<%= switchPath() %>?lang=th"><img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px"> <%= t("language_th") %></a>
+                                <%= t("language_en") %>
                             <% } %>
                         </div>
                     </div>
+                    <div class="fs-extra-info" style="padding: 10px 10px;">
+                        <strong>
+                            <%= if (current_lang && current_lang == "th") { %>
+                                <img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px">
+                            <% } else { %>
+                                <img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px">
+                            <% } %>
+                        </strong>
+                    </div>
+                    <div class="fs-selector-trigger" style="color: #666666; background-color: #bcbcbc;">
+                        <i class="os-icon os-icon-arrow-down4"></i>
+                    </div>
                 </div>
+                <div class="fancy-selector-options" style="padding-top: 0;color: #666666; background-color: #cdcdcd;">
+                    <% let langs = ["en", "th"] %>
+                    <%= for (lang) in langs { %>
+                        <div class="fancy-selector-option <%= if (current_lang && current_lang == lang) { %>active<% } %>" data-attr="<%= lang %>" style="color: #666666;">
+                            <div class="fs-main-info">
+                                <div class="fs-name">
+                                    <%= t("language_"+lang) %>
+                                </div>
+                            </div>
+                            <div class="fs-extra-info" style="padding: 10px 10px;">
+                                <strong>
+                                    <%= if (lang == "th") { %>
+                                        <img src="<%= assetPath("img/flags-icons/th.png") %>" height="25px">
+                                    <% } else { %>
+                                        <img src="<%= assetPath("img/flags-icons/us.png") %>" height="25px">
+                                    <% } %>
+                                </strong>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            <!--------------------
+            START - Top Menu Controls
+            -------------------->
+            <div class="top-menu-controls" style="margin-left: 21px;">
                 <div class="logged-user-w avatar-inline">
                     <div class="logged-user-i">
                         <div class="avatar-w" style="border-radius: 0;">
@@ -333,9 +356,14 @@
             $(this).closest('.fancy-selector-w').toggleClass('opened');
         });
 
-        $('.fancy-selector-option').on('click', function () {
+        $('#site_selector .fancy-selector-option').on('click', function () {
             var site = $(this).attr('data-attr');
             window.location.href = '<%= switchSitePath() %>?site='+site;
+        });
+
+        $('#lang_selector .fancy-selector-option').on('click', function () {
+            var lang = $(this).attr('data-attr');
+            window.location.href = '<%= switchPath() %>?lang='+lang;
         });
 
         $(".todo-item").on('click', function () {
