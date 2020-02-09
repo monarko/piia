@@ -128,8 +128,12 @@
                                         <span><i class="fa fa-mars fa-lg"></i></span>
                                     <% } %>
                                 </td>
-                                 <td class="text-center">
-                                    <%= languageDate(p.CreatedAt, "02-Jan-2006", t("lang_calendar")) %>
+                                <td class="text-center">
+                                    <%= if (p.EnrolledAt.Valid && !p.EnrolledAt.Time.IsZero()) { %>
+                                        <%= languageDate(p.EnrolledAt.Time, "02-Jan-2006", t("lang_calendar")) %>
+                                    <% } else { %>
+                                        <%= languageDate(p.CreatedAt, "02-Jan-2006", t("lang_calendar")) %>
+                                    <% } %>
                                 </td>
                                 <td class="text-center">
                                     <div class="progress">

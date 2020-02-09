@@ -40,7 +40,11 @@
                             </div>
                             <div class="col-sm-4">
                                 <p class="lead">Enrollment Date</p>
-                                <input class="form-control form-control-lg" placeholder="Select date" type="date" name="enrollmentDate" value="<%= currentDate(t("lang_calendar")) %>">
+                                <%= if (participant.EnrolledAt.Valid && !participant.EnrolledAt.Time.IsZero()) { %>
+                                    <input class="form-control form-control-lg" placeholder="Select date" type="date" name="EnrolledAt" value="<%= changeDate(participant.EnrolledAt.Time, "2006-01-02", "gregorion", t("lang_calendar")) %>">
+                                <% } else { %>
+                                    <input class="form-control form-control-lg" placeholder="Select date" type="date" name="EnrolledAt" value="<%= currentDate(t("lang_calendar")) %>">
+                                <% } %>
                             </div>
                         </div>
                     </fieldset>
