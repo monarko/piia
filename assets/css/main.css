@@ -4746,8 +4746,8 @@ input[type="button"].btn-block {
 
 .breadcrumb-item + .breadcrumb-item::before {
   display: inline-block;
-  /* padding-right: 0.5rem; */
-  /* padding-left: 0.5rem; */
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
   color: #636c72;
   content: "/";
 }
@@ -22756,6 +22756,7 @@ TODO Application
   position: relative;
   z-index: 2;
   height: 100%;
+  min-width: 300px;
 }
 
 .fancy-selector-w .fancy-selector-current, .fancy-selector-w .fancy-selector-option {
@@ -22795,8 +22796,8 @@ TODO Application
 }
 
 .fancy-selector-w .fancy-selector-current .fs-main-info, .fancy-selector-w .fancy-selector-option .fs-main-info {
-  padding: 8px 10px;
-  padding-right: 20px;
+  padding: 8px 20px;
+  width: 100%;
 }
 
 .fancy-selector-w .fancy-selector-current .fs-main-info .fs-name, .fancy-selector-w .fancy-selector-option .fs-main-info .fs-name {
@@ -22850,7 +22851,7 @@ TODO Application
 
 .fancy-selector-w .fancy-selector-current .fs-selector-trigger, .fancy-selector-w .fancy-selector-option .fs-selector-trigger {
   background-color: #114dc5;
-  padding: 10px 10px;
+  padding: 10px 30px;
   font-size: 16px;
   color: rgba(255, 255, 255, 0.7);
   -ms-flex-item-align: stretch;
@@ -22904,7 +22905,7 @@ TODO Application
 }
 
 .fancy-selector-w .fancy-selector-options .fancy-selector-option {
-  padding: 8px 20px;
+  padding: 2px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.7);
   position: relative;
