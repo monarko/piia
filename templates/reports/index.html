@@ -13,13 +13,13 @@
                             <%= stat["screening_referred"] %> / <%= stat["total_screenings"] %>
                         </div>
                         <%= if (stat["screening_referred_percent"] >= 50.0) { %>
-                            <div class="trending trending-up-basic">
-                                <%= stat["screening_referred_percent"] %>%
-                            </div>
+                        <div class="trending trending-up-basic">
+                            <%= stat["screening_referred_percent"] %>%
+                        </div>
                         <% } else { %>
-                            <div class="trending trending-down-basic">
-                                <%= stat["screening_referred_percent"] %>%
-                            </div>
+                        <div class="trending trending-down-basic">
+                            <%= stat["screening_referred_percent"] %>%
+                        </div>
                         <% } %>
                     </a>
                 </div>
@@ -32,13 +32,13 @@
                             <%= stat["overreading_referred"] %> / <%= stat["total_overreadings"] %>
                         </div>
                         <%= if (stat["overreading_referred_percent"] >= 50.0) { %>
-                            <div class="trending trending-up-basic">
-                                <%= stat["overreading_referred_percent"] %>%
-                            </div>
+                        <div class="trending trending-up-basic">
+                            <%= stat["overreading_referred_percent"] %>%
+                        </div>
                         <% } else { %>
-                            <div class="trending trending-down-basic">
-                                <%= stat["overreading_referred_percent"] %>%
-                            </div>
+                        <div class="trending trending-down-basic">
+                            <%= stat["overreading_referred_percent"] %>%
+                        </div>
                         <% } %>
                     </a>
                 </div>
@@ -51,13 +51,13 @@
                             <%= stat["disagreement"] %> / <%= stat["total_overreadings"] %>
                         </div>
                         <%= if (stat["disagreement_percent"] >= 50.0) { %>
-                            <div class="trending trending-up-basic">
-                                <%= stat["disagreement_percent"] %>%
-                            </div>
+                        <div class="trending trending-up-basic">
+                            <%= stat["disagreement_percent"] %>%
+                        </div>
                         <% } else { %>
-                            <div class="trending trending-down-basic">
-                                <%= stat["disagreement_percent"] %>%
-                            </div>
+                        <div class="trending trending-down-basic">
+                            <%= stat["disagreement_percent"] %>%
+                        </div>
                         <% } %>
                     </a>
                 </div>
@@ -66,60 +66,57 @@
     </div>
 </div>
 
-</div>
-</div>
-
-<div class="content-i" style="margin-top: -60px;">
-    <div class="content-box">
-        <div class="element-wrapper">
-            <h6 class="element-header">
-                <%= t("page_analytics_title") %>
-            </h6>
-            <div class="element-box">
-                <%= if (current_user.Admin) { %>
-                    <div class="form-desc">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="<%= analyticsFullDownloadCsvPath() %>" class="btn btn-danger btn-rounded float-right">Generate Full Records (CSV)</a>                        
-                                <a href="<%= analyticsFullDownloadPath() %>" class="btn btn-warning btn-rounded float-right" style="margin-right: 0.5rem; margin-left: 0;">Generate Full Records</a>                        
-                            </div>
-                        </div>
-                    </div>
-                <% } %>
-                <div class="table-responsive">
-                    <table id="dataTable1" width="100%" class="table table-striped table-lightfont" style="font-size: 0.8rem;">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <%= t("th_site") %>
-                                </th>
-                                <th>
-                                    <%= t("th_participant_id") %>
-                                </th>
-                                <th>
-                                    PID
-                                </th>
-                                <th>
-                                    <%= t("th_demographics") %>
-                                </th>
-                                <th>
-                                    <%= t("th_gender") %>
-                                </th>
-                                <th>
-                                    <%= t("th_enrolled_date") %>
-                                </th>
-                                <th>
-                                    <%= t("th_data_completeness") %>
-                                </th>
-                                <th>
-                                    <%= t("table_header_screener_referral") %>
-                                </th>
-                                <th>
-                                    <%= t("table_header_overreader_referral") %>
-                                </th>
-                            </tr>
-                        </thead>
-                    </table>
+<div class="element-wrapper">
+    <h6 class="element-header">
+        <%= t("page_analytics_title") %>
+    </h6>
+    <div class="element-box">
+        <%= if (current_user.Admin) { %>
+        <div class="form-desc">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="<%= analyticsFullDownloadCsvPath() %>"
+                        class="btn btn-danger btn-rounded float-right">Generate Full Records (CSV)</a>
+                    <a href="<%= analyticsFullDownloadPath() %>" class="btn btn-warning btn-rounded float-right"
+                        style="margin-right: 0.5rem; margin-left: 0;">Generate Full Records</a>
                 </div>
             </div>
         </div>
+        <% } %>
+        <div class="table-responsive">
+            <table id="dataTable1" width="100%" class="table table-striped table-lightfont" style="font-size: 0.8rem;">
+                <thead>
+                    <tr>
+                        <th>
+                            <%= t("th_site") %>
+                        </th>
+                        <th>
+                            <%= t("th_participant_id") %>
+                        </th>
+                        <th>
+                            PID
+                        </th>
+                        <th>
+                            <%= t("th_demographics") %>
+                        </th>
+                        <th>
+                            <%= t("th_gender") %>
+                        </th>
+                        <th>
+                            <%= t("th_enrolled_date") %>
+                        </th>
+                        <th>
+                            <%= t("th_data_completeness") %>
+                        </th>
+                        <th>
+                            <%= t("table_header_screener_referral") %>
+                        </th>
+                        <th>
+                            <%= t("table_header_overreader_referral") %>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>

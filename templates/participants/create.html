@@ -29,14 +29,18 @@
                     </div>
                     <fieldset class="form-group">
                         <legend><span><%= t("participantID_field") %></span></legend>
-                        <p class="lead"><%= t("participant_ID_description") %></p>
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
+                                <p class="lead"><%= t("participant_ID_description") %></p>
                                 <%= if (len(participant.ParticipantID) == 9) { %>
                                 <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participant.ParticipantID %>" required>
                                 <% } else { %>
                                     <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participantIDPrefix %>" required>
                                 <% } %>
+                            </div>
+                            <div class="col-sm-4">
+                                <p class="lead">Enrollment Date</p>
+                                <input class="form-control form-control-lg" placeholder="Select date" type="date" name="enrollmentDate" value="<%= currentDate(t("lang_calendar")) %>">
                             </div>
                         </div>
                     </fieldset>
