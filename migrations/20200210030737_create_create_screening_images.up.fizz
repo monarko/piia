@@ -1,0 +1,6 @@
+create_table("screening_images") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("screening_id", "uuid", {})
+	t.Column("status", "string", {"default":""})
+	t.Column("data", "jsonb", {"null": true})
+}
