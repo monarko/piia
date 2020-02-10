@@ -414,10 +414,12 @@ func getImage(participantID string) (string, string, error) {
             if strings.Contains(name, "right") {
                 if attrs.Updated.After(rightTime) {
                     fileNames["right"] = attrs.Name
+                    rightTime = attrs.Updated
                 }
             } else if strings.Contains(name, "left") {
                 if attrs.Updated.After(leftTime) {
                     fileNames["left"] = attrs.Name
+                    leftTime = attrs.Updated
                 }
             }
         }
