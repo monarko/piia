@@ -3,6 +3,7 @@ module github.com/monarko/piia
 go 1.13
 
 require (
+	cloud.google.com/go/pubsub v1.0.1
 	cloud.google.com/go/storage v1.4.0
 	github.com/facebookgo/ensure v0.0.0-20160127193407-b4ab57deab51 // indirect
 	github.com/facebookgo/stack v0.0.0-20160209184415-751773369052 // indirect
