@@ -15,7 +15,7 @@
     <link rel="icon" href="<%= assetPath("images/favicon.png") %>">
     <link rel="apple-touch-icon" href="<%= assetPath("images/apple-touch-icon.png") %>">
     <style>
-        .iradio_square-grey, .icheckbox_square-grey {
+        .topicheck {
             margin-top: -135px;
             margin-right: -25px;
         }
@@ -362,6 +362,12 @@
         $('input.icheck').iCheck({
             checkboxClass: 'icheckbox_square-grey',
             radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
+        $('input.topicheck').iCheck({
+            checkboxClass: 'icheckbox_square-grey topicheck',
+            radioClass: 'iradio_square-grey topicheck',
             increaseArea: '20%' // optional
         });
 
