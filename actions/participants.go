@@ -2,6 +2,7 @@ package actions
 
 import (
 	"fmt"
+	"net/url"
 	"sort"
 	"strconv"
 	"strings"
@@ -9,9 +10,10 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/pkg/errors"
+
 	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
-	"github.com/pkg/errors"
 )
 
 // ParticipantsIndex default implementation.
@@ -49,9 +51,9 @@ func ParticipantsIndex(c buffalo.Context) error {
 
 	if user.Admin || user.Permission.StudyCoordinator || user.Permission.Screening || user.Permission.StudyTeamMember {
 		if len(whereStmt) > 0 {
-			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").Where(whereStmt, wheres...).PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 		} else {
-			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Params()).Order("created_at DESC")
+			q = tx.Eager("User", "Screenings.Screener", "OverReadings.OverReader").PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 		}
 	} else {
 		// If there are no errors set a success message

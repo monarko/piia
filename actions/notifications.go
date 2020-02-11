@@ -1,15 +1,17 @@
 package actions
 
 import (
+	"net/url"
 	"strings"
 	"time"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gofrs/uuid"
+	"github.com/pkg/errors"
+
 	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
-	"github.com/pkg/errors"
 )
 
 // NotificationsIndex returns the logs list
@@ -24,11 +26,11 @@ func NotificationsIndex(c buffalo.Context) error {
 	var q *pop.Query
 	openNotificationStatuses := []string{"open", "nurse-notified", "patient-contacted", "referral-arranged"}
 	if len(strings.TrimSpace(loggedInUser.Site)) > 0 {
-		q = tx.Eager().Where("site = ?", loggedInUser.Site).Where("status in (?)", openNotificationStatuses).PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("site = ?", loggedInUser.Site).Where("status in (?)", openNotificationStatuses).PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 	} else if loggedInUser.Admin || loggedInUser.Permission.StudyCoordinator {
-		q = tx.Eager().Where("status in (?)", openNotificationStatuses).PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("status in (?)", openNotificationStatuses).PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 	} else {
-		q = tx.Eager().Where("status != ?", "unknown").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager().Where("status != ?", "unknown").PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 	}
 
 	// Retrieve all Notifications from the DB

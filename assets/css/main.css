@@ -10337,7 +10337,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .table-lg td {
-  padding: 1.2rem 1.5rem;
+  padding: .5rem 1.5rem;
 }
 
 .table.table-v2 thead tr th, .table.table-v2 tfoot tr th {

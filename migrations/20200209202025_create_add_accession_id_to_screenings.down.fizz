@@ -1,3 +1,2 @@
 drop_column("screenings", "accession_id")
-drop_column("screenings", "hub_data")
 drop_column("screenings", "hub_status")

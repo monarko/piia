@@ -1,15 +1,17 @@
 package actions
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/gobuffalo/envy"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/pkg/errors"
+
 	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
-	"github.com/pkg/errors"
 )
 
 // ReferralsIndex default implementation.
@@ -121,12 +123,12 @@ func ReferralsIndex(c buffalo.Context) error {
 	var q *pop.Query
 	if len(idsToSearch) > 0 {
 		if len(where) > 0 {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").Where(whereStmt, wheres...).PaginateFromParams(c.Params()).Order("created_at DESC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").Where(whereStmt, wheres...).PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 		} else {
-			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
+			q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("id in (?)", idsToSearch).Where("status LIKE ?", "1%").PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 		}
 	} else {
-		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("gender = ? ", "abc").Where("status LIKE ?", "1%").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager("User", "Screenings", "Screenings.Screener", "OverReadings", "OverReadings.OverReader", "Referrals").Where("gender = ? ", "abc").Where("status LIKE ?", "1%").PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 	}
 
 	// Retrieve all Posts from the DB

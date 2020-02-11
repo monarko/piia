@@ -1,10 +1,12 @@
 package actions
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+
 	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
 )
@@ -173,6 +175,27 @@ func SetBreadcrumb(next buffalo.Handler) buffalo.Handler {
 			bread = append(bread, home)
 			c.Set("breadcrumb", bread)
 		}
+		return next(c)
+	}
+}
+
+// SetPaginator set default value to 10.
+func SetPaginator(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		u := url.Values{}
+		u.Add("page", "1")
+		u.Add("per_page", "10")
+
+		if len(c.Param("page")) > 0 {
+			u.Set("page", c.Param("page"))
+		}
+
+		if len(c.Param("per_page")) > 0 {
+			u.Set("per_page", c.Param("per_page"))
+		}
+
+		c.Set("paginateParam", u)
+
 		return next(c)
 	}
 }
