@@ -14,8 +14,9 @@ import (
 	i18n "github.com/gobuffalo/mw-i18n"
 	paramlogger "github.com/gobuffalo/mw-paramlogger"
 	"github.com/gobuffalo/packr/v2"
-	"github.com/monarko/piia/models"
 	"github.com/unrolled/secure"
+
+	"github.com/monarko/piia/models"
 
 	"github.com/markbates/goth/gothic"
 )
@@ -60,6 +61,7 @@ func App() *buffalo.App {
 
 		// Setup and use translations:
 		app.Use(translations())
+		app.Use(SetPaginator)
 		app.Use(SetCurrentUser)
 		app.Use(SetCurrentLang)
 		app.Use(SetCurrentSite)

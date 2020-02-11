@@ -1,14 +1,17 @@
 package actions
 
 import (
+	"log"
+	"net/url"
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
 	"github.com/gobuffalo/pop"
+	"github.com/pkg/errors"
+
 	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
-	"github.com/pkg/errors"
 )
 
 // ScreeningsIndex gets all Screenings. This function is mapped to the path
@@ -21,7 +24,7 @@ func ScreeningsIndex(c buffalo.Context) error {
 	c.Set("participant", participant)
 
 	screenings := &models.Screenings{}
-	q := tx.Eager("Screener").Where("participant_id = ?", c.Param("pid")).PaginateFromParams(c.Params()).Order("created_at DESC")
+	q := tx.Eager("Screener").Where("participant_id = ?", c.Param("pid")).PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 	// Retrieve all Screenings from the DB
 	if err := q.All(screenings); err != nil {
 		return errors.WithStack(err)
@@ -60,11 +63,11 @@ func ScreeningsCreateGet(c buffalo.Context) error {
 	if err := tx.Eager().Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
-	if len(participant.Screenings) > 0 {
-		scr := participant.Screenings[0]
-		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
-		return c.Redirect(302, red)
-	}
+	// if len(participant.Screenings) > 0 {
+	//     scr := participant.Screenings[0]
+	//     red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
+	//     return c.Redirect(302, red)
+	// }
 	hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
 	reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
 	c.Set("hospitalNotReferralReasons", reasons)
@@ -91,11 +94,11 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 	if err := tx.Eager().Find(participant, c.Param("pid")); err != nil {
 		return c.Error(404, err)
 	}
-	if len(participant.Screenings) > 0 {
-		scr := participant.Screenings[0]
-		red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
-		return c.Redirect(302, red)
-	}
+	// if len(participant.Screenings) > 0 {
+	//     scr := participant.Screenings[0]
+	//     red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
+	//     return c.Redirect(302, red)
+	// }
 
 	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
 	b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
@@ -178,6 +181,9 @@ func ScreeningsCreatePost(c buffalo.Context) error {
 		}
 	}
 
+	screening.AccessionID.String = helpers.Generate16DigitUniqueID()
+	screening.AccessionID.Valid = true
+
 	verrs, err := tx.ValidateAndCreate(screening)
 	if err != nil {
 		return errors.WithStack(err)
@@ -248,6 +254,9 @@ func ScreeningsEditGet(c buffalo.Context) error {
 	c.Set("dilatePupil", getDilatePupil(*screening))
 	// statuses := screening.StatusesMap()
 	// c.Set("screeningStatuses", statuses)
+
+	eyeImages := getEyeImages(screening.ScreeningImages)
+	c.Set("eyeImages", eyeImages)
 
 	b := c.Value("breadcrumb").(helpers.Breadcrumbs)
 	b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
@@ -347,6 +356,25 @@ func ScreeningsEditPost(c buffalo.Context) error {
 				screening.Referral.ReferralRefused.Valid = true
 			}
 		}
+	}
+
+	// Update fundus image
+	rightEye := c.Request().FormValue("rightEye")
+	leftEye := c.Request().FormValue("leftEye")
+	if len(rightEye) > 0 && len(leftEye) > 0 {
+		for _, s := range screening.ScreeningImages {
+			if s.ID.String() == rightEye || s.ID.String() == leftEye {
+				s.Status.String = "selected"
+			} else {
+				s.Status.String = "not selected"
+			}
+			_, err := tx.ValidateAndUpdate(&s)
+			if err != nil {
+				return errors.WithStack(err)
+			}
+		}
+		screening.HubStatus.String = "processing"
+		screening.HubStatus.Valid = true
 	}
 
 	verrs, err := tx.ValidateAndUpdate(screening)
@@ -466,4 +494,38 @@ func ScreeningsDestroy(c buffalo.Context) error {
 	c.Flash().Add("success", "Archived successfully")
 
 	return c.Redirect(302, returnURL)
+}
+
+type FundusImage struct {
+	Bucket    string
+	Path      string
+	Status    string
+	ID        string
+	SignedURL string
+}
+
+func getEyeImages(si models.ScreeningImages) map[string][]FundusImage {
+	var err error
+	data := make(map[string][]FundusImage)
+	data["R"] = make([]FundusImage, 0)
+	data["L"] = make([]FundusImage, 0)
+
+	for _, s := range si {
+		f := FundusImage{}
+		f.Status = s.Status.String
+		f.ID = s.ID.String()
+		f.Bucket = s.Data["bucket_name"].(string)
+		f.Path = s.Data["render_file_url"].(string)
+
+		envVar := envy.Get("HUB_SERVICE_ACCOUNT_PATH", "")
+		f.SignedURL, err = helpers.GetSignedURL(f.Bucket, f.Path, envVar)
+		if err != nil {
+			log.Println("getEyeImages error: ", err)
+			continue
+		}
+		imageLaterality := s.Data["laterality"].(string)
+		data[imageLaterality] = append(data[imageLaterality], f)
+	}
+
+	return data
 }

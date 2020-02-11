@@ -1,3 +1,2 @@
 add_column("screenings", "accession_id", "string", {"null": true})
-add_column("screenings", "hub_data", "jsonb", {"null": true})
-add_column("screenings", "hub_status", "jsonb", {"null": true})
+add_column("screenings", "hub_status", "string", {"null": true})

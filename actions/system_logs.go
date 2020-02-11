@@ -1,12 +1,15 @@
 package actions
 
 import (
+	"net/url"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
 	"github.com/gofrs/uuid"
+	"github.com/pkg/errors"
+
 	"github.com/monarko/piia/helpers"
 	"github.com/monarko/piia/models"
-	"github.com/pkg/errors"
 )
 
 // SystemLogsIndex returns the logs list
@@ -17,9 +20,9 @@ func SystemLogsIndex(c buffalo.Context) error {
 	var q *pop.Query
 
 	if len(c.Param("status")) > 0 {
-		q = tx.Eager("User").Where("action = ?", c.Param("status")).PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager("User").Where("action = ?", c.Param("status")).PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 	} else {
-		q = tx.Eager("User").PaginateFromParams(c.Params()).Order("created_at DESC")
+		q = tx.Eager("User").PaginateFromParams(c.Value("paginateParam").(url.Values)).Order("created_at DESC")
 	}
 	// Retrieve all Screenings from the DB
 	if err := q.All(logs); err != nil {

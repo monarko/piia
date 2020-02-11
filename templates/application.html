@@ -14,6 +14,12 @@
     <meta name="csrf-token" content="<%= authenticity_token %>" />
     <link rel="icon" href="<%= assetPath("images/favicon.png") %>">
     <link rel="apple-touch-icon" href="<%= assetPath("images/apple-touch-icon.png") %>">
+    <style>
+        .iradio_square-grey, .icheckbox_square-grey {
+            margin-top: -135px;
+            margin-right: -25px;
+        }
+    </style>
 </head>
 
 <body class="menu-position-side menu-side-left full-screen" style="height: 100vh;">
@@ -349,9 +355,16 @@
 <%= javascriptTag("imageviewer.js") %>
 <%= javascriptTag("validator.js") %>
 <%= javascriptTag("Chart.js") %>
+<%= javascriptTag("icheck.js") %>
 
 <script>
     $(function () {
+        $('input.icheck').iCheck({
+            checkboxClass: 'icheckbox_square-grey',
+            radioClass: 'iradio_square-grey',
+            increaseArea: '20%' // optional
+        });
+
         $('.fs-selector-trigger').on('click', function () {
             $(this).closest('.fancy-selector-w').toggleClass('opened');
         });
@@ -369,6 +382,12 @@
         $(".todo-item").on('click', function () {
             var targ = $(this).attr('data-target');
             $(targ).modal();
+        });
+
+        $('.tr-toggle').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).attr('data-attr');
+            $("."+id).toggle();
         });
 
         toogleReferralRefusalBox();

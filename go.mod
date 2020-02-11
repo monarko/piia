@@ -20,6 +20,7 @@ require (
 	github.com/gobuffalo/pop v4.13.0+incompatible
 	github.com/gobuffalo/validate v2.0.3+incompatible
 	github.com/gofrs/uuid v3.2.0+incompatible
+	github.com/google/martian v2.1.0+incompatible
 	github.com/josephburnett/jd v0.0.0-20190924095253-0dbacc995392
 	github.com/mailgun/mailgun-go v2.0.0+incompatible
 	github.com/markbates/goth v1.59.0
