@@ -489,7 +489,7 @@
                                                     <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;">
                                                         <%= for (v) in eyeImages["R"] { %>
                                                             <label style="margin-right: 15px;">
-                                                                <input type="radio" class="icheck" name="rightEye" value="<%= v.ID %>">
+                                                                <input type="radio" class="icheck topicheck" name="rightEye" value="<%= v.ID %>">
                                                                 <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
                                                             </label>
                                                         <% } %>
@@ -500,7 +500,7 @@
                                                     <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;">
                                                         <%= for (v) in eyeImages["L"] { %>
                                                             <label style="margin-right: 15px;">
-                                                                <input type="radio" class="icheck" name="leftEye" value="<%= v.ID %>">
+                                                                <input type="radio" class="icheck topicheck" name="leftEye" value="<%= v.ID %>">
                                                                 <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
                                                             </label>
                                                         <% } %>
