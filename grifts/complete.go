@@ -144,6 +144,19 @@ var _ = Namespace("pubsub", func() {
                             log.Printf("image-diagnose-complete screening: %v", verrs.Errors)
                             continue
                         }
+                        participant := screening.Participant
+                        if participant.Status == "1" && screening.Referral.Referred.Valid {
+                            participant.Status = "11"
+                            perrs, err := tx.ValidateAndUpdate(&participant)
+                            if err != nil {
+                                log.Printf("image-diagnose-complete participant update: %v", err)
+                                continue
+                            }
+                            if perrs.HasAny() {
+                                log.Printf("image-diagnose-complete participant: %v", verrs.Errors)
+                                continue
+                            }
+                        }
                     }
                 }
             }
