@@ -42,9 +42,10 @@ var _ = Namespace("pubsub", func() {
                     log.Printf("image-diagnose unmarshal: %v", err)
                     continue
                 }
-                images := p["images"].([]map[string]interface{})
+                images := p["images"].([]interface{})
 
-                for _, i := range images {
+                for _, im := range images {
+                    i := im.(map[string]interface{})
                     screening := &models.Screening{}
                     q := tx.Where("accession_id = ?", i["accession_number"])
                     err = q.First(screening)

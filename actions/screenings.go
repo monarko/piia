@@ -1,6 +1,8 @@
 package actions
 
 import (
+    "encoding/gob"
+    "fmt"
     "log"
     "net/url"
     "strings"
@@ -377,22 +379,25 @@ func ScreeningsEditPost(c buffalo.Context) error {
         }
         screening.HubStatus.String = "processing"
         screening.HubStatus.Valid = true
+
         if len(selected) == 2 {
             fullTopic := envy.Get("IMAGE_INGEST_TOPIC", "")
             br := strings.SplitN(fullTopic, "/", -1)
             projectID := br[1]
             topicID := br[3]
             type ingest struct {
-                consent string                   `json:"consent"`
-                images  []map[string]interface{} `json:"images"`
+                Consent string                   `json:"consent"`
+                Images  []map[string]interface{} `json:"images"`
             }
             in := &ingest{}
-            in.consent = ""
-            in.images = selected
-            err := helpers.PubSubPublish(projectID, topicID, in)
+            in.Consent = "Y"
+            in.Images = selected
+            gob.Register(map[string]interface{}{})
+            id, err := helpers.PubSubPublish(projectID, topicID, in)
             if err != nil {
                 return errors.WithStack(err)
             }
+            fmt.Printf("Image Ingest PUB SUB Message ID for SID (%s): %s\n", screening.ID.String(), id)
         }
     }
 

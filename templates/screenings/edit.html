@@ -457,8 +457,12 @@
                                             <%= if (screening.HubStatus.Valid && len(screening.HubStatus.String) > 5) { %>
                                                 <div class="row"> 
                                                     <div class="col-sm-12">
-                                                        <div class="alert alert-warning" role="alert">
+                                                        <div class="alert alert-warning text-center" role="alert">
+                                                            <%= if (screening.HubStatus.String != "diagnosed") { %>
                                                             <strong style="font-size: 150%; text-transform: capitalize;"><%= screening.HubStatus.String %>!</strong>
+                                                            <% } else { %>
+                                                            <strong style="font-size: 150%; text-transform: capitalize;"><%= screening.Referral.Notes.String %>!</strong>
+                                                            <% } %>
                                                         </div>
                                                     </div>  
                                                     <div class="col-sm-3">
@@ -511,7 +515,7 @@
                                         <% } else { %>
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <div class="alert alert-info" role="alert">
+                                                    <div class="alert alert-info text-center" role="alert">
                                                         <strong>Come back later! </strong>The fundus images aren't ready yet.
                                                     </div>
                                                 </div>  
