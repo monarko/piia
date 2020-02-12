@@ -25,11 +25,9 @@ var _ = Namespace("pubsub", func() {
             if err != nil {
                 return fmt.Errorf("image-diagnose: %v", err)
             }
-
-            fullTopic := envy.Get("IMAGE_DIAGNOSE_COMPLETE_SUB", "")
-            br := strings.SplitN(fullTopic, "/", -1)
-            projectID := br[1]
-            subID := br[3]
+            
+            projectID := envy.Get("SUB_PROJECT", "")
+            subID := envy.Get("IMAGE_DIAGNOSE_COMPLETE", "") + "-sub"
             msgs, err := helpers.PubSubPullMessages(projectID, subID)
             if err != nil {
                 return fmt.Errorf("image-diagnose-complete-sub: %v", err)

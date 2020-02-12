@@ -5,7 +5,6 @@ import (
     "fmt"
     "log"
     "os"
-    "strings"
 
     "github.com/gobuffalo/envy"
     . "github.com/markbates/grift/grift"
@@ -26,10 +25,8 @@ var _ = Namespace("pubsub", func() {
                 return fmt.Errorf("image-diagnose: %v", err)
             }
 
-            fullTopic := envy.Get("IMAGE_DIAGNOSE_SUB", "")
-            br := strings.SplitN(fullTopic, "/", -1)
-            projectID := br[1]
-            subID := br[3]
+            projectID := envy.Get("SUB_PROJECT", "")
+            subID := envy.Get("IMAGE_DIAGNOSE", "") + "-sub"
             msgs, err := helpers.PubSubPullMessages(projectID, subID)
             if err != nil {
                 return fmt.Errorf("image-diagnose-sub: %v", err)

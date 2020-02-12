@@ -381,10 +381,8 @@ func ScreeningsEditPost(c buffalo.Context) error {
         screening.HubStatus.Valid = true
 
         if len(selected) == 2 {
-            fullTopic := envy.Get("IMAGE_INGEST_TOPIC", "")
-            br := strings.SplitN(fullTopic, "/", -1)
-            projectID := br[1]
-            topicID := br[3]
+            projectID := envy.Get("TOPIC_PROJECT", "")
+            topicID := envy.Get("IMAGE_INGEST", "")
             type ingest struct {
                 Consent string                   `json:"consent"`
                 Images  []map[string]interface{} `json:"images"`
