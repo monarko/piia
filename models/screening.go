@@ -11,6 +11,7 @@ import (
 	"github.com/gobuffalo/validate"
 	"github.com/gobuffalo/validate/validators"
 	"github.com/gofrs/uuid"
+
 	"github.com/monarko/piia/helpers/types"
 )
 
@@ -33,6 +34,9 @@ type Screening struct {
 	Notifications    Notifications                 `has_many:"notifications" json:"-"`
 	OverReadings     OverReadings                  `has_many:"over_readings" json:"-"`
 	ReferredMessages ReferredMessages              `has_many:"referred_messages" json:"-"`
+	AccessionID      nulls.String                  `json:"accession_id" db:"accession_id"`
+	HubStatus        nulls.String                  `json:"hub_status" db:"hub_status"`
+	ScreeningImages  ScreeningImages               `has_many:"screening_images" json:"-"`
 }
 
 // Maps will return a map
@@ -45,6 +49,7 @@ func (s Screening) Maps() map[string]interface{} {
 	delete(m, "notifications")
 	delete(m, "over_readings")
 	delete(m, "referred_messages")
+	delete(m, "screening_images")
 	delete(m, "created_at")
 	delete(m, "updated_at")
 	return m

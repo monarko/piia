@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid"
+
 	"github.com/monarko/piia/helpers/types"
 
 	"github.com/gobuffalo/nulls"
@@ -20,6 +21,7 @@ type Participant struct {
 	ID                  uuid.UUID        `json:"id" db:"id"`
 	CreatedAt           time.Time        `json:"created_at" db:"created_at"`
 	UpdatedAt           time.Time        `json:"updated_at" db:"updated_at"`
+	EnrolledAt          nulls.Time       `json:"enrolled_at" db:"enrolled_at"`
 	ParticipantID       string           `json:"participant_id" db:"participant_id"`
 	Name                nulls.String     `json:"name" db:"name"`
 	Gender              string           `json:"gender" db:"gender"`
@@ -58,6 +60,13 @@ type Participants []Participant
 
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 func (p *Participant) Validate(tx *pop.Connection) (*validate.Errors, error) {
+	if p.EnrolledAt.Valid && !p.EnrolledAt.Time.IsZero() {
+		if (p.EnrolledAt.Time.Year() - time.Now().Year()) > 100 {
+			// thai
+			p.EnrolledAt.Time = p.EnrolledAt.Time.AddDate(-543, 0, 0)
+			p.EnrolledAt.Valid = true
+		}
+	}
 	p.DOB.CalculatedDate = p.DOB.GivenDate
 	if p.DOB.Calendar == "thai" && !p.DOB.GivenDate.IsZero() {
 		p.DOB.CalculatedDate = p.DOB.CalculatedDate.AddDate(-543, 0, 0)

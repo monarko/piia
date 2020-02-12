@@ -29,19 +29,67 @@
                     </div>
                     <fieldset class="form-group">
                         <legend><span><%= t("participantID_field") %></span></legend>
-                        <p class="lead"><%= t("participant_ID_description") %></p>
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
+                                <p class="lead"><%= t("participant_ID_description") %></p>
                                 <%= if (len(participant.ParticipantID) == 9) { %>
                                 <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participant.ParticipantID %>" required>
                                 <% } else { %>
                                     <input type="text" class="form-control form-control-lg participantID_field" name="ParticipantID" value="<%= participantIDPrefix %>" required>
                                 <% } %>
                             </div>
+                            <div class="col-sm-4">
+                                <p class="lead">Enrollment Date</p>
+                                <%= if (participant.EnrolledAt.Valid && !participant.EnrolledAt.Time.IsZero()) { %>
+                                    <input class="form-control form-control-lg" placeholder="Select date" type="date" name="EnrolledAt" value="<%= changeDate(participant.EnrolledAt.Time, "2006-01-02", "gregorion", t("lang_calendar")) %>">
+                                <% } else { %>
+                                    <input class="form-control form-control-lg" placeholder="Select date" type="date" name="EnrolledAt" value="<%= currentDate(t("lang_calendar")) %>">
+                                <% } %>
+                            </div>
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
                         <legend><span><%= t("participant_personal_details") %></span></legend>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="">ID Type</label>
+                                    <select class="form-control" name="IDType">
+                                        <option value="hospital_id" <%= if (participant.IDType.String == "hospital_id") { %> selected <% } %>>
+                                            Hospital ID
+                                        </option>
+                                        <option value="national_id" <%= if (participant.IDType.String == "national_id") { %> selected <% } %>>
+                                            National ID
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label for="">Patient ID</label><input class="form-control" placeholder="ID Number"
+                                        type="text" name="IDNumber" value="<%= participant.IDNumber.String %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="">Name</label><input class="form-control" placeholder="Full Name" type="text"
+                                        name="Name" value="<%= participant.Name.String %>">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="">Contact Number</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">+66</span>
+                                        </div>
+                                        <input class="form-control" placeholder="Contact number" type="text" name="ContactNumber" value="<%= participant.ContactNumber.String %>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -94,12 +142,11 @@
                         <hr/>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="pretty p-icon p-curve p-thick" style="font-size: 1.5rem;">
-                                    <input type="checkbox" name="Consented" required />
-                                    <div class="state p-primary">
-                                        <i class="icon fa fa-check"></i>
-                                        <label><%= t("eligibiligy_criteria_checkbox_label") %></label>
-                                    </div>
+                                <div class="" style="font-size: 1.5rem;">
+                                    <label>
+                                        <input type="checkbox" class="icheck" name="Consented" required />
+                                        <%= t("eligibiligy_criteria_checkbox_label") %>
+                                    </label>
                                 </div>
                                 <p style="margin-top: 1rem; margin-bottom: 0; font-size: 1.2rem;"><%= t("eligibiligy_criteria_checkbox") %></p>
                             </div>

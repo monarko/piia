@@ -448,10 +448,85 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12">
+                                                <fieldset class="form-group" style="margin-top: 0.5rem; margin-bottom: -0.5rem;">
+                                                    <legend><span>Fundus Images</span></legend>
+                                                </fieldset>
+                                            </div>  
+                                        </div>         
+                                        <%= if (len(eyeImages["R"]) > 0 && len(eyeImages["L"]) > 0) { %>
+                                            <%= if (screening.HubStatus.Valid && len(screening.HubStatus.String) > 5) { %>
+                                                <div class="row"> 
+                                                    <div class="col-sm-12">
+                                                        <div class="alert alert-warning text-center" role="alert">
+                                                            <%= if (screening.HubStatus.String != "diagnosed") { %>
+                                                            <strong style="font-size: 150%; text-transform: capitalize;"><%= screening.HubStatus.String %>!</strong>
+                                                            <% } else { %>
+                                                            <strong style="font-size: 150%; text-transform: capitalize;"><%= screening.Referral.Notes.String %>!</strong>
+                                                            <% } %>
+                                                        </div>
+                                                    </div>  
+                                                    <div class="col-sm-3">
+                                                        <h6>Right (OD)</h6>
+                                                        <%= for (v) in eyeImages["R"] { %>
+                                                            <%= if (v.Status == "selected") { %>
+                                                                <label style="margin-right: 10px;">
+                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
+                                                                </label>
+                                                            <% } %>
+                                                        <% } %>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <h6>Left (OS)</h6>
+                                                        <%= for (v) in eyeImages["L"] { %>
+                                                            <%= if (v.Status == "selected") { %>
+                                                            <label style="margin-right: 10px;">
+                                                                <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
+                                                            </label>
+                                                            <% } %>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            <% } else { %>
+                                            <div class="row"> 
+                                                <div class="col-sm-6">
+                                                    <h6>Right (OD)</h6>
+                                                    <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;">
+                                                        <%= for (v) in eyeImages["R"] { %>
+                                                            <label style="margin-right: 15px;">
+                                                                <input type="radio" class="icheck topicheck" name="rightEye" value="<%= v.ID %>">
+                                                                <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
+                                                            </label>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <h6>Left (OS)</h6>
+                                                    <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;">
+                                                        <%= for (v) in eyeImages["L"] { %>
+                                                            <label style="margin-right: 15px;">
+                                                                <input type="radio" class="icheck topicheck" name="leftEye" value="<%= v.ID %>">
+                                                                <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
+                                                            </label>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                        <% } else { %>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="alert alert-info text-center" role="alert">
+                                                        <strong>Come back later! </strong>The fundus images aren't ready yet.
+                                                    </div>
+                                                </div>  
+                                            </div>   
+                                        <% } %>
+                                        <div class="row">
+                                            <div class="col-sm-12">
                                                 <div id="referral-error" style="margin-top: -1.5rem;margin-bottom: 1rem;"></div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" style="display: none;">
                                             <div class="col-sm-6">
                                                 <fieldset class="form-group" style="margin-top: 0.5rem; margin-bottom: -0.5rem;">
                                                 <legend><span><%= t("dr_referral_label") %></span></legend>
@@ -459,12 +534,12 @@
 
                                                 <div class="form-check-inline">
                                                     <div class="radio-button">
-                                                        <label class="form-check-label"><input class="form-check-input"
+                                                        <label class="form-check-label"><input class="form-check-input" disabled
                                                                 name="referral" type="radio" id="referral_yes"
                                                                 value="yes"<%= if(screening.Referral.Referred.Valid && screening.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_yes_refer") %></label>
                                                     </div>
                                                     <div class="radio-button">
-                                                        <label class="form-check-label"><input class="form-check-input"
+                                                        <label class="form-check-label"><input class="form-check-input" disabled
                                                                 name="referral" type="radio" id="referral_no"
                                                                 value="no"<%= if(screening.Referral.Referred.Valid && !screening.Referral.Referred.Bool) { %> checked <% }%>><%= t("option_no_refer") %></label>
                                                     </div>
@@ -477,12 +552,12 @@
 
                                                 <div class="form-check-inline">
                                                     <div class="radio-button">
-                                                        <label class="form-check-label"><input class="form-check-input"
+                                                        <label class="form-check-label"><input class="form-check-input" disabled
                                                                 name="hospital_referral" type="radio" id="hospital_referral_yes"
                                                                 value="yes"<%= if(screening.Referral.HospitalReferred.Valid && screening.Referral.HospitalReferred.Bool) { %> checked <% }%>><%= t("option_yes_refer_hospital") %></label>
                                                     </div>
                                                     <div class="radio-button">
-                                                        <label class="form-check-label"><input class="form-check-input"
+                                                        <label class="form-check-label"><input class="form-check-input" disabled
                                                                 name="hospital_referral" type="radio" id="hospital_referral_no"
                                                                 value="no"<%= if(screening.Referral.HospitalReferred.Valid && !screening.Referral.HospitalReferred.Bool) { %> checked <% }%>><%= t("option_no_refer_hospital") %></label>
                                                     </div>

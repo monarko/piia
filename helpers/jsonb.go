@@ -3,7 +3,6 @@ package helpers
 import (
 	"database/sql/driver"
 	"encoding/json"
-	"errors"
 )
 
 // PropertyMap Type
@@ -19,7 +18,7 @@ func (p PropertyMap) Value() (driver.Value, error) {
 func (p *PropertyMap) Scan(src interface{}) error {
 	source, ok := src.([]byte)
 	if !ok {
-		return errors.New("type assertion .([]byte) failed")
+		source = []byte(`{}`)
 	}
 
 	err := json.Unmarshal(source, p)
