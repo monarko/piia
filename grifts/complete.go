@@ -49,16 +49,17 @@ var _ = Namespace("pubsub", func() {
             }
 
             for _, m := range msgs {
-                p := map[string]interface{}{}
+                var p map[string]interface{}
                 err := json.Unmarshal(m, &p)
                 if err != nil {
                     log.Printf("image-diagnose-complete unmarshal: %v", err)
                     continue
                 }
                 referral := p["referral"].(string)
-                diagnosis := p["diagnosis"].([]map[string]interface{})
+                diagnosis := p["diagnosis"].([]interface{})
 
-                for _, d := range diagnosis {
+                for _, dg := range diagnosis {
+                    d := dg.(map[string]interface{})
                     screening := &models.Screening{}
                     q := tx.Where("accession_id = ?", d["accession_number"])
                     err = q.First(screening)
