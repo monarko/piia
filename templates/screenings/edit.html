@@ -462,7 +462,30 @@
                                                     <legend><span>Fundus Images</span></legend>
                                                 </fieldset>
                                             </div>  
-                                        </div>         
+                                        </div> 
+                                        <div id="vapp">
+                                            <input type="hidden" value="<%= screening.ID %>" id="screeningId">
+                                            <div class="row">
+                                                <div class="col-sm-12" style="margin-top: -20px; margin-bottom: 10px;">
+                                                    <button class="btn btn-outline-primary float-right" @click="refresh">
+                                                        <i class="os-icon os-icon-grid-18"></i> Refresh
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="alert text-center" v-bind:class="[messageClass]" role="alert">
+                                                        <strong style="text-transform: capitalize;">{{ message }}</strong>
+                                                        <p style="font-size: 150%;" v-if="additionalMessage.length > 0">{{ additionalMessage }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>        
                                         <%= if (len(eyeImages["R"]) > 0 && len(eyeImages["L"]) > 0) { %>
                                             <%= if (screening.HubStatus.Valid && len(screening.HubStatus.String) > 5) { %>
                                                 <div class="row"> 

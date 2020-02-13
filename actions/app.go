@@ -1,24 +1,24 @@
 package actions
 
 import (
-	"encoding/json"
-	"fmt"
-	"log"
-	"strings"
+    "encoding/json"
+    "fmt"
+    "log"
+    "strings"
 
-	"github.com/gobuffalo/buffalo"
-	"github.com/gobuffalo/buffalo-pop/pop/popmw"
-	"github.com/gobuffalo/envy"
-	csrf "github.com/gobuffalo/mw-csrf"
-	forcessl "github.com/gobuffalo/mw-forcessl"
-	i18n "github.com/gobuffalo/mw-i18n"
-	paramlogger "github.com/gobuffalo/mw-paramlogger"
-	"github.com/gobuffalo/packr/v2"
-	"github.com/unrolled/secure"
+    "github.com/gobuffalo/buffalo"
+    "github.com/gobuffalo/buffalo-pop/pop/popmw"
+    "github.com/gobuffalo/envy"
+    csrf "github.com/gobuffalo/mw-csrf"
+    forcessl "github.com/gobuffalo/mw-forcessl"
+    i18n "github.com/gobuffalo/mw-i18n"
+    paramlogger "github.com/gobuffalo/mw-paramlogger"
+    "github.com/gobuffalo/packr/v2"
+    "github.com/unrolled/secure"
 
-	"github.com/monarko/piia/models"
+    "github.com/monarko/piia/models"
 
-	"github.com/markbates/goth/gothic"
+    "github.com/markbates/goth/gothic"
 )
 
 // ENV is used to help switch settings based on where the
@@ -33,146 +33,149 @@ var T *i18n.Translator
 // should be defined. This is the nerve center of your
 // application.
 func App() *buffalo.App {
-	if app == nil {
-		app = buffalo.New(buffalo.Options{
-			Env:         ENV,
-			SessionName: "_piia_session",
-		})
+    if app == nil {
+        app = buffalo.New(buffalo.Options{
+            Env:         ENV,
+            SessionName: "_piia_session",
+        })
 
-		if ENV == "production" {
-			setErrorHandler(app)
-		}
+        if ENV == "production" {
+            setErrorHandler(app)
+        }
 
-		// Automatically redirect to SSL
-		app.Use(forceSSL())
+        // Automatically redirect to SSL
+        app.Use(forceSSL())
 
-		if ENV == "development" {
-			app.Use(paramlogger.ParameterLogger)
-		}
+        if ENV == "development" {
+            app.Use(paramlogger.ParameterLogger)
+        }
 
-		// Protect against CSRF attacks. https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)
-		// Remove to disable this.
-		app.Use(csrf.New)
+        // Protect against CSRF attacks. https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)
+        // Remove to disable this.
+        app.Use(csrf.New)
 
-		// Wraps each request in a transaction.
-		//  c.Value("tx").(*pop.PopTransaction)
-		// Remove to disable this.
-		app.Use(popmw.Transaction(models.DB))
+        // Wraps each request in a transaction.
+        //  c.Value("tx").(*pop.PopTransaction)
+        // Remove to disable this.
+        app.Use(popmw.Transaction(models.DB))
 
-		// Setup and use translations:
-		app.Use(translations())
-		app.Use(SetPaginator)
-		app.Use(SetCurrentUser)
-		app.Use(SetCurrentLang)
-		app.Use(SetCurrentSite)
-		app.Use(SetBreadcrumb)
+        // Setup and use translations:
+        app.Use(translations())
+        app.Use(SetPaginator)
+        app.Use(SetCurrentUser)
+        app.Use(SetCurrentLang)
+        app.Use(SetCurrentSite)
+        app.Use(SetBreadcrumb)
 
-		app.GET("/", HomeHandler)
+        app.GET("/", HomeHandler)
 
-		auth := app.Group("/users")
-		auth.GET("/login", UsersLoginGet)
-		auth.POST("/login", UsersLoginPost)
-		auth.GET("/logout", UsersLogout)
+        auth := app.Group("/users")
+        auth.GET("/login", UsersLoginGet)
+        auth.POST("/login", UsersLoginPost)
+        auth.GET("/logout", UsersLogout)
 
-		auth.GET("/", AdminRequired(UsersIndex))
-		auth.GET("/index", AdminRequired(UsersIndex))
-		auth.GET("/create", AdminRequired(UsersCreateGet))
-		auth.POST("/create", AdminRequired(UsersCreatePost))
-		auth.GET("/edit/{uid}", AdminRequired(UsersEditGet)).Name("usersEditPath")
-		auth.POST("/edit/{uid}", AdminRequired(UsersEditPost)).Name("usersEditPath")
+        auth.GET("/", AdminRequired(UsersIndex))
+        auth.GET("/index", AdminRequired(UsersIndex))
+        auth.GET("/create", AdminRequired(UsersCreateGet))
+        auth.POST("/create", AdminRequired(UsersCreatePost))
+        auth.GET("/edit/{uid}", AdminRequired(UsersEditGet)).Name("usersEditPath")
+        auth.POST("/edit/{uid}", AdminRequired(UsersEditPost)).Name("usersEditPath")
 
-		participants := app.Group("/participants")
-		participants.Use(LoginRequired)
-		participants.Use(ScreeningPermissionRequired)
-		participants.Middleware.Skip(ScreeningPermissionRequired, ParticipantsIndex, ParticipantsDetail)
-		participants.GET("/", ParticipantsIndex)
-		participants.GET("/index", ParticipantsIndex)
-		participants.GET("/create", ParticipantsCreateGet)
-		participants.POST("/create", ParticipantsCreatePost)
-		participants.GET("/edit/{pid}", ParticipantsEditGet).Name("participantsEditPath")
-		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
-		participants.DELETE("/delete/{pid}", AdminRequired(ParticipantsDestroy))
-		participants.GET("/{pid}", ParticipantsDetail)
+        participants := app.Group("/participants")
+        participants.Use(LoginRequired)
+        participants.Use(ScreeningPermissionRequired)
+        participants.Middleware.Skip(ScreeningPermissionRequired, ParticipantsIndex, ParticipantsDetail)
+        participants.GET("/", ParticipantsIndex)
+        participants.GET("/index", ParticipantsIndex)
+        participants.GET("/create", ParticipantsCreateGet)
+        participants.POST("/create", ParticipantsCreatePost)
+        participants.GET("/edit/{pid}", ParticipantsEditGet).Name("participantsEditPath")
+        participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
+        participants.DELETE("/delete/{pid}", AdminRequired(ParticipantsDestroy))
+        participants.GET("/{pid}", ParticipantsDetail)
 
-		cases := app.Group("/cases")
-		cases.Use(LoginRequired)
-		cases.GET("/", CasesIndex)
-		cases.GET("/index", CasesIndex)
+        cases := app.Group("/cases")
+        cases.Use(LoginRequired)
+        cases.GET("/", CasesIndex)
+        cases.GET("/index", CasesIndex)
 
-		screenings := participants.Group("/{pid}/screenings")
-		screenings.Use(ScreeningPermissionRequired)
-		screenings.GET("/create", ScreeningsCreateGet)
-		screenings.POST("/create", ScreeningsCreatePost)
-		screenings.GET("/edit/{sid}", ScreeningsEditGet).Name("participantScreeningsEditPath")
-		screenings.POST("/edit/{sid}", ScreeningsEditPost).Name("participantScreeningsEditPath")
-		screenings.DELETE("/delete/{sid}", AdminRequired(ScreeningsDestroy))
+        screenings := participants.Group("/{pid}/screenings")
+        screenings.Use(ScreeningPermissionRequired)
+        screenings.GET("/create", ScreeningsCreateGet)
+        screenings.POST("/create", ScreeningsCreatePost)
+        screenings.GET("/edit/{sid}", ScreeningsEditGet).Name("participantScreeningsEditPath")
+        screenings.POST("/edit/{sid}", ScreeningsEditPost).Name("participantScreeningsEditPath")
+        screenings.DELETE("/delete/{sid}", AdminRequired(ScreeningsDestroy))
 
-		overReadings := screenings.Group("/{sid}/overreadings")
-		overReadings.Middleware.Skip(ScreeningPermissionRequired, OverReadingsCreateGet, OverReadingsCreatePost, OverReadingsDetails, OverReadingsEditGet, OverReadingsEditPost)
-		overReadings.Use(OverReadingPermissionRequired)
-		overReadings.GET("/create", OverReadingsCreateGet)
-		overReadings.POST("/create", OverReadingsCreatePost)
-		overReadings.GET("/edit/{oid}", OverReadingsEditGet).Name("participantScreeningOverreadingsEditPath")
-		overReadings.POST("/edit/{oid}", OverReadingsEditPost).Name("participantScreeningOverreadingsEditPath")
-		overReadings.DELETE("/delete/{oid}", AdminRequired(OverReadingDestroy))
-		overReadings.Middleware.Skip(OverReadingPermissionRequired, OverReadingsDetails)
-		overReadings.GET("/{oid}", OverReadingsDetails)
+        overReadings := screenings.Group("/{sid}/overreadings")
+        overReadings.Middleware.Skip(ScreeningPermissionRequired, OverReadingsCreateGet, OverReadingsCreatePost, OverReadingsDetails, OverReadingsEditGet, OverReadingsEditPost)
+        overReadings.Use(OverReadingPermissionRequired)
+        overReadings.GET("/create", OverReadingsCreateGet)
+        overReadings.POST("/create", OverReadingsCreatePost)
+        overReadings.GET("/edit/{oid}", OverReadingsEditGet).Name("participantScreeningOverreadingsEditPath")
+        overReadings.POST("/edit/{oid}", OverReadingsEditPost).Name("participantScreeningOverreadingsEditPath")
+        overReadings.DELETE("/delete/{oid}", AdminRequired(OverReadingDestroy))
+        overReadings.Middleware.Skip(OverReadingPermissionRequired, OverReadingsDetails)
+        overReadings.GET("/{oid}", OverReadingsDetails)
 
-		screenings.POST("/{sid}/appointmentdone", UpdateReferredMessage).Name("participantsAppointmentPath")
+        screenings.POST("/{sid}/appointmentdone", UpdateReferredMessage).Name("participantsAppointmentPath")
 
-		analytics := app.Group("/analytics")
-		analytics.Use(LoginRequired)
-		analytics.Use(StudyCoordinatorPermissionRequired)
-		analytics.Middleware.Skip(StudyCoordinatorPermissionRequired, ReportsIndex)
-		analytics.GET("/", ReportsIndex)
-		analytics.GET("/index", ReportsIndex)
-		analytics.POST("/api/list", ReportsIndexAPI)
-		analytics.GET("/full-download", AdminRequired(DownloadFull))
-		analytics.GET("/full-download-csv", AdminRequired(DownloadFullCSV))
+        analytics := app.Group("/analytics")
+        analytics.Use(LoginRequired)
+        analytics.Use(StudyCoordinatorPermissionRequired)
+        analytics.Middleware.Skip(StudyCoordinatorPermissionRequired, ReportsIndex)
+        analytics.GET("/", ReportsIndex)
+        analytics.GET("/index", ReportsIndex)
+        analytics.POST("/api/list", ReportsIndexAPI)
+        analytics.GET("/full-download", AdminRequired(DownloadFull))
+        analytics.GET("/full-download-csv", AdminRequired(DownloadFullCSV))
 
-		referrals := app.Group("/referrals")
-		referrals.Use(LoginRequired)
-		referrals.Use(ReferralTrackerPermissionRequired)
-		referrals.Middleware.Skip(ReferralTrackerPermissionRequired, ReferralsIndex, ReferralsParticipantsView)
-		referrals.GET("/", ReferralsIndex)
-		referrals.GET("/index", ReferralsIndex)
-		referrals.GET("/participants/{pid}", ReferralsParticipantsGet)
-		referrals.GET("/participants/{pid}/view", ReferralsParticipantsView)
-		referrals.DELETE("/participants/{pid}/delete/{rid}", AdminRequired(ReferralsDestroy))
+        referrals := app.Group("/referrals")
+        referrals.Use(LoginRequired)
+        referrals.Use(ReferralTrackerPermissionRequired)
+        referrals.Middleware.Skip(ReferralTrackerPermissionRequired, ReferralsIndex, ReferralsParticipantsView)
+        referrals.GET("/", ReferralsIndex)
+        referrals.GET("/index", ReferralsIndex)
+        referrals.GET("/participants/{pid}", ReferralsParticipantsGet)
+        referrals.GET("/participants/{pid}/view", ReferralsParticipantsView)
+        referrals.DELETE("/participants/{pid}/delete/{rid}", AdminRequired(ReferralsDestroy))
 
-		notifications := app.Group("/notifications")
-		notifications.Use(LoginRequired)
-		notifications.GET("/", NotificationsIndex)
-		notifications.GET("/index", NotificationsIndex)
-		notifications.DELETE("/delete/{nid}", AdminRequired(NotificationsDestroy))
+        notifications := app.Group("/notifications")
+        notifications.Use(LoginRequired)
+        notifications.GET("/", NotificationsIndex)
+        notifications.GET("/index", NotificationsIndex)
+        notifications.DELETE("/delete/{nid}", AdminRequired(NotificationsDestroy))
 
-		logs := app.Group("/logs")
-		logs.Use(AdminRequired)
-		logs.GET("/", SystemLogsIndex)
-		logs.GET("/index", SystemLogsIndex)
+        logs := app.Group("/logs")
+        logs.Use(AdminRequired)
+        logs.GET("/", SystemLogsIndex)
+        logs.GET("/index", SystemLogsIndex)
 
-		archive := app.Group("/archives")
-		archive.Use(AdminRequired)
-		archive.GET("/", ArchiveIndex)
-		archive.GET("/index", ArchiveIndex)
-		archive.GET("/restore/{aid}", ArchiveRestore)
-		archive.DELETE("/delete/{aid}", ArchiveDestroy)
-		archive.GET("/{aid}", ArchiveShow)
+        archive := app.Group("/archives")
+        archive.Use(AdminRequired)
+        archive.GET("/", ArchiveIndex)
+        archive.GET("/index", ArchiveIndex)
+        archive.GET("/restore/{aid}", ArchiveRestore)
+        archive.DELETE("/delete/{aid}", ArchiveDestroy)
+        archive.GET("/{aid}", ArchiveShow)
 
-		app.GET("/errors/{status}", ErrorsDefault)
+        app.GET("/errors/{status}", ErrorsDefault)
 
-		app.GET("/switch", ChangeLanguage)
-		app.GET("/switch-site", ChangeSite)
-		app.POST("/notifications", ScreeningPermissionRequired(ChangeNotificationStatus))
+        app.GET("/switch", ChangeLanguage)
+        app.GET("/switch-site", ChangeSite)
+        app.POST("/notifications", ScreeningPermissionRequired(ChangeNotificationStatus))
 
-		authGoth := app.Group("/auth")
-		authGoth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
-		authGoth.GET("/{provider}/callback", AuthCallback)
+        api := app.Group("/api")
+        api.GET("/dr-assessment/{sid}", ScreeningsDRAssessmentAPI)
 
-		app.ServeFiles("/", assetsBox) // serve files from the public directory
-	}
+        authGoth := app.Group("/auth")
+        authGoth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
+        authGoth.GET("/{provider}/callback", AuthCallback)
 
-	return app
+        app.ServeFiles("/", assetsBox) // serve files from the public directory
+    }
+
+    return app
 }
 
 // translations will load locale files, set up the translator `actions.T`,
@@ -180,11 +183,11 @@ func App() *buffalo.App {
 // request.
 // for more information: https://gobuffalo.io/en/docs/localization
 func translations() buffalo.MiddlewareFunc {
-	var err error
-	if T, err = i18n.New(packr.New("../locales", "../locales"), "en-US"); err != nil {
-		app.Stop(err)
-	}
-	return T.Middleware()
+    var err error
+    if T, err = i18n.New(packr.New("../locales", "../locales"), "en-US"); err != nil {
+        app.Stop(err)
+    }
+    return T.Middleware()
 }
 
 // forceSSL will return a middleware that will redirect an incoming request
@@ -193,71 +196,71 @@ func translations() buffalo.MiddlewareFunc {
 // we recommend using a proxy: https://gobuffalo.io/en/docs/proxy
 // for more information: https://github.com/unrolled/secure/
 func forceSSL() buffalo.MiddlewareFunc {
-	return forcessl.Middleware(secure.Options{
-		SSLRedirect:     ENV == "production",
-		SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https"},
-	})
+    return forcessl.Middleware(secure.Options{
+        SSLRedirect:     ENV == "production",
+        SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https"},
+    })
 }
 
 func setErrorHandler(app *buffalo.App) {
-	app.ErrorHandlers[400] = customErrorHandler()
-	app.ErrorHandlers[401] = customErrorHandler()
-	app.ErrorHandlers[403] = customErrorHandler()
-	app.ErrorHandlers[404] = customErrorHandler()
-	app.ErrorHandlers[405] = customErrorHandler()
-	app.ErrorHandlers[408] = customErrorHandler()
-	app.ErrorHandlers[422] = customErrorHandler()
+    app.ErrorHandlers[400] = customErrorHandler()
+    app.ErrorHandlers[401] = customErrorHandler()
+    app.ErrorHandlers[403] = customErrorHandler()
+    app.ErrorHandlers[404] = customErrorHandler()
+    app.ErrorHandlers[405] = customErrorHandler()
+    app.ErrorHandlers[408] = customErrorHandler()
+    app.ErrorHandlers[422] = customErrorHandler()
 
-	app.ErrorHandlers[500] = customErrorHandler()
-	app.ErrorHandlers[501] = customErrorHandler()
-	app.ErrorHandlers[502] = customErrorHandler()
-	app.ErrorHandlers[503] = customErrorHandler()
-	app.ErrorHandlers[504] = customErrorHandler()
-	app.ErrorHandlers[505] = customErrorHandler()
+    app.ErrorHandlers[500] = customErrorHandler()
+    app.ErrorHandlers[501] = customErrorHandler()
+    app.ErrorHandlers[502] = customErrorHandler()
+    app.ErrorHandlers[503] = customErrorHandler()
+    app.ErrorHandlers[504] = customErrorHandler()
+    app.ErrorHandlers[505] = customErrorHandler()
 }
 
 func customErrorHandler() buffalo.ErrorHandler {
-	return func(status int, err error, c buffalo.Context) error {
-		log.Println("Error handler:", err, c.Request().RequestURI)
-		ct := c.Request().Header.Get("Content-Type")
-		if c.Value("current_user") != nil {
-			user, ok := c.Value("current_user").(*models.User)
-			if ok {
-				InsertLog("error", "Error", err.Error(), "", "", user.ID, c)
-				switch strings.ToLower(ct) {
-				case "application/json", "text/json", "json":
-					c.Logger().Error(err)
-					c.Response().WriteHeader(status)
+    return func(status int, err error, c buffalo.Context) error {
+        log.Println("Error handler:", err, c.Request().RequestURI)
+        ct := c.Request().Header.Get("Content-Type")
+        if c.Value("current_user") != nil {
+            user, ok := c.Value("current_user").(*models.User)
+            if ok {
+                InsertLog("error", "Error", err.Error(), "", "", user.ID, c)
+                switch strings.ToLower(ct) {
+                case "application/json", "text/json", "json":
+                    c.Logger().Error(err)
+                    c.Response().WriteHeader(status)
 
-					msg := fmt.Sprintf("%+v", err)
-					return json.NewEncoder(c.Response()).Encode(map[string]interface{}{
-						"error": msg,
-						"code":  status,
-					})
-				default:
-					tmpl := "default"
-					switch status {
-					case 401:
-						tmpl = "401"
-					case 403:
-						tmpl = "403"
-					case 404:
-						tmpl = "404"
-					}
-					return c.Redirect(302, "/errors/"+tmpl)
-				}
-			}
-		}
+                    msg := fmt.Sprintf("%+v", err)
+                    return json.NewEncoder(c.Response()).Encode(map[string]interface{}{
+                        "error": msg,
+                        "code":  status,
+                    })
+                default:
+                    tmpl := "default"
+                    switch status {
+                    case 401:
+                        tmpl = "401"
+                    case 403:
+                        tmpl = "403"
+                    case 404:
+                        tmpl = "404"
+                    }
+                    return c.Redirect(302, "/errors/"+tmpl)
+                }
+            }
+        }
 
-		tmpl := "default"
-		switch status {
-		case 401:
-			tmpl = "401"
-		case 403:
-			tmpl = "403"
-		case 404:
-			tmpl = "404"
-		}
-		return c.Redirect(302, "/errors/"+tmpl)
-	}
+        tmpl := "default"
+        switch status {
+        case 401:
+            tmpl = "401"
+        case 403:
+            tmpl = "403"
+        case 404:
+            tmpl = "404"
+        }
+        return c.Redirect(302, "/errors/"+tmpl)
+    }
 }
