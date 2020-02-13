@@ -465,25 +465,125 @@
                                                             <% } %>
                                                         </div>
                                                     </div>  
-                                                    <div class="col-sm-3">
-                                                        <h6>Right (OD)</h6>
-                                                        <%= for (v) in eyeImages["R"] { %>
-                                                            <%= if (v.Status == "selected") { %>
-                                                                <label style="margin-right: 10px;">
-                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
-                                                                </label>
+                                                    <div class="col-sm-4 offset-sm-1">
+                                                        <table class="table table-borderless table-compact table-striped">
+                                                            <%= for (v) in eyeImages["R"] { %>
+                                                                <%= if (v.Status == "selected") { %>
+                                                            <tr>
+                                                                <td><h6>Right (OD)</h6></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-bottom: 20px;">
+                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">   
+                                                                </td>
+                                                            </tr>
+                                                            <%= if (screening.HubStatus.String == "diagnosed") { %>
+                                                            <tr>
+                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;padding-bottom: 20px;">
+                                                                    <%= if (screening.Eyes.RightEye.DRGrading.String == "Normal") { %>
+                                                                        <i class="fa fa-check" style="color: #008000;"></i> 
+                                                                    <% } else if(screening.Eyes.RightEye.DRGrading.String == "Ungradeable") { %>
+                                                                        <i class="fa fa-times" style="color: #ff0000;"></i>
+                                                                    <% } else { %>
+                                                                        <% 
+                                                                            let val = intval(v.Data["dr_grade"]["value"])
+                                                                            let va = [1, 2, 3, 4]
+                                                                        %>
+                                                                        <%= if (val > 0) { %>
+                                                                            <span style="font-size: 0.8rem;">
+                                                                            <%= for (vi) in va { %>
+                                                                                <%= if (val >= vi) { %>
+                                                                                <i class="fa fa-circle" style="color: #8e4585;"></i>
+                                                                                <% } else { %>
+                                                                                <i class="fa fa-circle" style="color: #dabfd5;"></i>
+                                                                                <% } %>
+                                                                            <% } %>
+                                                                            </span>
+                                                                        <% } %>
+                                                                    <% } %>
+                                                                    <%= screening.Eyes.RightEye.DRGrading.String %>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left; letter-spacing: .05rem;">
+                                                                    <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Not Present") { %>
+                                                                        <i class="fa fa-check" style="color: #008000;"></i> 
+                                                                    <% } else { %>
+                                                                        <i class="fa fa-times" style="color: #ff0000;"></i>
+                                                                    <% } %>
+                                                                    <%= screening.Eyes.RightEye.DMEAssessment.String %>
+                                                                </td>
+                                                            </tr>
                                                             <% } %>
-                                                        <% } %>
+                                                            <% } %>
+                                                            <% } %>
+                                                        </table>
                                                     </div>
-                                                    <div class="col-sm-3">
-                                                        <h6>Left (OS)</h6>
-                                                        <%= for (v) in eyeImages["L"] { %>
-                                                            <%= if (v.Status == "selected") { %>
-                                                            <label style="margin-right: 10px;">
-                                                                <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
-                                                            </label>
+                                                    <div class="col-sm-4 offset-sm-2">
+                                                        <table class="table table-borderless table-compact table-striped">
+                                                            <%= for (v) in eyeImages["L"] { %>
+                                                                <%= if (v.Status == "selected") { %>
+                                                            <tr>
+                                                                <td><h6>Left (OS)</h6></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-bottom: 20px;">
+                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
+                                                                </td>
+                                                            </tr>
+                                                            <%= if (screening.HubStatus.String == "diagnosed") { %>
+                                                            <tr>
+                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;padding-bottom: 20px;">
+                                                                    <%= if (screening.Eyes.LeftEye.DRGrading.String == "Normal") { %>
+                                                                        <i class="fa fa-check" style="color: #008000;"></i> 
+                                                                    <% } else if(screening.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %>
+                                                                        <i class="fa fa-times" style="color: #ff0000;"></i>
+                                                                    <% } else { %>
+                                                                        <% 
+                                                                            let val = intval(v.Data["dr_grade"]["value"])
+                                                                            let va = [1, 2, 3, 4]
+                                                                        %>
+                                                                        <%= if (val > 0) { %>
+                                                                            <span style="font-size: 0.8rem;">
+                                                                            <%= for (vi) in va { %>
+                                                                                <%= if (val >= vi) { %>
+                                                                                <i class="fa fa-circle" style="color: #8e4585;"></i>
+                                                                                <% } else { %>
+                                                                                <i class="fa fa-circle" style="color: #dabfd5;"></i>
+                                                                                <% } %>
+                                                                            <% } %>
+                                                                            </span>
+                                                                        <% } %>
+                                                                    <% } %>
+                                                                    <%= screening.Eyes.LeftEye.DRGrading.String %>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left; letter-spacing: .05rem;">
+                                                                    <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %>
+                                                                        <i class="fa fa-check" style="color: #008000;"></i> 
+                                                                    <% } else { %>
+                                                                        <i class="fa fa-times" style="color: #ff0000;"></i>
+                                                                    <% } %>
+                                                                    <%= screening.Eyes.LeftEye.DMEAssessment.String %>
+                                                                </td>
+                                                            </tr>
                                                             <% } %>
-                                                        <% } %>
+                                                            <% } %>
+                                                            <% } %>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             <% } else { %>

@@ -524,6 +524,7 @@ type FundusImage struct {
     Status    string
     ID        string
     SignedURL string
+    Data      map[string]interface{}
 }
 
 func getEyeImages(si models.ScreeningImages) map[string][]FundusImage {
@@ -545,6 +546,7 @@ func getEyeImages(si models.ScreeningImages) map[string][]FundusImage {
             log.Println("getEyeImages error: ", err)
             continue
         }
+        f.Data = s.Data
         imageLaterality := s.Data["laterality"].(string)
         data[imageLaterality] = append(data[imageLaterality], f)
     }

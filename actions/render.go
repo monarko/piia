@@ -107,6 +107,13 @@ func init() {
 				}
 				return ""
 			},
+			"intval": func(i interface{}) int {
+				theFloat, ok := i.(float64)
+				if ok {
+					return int(theFloat)
+				}
+				return -1
+			},
 		},
 	})
 }
