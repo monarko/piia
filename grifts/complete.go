@@ -25,7 +25,7 @@ var _ = Namespace("pubsub", func() {
             if err != nil {
                 return fmt.Errorf("image-diagnose: %v", err)
             }
-            
+
             projectID := envy.Get("SUB_PROJECT", "")
             subID := envy.Get("IMAGE_DIAGNOSE_COMPLETE", "") + "-sub"
             msgs, err := helpers.PubSubPullMessages(projectID, subID)
@@ -89,7 +89,7 @@ var _ = Namespace("pubsub", func() {
                         continue
                     }
 
-                    if screening.HubStatus.String == "diagnosing" {
+                    if screening.HubStatus.String == "diagnosing" || screening.HubStatus.String == "diagnosed" {
                         screening.HubStatus.String = "diagnosed"
                         dr := d["dr_grade"].(map[string]interface{})
                         dme := d["dme_grade"].(map[string]interface{})
