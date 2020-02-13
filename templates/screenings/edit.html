@@ -3,6 +3,16 @@
         <div class="element-wrapper">
             <h6 class="element-header">
                 Update Screening
+                <%= if (screening.AccessionID.Valid) { %>
+                    <div class="value-pair float-right">
+                        <div class="label">
+                            Accession ID:
+                        </div>
+                        <div class="value badge badge-pill badge-success">
+                            <%= screening.AccessionID.String %>
+                        </div>
+                    </div>
+                <% } %>
             </h6>
             <div class="element-box">
                 <div class="row" style="margin-bottom: 20px;">
