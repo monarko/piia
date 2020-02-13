@@ -771,10 +771,12 @@
             rightSelected: '',
             leftSelected: '',
             screening: null,
-            screeningId: ''
+            screeningId: '',
+            rightSelected: null,
+            leftSelected: null,
         },
         mounted() {
-            this.screeningId = $("#screeningId").val()
+            this.screeningId = $("#screeningId").val();
             this.refresh();
         },
         methods: {
@@ -784,7 +786,7 @@
                 }
                 this.screeningAPI();
             },
-            refreshFrontend() {
+            refreshData() {
                 if (this.screening) {
                     // Banner
                     if (this.screening.screening_images.length > 0) {
@@ -799,7 +801,11 @@
                     } else if (this.message == "diagnosing") {
                         this.messageClass = "alert-info"
                     } else if (this.message == "diagnosed") {
-                        this.messageClass = "alert-success"
+                        if (this.screening.referral.referred) {
+                            this.messageClass = "alert-danger"
+                        } else {
+                            this.messageClass = "alert-success"
+                        }
                     }
 
                     if (this.screening.referral.additional_notes.length > 0) {
@@ -807,6 +813,18 @@
                     }
 
                     // Images on processing/diagnosing and diagnosed state
+                    if (this.screening.screening_images.length > 0) {
+                        for (var i = 0; i < this.screening.screening_images.length; i++) {
+                            var si = this.screening.screening_images[i]
+                            if (si.status == "selected") {
+                                if (si.data && si.data.laterality == "R") {
+                                    this.rightSelected = si
+                                } else if (si.data && si.data.laterality == "L") {
+                                    this.leftSelected = si
+                                } else {}
+                            }
+                        }
+                    }
 
                     // Form on selection state
                     
@@ -827,13 +845,13 @@
                 }
             },
             screeningAPI() {
-                if (this.screeningId.length > 0) {
+                if (this.screeningId && this.screeningId.length > 0) {
                     var url = "/api/dr-assessment/"+this.screeningId
                     axios.get(url)
                     .then((res) => {
                         console.log("screening", res)
                         this.screening = res.data;
-                        this.refreshFrontend();
+                        this.refreshData();
                     })
                     .catch((err) => {
                         console.log("error", err)
