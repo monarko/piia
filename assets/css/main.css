@@ -29076,3 +29076,8 @@ div.dataTables_processing {
   border-radius: 6px;
   font-weight: bold;
 }
+.alert-default {
+  color: #666666;
+  background-color: #efefef;
+  border-color: #9f9f9f;
+}

@@ -553,28 +553,38 @@ type FundusImage struct {
 }
 
 func getEyeImages(si models.ScreeningImages) map[string][]FundusImage {
-    var err error
     data := make(map[string][]FundusImage)
     data["R"] = make([]FundusImage, 0)
     data["L"] = make([]FundusImage, 0)
 
     for _, s := range si {
-        f := FundusImage{}
-        f.Status = s.Status.String
-        f.ID = s.ID.String()
-        f.Bucket = s.Data["bucket_name"].(string)
-        f.Path = s.Data["render_file_url"].(string)
-
-        envVar := envy.Get("HUB_SERVICE_ACCOUNT_PATH", "")
-        f.SignedURL, err = helpers.GetSignedURL(f.Bucket, f.Path, envVar)
+        f, err := getEyeImage(s)
         if err != nil {
             log.Println("getEyeImages error: ", err)
             continue
         }
-        f.Data = s.Data
-        imageLaterality := s.Data["laterality"].(string)
-        data[imageLaterality] = append(data[imageLaterality], f)
+        imageLaterality := f.Data["laterality"].(string)
+        data[imageLaterality] = append(data[imageLaterality], *f)
     }
 
     return data
+}
+
+func getEyeImage(si models.ScreeningImage) (*FundusImage, error) {
+    var err error
+
+    f := &FundusImage{}
+    f.Status = si.Status.String
+    f.ID = si.ID.String()
+    f.Bucket = si.Data["bucket_name"].(string)
+    f.Path = si.Data["render_file_url"].(string)
+
+    envVar := envy.Get("HUB_SERVICE_ACCOUNT_PATH", "")
+    f.SignedURL, err = helpers.GetSignedURL(f.Bucket, f.Path, envVar)
+    if err != nil {
+        return nil, err
+    }
+    f.Data = si.Data
+
+    return f, nil
 }

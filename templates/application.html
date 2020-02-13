@@ -357,6 +357,9 @@
 <%= javascriptTag("Chart.js") %>
 <%= javascriptTag("icheck.js") %>
 
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+
 <script>
     $(function () {
         $('input.icheck').iCheck({
@@ -757,6 +760,88 @@
         return result;
     }
     
+    var app = new Vue({
+        el: '#vapp',
+        data: {
+            message: 'The fundus images aren\'t ready yet. Click Refresh to check.',
+            additionalMessage: '',
+            messageClass: 'alert-default',
+            rightImages: [],
+            leftImages: [],
+            rightSelected: '',
+            leftSelected: '',
+            screening: null,
+            screeningId: ''
+        },
+        mounted() {
+            this.screeningId = $("#screeningId").val()
+            this.refresh();
+        },
+        methods: {
+            refresh(e) {
+                if (e) {
+                    e.preventDefault();
+                }
+                this.screeningAPI();
+            },
+            refreshFrontend() {
+                if (this.screening) {
+                    // Banner
+                    if (this.screening.screening_images.length > 0) {
+                        this.message = this.screening.hub_status;
+                        if (this.message.length < 1) {
+                            this.message = 'Select fundus images'
+                        }
+                    }
+
+                    if (this.message == "processing") {
+                        this.messageClass = "alert-warning"
+                    } else if (this.message == "diagnosing") {
+                        this.messageClass = "alert-info"
+                    } else if (this.message == "diagnosed") {
+                        this.messageClass = "alert-success"
+                    }
+
+                    if (this.screening.referral.additional_notes.length > 0) {
+                        this.additionalMessage = this.screening.referral.additional_notes
+                    }
+
+                    // Images on processing/diagnosing and diagnosed state
+
+                    // Form on selection state
+                    
+                }
+            },
+            postImages(e) {
+                e.preventDefault();
+                if (this.screening) {
+                    if (this.screening.screening_images.length > 0) {
+                        this.message = this.screening.hub_status;
+                    }
+
+                    if (this.message.length > 0 && this.screening.screening_images.length > 0) {
+                        this.showMessage=true
+                    } else {
+                        this.showMessage=false
+                    }
+                }
+            },
+            screeningAPI() {
+                if (this.screeningId.length > 0) {
+                    var url = "/api/dr-assessment/"+this.screeningId
+                    axios.get(url)
+                    .then((res) => {
+                        console.log("screening", res)
+                        this.screening = res.data;
+                        this.refreshFrontend();
+                    })
+                    .catch((err) => {
+                        console.log("error", err)
+                    });
+                }
+            }
+        }
+    })
 </script>
 
 </body>
