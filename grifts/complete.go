@@ -89,71 +89,69 @@ var _ = Namespace("pubsub", func() {
                         continue
                     }
 
-                    if screening.HubStatus.String == "diagnosing" || screening.HubStatus.String == "diagnosed" {
-                        screening.HubStatus.String = "diagnosed"
-                        dr := d["dr_grade"].(map[string]interface{})
-                        dme := d["dme_grade"].(map[string]interface{})
-                        if laterality == "R" {
-                            drGrade := dr["grade"].(string)
-                            m, l := helpers.PartiallyMatch(drOptions, drGrade, 4)
-                            if l >= 0 {
-                                screening.Eyes.RightEye.DRGrading.String = m
-                                screening.Eyes.RightEye.DRGrading.Valid = true
-                            }
-
-                            dmeGrade := dme["grade"].(string)
-                            dm := "Ungradeable"
-                            if !strings.HasPrefix(strings.ToLower(dmeGrade), "un") {
-                                dm = dmeOptions[strings.ToLower(dmeGrade)]
-                            }
-                            screening.Eyes.RightEye.DMEAssessment.String = dm
-                            screening.Eyes.RightEye.DMEAssessment.Valid = true
-                        } else {
-                            drGrade := dr["grade"].(string)
-                            m, l := helpers.PartiallyMatch(drOptions, drGrade, 4)
-                            if l >= 0 {
-                                screening.Eyes.LeftEye.DRGrading.String = m
-                                screening.Eyes.LeftEye.DRGrading.Valid = true
-                            }
-
-                            dmeGrade := dme["grade"].(string)
-                            dm := "Ungradeable"
-                            if !strings.HasPrefix(strings.ToLower(dmeGrade), "un") {
-                                dm = dmeOptions[strings.ToLower(dmeGrade)]
-                            }
-                            screening.Eyes.LeftEye.DMEAssessment.String = dm
-                            screening.Eyes.LeftEye.DMEAssessment.Valid = true
+                    screening.HubStatus.String = "diagnosed"
+                    dr := d["dr_grade"].(map[string]interface{})
+                    dme := d["dme_grade"].(map[string]interface{})
+                    if laterality == "R" {
+                        drGrade := dr["grade"].(string)
+                        m, l := helpers.PartiallyMatch(drOptions, drGrade, 4)
+                        if l >= 0 {
+                            screening.Eyes.RightEye.DRGrading.String = m
+                            screening.Eyes.RightEye.DRGrading.Valid = true
                         }
-                        screening.Referral.Referred.Valid = true
-                        if strings.HasPrefix(strings.ToLower(referral), "refer") {
-                            screening.Referral.Referred.Bool = true
-                        } else {
-                            screening.Referral.Referred.Bool = false
-                        }
-                        screening.Referral.Notes.String = referral
-                        screening.Referral.Notes.Valid = true
 
-                        verrs, err = tx.ValidateAndUpdate(screening)
+                        dmeGrade := dme["grade"].(string)
+                        dm := "Ungradeable"
+                        if !strings.HasPrefix(strings.ToLower(dmeGrade), "un") {
+                            dm = dmeOptions[strings.ToLower(dmeGrade)]
+                        }
+                        screening.Eyes.RightEye.DMEAssessment.String = dm
+                        screening.Eyes.RightEye.DMEAssessment.Valid = true
+                    } else {
+                        drGrade := dr["grade"].(string)
+                        m, l := helpers.PartiallyMatch(drOptions, drGrade, 4)
+                        if l >= 0 {
+                            screening.Eyes.LeftEye.DRGrading.String = m
+                            screening.Eyes.LeftEye.DRGrading.Valid = true
+                        }
+
+                        dmeGrade := dme["grade"].(string)
+                        dm := "Ungradeable"
+                        if !strings.HasPrefix(strings.ToLower(dmeGrade), "un") {
+                            dm = dmeOptions[strings.ToLower(dmeGrade)]
+                        }
+                        screening.Eyes.LeftEye.DMEAssessment.String = dm
+                        screening.Eyes.LeftEye.DMEAssessment.Valid = true
+                    }
+                    screening.Referral.Referred.Valid = true
+                    if strings.HasPrefix(strings.ToLower(referral), "refer") {
+                        screening.Referral.Referred.Bool = true
+                    } else {
+                        screening.Referral.Referred.Bool = false
+                    }
+                    screening.Referral.Notes.String = referral
+                    screening.Referral.Notes.Valid = true
+
+                    verrs, err = tx.ValidateAndUpdate(screening)
+                    if err != nil {
+                        log.Printf("image-diagnose-complete screening update: %v", err)
+                        continue
+                    }
+                    if verrs.HasAny() {
+                        log.Printf("image-diagnose-complete screening: %v", verrs.Errors)
+                        continue
+                    }
+                    participant := screening.Participant
+                    if participant.Status == "1" && screening.Referral.Referred.Valid {
+                        participant.Status = "11"
+                        perrs, err := tx.ValidateAndUpdate(&participant)
                         if err != nil {
-                            log.Printf("image-diagnose-complete screening update: %v", err)
+                            log.Printf("image-diagnose-complete participant update: %v", err)
                             continue
                         }
-                        if verrs.HasAny() {
-                            log.Printf("image-diagnose-complete screening: %v", verrs.Errors)
+                        if perrs.HasAny() {
+                            log.Printf("image-diagnose-complete participant: %v", verrs.Errors)
                             continue
-                        }
-                        participant := screening.Participant
-                        if participant.Status == "1" && screening.Referral.Referred.Valid {
-                            participant.Status = "11"
-                            perrs, err := tx.ValidateAndUpdate(&participant)
-                            if err != nil {
-                                log.Printf("image-diagnose-complete participant update: %v", err)
-                                continue
-                            }
-                            if perrs.HasAny() {
-                                log.Printf("image-diagnose-complete participant: %v", verrs.Errors)
-                                continue
-                            }
                         }
                     }
                 }

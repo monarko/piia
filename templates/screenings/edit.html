@@ -474,7 +474,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td style="padding-bottom: 20px;">
-                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">   
+                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; border-radius: 50%;">   
                                                                 </td>
                                                             </tr>
                                                             <%= if (screening.HubStatus.String == "diagnosed") { %>
@@ -534,7 +534,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td style="padding-bottom: 20px;">
-                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
+                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; border-radius: 50%;">
                                                                 </td>
                                                             </tr>
                                                             <%= if (screening.HubStatus.String == "diagnosed") { %>
@@ -594,7 +594,7 @@
                                                         <%= for (v) in eyeImages["R"] { %>
                                                             <label style="margin-right: 15px;">
                                                                 <input type="radio" class="icheck topicheck" name="rightEye" value="<%= v.ID %>">
-                                                                <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
+                                                                <img src="<%= v.SignedURL %>" style="width: 150px; border-radius: 50%;">
                                                             </label>
                                                         <% } %>
                                                     </div>
@@ -605,7 +605,7 @@
                                                         <%= for (v) in eyeImages["L"] { %>
                                                             <label style="margin-right: 15px;">
                                                                 <input type="radio" class="icheck topicheck" name="leftEye" value="<%= v.ID %>">
-                                                                <img src="<%= v.SignedURL %>" style="width: 150px; height: 150px; border-radius: 50%;">
+                                                                <img src="<%= v.SignedURL %>" style="width: 150px; border-radius: 50%;">
                                                             </label>
                                                         <% } %>
                                                     </div>

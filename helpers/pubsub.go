@@ -1,9 +1,8 @@
 package helpers
 
 import (
-    "bytes"
     "context"
-    "encoding/gob"
+    "encoding/json"
     "fmt"
     "time"
 
@@ -12,13 +11,11 @@ import (
 
 // GetBytes returns a byte array from an interface
 func GetBytes(key interface{}) ([]byte, error) {
-    var buf bytes.Buffer
-    enc := gob.NewEncoder(&buf)
-    err := enc.Encode(key)
+    b, err := json.Marshal(key)
     if err != nil {
         return nil, err
     }
-    return buf.Bytes(), nil
+    return b, nil
 }
 
 // PubSubPublish function

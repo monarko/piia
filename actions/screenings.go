@@ -1,7 +1,6 @@
 package actions
 
 import (
-    "encoding/gob"
     "fmt"
     "log"
     "net/url"
@@ -390,7 +389,6 @@ func ScreeningsEditPost(c buffalo.Context) error {
             in := &ingest{}
             in.Consent = "Y"
             in.Images = selected
-            gob.Register(map[string]interface{}{})
             id, err := helpers.PubSubPublish(projectID, topicID, in)
             if err != nil {
                 return errors.WithStack(err)
