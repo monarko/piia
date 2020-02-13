@@ -5,6 +5,7 @@ import (
     "log"
     "net/url"
     "strings"
+    "time"
 
     "github.com/gobuffalo/buffalo"
     "github.com/gobuffalo/envy"
@@ -64,28 +65,54 @@ func ScreeningsCreateGet(c buffalo.Context) error {
     if err := tx.Eager().Find(participant, c.Param("pid")); err != nil {
         return c.Error(404, err)
     }
+
+    user := c.Value("current_user").(*models.User)
+
+    screening := &models.Screening{}
+    screening.ScreenerID = user.ID
+    screening.ParticipantID = participant.ID
+    screening.AccessionID.String = helpers.Generate16DigitUniqueID()
+    screening.AccessionID.Valid = true
+    screening.Eyes.AssessmentDate.Calendar = "gregorian"
+    screening.Eyes.AssessmentDate.GivenDate = time.Now()
+
+    verrs, err := tx.ValidateAndCreate(screening)
+    if err != nil {
+        return errors.WithStack(err)
+    }
+    if verrs.HasAny() {
+        // c.Set("participant", participant)
+        // c.Set("screening", screening)
+        c.Set("errors", verrs.Errors)
+        // c.Set("dilatePupil", getDilatePupil(*screening))
+        // return c.Render(422, r.HTML("screenings/create.html"))
+        return c.Redirect(302, "/participants/index")
+    }
+    red := "/participants/" + c.Param("pid") + "/screenings/edit/" + screening.ID.String()
+    return c.Redirect(302, red)
+
     // if len(participant.Screenings) > 0 {
     //     scr := participant.Screenings[0]
     //     red := "/participants/" + c.Param("pid") + "/screenings/edit/" + scr.ID.String()
     //     return c.Redirect(302, red)
     // }
-    hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
-    reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
-    c.Set("hospitalNotReferralReasons", reasons)
-    hospitalNotReferralReasonsThai := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS_THAI", "")
-    reasonsThai := strings.SplitN(hospitalNotReferralReasonsThai, ",", -1)
-    c.Set("hospitalNotReferralReasonsThai", reasonsThai)
-    screening := &models.Screening{}
-    c.Set("participant", participant)
-    c.Set("screening", screening)
-    c.Set("dilatePupil", getDilatePupil(*screening))
-
-    b := c.Value("breadcrumb").(helpers.Breadcrumbs)
-    b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
-    b = append(b, helpers.Breadcrumb{Title: "New Screening", Path: "/participants/" + c.Param("pid") + "/screenings/create"})
-    c.Set("breadcrumb", b)
-
-    return c.Render(200, r.HTML("screenings/create.html"))
+    // hospitalNotReferralReasons := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS", "")
+    // reasons := strings.SplitN(hospitalNotReferralReasons, ",", -1)
+    // c.Set("hospitalNotReferralReasons", reasons)
+    // hospitalNotReferralReasonsThai := envy.Get("HOSPITAL_NOT_REFERRAL_REASONS_THAI", "")
+    // reasonsThai := strings.SplitN(hospitalNotReferralReasonsThai, ",", -1)
+    // c.Set("hospitalNotReferralReasonsThai", reasonsThai)
+    // screening := &models.Screening{}
+    // c.Set("participant", participant)
+    // c.Set("screening", screening)
+    // c.Set("dilatePupil", getDilatePupil(*screening))
+    //
+    // b := c.Value("breadcrumb").(helpers.Breadcrumbs)
+    // b = append(b, helpers.Breadcrumb{Title: "Participants", Path: "/participants/index"})
+    // b = append(b, helpers.Breadcrumb{Title: "New Screening", Path: "/participants/" + c.Param("pid") + "/screenings/create"})
+    // c.Set("breadcrumb", b)
+    //
+    // return c.Render(200, r.HTML("screenings/create.html"))
 }
 
 // ScreeningsCreatePost renders the form for creating a new Screening.
