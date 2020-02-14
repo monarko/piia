@@ -1,7 +1,6 @@
 package actions
 
 import (
-    "fmt"
     "log"
     "net/url"
     "strings"
@@ -383,44 +382,6 @@ func ScreeningsEditPost(c buffalo.Context) error {
                 screening.Referral.ReferralRefused.Bool = true
                 screening.Referral.ReferralRefused.Valid = true
             }
-        }
-    }
-
-    // Update fundus image
-    rightEye := c.Request().FormValue("rightEye")
-    leftEye := c.Request().FormValue("leftEye")
-    if len(rightEye) > 0 && len(leftEye) > 0 {
-        selected := make([]map[string]interface{}, 0)
-        for _, s := range screening.ScreeningImages {
-            if s.ID.String() == rightEye || s.ID.String() == leftEye {
-                s.Status.String = "selected"
-                selected = append(selected, s.Data)
-            } else {
-                s.Status.String = "not selected"
-            }
-            _, err := tx.ValidateAndUpdate(&s)
-            if err != nil {
-                return errors.WithStack(err)
-            }
-        }
-        screening.HubStatus.String = "processing"
-        screening.HubStatus.Valid = true
-
-        if len(selected) == 2 {
-            projectID := envy.Get("TOPIC_PROJECT", "")
-            topicID := envy.Get("IMAGE_INGEST", "")
-            type ingest struct {
-                Consent string                   `json:"consent"`
-                Images  []map[string]interface{} `json:"images"`
-            }
-            in := &ingest{}
-            in.Consent = "Y"
-            in.Images = selected
-            id, err := helpers.PubSubPublish(projectID, topicID, in)
-            if err != nil {
-                return errors.WithStack(err)
-            }
-            fmt.Printf("Image Ingest PUB SUB Message ID for SID (%s): %s\n", screening.ID.String(), id)
         }
     }
 
