@@ -409,7 +409,7 @@
                                             </span>
                                         <% } %>
                                     </div>
-                                    <div class="tasks-list-w" <%= if (statusMap["Eye Assessment"]) { %>style="display: none;"<% } %>>
+                                    <div class="tasks-list-w">
                                         <div class="row">
                                             <div class="col-sm-8">
                                                 <div class="form-group">
@@ -462,175 +462,175 @@
                                                     <legend><span>Fundus Images</span></legend>
                                                 </fieldset>
                                             </div>  
-                                        </div>         
-                                        <%= if (len(eyeImages["R"]) > 0 && len(eyeImages["L"]) > 0) { %>
-                                            <%= if (screening.HubStatus.Valid && len(screening.HubStatus.String) > 5) { %>
-                                                <div class="row"> 
-                                                    <div class="col-sm-12">
-                                                        <div class="alert alert-warning text-center" role="alert">
-                                                            <%= if (screening.HubStatus.String != "diagnosed") { %>
-                                                            <strong style="font-size: 150%; text-transform: capitalize;"><%= screening.HubStatus.String %>!</strong>
-                                                            <% } else { %>
-                                                            <strong style="font-size: 150%; text-transform: capitalize;"><%= screening.Referral.Notes.String %>!</strong>
-                                                            <% } %>
-                                                        </div>
-                                                    </div>  
-                                                    <div class="col-sm-4 offset-sm-1">
-                                                        <table class="table table-borderless table-compact table-striped">
-                                                            <%= for (v) in eyeImages["R"] { %>
-                                                                <%= if (v.Status == "selected") { %>
-                                                            <tr>
-                                                                <td><h6>Right (OD)</h6></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding-bottom: 20px;">
-                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; border-radius: 50%;">   
-                                                                </td>
-                                                            </tr>
-                                                            <%= if (screening.HubStatus.String == "diagnosed") { %>
-                                                            <tr>
-                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="text-align: left;padding-bottom: 20px;">
-                                                                    <%= if (screening.Eyes.RightEye.DRGrading.String == "Normal") { %>
-                                                                        <i class="fa fa-check" style="color: #008000;"></i> 
-                                                                    <% } else if(screening.Eyes.RightEye.DRGrading.String == "Ungradeable") { %>
-                                                                        <i class="fa fa-times" style="color: #ff0000;"></i>
-                                                                    <% } else { %>
-                                                                        <% 
-                                                                            let val = intval(v.Data["dr_grade"]["value"])
-                                                                            let va = [1, 2, 3, 4]
-                                                                        %>
-                                                                        <%= if (val > 0) { %>
-                                                                            <span style="font-size: 0.8rem;">
-                                                                            <%= for (vi) in va { %>
-                                                                                <%= if (val >= vi) { %>
-                                                                                <i class="fa fa-circle" style="color: #8e4585;"></i>
-                                                                                <% } else { %>
-                                                                                <i class="fa fa-circle" style="color: #dabfd5;"></i>
-                                                                                <% } %>
-                                                                            <% } %>
-                                                                            </span>
-                                                                        <% } %>
-                                                                    <% } %>
-                                                                    <%= screening.Eyes.RightEye.DRGrading.String %>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="text-align: left; letter-spacing: .05rem;">
-                                                                    <%= if (screening.Eyes.RightEye.DMEAssessment.String == "Not Present") { %>
-                                                                        <i class="fa fa-check" style="color: #008000;"></i> 
-                                                                    <% } else { %>
-                                                                        <i class="fa fa-times" style="color: #ff0000;"></i>
-                                                                    <% } %>
-                                                                    <%= screening.Eyes.RightEye.DMEAssessment.String %>
-                                                                </td>
-                                                            </tr>
-                                                            <% } %>
-                                                            <% } %>
-                                                            <% } %>
-                                                        </table>
-                                                    </div>
-                                                    <div class="col-sm-4 offset-sm-2">
-                                                        <table class="table table-borderless table-compact table-striped">
-                                                            <%= for (v) in eyeImages["L"] { %>
-                                                                <%= if (v.Status == "selected") { %>
-                                                            <tr>
-                                                                <td><h6>Left (OS)</h6></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding-bottom: 20px;">
-                                                                    <img src="<%= v.SignedURL %>" style="width: 150px; border-radius: 50%;">
-                                                                </td>
-                                                            </tr>
-                                                            <%= if (screening.HubStatus.String == "diagnosed") { %>
-                                                            <tr>
-                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="text-align: left;padding-bottom: 20px;">
-                                                                    <%= if (screening.Eyes.LeftEye.DRGrading.String == "Normal") { %>
-                                                                        <i class="fa fa-check" style="color: #008000;"></i> 
-                                                                    <% } else if(screening.Eyes.LeftEye.DRGrading.String == "Ungradeable") { %>
-                                                                        <i class="fa fa-times" style="color: #ff0000;"></i>
-                                                                    <% } else { %>
-                                                                        <% 
-                                                                            let val = intval(v.Data["dr_grade"]["value"])
-                                                                            let va = [1, 2, 3, 4]
-                                                                        %>
-                                                                        <%= if (val > 0) { %>
-                                                                            <span style="font-size: 0.8rem;">
-                                                                            <%= for (vi) in va { %>
-                                                                                <%= if (val >= vi) { %>
-                                                                                <i class="fa fa-circle" style="color: #8e4585;"></i>
-                                                                                <% } else { %>
-                                                                                <i class="fa fa-circle" style="color: #dabfd5;"></i>
-                                                                                <% } %>
-                                                                            <% } %>
-                                                                            </span>
-                                                                        <% } %>
-                                                                    <% } %>
-                                                                    <%= screening.Eyes.LeftEye.DRGrading.String %>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="text-align: left; letter-spacing: .05rem;">
-                                                                    <%= if (screening.Eyes.LeftEye.DMEAssessment.String == "Not Present") { %>
-                                                                        <i class="fa fa-check" style="color: #008000;"></i> 
-                                                                    <% } else { %>
-                                                                        <i class="fa fa-times" style="color: #ff0000;"></i>
-                                                                    <% } %>
-                                                                    <%= screening.Eyes.LeftEye.DMEAssessment.String %>
-                                                                </td>
-                                                            </tr>
-                                                            <% } %>
-                                                            <% } %>
-                                                            <% } %>
-                                                        </table>
-                                                    </div>
+                                        </div> 
+                                        <div id="vapp">
+                                            <input type="hidden" value="<%= screening.ID %>" id="screeningId">
+                                            <div class="row">
+                                                <div class="col-sm-12" style="margin-top: -20px; margin-bottom: 10px;">
+                                                    <button class="btn btn-outline-primary float-right" @click="refresh">
+                                                        <i class="os-icon os-icon-grid-18"></i> Refresh
+                                                    </button>
                                                 </div>
-                                            <% } else { %>
-                                            <div class="row"> 
-                                                <div class="col-sm-6">
-                                                    <h6>Right (OD)</h6>
-                                                    <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;">
-                                                        <%= for (v) in eyeImages["R"] { %>
-                                                            <label style="margin-right: 15px;">
-                                                                <input type="radio" class="icheck topicheck" name="rightEye" value="<%= v.ID %>">
-                                                                <img src="<%= v.SignedURL %>" style="width: 150px; border-radius: 50%;">
-                                                            </label>
-                                                        <% } %>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <h6>Left (OS)</h6>
-                                                    <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;">
-                                                        <%= for (v) in eyeImages["L"] { %>
-                                                            <label style="margin-right: 15px;">
-                                                                <input type="radio" class="icheck topicheck" name="leftEye" value="<%= v.ID %>">
-                                                                <img src="<%= v.SignedURL %>" style="width: 150px; border-radius: 50%;">
-                                                            </label>
-                                                        <% } %>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="alert text-center" v-bind:class="[messageClass]" role="alert">
+                                                        <strong style="text-transform: capitalize;"> {{ message }} </strong>
+                                                        <p style="font-size: 150%;" v-if="additionalMessage.length > 0">{{ additionalMessage }}</p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <% } %>
-                                        <% } else { %>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="alert alert-info text-center" role="alert">
-                                                        <strong>Come back later! </strong>The fundus images aren't ready yet.
+                                            <div class="row" v-if="message.length > 0 && rightSelected && leftSelected">
+                                                <div class="col-sm-4 offset-sm-1">
+                                                        <table class="table table-borderless table-compact table-striped">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><h6>Right (OD)</h6></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="padding-bottom: 20px;">
+                                                                        <img v-bind:src="rightSelected.data.signed_url" style="width: 150px; border-radius: 50%;">   
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tbody v-if="message = 'diagnosed'">
+                                                                <tr>
+                                                                    <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;padding-bottom: 20px;">
+                                                                        <span v-if="rightSelected.data.dr_grade.value < 0">
+                                                                            <i class="fa fa-exclamation-triangle" style="color: #ff0000;"></i>
+                                                                        </span>
+                                                                        <span v-else-if="rightSelected.data.dr_grade.value = 0">
+                                                                            <i class="fa fa-check" style="color: #008000;"></i>
+                                                                        </span>
+                                                                        <span v-else style="font-size: 0.8rem; letter-spacing: .15rem;">
+                                                                            <i v-for="n in rightSelected.data.dr_grade.value" class="fa fa-circle" style="color: #8e4585;"></i><i v-for="n in 4-rightSelected.data.dr_grade.value" class="fa fa-circle" style="color: #dabfd5;"></i>
+                                                                        </span>
+                                                                        <span>
+                                                                            {{ screening.eyes.right.dr }}
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; letter-spacing: .05rem;">
+                                                                        <span>
+                                                                            <i v-if="rightSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
+                                                                            <i v-else-if="rightSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
+                                                                            <i v-else class="fa fa-check" style="color: #008000;"></i> 
+                                                                        </span>
+                                                                        <span>
+                                                                            {{ screening.eyes.right.dme }}
+                                                                        </span>
+                                                                    </td>                                                                    
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                </div>
+                                                <div class="col-sm-4 offset-sm-2">
+                                                        <table class="table table-borderless table-compact table-striped">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><h6>Left (OS)</h6></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="padding-bottom: 20px;">
+                                                                        <img v-bind:src="leftSelected.data.signed_url" style="width: 150px; border-radius: 50%;">   
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tbody v-if="message = 'diagnosed'">
+                                                                <tr>
+                                                                    <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;padding-bottom: 20px;">
+                                                                        <span v-if="leftSelected.data.dr_grade.value < 0">
+                                                                            <i class="fa fa-exclamation-triangle" style="color: #ff0000;"></i>
+                                                                        </span>
+                                                                        <span v-else-if="leftSelected.data.dr_grade.value = 0">
+                                                                            <i class="fa fa-check" style="color: #008000;"></i>
+                                                                        </span>
+                                                                        <span v-else style="font-size: 0.8rem; letter-spacing: .15rem;">
+                                                                            <i v-for="n in leftSelected.data.dr_grade.value" class="fa fa-circle" style="color: #8e4585;"></i><i v-for="n in 4-leftSelected.data.dr_grade.value" class="fa fa-circle" style="color: #dabfd5;"></i>
+                                                                        </span>
+                                                                        <span>
+                                                                            {{ screening.eyes.left.dr }}
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left; padding-bottom: 20px;">
+                                                                        <span>
+                                                                            <i v-if="leftSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
+                                                                            <i v-else-if="leftSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
+                                                                            <i v-else class="fa fa-check" style="color: #008000;"></i> 
+                                                                        </span>
+                                                                        <span>
+                                                                            {{ screening.eyes.left.dme }}
+                                                                        </span>
+                                                                    </td>                                                                    
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                </div>
+                                            </div>
+                                            <div v-else>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h6>Patient consent</h6>
+                                                        <div class="form-group">
+                                                            <label for="patient-consent">Has the patient signed the trial consent form?</label>
+                                                            <div class="form-check" style="padding-left: 0; margin-bottom: 10px;">
+                                                                <label class="form-check-label">
+                                                                    <input class="" style="padding-right: 20px;" name="consent" type="radio" value="Y" v-model="consent">
+                                                                    This patient has agreed and signed the consent form
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check" style="padding-left: 0; margin-bottom: 10px;">
+                                                                <label class="form-check-label">
+                                                                    <input class="" style="padding-right: 20px;" name="consent" type="radio" value="N" v-model="consent">
+                                                                    This patient does not agree to give consent
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>  
-                                            </div>   
-                                        <% } %>
+                                                </div>
+                                                <div class="row"> 
+                                                    <div class="col-sm-6">
+                                                        <h6>Right (OD)</h6>
+                                                        <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;" v-if="rightImages.length > 0">
+                                                            <label style="margin-right: 15px;" v-for="i in rightImages">
+                                                                <input type="radio" class="" name="rightEye" :value="i.id" v-model="right">
+                                                                <img v-bind:src="i.data.signed_url" style="width: 150px; border-radius: 50%;">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <h6>Left (OS)</h6>
+                                                        <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;" v-if="leftImages.length > 0">
+                                                            <label style="margin-right: 15px;" v-for="i in leftImages">
+                                                                <input type="radio" class="" name="leftEye" :value="i.id" v-model="left">
+                                                                <img v-bind:src="i.data.signed_url" style="width: 150px; border-radius: 50%;">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-top: 20px; margin-bottom:20px;" v-if="consent.length > 0 && right.length > 0 && left.length > 0">
+                                                    <div class="col-sm-12 text-center">
+                                                        <button class="btn btn-primary" @click="postImages">Submit Images to Diagnose</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>     
+
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div id="referral-error" style="margin-top: -1.5rem;margin-bottom: 1rem;"></div>

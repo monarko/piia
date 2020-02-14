@@ -1,7 +1,6 @@
 package actions
 
 import (
-    "fmt"
     "log"
     "net/url"
     "strings"
@@ -386,44 +385,6 @@ func ScreeningsEditPost(c buffalo.Context) error {
         }
     }
 
-    // Update fundus image
-    rightEye := c.Request().FormValue("rightEye")
-    leftEye := c.Request().FormValue("leftEye")
-    if len(rightEye) > 0 && len(leftEye) > 0 {
-        selected := make([]map[string]interface{}, 0)
-        for _, s := range screening.ScreeningImages {
-            if s.ID.String() == rightEye || s.ID.String() == leftEye {
-                s.Status.String = "selected"
-                selected = append(selected, s.Data)
-            } else {
-                s.Status.String = "not selected"
-            }
-            _, err := tx.ValidateAndUpdate(&s)
-            if err != nil {
-                return errors.WithStack(err)
-            }
-        }
-        screening.HubStatus.String = "processing"
-        screening.HubStatus.Valid = true
-
-        if len(selected) == 2 {
-            projectID := envy.Get("TOPIC_PROJECT", "")
-            topicID := envy.Get("IMAGE_INGEST", "")
-            type ingest struct {
-                Consent string                   `json:"consent"`
-                Images  []map[string]interface{} `json:"images"`
-            }
-            in := &ingest{}
-            in.Consent = "Y"
-            in.Images = selected
-            id, err := helpers.PubSubPublish(projectID, topicID, in)
-            if err != nil {
-                return errors.WithStack(err)
-            }
-            fmt.Printf("Image Ingest PUB SUB Message ID for SID (%s): %s\n", screening.ID.String(), id)
-        }
-    }
-
     verrs, err := tx.ValidateAndUpdate(screening)
     if err != nil {
         return errors.WithStack(err)
@@ -553,28 +514,38 @@ type FundusImage struct {
 }
 
 func getEyeImages(si models.ScreeningImages) map[string][]FundusImage {
-    var err error
     data := make(map[string][]FundusImage)
     data["R"] = make([]FundusImage, 0)
     data["L"] = make([]FundusImage, 0)
 
     for _, s := range si {
-        f := FundusImage{}
-        f.Status = s.Status.String
-        f.ID = s.ID.String()
-        f.Bucket = s.Data["bucket_name"].(string)
-        f.Path = s.Data["render_file_url"].(string)
-
-        envVar := envy.Get("HUB_SERVICE_ACCOUNT_PATH", "")
-        f.SignedURL, err = helpers.GetSignedURL(f.Bucket, f.Path, envVar)
+        f, err := getEyeImage(s)
         if err != nil {
             log.Println("getEyeImages error: ", err)
             continue
         }
-        f.Data = s.Data
-        imageLaterality := s.Data["laterality"].(string)
-        data[imageLaterality] = append(data[imageLaterality], f)
+        imageLaterality := f.Data["laterality"].(string)
+        data[imageLaterality] = append(data[imageLaterality], *f)
     }
 
     return data
+}
+
+func getEyeImage(si models.ScreeningImage) (*FundusImage, error) {
+    var err error
+
+    f := &FundusImage{}
+    f.Status = si.Status.String
+    f.ID = si.ID.String()
+    f.Bucket = si.Data["bucket_name"].(string)
+    f.Path = si.Data["render_file_url"].(string)
+
+    envVar := envy.Get("HUB_SERVICE_ACCOUNT_PATH", "")
+    f.SignedURL, err = helpers.GetSignedURL(f.Bucket, f.Path, envVar)
+    if err != nil {
+        return nil, err
+    }
+    f.Data = si.Data
+
+    return f, nil
 }
