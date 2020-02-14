@@ -166,7 +166,8 @@ func App() *buffalo.App {
         app.POST("/notifications", ScreeningPermissionRequired(ChangeNotificationStatus))
 
         api := app.Group("/api")
-        api.GET("/dr-assessment/{sid}", ScreeningsDRAssessmentAPI)
+        api.GET("/screening/{sid}", ScreeningsDRAssessmentAPI)
+        api.POST("/screening-images/{sid}", ScreeningImagesSelected)
 
         authGoth := app.Group("/auth")
         authGoth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
