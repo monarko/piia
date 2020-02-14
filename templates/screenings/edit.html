@@ -480,7 +480,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row" v-if="message.length > 0 && rightSelected && leftSelected">
+                                            <div class="row" v-if="message && message.length > 0 && rightSelected && leftSelected">
                                                 <div class="col-sm-4 offset-sm-1">
                                                         <table class="table table-borderless table-compact table-striped">
                                                             <tbody>
@@ -493,19 +493,19 @@
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
-                                                            <tbody v-if="message = 'diagnosed'">
+                                                            <tbody v-if="message == 'diagnosed'">
                                                                 <tr>
                                                                     <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="text-align: left;padding-bottom: 20px;">
-                                                                        <span v-if="rightSelected.data.dr_grade.value < 0">
+                                                                        <span v-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value < 0">
                                                                             <i class="fa fa-exclamation-triangle" style="color: #ff0000;"></i>
                                                                         </span>
-                                                                        <span v-else-if="rightSelected.data.dr_grade.value = 0">
+                                                                        <span v-else-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value == 0">
                                                                             <i class="fa fa-check" style="color: #008000;"></i>
                                                                         </span>
-                                                                        <span v-else style="font-size: 0.8rem; letter-spacing: .15rem;">
+                                                                        <span v-else-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value > 0" style="font-size: 0.8rem; letter-spacing: .15rem;">
                                                                             <i v-for="n in rightSelected.data.dr_grade.value" class="fa fa-circle" style="color: #8e4585;"></i><i v-for="n in 4-rightSelected.data.dr_grade.value" class="fa fa-circle" style="color: #dabfd5;"></i>
                                                                         </span>
                                                                         <span>
@@ -519,9 +519,9 @@
                                                                 <tr>
                                                                     <td style="text-align: left; letter-spacing: .05rem;">
                                                                         <span>
-                                                                            <i v-if="rightSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
-                                                                            <i v-else-if="rightSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
-                                                                            <i v-else class="fa fa-check" style="color: #008000;"></i> 
+                                                                            <i v-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
+                                                                            <i v-else-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
+                                                                            <i v-else-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value == 0" class="fa fa-check" style="color: #008000;"></i> 
                                                                         </span>
                                                                         <span>
                                                                             {{ screening.eyes.right.dme }}
@@ -543,19 +543,19 @@
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
-                                                            <tbody v-if="message = 'diagnosed'">
+                                                            <tbody v-if="message == 'diagnosed'">
                                                                 <tr>
                                                                     <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="text-align: left;padding-bottom: 20px;">
-                                                                        <span v-if="leftSelected.data.dr_grade.value < 0">
+                                                                        <span v-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value < 0">
                                                                             <i class="fa fa-exclamation-triangle" style="color: #ff0000;"></i>
                                                                         </span>
-                                                                        <span v-else-if="leftSelected.data.dr_grade.value = 0">
+                                                                        <span v-else-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value == 0">
                                                                             <i class="fa fa-check" style="color: #008000;"></i>
                                                                         </span>
-                                                                        <span v-else style="font-size: 0.8rem; letter-spacing: .15rem;">
+                                                                        <span v-else-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value > 0" style="font-size: 0.8rem; letter-spacing: .15rem;">
                                                                             <i v-for="n in leftSelected.data.dr_grade.value" class="fa fa-circle" style="color: #8e4585;"></i><i v-for="n in 4-leftSelected.data.dr_grade.value" class="fa fa-circle" style="color: #dabfd5;"></i>
                                                                         </span>
                                                                         <span>
@@ -569,9 +569,9 @@
                                                                 <tr>
                                                                     <td style="text-align: left; padding-bottom: 20px;">
                                                                         <span>
-                                                                            <i v-if="leftSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
-                                                                            <i v-else-if="leftSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
-                                                                            <i v-else class="fa fa-check" style="color: #008000;"></i> 
+                                                                            <i v-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
+                                                                            <i v-else-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
+                                                                            <i v-else-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value == 0" class="fa fa-check" style="color: #008000;"></i> 
                                                                         </span>
                                                                         <span>
                                                                             {{ screening.eyes.left.dme }}
@@ -606,7 +606,7 @@
                                                 <div class="row"> 
                                                     <div class="col-sm-6">
                                                         <h6>Right (OD)</h6>
-                                                        <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;" v-if="rightImages.length > 0">
+                                                        <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;" v-if="rightImages && rightImages.length > 0">
                                                             <label style="margin-right: 15px;" v-for="i in rightImages">
                                                                 <input type="radio" class="" name="rightEye" :value="i.id" v-model="right">
                                                                 <img v-bind:src="i.data.signed_url" style="width: 150px; border-radius: 50%;">
@@ -615,7 +615,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <h6>Left (OS)</h6>
-                                                        <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;" v-if="leftImages.length > 0">
+                                                        <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;" v-if="leftImages && leftImages.length > 0">
                                                             <label style="margin-right: 15px;" v-for="i in leftImages">
                                                                 <input type="radio" class="" name="leftEye" :value="i.id" v-model="left">
                                                                 <img v-bind:src="i.data.signed_url" style="width: 150px; border-radius: 50%;">
