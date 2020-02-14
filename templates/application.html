@@ -795,9 +795,10 @@
                 if (this.screening) {
                     // Banner
                     if (this.screening.screening_images.length > 0) {
-                        this.message = this.screening.hub_status;
-                        if (this.message.length == 0) {
+                        if (!this.screening.hub_status) {
                             this.message = 'Select fundus images'
+                        } else {
+                            this.message = this.screening.hub_status
                         }
                     }
 
