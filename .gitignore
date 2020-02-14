@@ -15,3 +15,5 @@ piia
 package-lock.json
 *.env
 piiapoc
+piiapoc.zip
+piia.zip
