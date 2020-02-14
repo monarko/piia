@@ -792,40 +792,29 @@
                 this.screeningAPI();
             },
             refreshData() {
-                console.log("MSG0:", this.message)
                 if (this.screening) {
-                    console.log("MSG1:", this.message)
                     // Banner
                     if (this.screening.screening_images.length > 0) {
                         this.message = this.screening.hub_status;
-                        console.log("MSG2:", this.message)
                         if (this.message.length == 0) {
                             this.message = 'Select fundus images'
-                            console.log("MSG3:", this.message)
                         }
                     }
 
                     if (this.message == "processing") {
-                        console.log("MSG4:", this.message)
                         this.messageClass = "alert-warning"
                     } else if (this.message == "diagnosing") {
-                        console.log("MSG5:", this.message)
                         this.messageClass = "alert-info"
                     } else if (this.message == "diagnosed") {
-                        console.log("MSG6:", this.message)
                         if (this.screening.referral.referred) {
                             this.messageClass = "alert-danger"
-                            console.log("MSG7:", this.message)
                         } else {
-                            console.log("MSG8:", this.message)
                             this.messageClass = "alert-success"
                         }
                         if (this.screening.referral.additional_notes.length > 0) {
-                            console.log("MSG9:", this.message)
                             this.additionalMessage = this.screening.referral.additional_notes
                         }
                     }
-                    console.log("MSG10:", this.message)
 
                     var messages = ["processing", "diagnosing", "diagnosed"]
 
@@ -842,7 +831,6 @@
                             }
                         }
                     }
-                    console.log("MSG11:", this.message)
 
                     // Form on selection state
                     if (messages.indexOf(this.message) < 0 && this.screening.screening_images.length > 0) {
@@ -859,9 +847,7 @@
                             }
                         }
                     }
-                    console.log("MSG12:", this.message)
                 }
-                console.log("MSG13:", this.message)
             },
             postImages(e) {
                 e.preventDefault();
