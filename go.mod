@@ -25,7 +25,6 @@ require (
 	github.com/markbates/goth v1.59.0
 	github.com/markbates/grift v1.5.0
 	github.com/pkg/errors v0.8.1
-	github.com/stretchr/testify v1.4.0
 	github.com/unrolled/secure v1.0.6
 	golang.org/x/crypto v0.0.0-20191202143827-86a70503ff7e
 	google.golang.org/api v0.14.0

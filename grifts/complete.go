@@ -33,19 +33,6 @@ var _ = Namespace("pubsub", func() {
                 return fmt.Errorf("image-diagnose-complete-sub: %v", err)
             }
 
-            drOptions := []string{
-                "Ungradeable",
-                "Normal",
-                "Mild DR",
-                "Moderate DR",
-                "Severe DR",
-                "Proliferative DR",
-            }
-            dmeOptions := map[string]string{
-                "yes": "Present",
-                "no":  "Not Present",
-            }
-
             for _, m := range msgs {
                 var p map[string]interface{}
                 err := json.Unmarshal(m, &p)
@@ -94,33 +81,19 @@ var _ = Namespace("pubsub", func() {
                     dme := d["dme_grade"].(map[string]interface{})
                     if laterality == "R" {
                         drGrade := dr["grade"].(string)
-                        m, l := helpers.PartiallyMatch(drOptions, drGrade, 4)
-                        if l >= 0 {
-                            screening.Eyes.RightEye.DRGrading.String = m
-                            screening.Eyes.RightEye.DRGrading.Valid = true
-                        }
+                        screening.Eyes.RightEye.DRGrading.String = drGrade
+                        screening.Eyes.RightEye.DRGrading.Valid = true
 
                         dmeGrade := dme["grade"].(string)
-                        dm := "Ungradeable"
-                        if !strings.HasPrefix(strings.ToLower(dmeGrade), "un") {
-                            dm = dmeOptions[strings.ToLower(dmeGrade)]
-                        }
-                        screening.Eyes.RightEye.DMEAssessment.String = dm
+                        screening.Eyes.RightEye.DMEAssessment.String = dmeGrade
                         screening.Eyes.RightEye.DMEAssessment.Valid = true
                     } else {
                         drGrade := dr["grade"].(string)
-                        m, l := helpers.PartiallyMatch(drOptions, drGrade, 4)
-                        if l >= 0 {
-                            screening.Eyes.LeftEye.DRGrading.String = m
-                            screening.Eyes.LeftEye.DRGrading.Valid = true
-                        }
+                        screening.Eyes.LeftEye.DRGrading.String = drGrade
+                        screening.Eyes.LeftEye.DRGrading.Valid = true
 
                         dmeGrade := dme["grade"].(string)
-                        dm := "Ungradeable"
-                        if !strings.HasPrefix(strings.ToLower(dmeGrade), "un") {
-                            dm = dmeOptions[strings.ToLower(dmeGrade)]
-                        }
-                        screening.Eyes.LeftEye.DMEAssessment.String = dm
+                        screening.Eyes.LeftEye.DMEAssessment.String = dmeGrade
                         screening.Eyes.LeftEye.DMEAssessment.Valid = true
                     }
                     screening.Referral.Referred.Valid = true
