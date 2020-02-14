@@ -482,107 +482,107 @@
                                             </div>
                                             <div class="row" v-if="message && message.length > 0 && rightSelected && leftSelected">
                                                 <div class="col-sm-4 offset-sm-1">
-                                                        <table class="table table-borderless table-compact table-striped">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td><h6>Right (OD)</h6></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="padding-bottom: 20px;">
-                                                                        <img v-bind:src="rightSelected.data.signed_url" style="width: 150px; border-radius: 50%;">   
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                            <tbody v-if="message == 'diagnosed'">
-                                                                <tr>
+                                                    <table class="table table-borderless table-compact table-striped">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><h6>Right (OD)</h6></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-bottom: 20px;">
+                                                                    <img v-bind:src="rightSelected.data.signed_url" style="width: 150px; border-radius: 50%;">   
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody v-if="message == 'diagnosed'">
+                                                            <tr>
                                                                     <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="text-align: left;padding-bottom: 20px;">
-                                                                        <span v-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value < 0">
-                                                                            <i class="fa fa-exclamation-triangle" style="color: #ff0000;"></i>
-                                                                        </span>
-                                                                        <span v-else-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value == 0">
-                                                                            <i class="fa fa-check" style="color: #008000;"></i>
-                                                                        </span>
-                                                                        <span v-else-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value > 0" style="font-size: 0.8rem; letter-spacing: .15rem;">
-                                                                            <i v-for="n in rightSelected.data.dr_grade.value" class="fa fa-circle" style="color: #8e4585;"></i><i v-for="n in 4-rightSelected.data.dr_grade.value" class="fa fa-circle" style="color: #dabfd5;"></i>
-                                                                        </span>
-                                                                        <span>
-                                                                            {{ screening.eyes.right.dr }}
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="text-align: left; letter-spacing: .05rem;">
-                                                                        <span>
-                                                                            <i v-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
-                                                                            <i v-else-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
-                                                                            <i v-else-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value == 0" class="fa fa-check" style="color: #008000;"></i> 
-                                                                        </span>
-                                                                        <span>
-                                                                            {{ screening.eyes.right.dme }}
-                                                                        </span>
-                                                                    </td>                                                                    
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;padding-bottom: 20px;">
+                                                                    <span v-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value < 0">
+                                                                        <i class="fa fa-exclamation-triangle" style="color: #ff0000;"></i>
+                                                                    </span>
+                                                                    <span v-else-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value == 0">
+                                                                        <i class="fa fa-check" style="color: #008000;"></i>
+                                                                    </span>
+                                                                    <span v-else-if="rightSelected.data.dr_grade && rightSelected.data.dr_grade.value > 0" style="font-size: 0.8rem; letter-spacing: .15rem;">
+                                                                        <i v-for="n in rightSelected.data.dr_grade.value" class="fa fa-circle" style="color: #8e4585;"></i><i v-for="n in 4-rightSelected.data.dr_grade.value" class="fa fa-circle" style="color: #dabfd5;"></i>
+                                                                    </span>
+                                                                    <span>
+                                                                        {{ screening.eyes.right.dr }}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left; letter-spacing: .05rem;">
+                                                                    <span>
+                                                                        <i v-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
+                                                                        <i v-else-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
+                                                                        <i v-else-if="rightSelected.data.dme_grade && rightSelected.data.dme_grade.value == 0" class="fa fa-check" style="color: #008000;"></i> 
+                                                                    </span>
+                                                                    <span>
+                                                                        {{ screening.eyes.right.dme }}
+                                                                    </span>
+                                                                </td>                                                                    
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                                 <div class="col-sm-4 offset-sm-2">
-                                                        <table class="table table-borderless table-compact table-striped">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td><h6>Left (OS)</h6></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="padding-bottom: 20px;">
-                                                                        <img v-bind:src="leftSelected.data.signed_url" style="width: 150px; border-radius: 50%;">   
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                            <tbody v-if="message == 'diagnosed'">
-                                                                <tr>
-                                                                    <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="text-align: left;padding-bottom: 20px;">
-                                                                        <span v-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value < 0">
-                                                                            <i class="fa fa-exclamation-triangle" style="color: #ff0000;"></i>
-                                                                        </span>
-                                                                        <span v-else-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value == 0">
-                                                                            <i class="fa fa-check" style="color: #008000;"></i>
-                                                                        </span>
-                                                                        <span v-else-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value > 0" style="font-size: 0.8rem; letter-spacing: .15rem;">
-                                                                            <i v-for="n in leftSelected.data.dr_grade.value" class="fa fa-circle" style="color: #8e4585;"></i><i v-for="n in 4-leftSelected.data.dr_grade.value" class="fa fa-circle" style="color: #dabfd5;"></i>
-                                                                        </span>
-                                                                        <span>
-                                                                            {{ screening.eyes.left.dr }}
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="text-align: left; padding-bottom: 20px;">
-                                                                        <span>
-                                                                            <i v-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
-                                                                            <i v-else-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
-                                                                            <i v-else-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value == 0" class="fa fa-check" style="color: #008000;"></i> 
-                                                                        </span>
-                                                                        <span>
-                                                                            {{ screening.eyes.left.dme }}
-                                                                        </span>
-                                                                    </td>                                                                    
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                    <table class="table table-borderless table-compact table-striped">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><h6>Left (OS)</h6></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-bottom: 20px;">
+                                                                    <img v-bind:src="leftSelected.data.signed_url" style="width: 150px; border-radius: 50%;">   
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody v-if="message == 'diagnosed'">
+                                                            <tr>
+                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Retinopathy (DR)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;padding-bottom: 20px;">
+                                                                    <span v-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value < 0">
+                                                                        <i class="fa fa-exclamation-triangle" style="color: #ff0000;"></i>
+                                                                    </span>
+                                                                    <span v-else-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value == 0">
+                                                                        <i class="fa fa-check" style="color: #008000;"></i>
+                                                                    </span>
+                                                                    <span v-else-if="leftSelected.data.dr_grade && leftSelected.data.dr_grade.value > 0" style="font-size: 0.8rem; letter-spacing: .15rem;">
+                                                                        <i v-for="n in leftSelected.data.dr_grade.value" class="fa fa-circle" style="color: #8e4585;"></i><i v-for="n in 4-leftSelected.data.dr_grade.value" class="fa fa-circle" style="color: #dabfd5;"></i>
+                                                                    </span>
+                                                                    <span>
+                                                                        {{ screening.eyes.left.dr }}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left;text-transform: uppercase;font-size: 0.585rem;">Diabetic Macular Edema (DME)</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="text-align: left; padding-bottom: 20px;">
+                                                                    <span>
+                                                                        <i v-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value < 0" class="fa fa-exclamation-triangle" style="color: #008000;"></i> 
+                                                                        <i v-else-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value > 0" class="fa fa-times" style="color: #ff0000;"></i>
+                                                                        <i v-else-if="leftSelected.data.dme_grade && leftSelected.data.dme_grade.value == 0" class="fa fa-check" style="color: #008000;"></i> 
+                                                                    </span>
+                                                                    <span>
+                                                                        {{ screening.eyes.left.dme }}
+                                                                    </span>
+                                                                </td>                                                                    
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
-                                            <div v-else>
+                                            <div v-else-if="screening && !screening.hub_status && rightImages.length > 0 && leftImages.length > 0">
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <h6>Patient consent</h6>
