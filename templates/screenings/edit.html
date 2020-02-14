@@ -464,6 +464,12 @@
                                             </div>  
                                         </div> 
                                         <div id="vapp">
+                                            <div id="overlay" v-show="loader">
+                                                <div class="spinner-border text-light" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
+                                            
                                             <input type="hidden" value="<%= screening.ID %>" id="screeningId">
                                             <div class="row">
                                                 <div class="col-sm-12" style="margin-top: -20px; margin-bottom: 10px;">

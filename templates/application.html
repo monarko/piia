@@ -779,12 +779,20 @@
             consent: '',
             left: '',
             right: '',
+            loader: false,
         },
         mounted() {
             this.screeningId = $("#screeningId").val();
             this.refresh();
+            this.startLoader();
         },
         methods: {
+            startLoader() {
+                this.loader = true;
+            },
+            stopLoader() {
+                this.loader = false;
+            },
             refresh(e) {
                 if (e) {
                     e.preventDefault();
@@ -846,8 +854,10 @@
                         }
                     }
                 }
+                this.stopLoader();
             },
             postImages(e) {
+                this.startLoader();
                 e.preventDefault();
                 if (this.consent.length > 0 && this.right.length > 0 && this.left.length > 0) {
                     var save = true
@@ -874,9 +884,11 @@
                     }
                 } else {
                     alert("You have to select images and patient consent");
+                    this.stopLoader();
                 }
             },
             screeningAPI() {
+                this.startLoader();
                 if (this.screeningId && this.screeningId.length > 0) {
                     var url = "/api/screening/"+this.screeningId;
                     axios.get(url)
@@ -886,6 +898,7 @@
                     })
                     .catch((err) => {
                         console.log("error", err);
+                        this.stopLoader();
                     });
                 }
             }
