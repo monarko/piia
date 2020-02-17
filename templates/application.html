@@ -412,6 +412,12 @@
         });
 
         var viewer = ImageViewer();
+        $("body").on("click", ".fullscreen-image", function () {
+            var imgSrc = this.src,
+                highResolutionImage = $(this).data('high-res-src');
+
+            viewer.show(imgSrc, highResolutionImage);
+        });
         $('.fullscreen-image').click(function () {
             var imgSrc = this.src,
                 highResolutionImage = $(this).data('high-res-src');
@@ -822,9 +828,12 @@
                             if (this.screening.referral.additional_notes.length > 0) {
                                 this.additionalMessage = this.screening.referral.additional_notes;
                             }
+                        } else if (this.message == "not processing") {
+                            this.messageClass = "alert-danger";
+                            this.additionalMessage = "The patient did not agree to give consent";
                         }
 
-                        var messages = ["processing", "diagnosing", "diagnosed"];
+                        var messages = ["processing", "not processing", "diagnosing", "diagnosed"];
 
                         // Images on processing/diagnosing and diagnosed state else form
                         if (messages.indexOf(this.message) != -1) {
@@ -857,39 +866,41 @@
                 this.stopLoader();
             },
             postImages(e) {
-                this.startLoader();
                 e.preventDefault();
-                if (this.consent.length > 0 && this.right.length > 0 && this.left.length > 0) {
+                var consent = $("input[name='consent']:checked").val();
+                if (consent && consent.length > 0 && this.right.length > 0 && this.left.length > 0) {
                     var save = true
-                    if (this.consent == "N") {
+                    if (consent == "N") {
                         var r = confirm("If the patient doesn't agree, these images will not send for diagnosis");
                         save = r
                     }
 
                     if (save) {
+                        this.startLoader();
                         // save the record
                         var url = "/api/screening-images/"+this.screeningId;
                         var data = {
-                            "consent": this.consent,
+                            "consent": consent,
                             "right": this.right,
                             "left": this.left,
                         }
                         axios.post(url, data)
                         .then((res) => {
                             this.screeningAPI();
+                            this.stopLoader();
                         })
                         .catch((err) => {
                             console.log("error", err)
+                            this.stopLoader();
                         });
                     }
                 } else {
                     alert("You have to select images and patient consent");
-                    this.stopLoader();
                 }
             },
             screeningAPI() {
-                this.startLoader();
                 if (this.screeningId && this.screeningId.length > 0) {
+                    this.startLoader();
                     var url = "/api/screening/"+this.screeningId;
                     axios.get(url)
                     .then((res) => {

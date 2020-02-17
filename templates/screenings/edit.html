@@ -427,6 +427,26 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12">
+                                                <h6>Patient consent</h6>
+                                                <div class="form-group">
+                                                    <label for="patient-consent">Has the patient signed the trial consent form?</label>
+                                                    <div class="form-check" style="padding-left: 0; margin-bottom: 10px;">
+                                                        <label class="form-check-label">
+                                                            <input class="" style="padding-right: 20px;" name="consent" type="radio" value="Y" <%= if (screening.Eyes.Consent.Bool) { %> checked <% } %>>
+                                                            This patient has agreed and signed the consent form
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check" style="padding-left: 0; margin-bottom: 10px;">
+                                                        <label class="form-check-label">
+                                                            <input class="" style="padding-right: 20px;" name="consent" type="radio" value="N" <%= if (screening.Eyes.Consent.Valid && !screening.Eyes.Consent.Bool) { %> checked <% } %>>
+                                                            This patient does not agree to give consent
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for=""><%= t("field_dilate_pupil") %></label>
                                                     <div class="form-group">
@@ -495,7 +515,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td style="padding-bottom: 20px;">
-                                                                    <img v-bind:src="rightSelected.data.signed_url" style="width: 150px; border-radius: 50%;">   
+                                                                    <img v-bind:src="rightSelected.data.signed_url" class="fullscreen-image" v-bind:data-high-res-src="rightSelected.data.signed_url" style="width: 150px;">   
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -545,7 +565,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td style="padding-bottom: 20px;">
-                                                                    <img v-bind:src="leftSelected.data.signed_url" style="width: 150px; border-radius: 50%;">   
+                                                                    <img v-bind:src="leftSelected.data.signed_url" class="fullscreen-image" v-bind:data-high-res-src="leftSelected.data.signed_url"  style="width: 150px;">   
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -589,47 +609,27 @@
                                                 </div>
                                             </div>
                                             <div v-else-if="screening && !screening.hub_status && rightImages.length > 0 && leftImages.length > 0">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <h6>Patient consent</h6>
-                                                        <div class="form-group">
-                                                            <label for="patient-consent">Has the patient signed the trial consent form?</label>
-                                                            <div class="form-check" style="padding-left: 0; margin-bottom: 10px;">
-                                                                <label class="form-check-label">
-                                                                    <input class="" style="padding-right: 20px;" name="consent" type="radio" value="Y" v-model="consent">
-                                                                    This patient has agreed and signed the consent form
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check" style="padding-left: 0; margin-bottom: 10px;">
-                                                                <label class="form-check-label">
-                                                                    <input class="" style="padding-right: 20px;" name="consent" type="radio" value="N" v-model="consent">
-                                                                    This patient does not agree to give consent
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="row"> 
                                                     <div class="col-sm-6">
                                                         <h6>Right (OD)</h6>
                                                         <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;" v-if="rightImages && rightImages.length > 0">
-                                                            <label style="margin-right: 15px;" v-for="i in rightImages">
+                                                            <label style="margin-right: 10px;" v-for="i in rightImages">
                                                                 <input type="radio" class="" name="rightEye" :value="i.id" v-model="right">
-                                                                <img v-bind:src="i.data.signed_url" style="width: 150px; border-radius: 50%;">
+                                                                <img v-bind:src="i.data.signed_url" class="fullscreen-image" v-bind:data-high-res-src="i.data.signed_url" style="width: 150px;">
                                                             </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <h6>Left (OS)</h6>
                                                         <div style="border: 2px solid #dde2ec; padding: 15px; border-radius: 10px;" v-if="leftImages && leftImages.length > 0">
-                                                            <label style="margin-right: 15px;" v-for="i in leftImages">
+                                                            <label style="margin-right: 10px;" v-for="i in leftImages">
                                                                 <input type="radio" class="" name="leftEye" :value="i.id" v-model="left">
-                                                                <img v-bind:src="i.data.signed_url" style="width: 150px; border-radius: 50%;">
+                                                                <img v-bind:src="i.data.signed_url" class="fullscreen-image" v-bind:data-high-res-src="i.data.signed_url" style="width: 150px;">
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row" style="margin-top: 20px; margin-bottom:20px;" v-if="consent.length > 0 && right.length > 0 && left.length > 0">
+                                                <div class="row" style="margin-top: 20px; margin-bottom:20px;" v-if="right.length > 0 && left.length > 0">
                                                     <div class="col-sm-12 text-center">
                                                         <button class="btn btn-primary" @click="postImages">Submit Images to Diagnose</button>
                                                     </div>

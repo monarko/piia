@@ -72,16 +72,17 @@ func ScreeningImagesSelected(c buffalo.Context) error {
                 return c.Render(500, r.JSON(er))
             }
         }
-        screening.HubStatus.String = "processing"
+        screening.HubStatus.String = "not processing"
         screening.HubStatus.Valid = true
 
         screening.Eyes.Consent.Valid = true
         screening.Eyes.Consent.Bool = false
         if pi.Consent == "Y" {
             screening.Eyes.Consent.Bool = true
+            screening.HubStatus.String = "processing"
         }
 
-        if len(selected) == 2 {
+        if len(selected) == 2 && pi.Consent == "Y" {
             projectID := envy.Get("TOPIC_PROJECT", "")
             topicID := envy.Get("IMAGE_INGEST", "")
             type ingest struct {
