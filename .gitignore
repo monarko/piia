@@ -11,5 +11,7 @@ public/assets/
 piia
 .vscode/
 .grifter/
-.env
+*.env
 package-lock.json
+piiapoc
+piiapoc.zip
