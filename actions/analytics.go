@@ -119,7 +119,7 @@ func downloadFull(c buffalo.Context) (string, *bytes.Buffer, error) {
 	tx := c.Value("tx").(*pop.Connection)
 	fullRecords := make([]fullRecord, 0)
 
-	query := `SELECT
+	query := `SELECT DISTINCT ON (p.participant_id)
 	s.created_at AS "created_date",
 	s.id AS "screening_id",
 	p.participant_id AS "participant_id",
@@ -232,8 +232,7 @@ FROM (
 )
 WHERE (
 	s.id IS NOT NULL
-)
-ORDER BY s.created_at`
+)`
 
 	q := tx.RawQuery(query)
 
