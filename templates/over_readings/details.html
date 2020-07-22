@@ -16,7 +16,15 @@
                                         <%= ageHelper(participant.DOB.CalculatedDate) %>
                                     </p>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <div class="float-right" style="text-align: right;">
+                                    <h6 style="font-weight: normal; text-decoration: underline;">Last Updated at</h6>
+                                    <p>
+                                        <%= languageDate(overReading.UpdatedAt, "02-Jan-2006", t("lang_calendar")) %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
                                     <%= if ((overReading.OverReader.ID.String() == current_user.ID.String()) || current_user.Admin) { %>
                                         <div class="float-right">                                        
                                             <a class="btn btn-lg btn-outline-primary" href="<%= participantScreeningOverreadingsEditPath({pid: overReading.Participant.ID, sid: overReading.Screening.ID, oid: overReading.ID}) %>" title="Over-read"><i class="fa fa-pencil-alt fa-sm"></i> Edit</a>                                        
