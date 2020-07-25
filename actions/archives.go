@@ -15,11 +15,11 @@ import (
 
 var (
 	types = map[string]map[string]string{
-		"OverReading":     map[string]string{"log": "overReading", "table": "over_readings"},
-		"ReferredMessage": map[string]string{"log": "referred_message", "table": "referred_messages"},
-		"Notification":    map[string]string{"log": "notification", "table": "notifications"},
-		"Screening":       map[string]string{"log": "screening", "table": "screenings"},
-		"Participant":     map[string]string{"log": "participant", "table": "participants"},
+		"OverReading":     {"log": "overReading", "table": "over_readings"},
+		"ReferredMessage": {"log": "referred_message", "table": "referred_messages"},
+		"Notification":    {"log": "notification", "table": "notifications"},
+		"Screening":       {"log": "screening", "table": "screenings"},
+		"Participant":     {"log": "participant", "table": "participants"},
 	}
 )
 
