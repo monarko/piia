@@ -60,10 +60,13 @@ func App() *buffalo.App {
 
 		// Setup and use translations:
 		app.Use(translations())
+		app.Use(SetSiteStatus)
 		app.Use(SetCurrentUser)
 		app.Use(SetCurrentLang)
 		app.Use(SetCurrentSite)
 		app.Use(SetBreadcrumb)
+
+		sitePerm, _, _ := SiteStatus()
 
 		app.GET("/", HomeHandler)
 
@@ -74,10 +77,14 @@ func App() *buffalo.App {
 
 		auth.GET("/", AdminRequired(UsersIndex))
 		auth.GET("/index", AdminRequired(UsersIndex))
-		auth.GET("/create", AdminRequired(UsersCreateGet))
-		auth.POST("/create", AdminRequired(UsersCreatePost))
-		auth.GET("/edit/{uid}", AdminRequired(UsersEditGet)).Name("usersEditPath")
-		auth.POST("/edit/{uid}", AdminRequired(UsersEditPost)).Name("usersEditPath")
+		if sitePerm.User.Create {
+			auth.GET("/create", AdminRequired(UsersCreateGet))
+			auth.POST("/create", AdminRequired(UsersCreatePost))
+		}
+		if sitePerm.User.Edit {
+			auth.GET("/edit/{uid}", AdminRequired(UsersEditGet)).Name("usersEditPath")
+			auth.POST("/edit/{uid}", AdminRequired(UsersEditPost)).Name("usersEditPath")
+		}
 
 		participants := app.Group("/participants")
 		participants.Use(LoginRequired)
@@ -85,11 +92,11 @@ func App() *buffalo.App {
 		participants.Middleware.Skip(ScreeningPermissionRequired, ParticipantsIndex, ParticipantsDetail)
 		participants.GET("/", ParticipantsIndex)
 		participants.GET("/index", ParticipantsIndex)
-		participants.GET("/create", ParticipantsCreateGet)
-		participants.POST("/create", ParticipantsCreatePost)
-		participants.GET("/edit/{pid}", ParticipantsEditGet).Name("participantsEditPath")
-		participants.POST("/edit/{pid}", ParticipantsEditPost).Name("participantsEditPath")
-		participants.DELETE("/delete/{pid}", AdminRequired(ParticipantsDestroy))
+		participants.GET("/create", SitePermissionRequired(ParticipantsCreateGet, sitePerm.Participant.Create))
+		participants.POST("/create", SitePermissionRequired(ParticipantsCreatePost, sitePerm.Participant.Create))
+		participants.GET("/edit/{pid}", SitePermissionRequired(ParticipantsEditGet, sitePerm.Participant.Edit)).Name("participantsEditPath")
+		participants.POST("/edit/{pid}", SitePermissionRequired(ParticipantsEditPost, sitePerm.Participant.Edit)).Name("participantsEditPath")
+		participants.DELETE("/delete/{pid}", SitePermissionRequired(AdminRequired(ParticipantsDestroy), sitePerm.Participant.Archive))
 		participants.GET("/{pid}", ParticipantsDetail)
 
 		cases := app.Group("/cases")
@@ -99,24 +106,24 @@ func App() *buffalo.App {
 
 		screenings := participants.Group("/{pid}/screenings")
 		screenings.Use(ScreeningPermissionRequired)
-		screenings.GET("/create", ScreeningsCreateGet)
-		screenings.POST("/create", ScreeningsCreatePost)
-		screenings.GET("/edit/{sid}", ScreeningsEditGet).Name("participantScreeningsEditPath")
-		screenings.POST("/edit/{sid}", ScreeningsEditPost).Name("participantScreeningsEditPath")
-		screenings.DELETE("/delete/{sid}", AdminRequired(ScreeningsDestroy))
+		screenings.GET("/create", SitePermissionRequired(ScreeningsCreateGet, sitePerm.Screening.Create))
+		screenings.POST("/create", SitePermissionRequired(ScreeningsCreatePost, sitePerm.Screening.Create))
+		screenings.GET("/edit/{sid}", SitePermissionRequired(ScreeningsEditGet, sitePerm.Screening.Edit)).Name("participantScreeningsEditPath")
+		screenings.POST("/edit/{sid}", SitePermissionRequired(ScreeningsEditPost, sitePerm.Screening.Edit)).Name("participantScreeningsEditPath")
+		screenings.DELETE("/delete/{sid}", SitePermissionRequired(AdminRequired(ScreeningsDestroy), sitePerm.Screening.Archive))
 
 		overReadings := screenings.Group("/{sid}/overreadings")
 		overReadings.Middleware.Skip(ScreeningPermissionRequired, OverReadingsCreateGet, OverReadingsCreatePost, OverReadingsDetails, OverReadingsEditGet, OverReadingsEditPost)
 		overReadings.Use(OverReadingPermissionRequired)
-		overReadings.GET("/create", OverReadingsCreateGet)
-		overReadings.POST("/create", OverReadingsCreatePost)
-		overReadings.GET("/edit/{oid}", OverReadingsEditGet).Name("participantScreeningOverreadingsEditPath")
-		overReadings.POST("/edit/{oid}", OverReadingsEditPost).Name("participantScreeningOverreadingsEditPath")
-		overReadings.DELETE("/delete/{oid}", AdminRequired(OverReadingDestroy))
+		overReadings.GET("/create", SitePermissionRequired(OverReadingsCreateGet, sitePerm.OverReading.Create))
+		overReadings.POST("/create", SitePermissionRequired(OverReadingsCreatePost, sitePerm.OverReading.Create))
+		overReadings.GET("/edit/{oid}", SitePermissionRequired(OverReadingsEditGet, sitePerm.OverReading.Edit)).Name("participantScreeningOverreadingsEditPath")
+		overReadings.POST("/edit/{oid}", SitePermissionRequired(OverReadingsEditPost, sitePerm.OverReading.Edit)).Name("participantScreeningOverreadingsEditPath")
+		overReadings.DELETE("/delete/{oid}", SitePermissionRequired(AdminRequired(OverReadingDestroy), sitePerm.OverReading.Archive))
 		overReadings.Middleware.Skip(OverReadingPermissionRequired, OverReadingsDetails)
 		overReadings.GET("/{oid}", OverReadingsDetails)
 
-		screenings.POST("/{sid}/appointmentdone", UpdateReferredMessage).Name("participantsAppointmentPath")
+		screenings.POST("/{sid}/appointmentdone", SitePermissionRequired(UpdateReferredMessage, sitePerm.Referrals.Create)).Name("participantsAppointmentPath")
 
 		analytics := app.Group("/analytics")
 		analytics.Use(LoginRequired)
@@ -134,15 +141,17 @@ func App() *buffalo.App {
 		referrals.Middleware.Skip(ReferralTrackerPermissionRequired, ReferralsIndex, ReferralsParticipantsView)
 		referrals.GET("/", ReferralsIndex)
 		referrals.GET("/index", ReferralsIndex)
-		referrals.GET("/participants/{pid}", ReferralsParticipantsGet)
+		referrals.GET("/participants/{pid}", SitePermissionRequired(ReferralsParticipantsGet, sitePerm.Referrals.Create))
 		referrals.GET("/participants/{pid}/view", ReferralsParticipantsView)
-		referrals.DELETE("/participants/{pid}/delete/{rid}", AdminRequired(ReferralsDestroy))
+
+		referrals.DELETE("/participants/{pid}/delete/{rid}", SitePermissionRequired(AdminRequired(ReferralsDestroy), sitePerm.Referrals.Archive))
 
 		notifications := app.Group("/notifications")
 		notifications.Use(LoginRequired)
 		notifications.GET("/", NotificationsIndex)
 		notifications.GET("/index", NotificationsIndex)
-		notifications.DELETE("/delete/{nid}", AdminRequired(NotificationsDestroy))
+
+		notifications.DELETE("/delete/{nid}", SitePermissionRequired(AdminRequired(NotificationsDestroy), sitePerm.Screening.Archive))
 
 		logs := app.Group("/logs")
 		logs.Use(AdminRequired)
@@ -153,15 +162,16 @@ func App() *buffalo.App {
 		archive.Use(AdminRequired)
 		archive.GET("/", ArchiveIndex)
 		archive.GET("/index", ArchiveIndex)
-		archive.GET("/restore/{aid}", ArchiveRestore)
-		archive.DELETE("/delete/{aid}", ArchiveDestroy)
+		archive.GET("/restore/{aid}", SitePermissionRequired(ArchiveRestore, sitePerm.OverReading.Restore || sitePerm.Screening.Restore || sitePerm.Participant.Restore || sitePerm.Referrals.Restore))
+		archive.DELETE("/delete/{aid}", SitePermissionRequired(ArchiveDestroy, sitePerm.OverReading.Delete || sitePerm.Screening.Delete || sitePerm.Participant.Delete || sitePerm.Referrals.Delete))
 		archive.GET("/{aid}", ArchiveShow)
 
 		app.GET("/errors/{status}", ErrorsDefault)
 
 		app.GET("/switch", ChangeLanguage)
 		app.GET("/switch-site", ChangeSite)
-		app.POST("/notifications", ScreeningPermissionRequired(ChangeNotificationStatus))
+
+		app.POST("/notifications", SitePermissionRequired(ScreeningPermissionRequired(ChangeNotificationStatus), sitePerm.Screening.Create || sitePerm.Screening.Edit))
 
 		authGoth := app.Group("/auth")
 		authGoth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
