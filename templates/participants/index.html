@@ -7,7 +7,9 @@
             <div class="element-box">
                 <%= if (current_user.Admin || current_user.Permission.Screening) { %>
                 <div class="element-actions">
+                    <%= if (sitePerm.Participant.Create) { %>
                     <a class="btn btn-primary btn-md" href="<%= participantsCreatePath() %>" role="button"><%= t("button_enroll") %></a>
+                    <% } %>
                 </div>
                 <% } %>
 
@@ -115,7 +117,9 @@
                                         <%= p.ParticipantID %>
                                         <%= if (current_user.Admin || current_user.Permission.StudyCoordinator || current_user.Permission.Screening) { %>
                                             <div class="action-item col-md-auto" style="padding-right: 0;">
+                                                <%= if (sitePerm.Participant.Edit) { %>
                                                 <a class="text-primary" href="<%= participantsEditPath({pid: p.ID}) %>" title="Participant"><i class="fa fa-pencil-alt"></i></a>
+                                                <% } %>
                                             </div>
                                         <% } %>
                                     </div>
@@ -169,11 +173,15 @@
                                         <%= if (len(p.Screenings) > 0) { %>
                                             <% let psc = p.Screenings[0] %>
                                             <div class="action-item col-md-auto" style="padding-right: 0;">
+                                                <%= if (sitePerm.Screening.Edit) { %>
                                                 <a class="btn btn-sm item-btn" href="<%= participantScreeningsEditPath({pid: p.ID, sid: psc.ID}) %>" title="Screen"><i class="fa fa-pencil-alt fa-sm"></i> <span>Edit</span></a>
+                                                <% } %>
                                             </div>
                                         <% } else { %>
                                         <div class="action-item col-md-auto" style="padding-right: 0;">
+                                            <%= if (sitePerm.Screening.Create) { %>
                                             <a class="btn btn-sm item-btn" href="<%= participantScreeningsCreatePath({pid: p.ID}) %>" title="Screen"><i class="fa fa-eye fa-sm"></i> <span>Record</span></a>
+                                            <% } %>
                                         </div>
                                         <% } %>
                                     <% } %>

@@ -77,14 +77,10 @@ func App() *buffalo.App {
 
 		auth.GET("/", AdminRequired(UsersIndex))
 		auth.GET("/index", AdminRequired(UsersIndex))
-		if sitePerm.User.Create {
-			auth.GET("/create", AdminRequired(UsersCreateGet))
-			auth.POST("/create", AdminRequired(UsersCreatePost))
-		}
-		if sitePerm.User.Edit {
-			auth.GET("/edit/{uid}", AdminRequired(UsersEditGet)).Name("usersEditPath")
-			auth.POST("/edit/{uid}", AdminRequired(UsersEditPost)).Name("usersEditPath")
-		}
+		auth.GET("/create", SitePermissionRequired(AdminRequired(UsersCreateGet), sitePerm.User.Create))
+		auth.POST("/create", SitePermissionRequired(AdminRequired(UsersCreatePost), sitePerm.User.Create))
+		auth.GET("/edit/{uid}", SitePermissionRequired(AdminRequired(UsersEditGet), sitePerm.User.Edit)).Name("usersEditPath")
+		auth.POST("/edit/{uid}", SitePermissionRequired(AdminRequired(UsersEditPost), sitePerm.User.Edit)).Name("usersEditPath")
 
 		participants := app.Group("/participants")
 		participants.Use(LoginRequired)

@@ -398,23 +398,23 @@ func SiteStatus() (SitePermission, string, map[string]string) {
 	desc := map[string]map[string]string{
 		"planning": {
 			"desc": "Site is currently in planning state",
-			"type": "btn-outline-success",
+			"type": "success",
 		},
 		"recruiting": {
 			"desc": "Site is actively recruiting people to participate",
-			"type": "btn-outline-primary",
+			"type": "primary",
 		},
 		"closed": {
-			"desc": "Site is currently in closed state",
-			"type": "btn-outline-info",
+			"desc": "Study is currently closed",
+			"type": "info",
 		},
 		"locked": {
-			"desc": "Site is currently in locked state",
-			"type": "btn-outline-warning",
+			"desc": "Study is currently locked",
+			"type": "warning",
 		},
 		"completed": {
 			"desc": "Study is completed",
-			"type": "btn-outline-danger",
+			"type": "danger",
 		},
 	}
 	currentStatus := strings.TrimSpace(envy.Get("SITE_STATUS", "recruiting"))

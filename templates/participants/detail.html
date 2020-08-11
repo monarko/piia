@@ -24,6 +24,7 @@
     </div>
     <div class="col-sm-4" style="margin-left: 36px;">
         <%= if (current_user.Admin) { %>
+            <%= if (sitePerm.Participant.Archive) { %>
             <form class="delete-form" action="<%= participantsDeletePath({pid: participant.ID}) %>" method="POST">
                 <%= csrf() %>
                 <input type="hidden" name="_method" value="DELETE" />
@@ -32,6 +33,7 @@
                     <button class="btn btn-outline-danger delete-btn" title="Delete"><i class="fa fa-trash-alt fa-sm"></i> Delete Participant</button>                                        
                 </div>
             </form>
+            <% } %>
         <% } %>
     </div>
 </div>
@@ -50,6 +52,7 @@
                         </td>
                         <td style="padding-right: 0;">
                         <%= if (current_user.Admin) { %>
+                            <%= if (sitePerm.Screening.Archive) { %>
                             <form class="delete-form" action="<%= participantScreeningsDeletePath({pid: participant.ID, sid: psc.ID}) %>" method="POST">
                                 <%= csrf() %>
                                 <input type="hidden" name="_method" value="DELETE" />
@@ -58,6 +61,7 @@
                                     <button class="btn btn-sm btn-outline-danger delete-btn" title="Delete"><i class="fa fa-trash-alt fa-sm"></i> Delete Screening</button>                                        
                                 </div>
                             </form>
+                            <% } %>
                         <% } %>
                         </td>
                     </tr>
@@ -206,8 +210,10 @@
                             <div class="modal-footer">
                                 <button class="btn btn-secondary" data-dismiss="modal" type="button">
                                     <%= t("button_cancel") %></button>
+                                <%= if (sitePerm.Screening.Create || sitePerm.Screening.Edit) { %>
                                 <button class="btn btn-primary" type="submit">
                                     <%= t("button_submit") %></button>
+                                <% } %>
                             </div>
                         </form>
                     </div>

@@ -6,7 +6,9 @@
 			</h6>
 			<div class="element-box">
 				<div class="element-actions">
-                    <a class="btn btn-primary btn" href="<%= usersCreatePath() %>" role="button">New User</a>
+					<%= if (sitePerm.User.Create) { %>
+					<a class="btn btn-primary btn" href="<%= usersCreatePath() %>" role="button">New User</a>
+					<% } %>
                 </div>
 				<!-- controls above table -->
 				<div class="controls-above-table">
@@ -129,7 +131,9 @@
 								</td>
 								<td class="row-actions">
 									<%= if (user.ID.String() != current_user.ID.String()) { %>
-									<a href="<%= usersEditPath({uid: user.ID}) %>"><i class="os-icon os-icon-pencil-1"></i></a>
+										<%= if (sitePerm.User.Edit) { %>
+										<a href="<%= usersEditPath({uid: user.ID}) %>"><i class="os-icon os-icon-pencil-1"></i></a>
+										<% } %>
 									<% } %>
 									<!-- <a href="#"><i class="os-icon os-icon-grid-10"></i></a> -->
 									<!--<a class="danger" href="#"><i class="os-icon os-icon-ui-15"></i></a>-->

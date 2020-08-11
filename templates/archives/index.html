@@ -45,7 +45,9 @@
                                 <td class="text-center">
                                     <div class="action-item col-md-auto" style="padding-right: 0;">  
                                         <a class="btn btn-sm item-btn" href="<%= archivePath({aid: a.ID}) %>" title="View"><i class="fa fa-file-alt fa-sm"></i> <span>Details</span></a>
+                                        <%= if ((sitePerm.OverReading.Restore && a.ArchiveType == "OverReading") || (sitePerm.Screening.Restore && (a.ArchiveType == "Screening" || a.ArchiveType == "Notification")) || (sitePerm.Participant.Restore && a.ArchiveType == "Participant") || (sitePerm.Referrals.Restore && a.ArchiveType == "ReferredMessage")) { %>
                                         <a class="btn btn-sm item-btn" href="<%= archivesRestorePath({aid: a.ID}) %>" title="Restore"><i class="fa fa-trash-restore-alt fa-sm"></i> <span>Restore</span></a>
+                                        <% } %>
                                     </div>
                                 </td>
                             </tr>

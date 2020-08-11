@@ -117,8 +117,10 @@
                                     <!--<a href="<%= participantPath({pid: p.ID}) %>" title="View"><i class="fa fa-file-alt fa-lg"></i></a>-->
                                     <%= if (!stringInSlice(p.ID.String(), finished)) { %>
                                         <%= if (!current_user.Permission.StudyTeamMember) { %>
-                                            <div class="action-item col-md-auto" style="padding-right: 0;">                                        
+                                            <div class="action-item col-md-auto" style="padding-right: 0;">   
+                                                <%= if (sitePerm.Referrals.Create) { %>
                                                 <a class="btn btn-sm btn-warning" href="<%= referralsParticipantPath({pid: p.ID}) %>" title="Mark"><i class="fa fa-pencil-alt fa-sm"></i> Track Referral</a>
+                                                <% } %>
                                             </div>
                                         <% } %>
                                     <% } else { %>
@@ -126,6 +128,7 @@
                                             <a class="btn btn-sm btn-info" href="<%= referralsParticipantViewPath({pid: p.ID}) %>" title="View"><i class="fa fa-eye fa-sm"></i> View</a>
                                         </div>
                                         <%= if (current_user.Admin) { %>
+                                            <%= if (sitePerm.Referrals.Archive) { %>
                                             <form class="delete-form" action="<%= referralsParticipantDeletePath({pid: p.ID, rid: ref.ID}) %>" method="POST">
                                             <%= csrf() %>
                                             <input type="hidden" name="_method" value="DELETE" />
@@ -134,6 +137,7 @@
                                                     <button class="btn btn-sm btn-outline-danger delete-btn" title="Delete"><i class="fa fa-trash-alt fa-sm"></i> Delete</button>                                        
                                                 </div>
                                             </form>
+                                            <% } %>
                                         <% } %>
                                     <% } %>
                                     </div>

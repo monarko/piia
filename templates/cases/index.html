@@ -121,21 +121,26 @@
                                     <%= if (p.Status == "11" && (current_user.Permission.OverRead || current_user.Admin)) { %>
                                         <% let s = p.Screenings[0] %>
                                         <div class="action-item col-md-auto" style="padding-right: 0;">
+                                            <%= if (sitePerm.OverReading.Create) { %>
                                             <a class="btn btn-sm btn-warning" href="<%= participantScreeningOverreadingsCreatePath({pid: p.ID, sid: s.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> Review Case</a>
+                                            <% } %>
                                         </div>
                                     <% } else { %>
                                         <%= if (len(p.OverReadings) > 0) { %>
                                         <% let s = p.Screenings[0] %>
                                         <% let o = p.OverReadings[0] %>
                                         <%= if ((o.OverReader.ID.String() == current_user.ID.String()) || current_user.Admin) { %>
-                                            <div class="action-item col-md-auto" style="padding-right: 0;">                                        
-                                                <a class="btn btn-sm btn-outline-primary" href="<%= participantScreeningOverreadingsEditPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-pencil-alt fa-sm"></i> Edit</a>                                        
+                                            <div class="action-item col-md-auto" style="padding-right: 0;">       
+                                                <%= if (sitePerm.OverReading.Edit) { %>
+                                                <a class="btn btn-sm btn-outline-primary" href="<%= participantScreeningOverreadingsEditPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-pencil-alt fa-sm"></i> Edit</a>   
+                                                <% } %>                                                                               
                                             </div>
                                         <% } %>
                                         <div class="action-item col-md-auto" style="padding-right: 0;">                                        
                                             <a class="btn btn-sm btn-info" href="<%= participantScreeningOverreadingPath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" title="Over-read"><i class="fa fa-eye fa-sm"></i> View</a>
                                         </div>
                                         <%= if (current_user.Admin) { %>
+                                            <%= if (sitePerm.OverReading.Archive) { %>
                                             <form class="delete-form" action="<%= participantScreeningOverreadingsDeletePath({pid: p.ID, sid: s.ID, oid: o.ID}) %>" method="POST">
                                                 <%= csrf() %>
                                                 <input type="hidden" name="_method" value="DELETE" />
@@ -144,6 +149,7 @@
                                                     <button class="btn btn-sm btn-outline-danger delete-btn" title="Over-read"><i class="fa fa-trash-alt fa-sm"></i> Delete</button>                                        
                                                 </div>
                                             </form>
+                                            <% } %>  
                                         <% } %>
                                         <% } %>
                                     <% } %>
