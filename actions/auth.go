@@ -9,7 +9,7 @@ import (
 
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
-	"github.com/gobuffalo/pop"
+	"github.com/gobuffalo/pop/v5"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/google"

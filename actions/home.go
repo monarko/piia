@@ -2,7 +2,7 @@ package actions
 
 import (
 	"github.com/gobuffalo/buffalo"
-	"github.com/gobuffalo/pop"
+	"github.com/gobuffalo/pop/v5"
 	"github.com/monarko/piia/models"
 	"github.com/pkg/errors"
 )

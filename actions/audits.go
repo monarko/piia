@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/gobuffalo/buffalo"
-	"github.com/gobuffalo/pop"
+	"github.com/gobuffalo/pop/v5"
 	"github.com/gofrs/uuid"
 	jd "github.com/josephburnett/jd/lib"
 	"github.com/monarko/piia/models"
